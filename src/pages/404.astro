@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config/site';
+---
+
+<BaseLayout title="Página no encontrada" description={`Esta página no existe en ${SITE.name}.`}>
+  <div class="flex flex-col items-start gap-4 py-16">
+    <p class="text-xs font-semibold uppercase tracking-widest text-brand">Error 404</p>
+    <h1 class="font-display text-4xl text-ink">Esta página no existe.</h1>
+    <p class="max-w-md text-ink-muted">
+      Puede que el enlace esté mal escrito o que el contenido se haya movido.
+    </p>
+    <div class="mt-4 flex gap-3">
+      <a href="/" class="btn-primary">Volver al inicio</a>
+      <a href="/blog" class="btn-secondary">Ver el blog</a>
+    </div>
+  </div>
+</BaseLayout>
