@@ -1,48 +1,24 @@
 ---
-// Vista previa estática (no interactiva) del simulador, con los mismos
-// valores de ejemplo que el artículo real, para que la home cargue rápido
-// sin necesitar la isla de React.
+// Vista previa estática (no interactiva) del resultado del simulador, con
+// los mismos valores de ejemplo que el artículo real.
 ---
 
-<div class="browser-card">
-  <div class="browser-card-chrome">
-    <span class="browser-card-dot"></span>
-    <span class="browser-card-dot"></span>
-    <span class="browser-card-dot"></span>
-    <span class="ml-2 truncate text-xs text-ink-faint">wealthuncut.com/blog/rentabilidad-neta-fondo-indexado</span>
-  </div>
+<div class="card relative overflow-hidden border-l-4 border-l-brand p-8">
+  <p class="text-xs font-semibold uppercase tracking-widest text-ink-faint">
+    Simulador · Fondo indexado, 20 años
+  </p>
 
-  <div class="p-6">
-    <p class="text-xs font-semibold uppercase tracking-wide text-ink-faint">
-      Simulador · Fondo indexado, 20 años
-    </p>
-    <p class="mt-2 font-display text-xl leading-snug text-ink sm:text-2xl">
-      Con 150 €/mes te quedarían <span class="text-brand">69.630 € netos</span>,
-      después de comisiones e impuestos.
-    </p>
+  <p class="mt-5 font-display text-5xl font-semibold leading-none text-brand sm:text-6xl">
+    69.630 €
+  </p>
+  <p class="mt-2 text-base text-ink-muted">
+    netos, aportando 150 €/mes durante 20 años — comisiones e impuestos ya descontados.
+  </p>
 
-    <div class="mt-6 grid grid-cols-2 gap-4">
-      <div class="rounded-xl border border-border bg-cream p-4">
-        <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-ink-faint">
-          <span class="flex h-5 w-5 items-center justify-center rounded-full bg-brand-soft text-[11px] text-brand">1</span>
-          Aportado
-        </p>
-        <p class="mt-2 text-lg font-semibold text-ink">37.000 €</p>
-      </div>
-      <div class="rounded-xl border border-border bg-cream p-4">
-        <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-ink-faint">
-          <span class="flex h-5 w-5 items-center justify-center rounded-full bg-accent-soft text-[11px] text-accent">2</span>
-          Impuesto (IRPF ahorro)
-        </p>
-        <p class="mt-2 text-lg font-semibold text-accent">− 8.522 €</p>
-      </div>
-    </div>
-
-    <div class="mt-4">
-      <div class="h-2 w-full overflow-hidden rounded-full bg-cream">
-        <div class="h-full w-[89%] rounded-full bg-brand"></div>
-      </div>
-      <p class="mt-2 text-xs text-ink-faint">89% del valor final se lo queda quien invierte, 11% va a impuestos.</p>
-    </div>
-  </div>
+  <dl class="mt-8 grid grid-cols-2 gap-x-6 gap-y-1 border-t border-border pt-5 text-sm">
+    <dt class="text-ink-faint">Aportado</dt>
+    <dd class="text-right font-medium text-ink">37.000 €</dd>
+    <dt class="text-ink-faint">Impuesto (IRPF ahorro)</dt>
+    <dd class="text-right font-medium text-accent">− 8.522 €</dd>
+  </dl>
 </div>

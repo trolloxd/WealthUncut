@@ -73,7 +73,7 @@ export default function IndexFundCalculator() {
   );
 
   return (
-    <div className="browser-card not-prose grid gap-6 p-6 md:grid-cols-2">
+    <div className="card not-prose grid gap-6 p-6 md:grid-cols-2">
       <form className="grid gap-4" onSubmit={(e) => e.preventDefault()}>
         <Campo label="Aportación inicial (€)">
           <input

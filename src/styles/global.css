@@ -40,14 +40,8 @@
       text-sm font-semibold text-ink transition-colors hover:border-ink/30;
   }
 
-  .browser-card {
-    @apply overflow-hidden rounded-2xl border border-border bg-cream-elevated shadow-[0_1px_2px_rgba(28,27,23,0.04),0_12px_32px_-16px_rgba(28,27,23,0.18)];
-  }
-  .browser-card-chrome {
-    @apply flex items-center gap-2 border-b border-border bg-cream px-4 py-2.5;
-  }
-  .browser-card-dot {
-    @apply h-2.5 w-2.5 rounded-full bg-ink/10;
+  .card {
+    @apply rounded-2xl border border-border bg-cream-elevated shadow-[0_1px_2px_rgba(28,27,23,0.04),0_12px_32px_-16px_rgba(28,27,23,0.18)];
   }
 }
 
