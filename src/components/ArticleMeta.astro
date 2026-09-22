@@ -1,0 +1,54 @@
+---
+interface Fuente {
+  label: string;
+  url: string;
+}
+
+interface Props {
+  author: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  sources: Fuente[];
+  hasAffiliateLinks: boolean;
+}
+
+const { author, pubDate, updatedDate, sources, hasAffiliateLinks } = Astro.props;
+
+const fmt = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<div class="not-prose mb-8 flex flex-col gap-2 border-b border-border pb-6 text-sm text-ink-muted">
+  <p>
+    Por <a href="/autor" class="font-medium text-ink underline decoration-ink-muted/40">{author}</a>
+    · Publicado el {fmt(pubDate)}
+    {updatedDate && <> · Última actualización: {fmt(updatedDate)}</>}
+  </p>
+</div>
+
+{hasAffiliateLinks && (
+  <aside class="not-prose mb-8 rounded-xl border border-accent/25 bg-accent-soft p-4 text-sm text-accent">
+    <strong>Aviso de afiliación:</strong> este artículo incluye enlaces de afiliado. Si abres una
+    cuenta o contratas un producto a través de ellos, podemos recibir una comisión, sin coste
+    adicional para ti. No afecta a la objetividad del contenido. Más info en
+    <a href="/transparencia" class="underline">nuestra página de transparencia</a>.
+  </aside>
+)}
+
+<slot />
+
+{sources.length > 0 && (
+  <section class="not-prose mt-10 border-t border-border pt-6">
+    <h2 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-faint">
+      Fuentes
+    </h2>
+    <ul class="grid gap-1 text-sm text-ink-muted">
+      {sources.map((s) => (
+        <li>
+          <a href={s.url} class="underline decoration-ink-muted/40 hover:text-ink" rel="nofollow noopener" target="_blank">
+            {s.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}

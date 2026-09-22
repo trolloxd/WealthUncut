@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config/site';
+---
+
+<BaseLayout title="Divulgación de afiliados" description={`Cómo se financia ${SITE.name} y cómo funcionan sus enlaces de afiliado.`}>
+  <h1 class="mb-6 font-display text-3xl text-ink">Divulgación de afiliados</h1>
+  <div class="prose max-w-none">
+    <p>
+      {SITE.name} se financia, entre otras vías, mediante enlaces de afiliación con brokers,
+      neobancos y otros proveedores financieros. Si abres una cuenta o contratas un producto a
+      través de uno de esos enlaces, podemos recibir una comisión del proveedor, sin ningún
+      coste adicional para ti.
+    </p>
+    <p>
+      Todos los enlaces de afiliado en nuestros artículos usan el atributo
+      <code>rel="sponsored nofollow"</code> y el artículo lo indica de forma visible mediante un
+      aviso al principio del contenido.
+    </p>
+    <h2>Cómo afecta esto al contenido</h2>
+    <p>
+      La relación comercial con un proveedor no determina si lo recomendamos ni cómo lo
+      valoramos. Escribimos sobre los productos que consideramos relevantes para el lector,
+      tengan o no programa de afiliación, y describimos tanto sus ventajas como sus
+      inconvenientes.
+    </p>
+    <h2>Lo que no hacemos</h2>
+    <ul>
+      <li>No ofrecemos recomendaciones de inversión personalizadas.</li>
+      <li>No aceptamos pago a cambio de una valoración positiva.</li>
+      <li>No ocultamos que un enlace es de afiliado.</li>
+    </ul>
+  </div>
+</BaseLayout>

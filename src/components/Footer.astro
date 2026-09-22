@@ -1,0 +1,29 @@
+---
+import { SITE } from '../config/site';
+
+const year = new Date().getFullYear();
+const legalLinks = [
+  { href: '/aviso-legal', label: 'Aviso legal' },
+  { href: '/privacidad', label: 'Privacidad' },
+  { href: '/cookies', label: 'Cookies' },
+  { href: '/transparencia', label: 'Divulgación de afiliados' },
+];
+---
+
+<footer class="mt-20 border-t border-border">
+  <div class="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-10 text-sm text-ink-muted sm:px-6">
+    <p class="max-w-2xl">
+      {SITE.name} no ofrece asesoramiento ni recomendaciones de inversión personalizadas.
+      Todo el contenido es informativo y educativo. Consulta la
+      <a href="/metodologia" class="underline decoration-ink-muted/40 hover:text-ink">metodología</a> antes de tomar decisiones financieras.
+    </p>
+    <nav class="flex flex-wrap gap-x-5 gap-y-2">
+      {legalLinks.map((item) => (
+        <a href={item.href} class="hover:text-ink">
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    <p class="text-ink-faint">&copy; {year} {SITE.name}.</p>
+  </div>
+</footer>

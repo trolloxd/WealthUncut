@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config/site';
+---
+
+<BaseLayout title="Política de cookies" description={`Qué cookies usa ${SITE.name} y cómo puedes gestionarlas.`}>
+  <h1 class="mb-2 font-display text-3xl text-ink">Política de cookies</h1>
+  <p class="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
+    <strong>Borrador pendiente de revisión legal.</strong> Esta política debe reflejar
+    exactamente las cookies que uses en producción, y necesitarás un CMP (banner de
+    consentimiento) real conectado antes de activar analítica no esencial o AdSense en el EEE.
+  </p>
+
+  <div class="prose max-w-none">
+    <h2>¿Qué son las cookies?</h2>
+    <p>
+      Son pequeños archivos que se almacenan en tu navegador al visitar un sitio web. Pueden
+      usarse para recordar tus preferencias, medir el uso del sitio o mostrar publicidad
+      relevante.
+    </p>
+
+    <h2>Cookies que usamos actualmente</h2>
+    <p>
+      Por defecto, {SITE.name} está construido como un sitio estático sin cookies de
+      seguimiento propias. [PENDIENTE — documentar aquí cualquier cookie técnica o de
+      analítica en cuanto se active un proveedor concreto, indicando nombre, finalidad,
+      duración y si es propia o de terceros.]
+    </p>
+
+    <h2>Cómo gestionar las cookies</h2>
+    <p>
+      Cuando actives cookies no esenciales, aquí se explicará cómo aceptarlas, rechazarlas o
+      cambiar tu decisión en cualquier momento a través de un panel de configuración, conforme
+      a la guía de la Agencia Española de Protección de Datos sobre el uso de cookies.
+    </p>
+  </div>
+</BaseLayout>

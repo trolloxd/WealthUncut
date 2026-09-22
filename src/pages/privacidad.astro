@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, AUTHOR } from '../config/site';
+---
+
+<BaseLayout title="Política de privacidad" description={`Cómo trata ${SITE.name} los datos personales de sus usuarios.`}>
+  <h1 class="mb-2 font-display text-3xl text-ink">Política de privacidad</h1>
+  <p class="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
+    <strong>Borrador pendiente de revisión legal.</strong> Actualiza esta página en cuanto
+    definas la lista de servicios reales usados (analítica, email marketing, hosting) y antes
+    de activar cualquier formulario que recoja datos personales.
+  </p>
+
+  <div class="prose max-w-none">
+    <h2>Responsable del tratamiento</h2>
+    <ul>
+      <li>Responsable: {AUTHOR.name}</li>
+      <li>Contacto: [PENDIENTE — completar antes de publicar]</li>
+    </ul>
+
+    <h2>¿Qué datos tratamos?</h2>
+    <p>
+      Dependiendo de cómo uses el sitio, podemos tratar: datos de navegación agregados y
+      anonimizados (analítica), y, si te suscribes a la lista de correo, tu dirección de email.
+      No recogemos datos bancarios ni financieros a través de este sitio.
+    </p>
+
+    <h2>¿Con qué finalidad?</h2>
+    <ul>
+      <li>Medir el uso del sitio de forma agregada, para mejorar el contenido.</li>
+      <li>Enviar el boletín por email, si te has suscrito voluntariamente.</li>
+    </ul>
+
+    <h2>¿Cuál es la base legal?</h2>
+    <p>
+      El tratamiento se basa en tu consentimiento (suscripción al boletín, cookies no
+      esenciales) y, para la analítica agregada respetuosa con la privacidad, en el interés
+      legítimo de entender el uso del sitio sin identificarte individualmente.
+    </p>
+
+    <h2>¿Con quién compartimos los datos?</h2>
+    <p>
+      [PENDIENTE — listar aquí los proveedores concretos usados: p. ej. proveedor de hosting,
+      herramienta de analítica, proveedor de email marketing, junto con si transfieren datos
+      fuera del Espacio Económico Europeo.]
+    </p>
+
+    <h2>¿Cuáles son tus derechos?</h2>
+    <p>
+      Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación y
+      portabilidad escribiendo a [PENDIENTE — email de contacto]. También puedes reclamar ante
+      la Agencia Española de Protección de Datos (aepd.es) si consideras que no se ha atendido
+      correctamente tu solicitud.
+    </p>
+
+    <h2>¿Cuánto tiempo conservamos los datos?</h2>
+    <p>
+      Mientras mantengas la suscripción activa o exista una finalidad legítima para
+      conservarlos, y en todo caso durante los plazos exigidos por la normativa aplicable.
+    </p>
+  </div>
+</BaseLayout>

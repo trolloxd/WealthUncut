@@ -1,0 +1,35 @@
+---
+title: "Calculadora: cuánto te queda realmente de un fondo indexado (después de comisiones e impuestos)"
+description: "Simulador propio para calcular la rentabilidad NETA de un fondo indexado en España, descontando TER, comisión del broker e IRPF del ahorro."
+pubDate: 2026-09-23
+author: "David Pérez Mitjà"
+tags: ["fondos indexados", "calculadoras", "impuestos"]
+sources:
+  - label: "Agencia Tributaria — IRPF, base del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/"
+hasAffiliateLinks: false
+draft: false
+---
+
+import IndexFundCalculator from '../../components/IndexFundCalculator';
+
+Cuando alguien te dice "los fondos indexados dan un 7% anual", esa cifra casi nunca es lo que
+tú te llevas. Entre medio están la comisión del fondo (TER), la comisión del broker si la
+tiene, y al final, cuando vendes, Hacienda se queda su parte a través del IRPF del ahorro.
+
+Esta calculadora hace ese descuento completo, con los tramos reales del IRPF del ahorro
+aplicados sobre la ganancia final — no sobre el capital total.
+
+<IndexFundCalculator client:load />
+
+## Cómo lo calculamos
+
+1. Restamos el TER del fondo y la comisión anual del broker a la rentabilidad bruta esperada.
+2. Proyectamos tus aportaciones (inicial + mensual) con esa rentabilidad neta de comisiones,
+   mes a mes, durante los años que indiques.
+3. Calculamos la ganancia total (valor final menos lo aportado) y le aplicamos los tramos
+   progresivos del IRPF del ahorro, como si vendieras todo de una vez al final del periodo.
+
+Es una simplificación: no tiene en cuenta traspasos entre fondos (que en España no tributan),
+retiradas parciales, ni cambios futuros en la fiscalidad. Úsala para hacerte una idea realista
+del orden de magnitud, no como una proyección exacta ni como una recomendación de inversión.

@@ -1,0 +1,65 @@
+# WealthUncut — contexto del proyecto
+
+Sitio de contenido y herramientas de finanzas prácticas para jóvenes en España (cuentas,
+brokers, fondos indexados, impuestos sobre inversiones). Monetización: afiliación directa →
+lista de correo → AdSense (solo con ~25-30 páginas sólidas y tráfico). Es un proyecto de
+ingresos serio, a tiempo completo, no una web de relleno.
+
+- Dominio: `wealthuncut.com`
+- Autor: David Pérez Mitjà (Barcelona) — formación en International Business, experiencia en
+  finanzas. Español, catalán, inglés.
+- Idioma inicial: español. Catalán e inglés más adelante (mantener estructura hreflang-ready).
+
+## Por qué no es "un sitio de IA masivo"
+
+Google penaliza el contenido masivo sin valor añadido (scaled content abuse, updates de spam
+2026) y los AI Overviews reducen los clics. Estrategia: activo propio con herramientas
+interactivas (calculadoras, comparadores), datos y criterio propios, autoría real, pocas
+piezas pero buenas. Ritmo máximo: 3-4 piezas/semana. Herramientas antes que volumen.
+
+## Stack
+
+- Astro + contenido en Markdown/MDX (content collections, `src/content.config.ts`) + islas de
+  React para las calculadoras.
+- Tailwind CSS v4 (`@tailwindcss/vite`) + `@tailwindcss/typography` para el contenido largo.
+- Hosting: Cloudflare Pages, repo en GitHub.
+
+## Reglas de calidad y cumplimiento (no negociables)
+
+- Cada artículo aporta algo que otros no tienen: dato propio, prueba de producto, calculadora,
+  opinión razonada. Sin relleno.
+- Autor con nombre real, página de autor, página de metodología, fecha de última actualización
+  y fuentes citadas en cada artículo (ver `ArticleMeta.astro`).
+- Nunca recomendaciones de inversión personalizadas — solo información y educación, con aviso
+  legal visible.
+- Enlaces de afiliado: `rel="sponsored nofollow"` + aviso de transparencia visible (página de
+  divulgación + aviso en los artículos afectados, campo `hasAffiliateLinks` en el frontmatter).
+- Páginas legales en español (aviso legal, privacidad, cookies) — **actualmente son borradores
+  con placeholders `[PENDIENTE]`, no publicar sin revisión legal y datos identificativos
+  reales**. Banner de consentimiento (CMP) real pendiente de conectar antes de activar AdSense
+  o analítica no esencial en el EEE.
+- **Todas las cifras fiscales y de comisiones viven en `src/config/finance.ts`**, con fuente y
+  fecha, marcadas `VERIFICAR` hasta que David las confirme. Nunca inventar tramos ni tipos
+  nuevos sin fuente + fecha.
+
+## Cómo trabajar en este repo
+
+- Pasos pequeños, verificar que compila (`npm run build`) y se ve bien en el navegador antes de
+  dar algo por terminado.
+- Explicar en una frase qué se ha hecho y qué toca ahora.
+- Antes de acciones que solo David puede hacer (crear cuentas, pagar, pulsar "publicar"),
+  decírselo explícitamente — no asumir.
+- No añadir dependencias, abstracciones ni features que no se hayan pedido.
+
+## Estructura actual
+
+- `src/config/site.ts` — metadatos del sitio y del autor.
+- `src/config/finance.ts` — cifras fiscales VERIFICAR + lógica de cálculo del IRPF del ahorro.
+- `src/content.config.ts` + `src/content/blog/` — artículos en MDX.
+- `src/layouts/BaseLayout.astro` — head, SEO, JSON-LD (Organization, Person, WebSite, y
+  Article/BreadcrumbList vía `extraJsonLd` en páginas de blog).
+- `src/components/ArticleMeta.astro` — autoría, fecha de actualización, aviso de afiliación,
+  fuentes.
+- `src/components/IndexFundCalculator.tsx` — simulador de rentabilidad neta (primera
+  herramienta).
+- `src/pages/` — home, blog, autor, metodología, transparencia, legales, RSS.

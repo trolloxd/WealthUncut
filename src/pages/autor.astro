@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { AUTHOR, SITE } from '../config/site';
+---
+
+<BaseLayout title="Autor" description={`Quién escribe en ${SITE.name}: ${AUTHOR.name}.`}>
+  <h1 class="mb-6 font-display text-3xl text-ink">{AUTHOR.name}</h1>
+  <div class="prose max-w-none">
+    <p>{AUTHOR.bio}</p>
+    <p>
+      <strong>Por qué escribo esto:</strong> quería un sitio de finanzas para gente joven en
+      España que no vendiera humo ni recomendaciones genéricas — con herramientas propias,
+      cifras verificadas y criterio razonado en vez de contenido de relleno.
+    </p>
+    <h2>Cómo contactar</h2>
+    <p>
+      {/* TODO(david): añadir email de contacto y redes reales antes de publicar. */}
+      Puedes escribirme para correcciones, sugerencias o dudas sobre cualquier artículo.
+    </p>
+  </div>
+</BaseLayout>

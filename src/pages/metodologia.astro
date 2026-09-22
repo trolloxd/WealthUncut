@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config/site';
+---
+
+<BaseLayout title="Metodología" description={`Cómo se investiga, verifica y actualiza el contenido de ${SITE.name}.`}>
+  <h1 class="mb-6 font-display text-3xl text-ink">Metodología</h1>
+  <div class="prose max-w-none">
+    <h2>Cómo trabajamos</h2>
+    <ul>
+      <li>Cada artículo cita sus fuentes explícitamente (normativa oficial, folletos de producto, datos propios).</li>
+      <li>Las cifras fiscales y de comisiones viven en un único archivo de configuración, con fuente y fecha, y se marcan como pendientes de verificar hasta ser confirmadas.</li>
+      <li>Cada artículo muestra su fecha de publicación y, si aplica, la de última actualización.</li>
+      <li>No damos recomendaciones de inversión personalizadas: solo información y educación financiera.</li>
+    </ul>
+    <h2>Enlaces de afiliado</h2>
+    <p>
+      Cuando un artículo incluye enlaces de afiliado, lo indicamos de forma visible al principio
+      del artículo. Consulta el detalle en la <a href="/transparencia">página de transparencia</a>.
+    </p>
+    <h2>Correcciones</h2>
+    <p>
+      Si detectas un error o un dato desactualizado, puedes contactarme a través de la
+      <a href="/autor">página de autor</a>. Corregimos y anotamos los cambios relevantes en la
+      fecha de "última actualización" del artículo.
+    </p>
+  </div>
+</BaseLayout>
