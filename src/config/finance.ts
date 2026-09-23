@@ -66,6 +66,18 @@ export const MODELO_720_VERIFICAR = {
   url: 'https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-720-decla_____sobre-bienes-derechos-extranjero_/preguntas-frecuentes.html',
 } as const;
 
+// VERIFICAR: cobertura del Fondo de Garantía de Depósitos de Entidades de Crédito
+// para depósitos dinerarios, por titular y entidad. Fuente: fgd.es. Registrado el 2026-09-23.
+export const FGD_COBERTURA_VERIFICAR = {
+  importe: 100000,
+  url: 'https://www.fgd.es/informacion-general/que-es-el-fgd/depositos-dinerarios/',
+} as const;
+
+// Artículos con ejemplos resueltos que usan los tipos del ahorro (19%, 21%, 23%) escritos en el
+// texto: si cambian los tramos, revisar como-tributan-los-fondos-de-inversion-en-espana,
+// ter-fondo-que-es, rentabilidad-neta-fondo-indexado, interes-compuesto-explicado-con-ejemplos
+// y la portada (src/pages/index.astro), además de este archivo.
+
 /** Calcula el impuesto total sobre una ganancia aplicando los tramos progresivos del ahorro. */
 export function calcularImpuestoAhorro(ganancia: number): number {
   if (ganancia <= 0) return 0;

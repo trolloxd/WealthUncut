@@ -1,69 +1,172 @@
 ---
 title: "Diferencia entre ahorrar e invertir (y por qué confundirlas cuesta dinero)"
-description: "Ahorrar e invertir no son lo mismo ni cumplen la misma función. Confundirlas suele significar perder poder adquisitivo sin darte cuenta."
+description: "La diferencia entre ahorrar e invertir, con datos reales de inflación del INE: cuánto perdió el dinero parado entre 2023 y 2025 y qué va a cada lado."
 pubDate: 2026-09-23
 updatedDate: 2026-09-23
 author: "David Pérez Mitjà"
 tags: ["educación financiera"]
-sources: []
+sources:
+  - label: "INE: IPC, diciembre 2025 (tasa anual 2,9%)"
+    url: "https://www.ine.es/dyngs/Prensa/IPC1225.htm"
+  - label: "INE: IPC, diciembre 2024 (tasa anual 2,8%)"
+    url: "https://ine.es/dyngs/Prensa/es/IPC1224.htm"
+  - label: "INE: IPC, diciembre 2023 (tasa anual 3,1%)"
+    url: "https://ine.es/dyngs/Prensa/IPC1223.htm"
+  - label: "Banco Central Europeo: estrategia de política monetaria (objetivo de inflación del 2%)"
+    url: "https://www.ecb.europa.eu/mopo/strategy/html/index.es.html"
+  - label: "Fondo de Garantía de Depósitos: depósitos dinerarios"
+    url: "https://www.fgd.es/informacion-general/que-es-el-fgd/depositos-dinerarios/"
 hasAffiliateLinks: false
 draft: true
 ---
 
+import { FGD_COBERTURA_VERIFICAR } from '../../config/finance';
+
+export const euros = (n) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'always' }).format(n)} €`;
+
 Ahorrar es apartar dinero que no gastas. Invertir es poner ese dinero a trabajar asumiendo un
-riesgo, con el objetivo de que crezca por encima de la inflación. Son dos cosas distintas, con
-funciones distintas, y tratarlas como si fueran lo mismo suele salir caro.
+riesgo, con el objetivo de que crezca por encima de la inflación. Parecen dos fases de lo mismo,
+pero cumplen funciones distintas, y tratarlas como si fueran intercambiables sale caro en las dos
+direcciones: por no invertir nunca, o por invertir el dinero que ibas a necesitar.
 
-## El problema de ahorrar sin invertir
+## La diferencia en una tabla
 
-Si guardas dinero en una cuenta que no da apenas interés y la inflación sube un 2-3% al año, tu
-dinero pierde poder adquisitivo aunque la cifra en la cuenta no baje nunca. Ahorrar así protege
-tu dinero de que desaparezca, pero no lo protege de que valga menos con el tiempo.
+| | Ahorrar | Invertir |
+|---|---|---|
+| Para qué sirve | Tener dinero disponible y estable | Hacer crecer el dinero a largo plazo |
+| Horizonte | Corto: días, meses, pocos años | Largo: muchos años |
+| Riesgo de perder valor nominal | Muy bajo | Real, sobre todo a corto plazo |
+| Riesgo de perder poder adquisitivo | Alto si rinde menos que la inflación | Menor a largo plazo, sin garantía |
+| Disponibilidad | Inmediata o casi | Puedes vender, pero quizá en mal momento |
+| Ejemplos | Cuenta corriente, cuenta remunerada, depósito | Fondos indexados, ETF, acciones |
+| Te protege de | Imprevistos | La inflación a largo plazo |
 
-Con una inflación media del 2,5% anual (una cifra de referencia habitual, no una predicción),
-10.000 € guardados sin generar apenas rendimiento tienen un poder adquisitivo real de unos
-6.905 € dentro de 15 años: la cifra en la cuenta sigue diciendo "10.000 €", pero compra lo que
-hoy comprarían 6.905 €. Esa pérdida de 3.095 € no aparece en ningún extracto bancario, por eso
-es tan fácil no notarla.
+La última fila es la clave: cada una te protege de un riesgo distinto. Por eso no compiten, se
+complementan.
+
+## El problema de ahorrar sin invertir: la inflación, con datos reales
+
+Si guardas dinero en una cuenta que no da intereses, la cifra no baja nunca. Lo que baja es lo que
+puedes comprar con ella. Con los datos oficiales del INE (variación anual del IPC en diciembre de
+cada año):
+
+| Año | Subida de precios en España |
+|---|---|
+| 2023 | 3,1% |
+| 2024 | 2,8% |
+| 2025 | 2,9% |
+| **Acumulado en tres años** | **9,1%** |
+
+Qué significa en tu cuenta: **10.000 € guardados a finales de 2022 sin rentabilidad compraban a
+finales de 2025 lo mismo que unos 9.169 € tres años antes.** Una pérdida de unos 831 € de poder
+adquisitivo que no aparece en ningún extracto.
+
+Y no hace falta tener el dinero a cero para perder. Con una cuenta hipotética que pagara un 2% bruto
+anual (después de la retención del 19% sobre los intereses, un 1,62% neto), esos 10.000 € habrían
+llegado a unos 10.494 € nominales, que en poder adquisitivo equivalen a unos 9.622 €. Más dinero en
+la cuenta, pero menos capacidad de compra.
+
+### Hacia delante
+
+El Banco Central Europeo tiene como objetivo una inflación del 2% a medio plazo. Es un objetivo, no
+una promesa, y los últimos años han estado por encima. Así queda el poder adquisitivo de 10.000 €
+que no generan nada con distintas inflaciones medias:
+
+| Inflación media anual | 5 años | 10 años | 15 años | 20 años |
+|---|---|---|---|---|
+| 2,0% | 9.057 € | 8.203 € | 7.430 € | 6.730 € |
+| 2,5% | 8.839 € | 7.812 € | 6.905 € | 6.103 € |
+| 3,0% | 8.626 € | 7.441 € | 6.419 € | 5.537 € |
+
+Con el objetivo del BCE cumplido al pie de la letra, en 20 años el dinero parado pierde un tercio de
+su poder de compra. Por eso "ahorrar mucho" no basta para el dinero que no vas a necesitar en años.
 
 ## El problema de invertir sin ahorrar primero
 
-Invertir dinero que vas a necesitar pronto (para un imprevisto, una mudanza, quedarte sin
-trabajo unos meses) es el otro error típico. Los mercados no suben en línea recta: pueden bajar
-justo el mes en que necesitas retirar el dinero, obligándote a vender en el peor momento posible
-para cubrir un gasto que no puedes aplazar.
+El error contrario es igual de caro. Los mercados no suben en línea recta: en bolsa son normales las
+caídas del 20% o el 30% en pocos meses, y a veces tardan años en recuperarse. Si inviertes el dinero
+que vas a necesitar pronto y el mercado cae justo antes, te toca vender con pérdidas para cubrir un
+gasto que no puedes aplazar.
 
-## Cómo se complementan
+Un ejemplo sencillo: inviertes 5.000 € que en realidad eran tu colchón. El mercado cae un 30% y tu
+inversión vale 3.500 €. Ese mes se te estropea el coche y necesitas 3.000 €. Vendes participaciones
+por valor de 3.000 € que te habían costado unos 4.286 €: acabas de materializar una pérdida de unos
+1.286 € que ya no se recupera aunque el mercado vuelva a subir. Si ese dinero hubiera estado en una
+cuenta, habrías pagado la reparación sin perder nada, y solo el dinero que de verdad no ibas a tocar
+habría estado expuesto a la caída, con tiempo para recuperarse.
 
-La secuencia que evita los dos problemas es: primero un colchón de ahorro para imprevistos (en
-algo líquido y disponible, aunque rinda poco), y solo el dinero que no vas a necesitar a corto
-plazo, invertido con un horizonte de varios años. El ahorro te da seguridad inmediata. La
-inversión te da crecimiento a largo plazo. Ninguna de las dos sustituye a la otra.
+## Cómo se complementan: el orden que funciona
 
-## Una forma sencilla de verlo
+1. **Primero, un colchón para imprevistos** en algo líquido y estable, aunque rinda poco. Cuánto
+   depende de tu situación; lo explica
+   [cuánto necesitas de fondo de emergencia](/blog/fondo-de-emergencia-cuanto-necesitas/).
+2. **Después, ahorro para objetivos concretos a corto plazo** (una mudanza, un máster, la entrada
+   de un piso en dos años), también en algo estable.
+3. **El resto, lo que no vas a necesitar en muchos años, es el candidato a invertir**, con un
+   horizonte largo y aceptando que su valor subirá y bajará por el camino.
 
-Pregúntate, para cada euro: "¿podría necesitar esto en menos de un año?". Si la respuesta es sí,
-va al ahorro. Si la respuesta es no, y estás dispuesto a ver cómo su valor sube y baja por el
-camino a cambio de una rentabilidad esperada mayor, ese es el euro candidato a invertir.
+Una regla práctica para cada euro: **¿podría necesitarlo en menos de un año?** Si sí, es ahorro. Si
+no lo vas a necesitar en muchos años y aceptas ver oscilaciones fuertes, es candidato a inversión.
+Entre medias (dos, tres, cuatro años) hay productos intermedios, como depósitos a plazo o renta fija
+a corto plazo, que reducen el riesgo a cambio de menor rentabilidad esperada.
 
-Esto es una forma de pensar sobre tus prioridades, no una recomendación de inversión
-personalizada: cuánto colchón necesitas y qué nivel de riesgo asumir depende de tu situación
-concreta.
+## Dónde se ahorra y dónde se invierte
+
+**Para ahorrar:**
+
+- **Cuenta corriente**: disponibilidad total, normalmente sin rentabilidad.
+- **Cuenta remunerada**: disponibilidad casi total y algo de interés. Compara la rentabilidad real y
+  las condiciones (a veces solo aplica hasta un importe o durante unos meses).
+- **Depósito a plazo**: rentabilidad fija conocida a cambio de inmovilizar el dinero un tiempo.
+- Las cuentas y depósitos en entidades adheridas al Fondo de Garantía de Depósitos están cubiertos
+  hasta {euros(FGD_COBERTURA_VERIFICAR.importe)} por titular y entidad si la entidad quiebra.
+
+**Para invertir a largo plazo:**
+
+- **Fondos indexados y ETF**: diversificados y de bajo coste. Ver
+  [qué es un fondo indexado](/blog/que-es-un-fondo-indexado/).
+- **Acciones individuales**: más concentración y más riesgo.
+- Ninguno está cubierto por el Fondo de Garantía de Depósitos frente a caídas de valor. Lo que
+  pierde valor por el mercado no lo cubre nadie.
+
+Los intereses del ahorro también tributan: van a la base del ahorro del IRPF, igual que las
+ganancias de las inversiones. Lo explicamos en
+[cómo tributan los fondos de inversión](/blog/como-tributan-los-fondos-de-inversion-en-espana/).
+
+## Qué gana el dinero invertido con el tiempo
+
+Invertir no garantiza nada, pero a largo plazo la diferencia puede ser enorme. En
+[interés compuesto explicado con ejemplos](/blog/interes-compuesto-explicado-con-ejemplos/)
+calculamos que 150 €/mes durante 40 años, con una rentabilidad bruta del 7% anual, acaban en unos
+285.000 € netos de impuestos, frente a los 72.000 € aportados. Con el dinero parado, esos 72.000 €
+nominales valdrían bastante menos en poder adquisitivo. Puedes probar tus números en la
+[calculadora de rentabilidad neta](/blog/rentabilidad-neta-fondo-indexado/).
+
+Esto es una forma de ordenar tus prioridades, no una recomendación de inversión personalizada.
 
 ## Preguntas frecuentes
 
+**¿Qué es mejor, ahorrar o invertir?**
+Ninguna de las dos es mejor: responden a necesidades distintas. Sin ahorro, cualquier imprevisto te
+obliga a vender inversiones en mal momento. Sin inversión, el dinero que no vas a tocar en años
+pierde poder adquisitivo.
+
 **¿Cuánto debería tener ahorrado antes de empezar a invertir?**
 No hay una cifra universal, pero el punto de partida habitual es cubrir primero un fondo de
-emergencia. Ver [cuánto necesitas de fondo de emergencia](/blog/fondo-de-emergencia-cuanto-necesitas/)
-para el desglose completo.
+emergencia. El desglose está en
+[cuánto necesitas de fondo de emergencia](/blog/fondo-de-emergencia-cuanto-necesitas/).
 
-**¿Ahorrar en un depósito o cuenta remunerada es lo mismo que invertir?**
-No. Un depósito o una cuenta remunerada tienen el capital garantizado (dentro de los límites del
-Fondo de Garantía de Depósitos) y una rentabilidad conocida de antemano. Invertir implica asumir
-que el valor puede subir o bajar, a cambio de una rentabilidad esperada mayor a largo plazo.
-Ambos son herramientas de ahorro en sentido amplio, pero con un perfil de riesgo distinto.
+**¿Cuánto dinero ahorrar cada mes según mi sueldo?**
+Una referencia popular es la regla 50/30/20: la mitad del sueldo neto para gastos necesarios, un 30%
+para gastos personales y un 20% para ahorro e inversión. No es una norma, y con alquileres altos
+puede ser imposible al principio. Lo importante es que la cantidad sea constante y automática, aunque
+sea pequeña.
+
+**¿Una cuenta remunerada es lo mismo que invertir?**
+No. Tiene el capital protegido (dentro de la cobertura del Fondo de Garantía de Depósitos) y una
+rentabilidad conocida. Invertir implica aceptar que el valor puede bajar a cambio de una rentabilidad
+esperada mayor a largo plazo.
 
 **¿Qué pasa si necesito el dinero invertido antes de lo previsto?**
-Depende del producto: un fondo indexado se puede reembolsar, pero si el mercado está bajo en ese
-momento, materializas la pérdida en ese punto. Por eso el dinero destinado a invertir debería ser
-el que, razonablemente, no vayas a necesitar retirar en un plazo corto.
+Puedes vender, pero si el mercado está bajo en ese momento, materializas la pérdida. Por eso el
+dinero que inviertes debería ser el que razonablemente no vayas a necesitar en años.
