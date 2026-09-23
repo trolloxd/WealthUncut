@@ -14,6 +14,11 @@ on:
   schedule:
     - cron: '0 5 * * 0,2,5'
   workflow_dispatch:
+    inputs:
+      forzar:
+        description: 'Reconstruir y desplegar aunque hoy no toque ningún artículo'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -31,9 +36,10 @@ jobs:
           articulos=$(grep -l "^pubDate: ${hoy}" src/content/blog/*.md* 2>/dev/null | xargs -r grep -L "^draft: true" || true)
           echo "Hoy: ${hoy}"
           echo "Artículos: ${articulos:-ninguno}"
-          if [ -n "$articulos" ]; then
+          if [ -n "$articulos" ] || [ "${{ inputs.forzar }}" = "true" ]; then
             echo "publicar=true" >> "$GITHUB_OUTPUT"
-            echo "lista=$(echo "$articulos" | xargs -n1 basename | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
+            lista=$(echo "$articulos" | xargs -r -n1 basename | tr '\n' ' ')
+            echo "lista=${lista:-reconstrucción manual}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Disparar el despliegue
