@@ -1,81 +1,168 @@
 ---
 title: "Fondo de emergencia: cuánto necesitas antes de invertir"
-description: "Cuánto dinero conviene tener apartado como colchón antes de empezar a invertir, y por qué el importe depende más de tu situación que de una regla fija."
+description: "Cuánto debe ser tu fondo de emergencia, cómo calcularlo con tus gastos esenciales (con el gasto medio real en España), dónde guardarlo y cuánto tardas."
 pubDate: 2026-09-23
 updatedDate: 2026-09-23
 author: "David Pérez Mitjà"
 tags: ["educación financiera"]
-sources: []
+sources:
+  - label: "INE: Encuesta de Presupuestos Familiares, año 2025 (publicada el 25 de junio de 2026)"
+    url: "https://www.ine.es/dyngs/Prensa/EPF2025.htm"
+  - label: "Fondo de Garantía de Depósitos: depósitos dinerarios"
+    url: "https://www.fgd.es/informacion-general/que-es-el-fgd/depositos-dinerarios/"
 hasAffiliateLinks: false
 draft: true
 ---
 
-Antes de invertir el primer euro, tiene sentido resolver una pregunta previa: si mañana pierdes
-tu fuente de ingresos o te surge un gasto grande e inesperado, ¿de dónde sale el dinero sin que
-tengas que vender inversiones en el peor momento posible?
+import { FGD_COBERTURA_VERIFICAR } from '../../config/finance';
 
-## La referencia habitual (y por qué es solo un punto de partida)
+export const euros = (n) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'always' }).format(n)} €`;
 
-Una referencia muy citada en educación financiera es tener entre 3 y 6 meses de gastos
-esenciales apartados en algo líquido, antes de destinar dinero a invertir. No es una cifra legal
-ni una fórmula exacta, es un heurístico de sentido común: suficiente para cubrir la mayoría de
-imprevistos (un despido, una reparación grande, una baja) sin tener que endeudarte ni vender
-inversiones con pérdidas.
+Antes de invertir el primer euro, hay una pregunta previa: si mañana pierdes tus ingresos o te
+llega un gasto grande e inesperado, ¿de dónde sale el dinero sin tener que vender inversiones en el
+peor momento? El fondo de emergencia es la respuesta. No es la parte emocionante de las finanzas
+personales, pero es la que hace que todo lo demás aguante.
 
-## Llevado a euros
+## La referencia habitual: de 3 a 6 meses de gastos esenciales
 
-El rango de 3-6 meses solo tiene sentido aplicado a tus gastos esenciales reales (vivienda,
-suministros, comida, seguros, transporte), no a tu sueldo completo. Algunos ejemplos, solo
-como ilustración del cálculo:
+La cifra más citada en educación financiera es tener apartado entre 3 y 6 meses de **gastos
+esenciales**, en algo líquido y estable. No es una norma legal ni una fórmula exacta. Es una regla
+de sentido común: suficiente para cubrir la mayoría de imprevistos (un despido, una reparación
+grande, una baja, una mudanza forzada) sin endeudarte ni vender inversiones con pérdidas.
 
-| Gastos esenciales mensuales | Colchón de 3 meses | Colchón de 6 meses |
+Fíjate en la palabra esenciales. No es tu sueldo, ni tu gasto total con ocio incluido. Es lo que
+tendrías que seguir pagando aunque recortaras todo lo demás.
+
+## Cómo calcular tu cifra, paso a paso
+
+1. **Suma tus gastos esenciales de un mes normal**: vivienda (alquiler o hipoteca, comunidad),
+   suministros (luz, agua, gas, internet, móvil), comida, transporte, seguros, y cualquier pago
+   fijo que no puedas cancelar (préstamos, medicación).
+2. **Revisa los últimos tres meses de tu cuenta** para no olvidar nada. Los gastos anuales o
+   trimestrales (seguro del coche, IBI) cuentan en su parte proporcional.
+3. **Elige el número de meses** según tu situación (lo vemos abajo).
+4. **Multiplica.** Esa es tu cifra objetivo.
+
+Algunos ejemplos del cálculo, solo como ilustración:
+
+| Gastos esenciales al mes | 3 meses | 6 meses |
 |---|---|---|
-| 900 € | 2.700 € | 5.400 € |
-| 1.200 € | 3.600 € | 7.200 € |
-| 1.800 € | 5.400 € | 10.800 € |
+| {euros(900)} | {euros(2700)} | {euros(5400)} |
+| {euros(1200)} | {euros(3600)} | {euros(7200)} |
+| {euros(1800)} | {euros(5400)} | {euros(10800)} |
 
-Calcula tu propia cifra de gastos esenciales (no de gasto total, que suele incluir ocio y
-extras) y multiplícala por el número de meses de colchón que consideres razonable según tu
-situación.
+### Una referencia real: cuánto se gasta de media en España
+
+Según la Encuesta de Presupuestos Familiares del INE (año 2025, publicada en junio de 2026), el
+gasto medio por persona en España fue de {euros(14066)} al año, unos {euros(1172)} al mes. En
+Cataluña, {euros(15017)} al año (unos {euros(1251)} al mes).
+
+Tres grupos concentran la mayor parte del presupuesto de los hogares: vivienda y suministros
+(33,2%), alimentación (16,0%) y transporte (11,5%). Juntos suman el 60,7% del gasto. Aplicado al
+gasto medio por persona, son unos {euros(712)} al mes: con esa base, 3 meses serían unos
+{euros(2135)} y 6 meses unos {euros(4269)}.
+
+Úsalo como orden de magnitud, no como tu cifra: es una media nacional que mezcla situaciones muy
+distintas, y el gasto en vivienda de la encuesta incluye una estimación del alquiler de quien vive
+en casa propia. Si vives de alquiler en una gran ciudad, tu cifra real será probablemente más alta.
 
 ## Por qué el número correcto depende de ti
 
-3-6 meses es un rango amplio a propósito, porque tu situación cambia el cálculo:
+Más cerca de 3 meses si:
 
-- **Estabilidad de tus ingresos.** Un sueldo fijo con contrato indefinido necesita menos
-  colchón que unos ingresos variables o un negocio propio.
-- **Cuántas personas dependen de ese ingreso.** Si eres la única fuente de ingresos de tu
-  unidad familiar, un colchón más amplio reduce el riesgo real, no solo la sensación de
-  seguridad.
-- **Facilidad para encontrar otro ingreso.** Cuanto más específico o lento sea tu sector para
-  encontrar trabajo de nuevo, más margen conviene dejarte.
+- Tienes contrato indefinido en un sector donde se encuentra trabajo con facilidad.
+- Vives con tu familia o compartes gastos, y un imprevisto no lo pagarías tú solo.
+- No tienes personas a tu cargo.
 
-## Dónde ponerlo (y dónde no)
+Más cerca de 6 meses (o más) si:
 
-El fondo de emergencia no está para maximizar rentabilidad, está para estar disponible cuando lo
-necesites, sin depender de si el mercado ese día está subiendo o bajando. Eso descarta,
-casi por definición, meterlo en algo con volatilidad relevante a corto plazo. La prioridad es
-liquidez y disponibilidad, no rentabilidad.
+- Eres autónomo o tienes ingresos variables.
+- Eres la única fuente de ingresos de tu hogar, o tienes personas a tu cargo.
+- Tu sector es lento para encontrar trabajo, o tu contrato es temporal.
+- Tienes coche, vivienda en propiedad u otras cosas que pueden generar gastos grandes de golpe.
+
+**Si tienes deudas caras** (tarjetas revolving, préstamos al consumo con intereses altos), el orden
+cambia: un colchón pequeño primero, para no endeudarte más con el siguiente imprevisto, y después
+priorizar liquidar esa deuda antes de invertir. Ninguna inversión razonable rinde lo que cuesta una
+deuda al 20%.
+
+## Si eres joven y estás empezando
+
+- **Estudiante o viviendo con tu familia**: tus gastos esenciales pueden ser muy bajos. Un colchón
+  de unos cientos de euros para imprevistos propios (móvil, ordenador, transporte) ya es un buen
+  primer objetivo.
+- **Primer trabajo e independizándote**: es el momento en que más sube la cifra. Cuenta también la
+  fianza y el primer mes de un piso si tuvieras que mudarte con prisa.
+- **Contrato temporal o de prácticas**: tira hacia la parte alta del rango, porque el riesgo de
+  quedarte sin ingresos es mayor.
+
+## Cuánto se tarda en construirlo
+
+Pocas personas tienen el colchón completo de golpe. Lo normal es construirlo aportando cada mes. Meses
+necesarios según el objetivo y lo que apartes:
+
+| Objetivo | 100 €/mes | 200 €/mes | 300 €/mes | 500 €/mes |
+|---|---|---|---|---|
+| {euros(2700)} | 27 | 14 | 9 | 6 |
+| {euros(5400)} | 54 | 27 | 18 | 11 |
+| {euros(7200)} | 72 | 36 | 24 | 15 |
+
+Dos trucos que ayudan: programar una transferencia automática el día que cobras (lo que no ves, no
+lo gastas) y destinar al colchón los ingresos extraordinarios (pagas extra, devolución de la renta)
+hasta completarlo.
+
+## Dónde guardarlo (y dónde no)
+
+El fondo de emergencia no está para rentar, está para estar disponible cuando lo necesites, valga lo
+que valga el mercado ese día. Opciones razonables:
+
+- **Cuenta separada de la del día a día**, para no gastarlo sin darte cuenta.
+- **Cuenta remunerada**: disponibilidad inmediata y algo de interés que compense parte de la
+  inflación. Revisa las condiciones (límites de importe, duración de la promoción).
+- **Depósitos con liquidez o escalonados**, si aceptas que una parte tarde unos días en estar
+  disponible o pierda los intereses al cancelarla.
+
+Las cuentas y depósitos en entidades adheridas al Fondo de Garantía de Depósitos están cubiertos
+hasta {euros(FGD_COBERTURA_VERIFICAR.importe)} por titular y entidad si la entidad quiebra, muy por
+encima de lo que necesita casi cualquier colchón.
+
+Dónde no: en bolsa, en fondos indexados o en criptomonedas. No porque sean malas inversiones, sino
+porque pueden caer un 30% justo el mes en que te hace falta el dinero. Eso es exactamente lo que el
+colchón intenta evitar.
 
 ## Qué pasa después de tenerlo
 
-Una vez cubierto el colchón, el dinero adicional que ahorras cada mes es el candidato natural
-para empezar a invertir con un horizonte largo, como se explica en
-[la diferencia entre ahorrar e invertir](/blog/diferencia-entre-ahorrar-e-invertir/). Esto es
-una guía general de educación financiera, no una recomendación ajustada a tu situación personal.
+Con el colchón completo, el dinero adicional que ahorras cada mes es el candidato natural para
+invertir con un horizonte largo, como se explica en
+[la diferencia entre ahorrar e invertir](/blog/diferencia-entre-ahorrar-e-invertir/). El siguiente
+paso lógico está en [primeros pasos para invertir en España](/blog/primeros-pasos-para-invertir-en-espana/).
+
+Y si lo usas, no es un fracaso: para eso está. Lo único que toca es volver a llenarlo antes de
+aumentar lo que inviertes.
+
+Esto es una guía general de educación financiera, no una recomendación ajustada a tu situación.
 
 ## Preguntas frecuentes
 
-**¿Puedo invertir mientras construyo el fondo de emergencia?**
-Es una decisión personal. Algunas personas prefieren completar el colchón antes de invertir
-nada; otras reparten el ahorro mensual entre ambos objetivos a la vez. Lo importante es no
-invertir el dinero que ya sabes que vas a necesitar pronto.
+**¿Cuánto debe ser el fondo de emergencia?**
+La referencia habitual es de 3 a 6 meses de gastos esenciales, no de sueldo. Más cerca de 3 si tus
+ingresos son estables y no tienes personas a tu cargo; más cerca de 6 o más si eres autónomo,
+tienes ingresos variables o eres el único sustento de tu hogar.
 
-**¿El fondo de emergencia cuenta como parte de mis ahorros para otros objetivos?**
-No debería mezclarse con el ahorro para un objetivo concreto (una entrada de piso, unas
-vacaciones). Su función es exclusivamente cubrir imprevistos, y mezclarlo con otros objetivos
-hace que dejes de tener un colchón real cuando más lo necesites.
+**¿Puedo invertir mientras construyo el fondo de emergencia?**
+Es una decisión personal. Algunas personas completan el colchón antes de invertir nada; otras
+reparten el ahorro mensual entre ambos objetivos. Lo importante es no invertir el dinero que ya
+sabes que vas a necesitar pronto.
+
+**¿El fondo de emergencia cuenta como ahorro para otros objetivos?**
+No debería. Si lo usas para la entrada de un piso o unas vacaciones, dejas de tener colchón justo
+cuando más falta hace. Mejor cuentas o apartados separados.
+
+**¿Es mejor tener el colchón en un depósito o en una cuenta remunerada?**
+Depende de cuánto valores la disponibilidad inmediata frente a una rentabilidad algo mayor. Una
+combinación habitual es tener una parte en cuenta (disponible al momento) y otra en depósitos o
+cuentas con condiciones algo mejores.
 
 **¿3-6 meses es una cifra oficial?**
-No, no existe una normativa que fije esta cifra. Es un heurístico ampliamente usado en
-educación financiera, no una obligación legal ni una garantía de que sea suficiente en tu caso.
+No, no la fija ninguna normativa. Es una referencia ampliamente usada en educación financiera, no
+una obligación legal ni una garantía de que sea suficiente en tu caso.
