@@ -1,6 +1,6 @@
 ---
 title: "Interés compuesto explicado con ejemplos reales"
-description: "Qué es el interés compuesto, con un ejemplo calculado de lo que cuesta esperar 10 años para empezar a invertir con el mismo dinero al mes."
+description: "Qué es el interés compuesto con ejemplos calculados: lo que cuesta empezar 10 años tarde, la regla del 72, interés simple vs compuesto y una calculadora."
 pubDate: 2026-09-23
 updatedDate: 2026-09-23
 author: "David Pérez Mitjà"
@@ -8,6 +8,8 @@ tags: ["interés compuesto", "educación financiera", "fondos indexados"]
 sources:
   - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
     url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
+  - label: "Banco Central Europeo: estrategia de política monetaria (objetivo de inflación del 2%)"
+    url: "https://www.ecb.europa.eu/mopo/strategy/html/index.es.html"
 hasAffiliateLinks: false
 draft: false
 ---
@@ -51,6 +53,15 @@ de aportaciones tienen 10 años más para componerse antes del final. La diferen
 a los 25 y a los 45 es aún mayor: 20 años de aportaciones extra (36.000 € más aportados) se
 traducen en **218.930 € más** netos.
 
+### Y en euros de hoy
+
+Esas cifras son euros del futuro. Con una inflación media del 2% anual (el objetivo del Banco
+Central Europeo), los 285.405 € netos de quien empieza a los 25 equivalen a unos **129.000 € de
+hoy**; los 143.734 € de quien empieza a los 35, a unos 79.000 €; y los 66.475 € de quien empieza a
+los 45, a unos 45.000 €. La inflación recorta el resultado, pero no cambia la conclusión: la
+diferencia de empezar antes sigue siendo enorme. Por qué la inflación importa tanto está explicado
+en [la diferencia entre ahorrar e invertir](/blog/diferencia-entre-ahorrar-e-invertir/).
+
 ## Por qué los primeros años "no se notan"
 
 Con estos mismos supuestos, después de 5 años de aportar 150 €/mes, el saldo bruto es de
@@ -72,6 +83,37 @@ periodo siguiente, así que el crecimiento se acelera con el tiempo. La diferenc
 es pequeña al principio y se dispara cuanto más largo es el horizonte, exactamente el mismo
 patrón que se ve en la tabla de arriba.
 
+Con 10.000 € invertidos una sola vez al 7% anual, sin aportar nada más:
+
+| Años | Con interés simple | Con interés compuesto | Diferencia |
+|---|---|---|---|
+| 10 | 17.000 € | 19.672 € | 2.672 € |
+| 20 | 24.000 € | 38.697 € | 14.697 € |
+| 30 | 31.000 € | 76.123 € | 45.123 € |
+| 40 | 38.000 € | 149.745 € | 111.745 € |
+
+A 10 años la diferencia es modesta. A 40 años, el interés compuesto multiplica el capital por casi
+15, y el simple, por menos de 4.
+
+## La regla del 72: cuánto tarda en duplicarse tu dinero
+
+Un atajo mental útil: divide 72 entre la rentabilidad anual y obtienes, aproximadamente, los años
+que tarda un capital en duplicarse con interés compuesto. Comparado con el cálculo exacto:
+
+| Rentabilidad anual | Regla del 72 | Cálculo exacto |
+|---|---|---|
+| 2% | 36 años | 35,0 años |
+| 4% | 18 años | 17,7 años |
+| 6% | 12 años | 11,9 años |
+| 7% | 10,3 años | 10,2 años |
+| 8% | 9 años | 9,0 años |
+| 10% | 7,2 años | 7,3 años |
+
+Funciona también al revés, y ahí es donde se vuelve incómoda: con una inflación del 3%, el poder de
+compra del dinero parado se reduce a la mitad en unos 24 años. Y con una comisión del 1,5% anual,
+esa comisión "se come" el equivalente a la mitad de tu capital en unos 48 años. Por eso las
+décimas de coste importan; lo desarrollamos en [qué es el TER](/blog/ter-fondo-que-es/).
+
 ## ¿De verdad lo dijo Einstein?
 
 Es habitual encontrar la frase "el interés compuesto es la fuerza más poderosa del universo"
@@ -82,6 +124,30 @@ confirme que la dijo; es una atribución popular sin origen documentado. El conc
 ## Calculadora de interés compuesto con tus propios números
 
 <IndexFundCalculator client:visible />
+
+## Preguntas frecuentes
+
+**¿Qué es el interés compuesto, en palabras sencillas?**
+Es ganar intereses sobre los intereses. Lo que tu dinero gana un año se suma al capital, y al año
+siguiente también genera rentabilidad. Por eso el crecimiento se acelera con el tiempo en vez de ser
+lineal.
+
+**¿Cuánto se gana con 100 € al mes con interés compuesto?**
+Con los supuestos de este artículo (7% bruto anual, TER del 0,2%, impuestos al vender al final):
+tras 10 años habrías aportado 12.000 € y tendrías unos 15.993 € netos; tras 20 años, 24.000 €
+aportados y unos 44.356 € netos; tras 30 años, 36.000 € aportados y unos 96.196 € netos. Son
+simulaciones con rentabilidad constante, no previsiones.
+
+**¿Dónde se aplica el interés compuesto en la práctica?**
+En cualquier inversión en la que los rendimientos se reinvierten: fondos y ETF de acumulación,
+cuentas o depósitos que suman los intereses al capital. Y también en contra: en las deudas, los
+intereses no pagados generan nuevos intereses, por eso una deuda cara crece tan rápido.
+
+**¿El interés compuesto funciona igual con una cuenta remunerada que con un fondo indexado?**
+El mecanismo es el mismo, pero la rentabilidad no: una cuenta remunerada da un interés conocido y
+bajo, y un fondo indexado de acciones tiene una rentabilidad esperada mayor pero variable, con años
+negativos. Con horizontes largos, esa diferencia de rentabilidad es la que más pesa. Más en
+[qué es un fondo indexado](/blog/que-es-un-fondo-indexado/).
 
 ## Los límites de este cálculo
 
