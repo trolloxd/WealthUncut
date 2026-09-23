@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config/site';
+---
+
+<BaseLayout
+  title="Sugiere un tema"
+  description={`Dinos de qué quieres que hable el próximo artículo de ${SITE.name}.`}
+>
+  <div class="mx-auto max-w-xl py-6">
+    <p class="text-xs font-semibold uppercase tracking-widest text-brand">Buzón de sugerencias</p>
+    <h1 class="mt-4 font-display text-3xl text-ink sm:text-4xl">
+      ¿De qué quieres que hable el próximo artículo?
+    </h1>
+    <p class="mt-4 text-ink-muted">
+      Cuéntanos tu duda, tu situación o el tema que te gustaría ver explicado. No hace falta que
+      dejes tu email, pero si lo haces podemos avisarte cuando publiquemos algo sobre tu tema.
+    </p>
+
+    <form id="suggestion-form" class="card mt-8 grid gap-4 p-6">
+      <label class="grid gap-1 text-sm font-medium text-ink-muted">
+        Tu sugerencia
+        <textarea
+          name="mensaje"
+          required
+          minlength="10"
+          maxlength="2000"
+          rows="5"
+          class="campo-input resize-y"
+          placeholder="Por ejemplo: ¿cómo tributan los ETF americanos con retención en origen?"
+        ></textarea>
+      </label>
+      <label class="grid gap-1 text-sm font-medium text-ink-muted">
+        Email (opcional)
+        <input type="email" name="email" maxlength="200" class="campo-input" placeholder="tu@email.com" />
+      </label>
+      <button type="submit" class="btn-primary justify-self-start">Enviar sugerencia</button>
+      <p id="suggestion-status" class="text-sm" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('suggestion-form') as HTMLFormElement;
+    const status = document.getElementById('suggestion-status')!;
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      status.textContent = 'Enviando...';
+      status.className = 'text-sm text-ink-muted';
+
+      const formData = new FormData(form);
+      try {
+        const res = await fetch('/api/sugerencias', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            mensaje: formData.get('mensaje'),
+            email: formData.get('email'),
+          }),
+        });
+
+        if (!res.ok) throw new Error('request failed');
+
+        status.textContent = 'Gracias, hemos recibido tu sugerencia.';
+        status.className = 'text-sm text-brand';
+        form.reset();
+      } catch {
+        status.textContent = 'No se ha podido enviar. Inténtalo de nuevo en un momento.';
+        status.className = 'text-sm text-accent';
+      }
+    });
+  </script>
+</BaseLayout>
