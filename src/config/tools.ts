@@ -1,0 +1,33 @@
+/** Listado de herramientas del sitio: lo usan la página /herramientas/, la portada y el menú. */
+export const TOOLS = [
+  {
+    href: '/blog/rentabilidad-neta-fondo-indexado/',
+    name: 'Rentabilidad neta de un fondo indexado',
+    description: 'Cuánto te queda de verdad después de TER, comisiones e IRPF del ahorro.',
+  },
+  {
+    href: '/herramientas/calculadora-impuestos-venta-fondos/',
+    name: 'Impuestos al vender un fondo',
+    description: 'Qué participaciones vendes por FIFO, cuánto pagas, la retención y lo que recibes.',
+  },
+  {
+    href: '/herramientas/comparador-fondo-indexado-vs-etf/',
+    name: 'Fondo indexado vs ETF',
+    description: 'Comisiones por compra, TER e impuestos al cambiar de producto, con tus números.',
+  },
+  {
+    href: '/herramientas/calculadora-fondo-de-emergencia/',
+    name: 'Fondo de emergencia',
+    description: 'Cuánto colchón necesitas según tus gastos y tu situación, y cuándo lo tendrás.',
+  },
+  {
+    href: '/herramientas/calculadora-inflacion/',
+    name: 'Inflación y poder de compra',
+    description: 'Cuánto pierde tu dinero parado o en una cuenta, y qué interés necesitas para no perder.',
+  },
+  {
+    href: '/herramientas/calculadora-modelo-720/',
+    name: '¿Tengo que presentar el modelo 720?',
+    description: 'Comprobación bloque a bloque si tienes cuentas, fondos o ETF en el extranjero.',
+  },
+] as const;

@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { SITE } from '../../config/site';
+import { TOOLS } from '../../config/tools';
+
+const itemListJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `Herramientas de ${SITE.name}`,
+  itemListElement: TOOLS.map((t, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: t.name,
+    url: `${SITE.url}${t.href}`,
+  })),
+};
+---
+
+<BaseLayout
+  title="Calculadoras de finanzas para España"
+  description="Calculadoras gratuitas para tus finanzas en España: rentabilidad neta de un fondo, impuestos al vender, fondo vs ETF, fondo de emergencia, inflación y modelo 720."
+  extraJsonLd={[itemListJsonLd]}
+>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Herramientas' }]} />
+  <h1 class="mb-4 font-display text-3xl text-ink">Herramientas</h1>
+  <p class="mb-10 max-w-2xl text-ink-muted">
+    Calculadoras propias, gratuitas y sin registro, con la fiscalidad española aplicada (tramos del
+    IRPF del ahorro, retenciones, traspasos) y cada supuesto explicado. Son orientativas, no una
+    recomendación personalizada.
+  </p>
+  <ul class="grid gap-4 sm:grid-cols-2">
+    {TOOLS.map((t) => (
+      <li>
+        <a href={t.href} class="card group block h-full p-5 transition-colors hover:border-brand/40">
+          <span class="font-display text-lg text-ink group-hover:text-brand">{t.name}</span>
+          <span class="mt-2 block text-sm text-ink-muted">{t.description}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

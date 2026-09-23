@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { isPublished } from '../lib/posts';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE, AUTHOR } from '../config/site';
+import { TOOLS } from '../config/tools';
 
 const posts = (await getCollection('blog', ({ data }) => isPublished(data)))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -50,7 +51,24 @@ const posts = (await getCollection('blog', ({ data }) => isPublished(data)))
     </p>
   </section>
 
-  <section class="mx-auto mt-4 max-w-2xl border-t border-border pt-12">
+  <section class="mx-auto mt-4 max-w-3xl border-t border-border pt-12">
+    <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
+      <h2 class="font-display text-2xl text-ink">Calculadoras</h2>
+      <a href="/herramientas/" class="text-sm font-medium text-brand underline decoration-brand/30 hover:decoration-brand">Ver todas</a>
+    </div>
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {TOOLS.map((t) => (
+        <li>
+          <a href={t.href} class="card group block h-full p-5 transition-colors hover:border-brand/40">
+            <span class="font-display text-lg text-ink group-hover:text-brand">{t.name}</span>
+            <span class="mt-2 block text-sm text-ink-muted">{t.description}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mx-auto mt-12 max-w-2xl border-t border-border pt-12">
     <h2 class="mb-6 font-display text-2xl text-ink">Últimos artículos</h2>
     {posts.length === 0 ? (
       <p class="text-ink-muted">Todavía no hay artículos publicados.</p>

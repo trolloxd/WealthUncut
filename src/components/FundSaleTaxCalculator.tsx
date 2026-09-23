@@ -81,7 +81,7 @@ export default function FundSaleTaxCalculator() {
         <fieldset className="grid gap-2">
           <legend className="mb-1 text-sm font-semibold text-ink">Tus compras, de la más antigua a la más reciente</legend>
           {lotes.map((l, i) => (
-            <div key={l.id} className="grid grid-cols-[1fr_1fr_auto] items-end gap-2">
+            <div key={l.id} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-2">
               <CampoNumero label={`Compra ${i + 1}: importe (€)`} value={l.importe} onChange={(v) => actualizar(l.id, 'importe', v)} />
               <CampoNumero label="Precio de compra" value={l.precio} onChange={(v) => actualizar(l.id, 'precio', v)} step={0.01} />
               <button
@@ -138,7 +138,7 @@ export default function FundSaleTaxCalculator() {
           valor={formatEuros(Math.abs(diferenciaDeclaracion))}
         />
         <hr className="my-1 border-border" />
-        <Resumen etiqueta="Máximo a retirar sin pasar del tramo del 19%" valor={formatEuros(r.maxPrimerTramo)} />
+        <Resumen etiqueta={`Máximo a retirar sin pasar del tramo del ${formatPct(IRPF_AHORRO_BRACKETS[0].tipo, 0)}`} valor={formatEuros(r.maxPrimerTramo)} />
 
         {r.vendidos.length > 0 && (
           <details className="mt-2 text-xs text-ink-muted">

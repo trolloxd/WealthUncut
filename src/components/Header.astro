@@ -3,12 +3,13 @@ import { SITE } from '../config/site';
 
 const navItems = [
   { href: '/blog/', label: 'Blog' },
+  { href: '/herramientas/', label: 'Herramientas' },
   { href: '/autor/', label: 'Autor' },
   { href: '/metodologia/', label: 'Metodología' },
 ];
 
 const path = Astro.url.pathname;
-const isCurrent = (href: string) => path === href || (href === '/blog/' && path.startsWith('/blog/'));
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
 ---
 
 <header class="border-b border-border">

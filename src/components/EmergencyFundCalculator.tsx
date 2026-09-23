@@ -30,6 +30,11 @@ function aniosYMeses(meses: number): string {
   return `${a} ${a === 1 ? 'año' : 'años'}${m ? ` y ${m} ${m === 1 ? 'mes' : 'meses'}` : ''}`;
 }
 
+function mesesCubiertos(meses: number): string {
+  const n = Math.round(meses * 10) / 10;
+  return `${n.toLocaleString('es-ES')} ${n === 1 ? 'mes' : 'meses'}`;
+}
+
 export default function EmergencyFundCalculator() {
   const [vivienda, setVivienda] = useState(550);
   const [suministros, setSuministros] = useState(90);
@@ -101,7 +106,7 @@ export default function EmergencyFundCalculator() {
         <Resumen etiqueta="Meses de colchón orientativos" valor={`${r.meses} meses`} />
         <Resumen etiqueta="Tu fondo de emergencia" valor={formatEuros(r.objetivo)} destacado />
         <hr className="my-1 border-border" />
-        <Resumen etiqueta="Ya cubres" valor={`${r.cobertura.toLocaleString('es-ES', { maximumFractionDigits: 1 })} meses`} />
+        <Resumen etiqueta="Ya cubres" valor={mesesCubiertos(r.cobertura)} />
         <Resumen etiqueta="Te falta" valor={formatEuros(r.falta)} negativo={r.falta > 0} />
         <Resumen
           etiqueta="Tiempo para completarlo"

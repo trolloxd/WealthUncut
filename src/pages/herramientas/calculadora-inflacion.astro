@@ -1,0 +1,84 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import InflationCalculator from '../../components/InflationCalculator';
+---
+
+<ToolLayout
+  title="Calculadora de inflación: cuánto pierde tu dinero"
+  name="Calculadora de inflación"
+  description="Calcula cuánto poder de compra pierde tu dinero con la inflación en España, en una cuenta o un depósito, y qué interés necesitas para no perder."
+  pubDate={new Date('2026-09-23')}
+  sources={[
+    { label: 'INE: IPC, diciembre 2025 (tasa anual 2,9%)', url: 'https://www.ine.es/dyngs/Prensa/IPC1225.htm' },
+    { label: 'INE: IPC, diciembre 2024 (tasa anual 2,8%)', url: 'https://ine.es/dyngs/Prensa/es/IPC1224.htm' },
+    { label: 'INE: IPC, diciembre 2023 (tasa anual 3,1%)', url: 'https://ine.es/dyngs/Prensa/IPC1223.htm' },
+    { label: 'Banco Central Europeo: estrategia de política monetaria (objetivo de inflación del 2%)', url: 'https://www.ecb.europa.eu/mopo/strategy/html/index.es.html' },
+  ]}
+>
+  <p>
+    El dinero parado no baja nunca en la cuenta, pero cada año compra menos. Esta calculadora te dice
+    cuánto vale en euros de hoy lo que tendrás dentro de unos años, tanto si lo tienes en una cuenta
+    sin intereses como en una remunerada o un depósito, y qué interés necesitarías para no perder
+    poder de compra.
+  </p>
+
+  <InflationCalculator client:load />
+
+  <h2>Qué significa "en euros de hoy"</h2>
+  <p>
+    Es lo que podrías comprar hoy con ese dinero futuro. Si dentro de 10 años tienes 10.000 € pero los
+    precios han subido un 22%, esos 10.000 € compran lo que hoy compran unos 8.200 €. La diferencia es
+    poder adquisitivo perdido, aunque no aparezca en ningún extracto.
+  </p>
+
+  <h2>Un ejemplo: 10.000 € durante 10 años con un 2% de inflación</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Interés bruto de la cuenta</th><th scope="col">Tendrás</th><th scope="col">En euros de hoy</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0% (cuenta corriente)</td><td>10.000 €</td><td>8.203 €</td></tr>
+      <tr><td>1%</td><td>10.840 €</td><td>8.893 €</td></tr>
+      <tr><td>2%</td><td>11.743 €</td><td>9.634 €</td></tr>
+      <tr><td>3%</td><td>12.714 €</td><td>10.430 €</td></tr>
+      <tr><td>4%</td><td>13.756 €</td><td>11.284 €</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Fíjate en la fila del 2%: aunque el interés es igual que la inflación, pierdes poder de compra,
+    porque Hacienda se queda una parte de los intereses cada año. Con una inflación del 2%, necesitas
+    un interés bruto de alrededor del 2,47% solo para quedarte igual.
+  </p>
+
+  <h2>Qué inflación poner</h2>
+  <p>
+    Nadie sabe la inflación futura. Dos referencias razonables: el objetivo del Banco Central Europeo,
+    un 2% anual a medio plazo, y la inflación reciente en España según el INE (variación del IPC de
+    diciembre a diciembre): 3,1% en 2023, 2,8% en 2024 y 2,9% en 2025. En esos tres años los precios
+    subieron en total un 9,1%: 10.000 € guardados a finales de 2022 compraban a finales de 2025 lo
+    mismo que unos 9.169 € tres años antes. Prueba con varios valores.
+  </p>
+
+  <h2>Qué hacer con esto</h2>
+  <p>
+    El dinero que puedes necesitar pronto tiene que estar disponible aunque pierda algo de poder de
+    compra: para eso es el colchón. El dinero que no vas a tocar en muchos años es el que tiene
+    sentido invertir para intentar batir a la inflación. Cómo repartir uno y otro está en{' '}
+    <ArticleLink href="/blog/diferencia-entre-ahorrar-e-invertir/">la diferencia entre ahorrar e invertir</ArticleLink>,
+    y cuánto guardar como colchón, en la{' '}
+    <a href="/herramientas/calculadora-fondo-de-emergencia/">calculadora de fondo de emergencia</a>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Cómo se calcula la pérdida de poder adquisitivo?</strong><br />
+    Se divide el dinero futuro entre (1 + inflación) elevado al número de años. Con un 2% durante 10
+    años, se divide entre 1,219.</p>
+  <p><strong>¿Una cuenta remunerada protege de la inflación?</strong><br />
+    Solo si su interés, después de impuestos, es mayor que la inflación. Si no, pierdes menos que con
+    el dinero parado, pero sigues perdiendo.</p>
+  <p><strong>¿Los fondos indexados protegen de la inflación?</strong><br />
+    A largo plazo, las acciones han tendido a crecer por encima de la inflación, pero no hay ninguna
+    garantía y en plazos cortos pueden perder mucho. Puedes simularlo en la{' '}
+    <a href="/blog/rentabilidad-neta-fondo-indexado/">calculadora de rentabilidad neta</a>.</p>
+</ToolLayout>
