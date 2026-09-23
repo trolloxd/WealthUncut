@@ -38,6 +38,11 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         <dd class="font-display text-lg text-brand">69.630 €</dd>
       </div>
     </dl>
+    <p class="mx-auto mt-3 max-w-md text-xs text-ink-faint">
+      Supuestos del ejemplo: 1.000 € iniciales, 7% de rentabilidad bruta anual constante, TER del
+      0,2%, sin comisión de broker y venta de todo al final con los tramos del IRPF del ahorro. Es
+      una simulación, no una previsión ni una promesa de rentabilidad.
+    </p>
 
     <p class="mt-6 text-sm text-ink-faint">
       Por <a href="/autor/" class="underline hover:text-ink">{AUTHOR.name}</a> · sin recomendaciones de inversión personalizadas.
