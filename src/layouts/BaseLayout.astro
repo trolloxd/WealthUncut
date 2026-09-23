@@ -3,8 +3,10 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE, AUTHOR } from '../config/site';
 import '../styles/global.css';
-import '@fontsource-variable/fraunces/full.css';
-import '@fontsource-variable/fraunces/full-italic.css';
+// opsz = eje de peso + tamaño óptico: mismo aspecto que 'full' (los ejes SOFT y WONK no
+// se usan) con casi la mitad de peso de descarga.
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource-variable/fraunces/opsz-italic.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
@@ -18,6 +20,7 @@ interface Props {
   updatedDate?: Date;
   extraJsonLd?: Record<string, unknown>[];
   contentWidth?: 'narrow' | 'wide';
+  noindex?: boolean;
 }
 
 const {
@@ -28,34 +31,42 @@ const {
   updatedDate,
   extraJsonLd = [],
   contentWidth = 'narrow',
+  noindex = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, SITE.url);
 const pageTitle = title === SITE.name ? title : `${title} · ${SITE.name}`;
+const ogImage = new URL('/og-default.png', SITE.url);
 
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': `${SITE.url}/#organization`,
   name: SITE.name,
   url: SITE.url,
-  founder: { '@type': 'Person', name: AUTHOR.name },
+  logo: `${SITE.url}/apple-touch-icon.png`,
+  founder: { '@id': `${SITE.url}/autor/#person` },
 };
 
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
+  '@id': `${SITE.url}/autor/#person`,
   name: AUTHOR.name,
-  url: `${SITE.url}/autor`,
-  jobTitle: 'Autor',
+  url: `${SITE.url}/autor/`,
   description: AUTHOR.bio,
+  knowsLanguage: ['es', 'ca', 'en'],
+  homeLocation: { '@type': 'Place', name: 'Barcelona, España' },
 };
 
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': `${SITE.url}/#website`,
   name: SITE.name,
   url: SITE.url,
   inLanguage: SITE.locale,
+  publisher: { '@id': `${SITE.url}/#organization` },
 };
 
 const allJsonLd = [organizationJsonLd, personJsonLd, websiteJsonLd, ...extraJsonLd];
@@ -66,12 +77,16 @@ const allJsonLd = [organizationJsonLd, personJsonLd, websiteJsonLd, ...extraJson
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#faf6ed" />
     <meta name="generator" content={Astro.generator} />
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
 
     <meta property="og:type" content={type} />
     <meta property="og:title" content={pageTitle} />
@@ -79,10 +94,15 @@ const allJsonLd = [organizationJsonLd, personJsonLd, websiteJsonLd, ...extraJson
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:locale" content="es_ES" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE.name}: ${SITE.tagline}`} />
 
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     {publishedDate && <meta property="article:published_time" content={publishedDate.toISOString()} />}
     {updatedDate && <meta property="article:modified_time" content={updatedDate.toISOString()} />}
