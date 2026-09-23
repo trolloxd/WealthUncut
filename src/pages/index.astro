@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import CalculatorPreviewCard from '../components/CalculatorPreviewCard.astro';
 import { SITE, AUTHOR } from '../config/site';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
@@ -10,38 +9,49 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 ---
 
 <BaseLayout title={SITE.name} description={SITE.description} contentWidth="wide">
-  <section class="grid items-center gap-12 py-6 lg:grid-cols-2 lg:gap-16">
-    <div>
-      <p class="text-xs font-semibold uppercase tracking-widest text-brand">
-        {SITE.name} · Finanzas sin humo
-      </p>
-      <h1 class="mt-4 font-display text-4xl leading-[1.1] tracking-tight text-ink sm:text-5xl">
-        Sabe exactamente <span class="text-brand">cuánto dinero</span> te llevas tú,
-        no lo que dice el folleto.
-      </h1>
-      <p class="mt-5 max-w-md text-lg text-ink-muted">
-        {SITE.description}
-      </p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href="/blog/rentabilidad-neta-fondo-indexado/" class="btn-primary">Probar la calculadora</a>
-        <a href="/metodologia" class="btn-secondary">Cómo trabajamos</a>
-      </div>
-      <p class="mt-6 text-sm text-ink-faint">
-        Por <a href="/autor" class="underline hover:text-ink">{AUTHOR.name}</a> · sin recomendaciones de inversión personalizadas.
-      </p>
+  <section class="mx-auto max-w-2xl py-10 text-center">
+    <p class="text-xs font-semibold uppercase tracking-widest text-brand">
+      {SITE.name} · Finanzas sin humo
+    </p>
+    <h1 class="mt-5 font-display text-4xl leading-[1.15] tracking-tight text-ink sm:text-5xl">
+      150 €/mes durante 20 años son <span class="text-brand">69.630 € netos</span> en tu
+      bolsillo, no lo que dice el folleto.
+    </h1>
+    <p class="mx-auto mt-5 max-w-lg text-lg text-ink-muted">{SITE.description}</p>
+
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="/blog/rentabilidad-neta-fondo-indexado/" class="btn-primary">Probar la calculadora</a>
+      <a href="/metodologia" class="btn-secondary">Cómo trabajamos</a>
     </div>
 
-    <CalculatorPreviewCard />
+    <dl class="mx-auto mt-10 flex max-w-md flex-wrap items-center justify-center gap-x-10 gap-y-3 border-t border-border pt-6 text-sm">
+      <div>
+        <dt class="text-ink-faint">Aportado</dt>
+        <dd class="font-display text-lg text-ink">37.000 €</dd>
+      </div>
+      <div>
+        <dt class="text-ink-faint">Impuesto (IRPF ahorro)</dt>
+        <dd class="font-display text-lg text-accent">− 8.522 €</dd>
+      </div>
+      <div>
+        <dt class="text-ink-faint">Neto final</dt>
+        <dd class="font-display text-lg text-brand">69.630 €</dd>
+      </div>
+    </dl>
+
+    <p class="mt-6 text-sm text-ink-faint">
+      Por <a href="/autor" class="underline hover:text-ink">{AUTHOR.name}</a> · sin recomendaciones de inversión personalizadas.
+    </p>
   </section>
 
-  <section class="mt-8 border-t border-border pt-12">
+  <section class="mx-auto mt-4 max-w-2xl border-t border-border pt-12">
     <h2 class="mb-6 font-display text-2xl text-ink">Últimos artículos</h2>
     {posts.length === 0 ? (
       <p class="text-ink-muted">Todavía no hay artículos publicados.</p>
     ) : (
-      <ul class="grid gap-6 sm:grid-cols-2">
+      <ul class="grid gap-8">
         {posts.map((post) => (
-          <li class="rounded-2xl border border-border bg-cream-elevated p-6">
+          <li class="border-b border-border pb-8 last:border-none">
             <a href={`/blog/${post.id}/`} class="group block">
               <h3 class="font-display text-lg text-ink group-hover:text-brand">{post.data.title}</h3>
               <p class="mt-2 text-sm text-ink-muted">{post.data.description}</p>
