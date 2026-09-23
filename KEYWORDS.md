@@ -128,14 +128,14 @@ genuina de la gente, no una idea forzada.
 |---|---|---|---|
 | rentabilidad neta fondo indexado calculadora | `rentabilidad-neta-fondo-indexado` | Publicado | Herramienta central |
 | interes compuesto (calculadora, ejemplos) | `interes-compuesto-explicado-con-ejemplos` | Publicado | Clúster 5 |
-| que es un fondo indexado (y como funciona) | `que-es-un-fondo-indexado` | Borrador | **Pilar clúster 3** |
-| fondo indexado vs etf diferencias | `fondo-indexado-vs-etf-diferencias` | Borrador | Clúster 3 |
-| ter que es y cuanto es razonable pagar | `ter-fondo-que-es` | Borrador | Clúster 3 |
-| como tributan los fondos de inversion en españa, traspaso entre fondos tributa, irpf ahorro tramos | `como-tributan-los-fondos-de-inversion-en-espana` | Borrador | **Pilar clúster 4** |
-| modelo 720 cuando es obligatorio / obligados | `modelo-720-quien-tiene-que-presentarlo` | Borrador | Clúster 4 |
-| diferencia entre ahorrar e invertir | `diferencia-entre-ahorrar-e-invertir` | Borrador | Clúster 5 |
-| fondo de emergencia cuanto debe ser | `fondo-de-emergencia-cuanto-necesitas` | Borrador | Clúster 5 |
-| primeros pasos para invertir en españa, como empezar a invertir siendo joven | `primeros-pasos-para-invertir-en-espana` | Borrador | **Pilar clúster 5** |
+| que es un fondo indexado (y como funciona) | `que-es-un-fondo-indexado` | Programado | **Pilar clúster 3** |
+| fondo indexado vs etf diferencias | `fondo-indexado-vs-etf-diferencias` | Programado | Clúster 3 |
+| ter que es y cuanto es razonable pagar | `ter-fondo-que-es` | Programado | Clúster 3 |
+| como tributan los fondos de inversion en españa, traspaso entre fondos tributa, irpf ahorro tramos | `como-tributan-los-fondos-de-inversion-en-espana` | Programado | **Pilar clúster 4** |
+| modelo 720 cuando es obligatorio / obligados | `modelo-720-quien-tiene-que-presentarlo` | Programado | Clúster 4 |
+| diferencia entre ahorrar e invertir | `diferencia-entre-ahorrar-e-invertir` | Programado | Clúster 5 |
+| fondo de emergencia cuanto debe ser | `fondo-de-emergencia-cuanto-necesitas` | Programado | Clúster 5 |
+| primeros pasos para invertir en españa, como empezar a invertir siendo joven | `primeros-pasos-para-invertir-en-espana` | Programado | **Pilar clúster 5** |
 
 Herramientas (añadidas el 2026-09-23) que refuerzan clústeres con intención de "calculadora":
 fondo de emergencia (clúster 5), fondo indexado vs ETF (clúster 3), impuestos al vender un fondo
