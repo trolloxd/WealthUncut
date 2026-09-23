@@ -44,7 +44,9 @@ piezas pero buenas. Ritmo máximo: 3-4 piezas/semana. Herramientas antes que vol
   domicilio virtual). Banner de consentimiento (CMP) real pendiente de conectar antes de activar
   AdSense o analítica no esencial en el EEE.
 - **Todas las cifras fiscales y de comisiones viven en `src/config/finance.ts`**, con fuente y
-  fecha, marcadas `VERIFICAR` hasta que David las confirme. Nunca inventar tramos ni tipos
+  fecha, marcadas `VERIFICAR` hasta que David las confirme. Las actuales se verificaron el
+  2026-09-23 contra la AEAT, el BOE y el FGD (confirmación delegada por David en Claude); hay que
+  revisarlas cada año con el nuevo Manual de Renta. Nunca inventar tramos ni tipos
   nuevos sin fuente y fecha. Lo mismo aplica a cualquier dato identificativo real (NIF,
   domicilio): nunca inventarlo, dejarlo pendiente en su lugar.
 - **Nunca usar guiones largos (—) en texto de cara al usuario** (artículos, páginas, UI). David

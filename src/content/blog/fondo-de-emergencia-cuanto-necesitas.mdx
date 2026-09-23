@@ -14,7 +14,7 @@ hasAffiliateLinks: false
 draft: false
 ---
 
-import { FGD_COBERTURA_VERIFICAR } from '../../config/finance';
+import { FGD_COBERTURA } from '../../config/finance';
 
 export const euros = (n) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'always' }).format(n)} €`;
 
@@ -123,7 +123,7 @@ que valga el mercado ese día. Opciones razonables:
   disponible o pierda los intereses al cancelarla.
 
 Las cuentas y depósitos en entidades adheridas al Fondo de Garantía de Depósitos están cubiertos
-hasta {euros(FGD_COBERTURA_VERIFICAR.importe)} por titular y entidad si la entidad quiebra, muy por
+hasta {euros(FGD_COBERTURA.importe)} por titular y entidad si la entidad quiebra, muy por
 encima de lo que necesita casi cualquier colchón.
 
 Dónde no: en bolsa, en fondos indexados o en criptomonedas. No porque sean malas inversiones, sino

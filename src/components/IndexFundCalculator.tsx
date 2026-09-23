@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { calcularImpuestoAhorro, IRPF_AHORRO_FUENTE_VERIFICAR } from '../config/finance';
+import { calcularImpuestoAhorro, IRPF_AHORRO_FUENTE } from '../config/finance';
 
 function formatEuros(value: number): string {
   return new Intl.NumberFormat('es-ES', {
@@ -154,7 +154,7 @@ export default function IndexFundCalculator() {
           Cálculo aproximado: TER y comisión de broker se restan directamente de la
           rentabilidad bruta anual, e impuesto de la venta se aplica de una sola vez sobre
           la ganancia total al final del periodo, con los tramos del IRPF del ahorro{' '}
-          {!IRPF_AHORRO_FUENTE_VERIFICAR.verificado && (
+          {!IRPF_AHORRO_FUENTE.verificado && (
             <strong className="text-accent">(pendiente de verificar)</strong>
           )}
           . No es una recomendación de inversión ni tiene en cuenta tu situación fiscal

@@ -20,7 +20,7 @@ hasAffiliateLinks: false
 draft: false
 ---
 
-import { FGD_COBERTURA_VERIFICAR } from '../../config/finance';
+import { FGD_COBERTURA } from '../../config/finance';
 
 export const euros = (n) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'always' }).format(n)} €`;
 
@@ -119,7 +119,7 @@ a corto plazo, que reducen el riesgo a cambio de menor rentabilidad esperada.
   las condiciones (a veces solo aplica hasta un importe o durante unos meses).
 - **Depósito a plazo**: rentabilidad fija conocida a cambio de inmovilizar el dinero un tiempo.
 - Las cuentas y depósitos en entidades adheridas al Fondo de Garantía de Depósitos están cubiertos
-  hasta {euros(FGD_COBERTURA_VERIFICAR.importe)} por titular y entidad si la entidad quiebra.
+  hasta {euros(FGD_COBERTURA.importe)} por titular y entidad si la entidad quiebra.
 
 **Para invertir a largo plazo:**
 
