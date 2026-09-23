@@ -27,6 +27,9 @@ const fechasArticulos = leerFechasArticulos();
 // https://astro.build/config
 export default defineConfig({
   site: 'https://wealthuncut.com',
+  // El CSS completo pesa ~9 KB comprimido: incrustarlo evita un viaje de red que bloquea el
+  // primer pintado (medido con Lighthouse en móvil).
+  build: { inlineStylesheets: 'always' },
   adapter: cloudflare(),
   integrations: [
     react(),
