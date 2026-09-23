@@ -3,6 +3,8 @@ export const SITE = {
   url: 'https://wealthuncut.com',
   locale: 'es-ES',
   tagline: 'Finanzas prácticas para jóvenes en España, sin humo.',
+  // Reenvía al gmail de David mediante Cloudflare Email Routing (configurado el 2026-09-23).
+  email: 'contacto@wealthuncut.com',
   description:
     'Herramientas y artículos sobre cuentas, brokers, fondos indexados e impuestos para gestionar tu dinero con datos propios, no con suposiciones.',
 } as const;
