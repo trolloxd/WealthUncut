@@ -189,7 +189,7 @@ Criterios aplicados en todos:
   descarga), Inter solo en el subconjunto latino (cubre español y catalán) y CSS incrustado en el
   HTML (~9 KB comprimido). Resultado: **desplazamiento de diseño 0,072 → 0,001** en la portada y
   primer pintado de la calculadora 2,7 s → 2,3 s. Puntuación de rendimiento en móvil después:
-  **portada 97 → 99** (LCP 1,8 s), **calculadora 89 → 91**, interés compuesto 95. Lighthouse
+  **portada 96-99 en dos ejecuciones** (antes 97; LCP 1,8-2,6 s), **calculadora 89 → 91**, interés compuesto 95. Lighthouse
   varía unos puntos entre ejecuciones; lo que no depende del ruido es el desplazamiento de diseño.
   Lo que queda en la calculadora es sobre todo el JavaScript de React de la herramienta, que es
   necesario para que funcione.
