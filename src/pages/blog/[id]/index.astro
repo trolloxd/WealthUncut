@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ArticleMeta from '../../../components/ArticleMeta.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { SITE } from '../../../config/site';
 
 export async function getStaticPaths() {
@@ -47,6 +48,7 @@ const breadcrumbJsonLd = {
   updatedDate={updatedDate}
   extraJsonLd={[articleJsonLd, breadcrumbJsonLd]}
 >
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Blog', href: '/blog' }, { label: title }]} />
   <article class="prose max-w-none">
     <h1>{title}</h1>
     <ArticleMeta author={author} pubDate={pubDate} updatedDate={updatedDate} sources={sources} hasAffiliateLinks={hasAffiliateLinks}>
