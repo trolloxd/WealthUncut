@@ -1,83 +1,219 @@
 ---
 title: "Cómo tributan los fondos de inversión en España"
-description: "Cuándo pagas impuestos por un fondo de inversión en España, cuándo no, y qué tramos del IRPF del ahorro aplican sobre la ganancia."
+description: "Cuándo pagas impuestos por un fondo de inversión en España, qué tramos del IRPF del ahorro se aplican, por qué el traspaso no tributa y cuánto vale de verdad ese diferimiento, con ejemplos calculados."
 pubDate: 2026-09-23
 updatedDate: 2026-09-23
 author: "David Pérez Mitjà"
 tags: ["impuestos", "fondos indexados"]
 sources:
-  - label: "Agencia Tributaria: IRPF, base del ahorro"
-    url: "https://sede.agenciatributaria.gob.es/"
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
+  - label: "AEAT, Manual práctico de Renta 2025: régimen especial de diferimiento (traspasos entre IIC)"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/determinacion-importe-ganancias-perdidas-patrimon-especificas/transmisiones-reembolsos-acciones-iic/regimen-especial-diferimiento-tributacion.html"
+  - label: "AEAT, Manual práctico de Renta 2025: transmisiones o reembolsos de participaciones en IIC (régimen general)"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/determinacion-importe-ganancias-perdidas-patrimon-especificas/transmisiones-reembolsos-acciones-iic/regimen-general.html"
+  - label: "AEAT, Manual práctico de Renta 2025: reglas de integración y compensación de rentas"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c12-integracion-compensacion-rentas/reglas-integracion-compensacion-rentas.html"
+  - label: "AEAT, Manual práctico de Renta 2025: pérdidas patrimoniales que no se computan"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/ganancias-perdidas-patrimoniales-que-no-bi/perdidas-patrimoniales-que-no-se-tales.html"
 hasAffiliateLinks: false
 draft: true
 ---
 
-La regla más importante sobre la fiscalidad de los fondos de inversión en España es esta: no
-pagas impuestos por tenerlos, ni por ver cómo suben de valor sobre el papel. Pagas cuando
-reembolsas, es decir, cuando conviertes tus participaciones en dinero en tu cuenta.
+import TramosAhorroTabla from '../../components/TramosAhorroTabla.astro';
+import {
+  RETENCION_REEMBOLSO_FONDOS_VERIFICAR,
+  COMPENSACION_AHORRO_VERIFICAR,
+  REGLA_RECOMPRA_VERIFICAR,
+} from '../../config/finance';
 
-## Los tres momentos que sí importan
+La regla más importante sobre cómo tributan los fondos de inversión en España cabe en una
+frase: no pagas impuestos por tenerlos, ni porque suban de valor sobre el papel. Pagas cuando
+reembolsas, es decir, cuando conviertes tus participaciones en dinero en tu cuenta. Y pagas solo
+por la parte que es ganancia, no por todo lo que retiras.
+
+Todo lo demás (tramos, traspasos, retenciones, pérdidas) son matices sobre esa regla. Aquí van
+uno por uno, con ejemplos calculados y no con cifras redondas inventadas.
+
+## Resumen en 30 segundos
+
+| Situación | ¿Pagas impuestos en ese momento? |
+|---|---|
+| El fondo sube de valor y no vendes | No |
+| Traspasas de un fondo a otro fondo | No, se difiere hasta el reembolso |
+| Reembolsas (vendes) con ganancia | Sí, sobre la ganancia, en la base del ahorro |
+| Reembolsas con pérdida | No, y la pérdida puede compensar otras ganancias |
+| El fondo reparte dividendos | Sí, en el año en que los cobras |
+
+## Cuándo pagas: los tres momentos que importan
 
 **1. Reembolso (venta).** Cuando reembolsas participaciones, la diferencia entre lo que recibes
-y lo que aportaste es una ganancia (o pérdida) patrimonial. Esa ganancia se integra en la base
-del ahorro del IRPF.
+y lo que te costaron es una ganancia (o pérdida) patrimonial. Esa ganancia se integra en la base
+del ahorro del IRPF y se declara en la renta del año siguiente.
 
-**2. Traspaso entre fondos.** Cambiar de un fondo de inversión a otro fondo de inversión, sin
-pasar por tu cuenta corriente, no tributa. Es el llamado régimen de diferimiento: Hacienda
-considera que sigues invertido, así que no hay hecho imponible todavía.
+**2. Traspaso entre fondos.** Cambiar de un fondo de inversión a otro sin que el dinero pase por
+tu cuenta corriente no tributa. Es el régimen de diferimiento del artículo 94 de la Ley del IRPF:
+las participaciones nuevas heredan el valor y la fecha de compra de las antiguas, así que la
+ganancia sigue ahí, pero no pagas nada hasta que reembolses de verdad.
 
-**3. Reparto de dividendos**, si el fondo los reparte (la mayoría de fondos indexados
-acumulan en vez de repartir, pero algunos sí reparten). Los dividendos también se integran en
-la base del ahorro, en el ejercicio en que se cobran.
+**3. Reparto de dividendos**, si el fondo los reparte. La mayoría de fondos indexados son de
+acumulación (reinvierten lo que cobran dentro del fondo, sin repartirlo), pero existen clases de
+reparto. Lo que cobres por esa vía también va a la base del ahorro, en el ejercicio en que lo
+cobras, aunque no hayas vendido nada.
 
 ## Los tramos del IRPF del ahorro
 
-Sobre la ganancia total (no sobre todo el capital reembolsado, solo sobre la parte que es
-beneficio), se aplican tramos progresivos:
+Sobre la ganancia (no sobre todo el capital reembolsado) se aplican tramos progresivos. Son los
+mismos en toda España: la parte autonómica de la escala del ahorro la fija la ley estatal, así
+que da igual si vives en Barcelona, Madrid o Sevilla.
 
-| Tramo | Tipo |
-|---|---|
-| Hasta 6.000 € | 19% |
-| De 6.000 € a 50.000 € | 21% |
-| De 50.000 € a 200.000 € | 23% |
-| De 200.000 € a 300.000 € | 27% |
-| Más de 300.000 € | 28% |
+<TramosAhorroTabla />
 
-Estos tramos están marcados como pendientes de verificar en la configuración de este sitio;
-confírmalos contra la web de la Agencia Tributaria para el ejercicio fiscal en curso antes de
-tomar cualquier decisión basada en ellos.
+Desde 2025, el último tramo pasó del 28% al 30% para la parte de la ganancia que supera los
+300.000 € (Ley 7/2024). Para la inmensa mayoría de inversores particulares, lo relevante son los
+dos primeros tramos.
 
-## Un ejemplo con números reales
+### Progresivo quiere decir por tramos, no un tipo único
 
-Si aportaste 10.000 € en total y reembolsas cuando tus participaciones valen 15.000 €, la
-ganancia es de 5.000 €. Con los tramos de arriba, tributarías el 19% sobre esos 5.000 €, es
-decir 950 €, y te quedarían 14.050 € netos.
+Si ganas 60.000 € al reembolsar, no pagas el 23% sobre todo (el tramo donde "cae" esa cifra),
+sino el 19% sobre los primeros 6.000 €, el 21% sobre los siguientes 44.000 € y el 23% sobre los
+últimos 10.000 €:
 
-Los tramos son progresivos, no un tipo único sobre toda la ganancia: si tu ganancia fuera de
-60.000 €, no pagarías el 23% (el tramo donde "cae" esa cifra) sobre todo, sino 19% sobre los
-primeros 6.000 €, 21% sobre los siguientes 44.000 € (hasta 50.000 €) y 23% sobre los últimos
-10.000 €. El resultado es 12.680 € de impuesto, no 13.800 € (que sería el 23% plano). Puedes ver
-este mismo cálculo aplicado a un plan de aportaciones periódicas en la
-[calculadora de rentabilidad neta](/blog/rentabilidad-neta-fondo-indexado/) de este sitio.
+| Parte de la ganancia | Tipo | Impuesto |
+|---|---|---|
+| Primeros 6.000 € | 19% | 1.140 € |
+| De 6.000 € a 50.000 € (44.000 €) | 21% | 9.240 € |
+| De 50.000 € a 60.000 € (10.000 €) | 23% | 2.300 € |
+| **Total sobre 60.000 €** | | **12.680 €** |
+
+Con un 23% plano serían 13.800 €. La diferencia (1.120 €) es exactamente lo que ahorra la
+progresividad en este ejemplo.
+
+## Un ejemplo completo, con retención incluida
+
+Aportaste 10.000 € a un fondo indexado y reembolsas todo cuando vale 15.000 €. Ganancia: 5.000 €.
+
+1. **El día del reembolso**, si la entidad es española, no te ingresa 15.000 €: te practica una retención del
+   {Math.round(RETENCION_REEMBOLSO_FONDOS_VERIFICAR * 100)}% sobre la ganancia, es decir, 950 €, que ingresa
+   directamente a Hacienda a tu nombre. Recibes 14.050 €.
+2. **En la declaración de la renta del año siguiente**, esos 5.000 € se suman a tu base del
+   ahorro. Si no tienes otras ganancias ni pérdidas, la cuota es el 19% de 5.000 €: 950 €. Como
+   ya te retuvieron 950 €, no pagas ni te devuelven nada por esta parte.
+3. Si ese mismo año tuvieras otras ganancias que te llevaran por encima de 6.000 €, la parte que
+   exceda tributaría al 21% y pagarías la diferencia en la declaración. La retención es un
+   adelanto, no el impuesto definitivo.
+
+Puedes ver este mismo cálculo aplicado a un plan de aportaciones mensuales durante años en la
+[calculadora de rentabilidad neta](/blog/rentabilidad-neta-fondo-indexado/).
+
+## Qué participaciones vendes primero (FIFO)
+
+Si has comprado participaciones del mismo fondo en momentos distintos y reembolsas solo una
+parte, Hacienda considera que vendes primero las más antiguas. Es el criterio FIFO (lo primero que
+entra es lo primero que sale), y no puedes elegir otro.
+
+Ejemplo: compraste 100 participaciones a 10 € (1.000 €) y más tarde otras 100 a 15 € (1.500 €).
+Hoy valen 20 € y reembolsas 100. Por FIFO, se consideran vendidas las de 10 €: ganancia de
+1.000 € y 190 € de impuesto. Si pudieras elegir las de 15 €, la ganancia sería de 500 € y el
+impuesto de 95 €. No puedes: por eso, en una cartera con aportaciones periódicas, las primeras
+ventas suelen arrastrar las ganancias más grandes.
+
+## El traspaso: cuánto vale de verdad no pagar ahora
+
+Se dice mucho que "los traspasos no tributan", pero pocas veces se calcula qué supone en euros.
+Supongamos un fondo en el que metiste 10.000 € y que hoy vale 14.000 €. Quieres cambiar a otro
+fondo, que a partir de ahí rinde un 7% anual. Dos caminos:
+
+- **Traspaso**: los 14.000 € pasan enteros al fondo nuevo. Pagas todo al final.
+- **Vender y recomprar**: pagas ahora 760 € por los 4.000 € de ganancia, reinviertes 13.240 € y
+  vuelves a pagar al final por la ganancia nueva.
+
+| Años hasta el reembolso final | Neto final con traspaso | Neto final vendiendo y recomprando | Ventaja del traspaso |
+|---|---|---|---|
+| 5 | 17.732 € | 17.557 € | 175 € |
+| 15 | 32.735 € | 31.759 € | 976 € |
+| 25 | 61.928 € | 59.497 € | 2.431 € |
+
+Dos conclusiones que no suelen contarse:
+
+- **La ventaja no viene de pagar un tipo más bajo**, sino de que los 760 € que no pagas hoy siguen
+  invertidos y componiéndose durante años. Por eso crece con el tiempo.
+- **A corto plazo es modesta.** Con importes pequeños y pocos años, no es el factor que debería
+  decidir entre un fondo y un ETF. Con carteras grandes, horizontes largos o varios cambios a lo
+  largo de la vida, sí pesa.
+
+### Qué requisitos tiene el traspaso
+
+- Solo vale entre instituciones de inversión colectiva que tengan la condición de fondos (y
+  algunas sociedades de inversión con más de 500 accionistas). El dinero no puede pasar por tu
+  cuenta: la orden se da en la entidad de destino, que gestiona el traspaso con la de origen.
+- **Los ETF están excluidos**, coticen en una bolsa española o extranjera. Desde 2022 la ley los
+  trata igual en ambos casos. Vender un ETF para comprar otro siempre tributa. Más detalle en
+  [fondo indexado vs ETF](/blog/fondo-indexado-vs-etf-diferencias/).
+- Los fondos extranjeros comercializados en España también pueden traspasarse si cumplen los
+  requisitos de la normativa (registro en la CNMV, entre otros). Si tu broker te ofrece un fondo
+  extranjero, comprueba que admite traspasos antes de contar con ello.
+
+## Pérdidas: cómo se compensan
+
+Si reembolsas con pérdidas, esa pérdida no se pierde fiscalmente:
+
+1. **Primero compensa ganancias patrimoniales del mismo año.** Si ganas 3.000 € con un fondo y
+   pierdes 1.000 € con otro, tributas por 2.000 € (380 € al 19%), no por 3.000 €.
+2. **Si sobra pérdida**, puede compensar hasta el {Math.round(COMPENSACION_AHORRO_VERIFICAR.limiteCruzado * 100)}%
+   de los rendimientos del capital mobiliario del año (intereses de cuentas remuneradas,
+   dividendos). Y al revés: los rendimientos negativos pueden compensar hasta ese mismo porcentaje
+   de las ganancias.
+3. **Lo que no hayas podido compensar** se arrastra a los {COMPENSACION_AHORRO_VERIFICAR.aniosArrastre}
+   ejercicios siguientes. Fuera de ese plazo, se pierde.
+
+**Una trampa habitual**: vender con pérdidas para compensar y recomprar enseguida el mismo fondo.
+Si recompras participaciones homogéneas dentro de {REGLA_RECOMPRA_VERIFICAR.valoresNoCotizados}
+(en valores cotizados, como acciones o ETF, el plazo es de {REGLA_RECOMPRA_VERIFICAR.valoresCotizados}),
+antes o después de la venta, la pérdida no se computa ese año: se aplaza hasta que vendas lo
+recomprado.
+
+## Cómo se declara en la renta
+
+En la práctica, la gestora o el broker español comunica a Hacienda los reembolsos y las
+retenciones, y esos datos suelen aparecer ya en el borrador de la declaración (en el apartado de
+ganancias y pérdidas patrimoniales derivadas de fondos). Tu trabajo es comprobar que el valor de
+adquisición y el de transmisión que figuran son correctos, sobre todo si hubo traspasos: el valor
+de compra que debe aparecer es el del fondo original, no el del día del traspaso.
+
+Si inviertes a través de un broker extranjero, es probable que esos datos no aparezcan en el
+borrador y tengas que introducirlos tú. En ese caso, revisa también si te afecta el
+[modelo 720](/blog/modelo-720-quien-tiene-que-presentarlo/).
 
 ## Preguntas frecuentes
 
 **¿Pago impuestos si mi fondo indexado sube de valor pero no vendo?**
-No. Mientras no reembolses, la subida de valor es "sobre el papel" y no genera ninguna
-obligación fiscal.
+No. Mientras no reembolses, la subida es "sobre el papel" y no genera ninguna obligación fiscal.
+Tampoco hay que declarar nada ese año por el simple hecho de tener el fondo.
 
 **¿Un traspaso entre fondos hay que declararlo?**
-El traspaso en sí no genera impuesto a pagar, pero sigue existiendo un registro de la operación
-a través de tu entidad. No es necesario declararlo como ganancia en el ejercicio en que ocurre.
+El traspaso en sí no genera impuesto a pagar ni se incluye como ganancia en la declaración de
+ese año. Las entidades sí lo comunican a Hacienda, y el valor de compra original viaja con las
+participaciones hasta el reembolso final.
 
-**¿Y si vendo con pérdidas?**
-Las pérdidas patrimoniales se pueden compensar con ganancias patrimoniales de la misma
-naturaleza, dentro de los límites y plazos que marca la normativa del IRPF. Es una situación
-donde conviene revisar tu caso concreto con un profesional.
+**¿La retención del 19% es lo que pago en total?**
+No necesariamente. Es un pago a cuenta. Si tu ganancia total del ahorro en el año supera los
+6.000 €, pagarás más en la declaración; si compensas con pérdidas, te devolverán parte.
+
+**¿Tributa igual un fondo indexado que un fondo de gestión activa?**
+Sí. Fiscalmente, ambos son fondos de inversión: mismos tramos, mismo régimen de traspasos, misma
+retención. La diferencia entre ellos está en los costes. Ver
+[qué es un fondo indexado](/blog/que-es-un-fondo-indexado/) y [qué es el TER](/blog/ter-fondo-que-es/).
+
+**¿Y si soy menor de edad o estudiante sin ingresos?**
+La base del ahorro tributa igual con independencia de tus otros ingresos: los tramos se aplican
+sobre la ganancia. Otra cosa es si estás obligado a presentar declaración, que depende de los
+umbrales de obligación de cada ejercicio; compruébalo en la sede de la Agencia Tributaria.
 
 ## Lo que esto no cubre
 
-Esto es información general, no una liquidación de tu declaración de la renta. Situaciones como
-compensar pérdidas de otros ejercicios, el efecto de las retenciones, o la fiscalidad si eres
-no residente, cambian el cálculo y conviene revisarlas con un profesional o directamente en la
-sede electrónica de la Agencia Tributaria.
+Esto es información general, no la liquidación de tu declaración. Las ganancias en fondos
+anteriores a 1995 con coeficientes de abatimiento, la fiscalidad si no eres residente en España,
+los planes de pensiones (que tributan como rendimiento del trabajo, no del ahorro) o las
+herencias y donaciones de participaciones tienen reglas propias. Para esos casos, consulta la
+sede electrónica de la Agencia Tributaria o a un asesor fiscal.

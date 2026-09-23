@@ -1,0 +1,42 @@
+---
+/** Tabla de tramos del IRPF del ahorro, generada desde finance.ts (única fuente de cifras). */
+import { IRPF_AHORRO_BRACKETS_VERIFICAR, IRPF_AHORRO_FUENTE_VERIFICAR } from '../config/finance';
+
+const euros = (n: number) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'always' }).format(n)} €`;
+const pct = (n: number) => `${Math.round(n * 100)}%`;
+
+const filas = IRPF_AHORRO_BRACKETS_VERIFICAR.map((tramo, i) => {
+  const desde = i === 0 ? 0 : IRPF_AHORRO_BRACKETS_VERIFICAR[i - 1].hasta;
+  const texto =
+    i === 0
+      ? `Hasta ${euros(tramo.hasta)}`
+      : tramo.hasta === Infinity
+        ? `Más de ${euros(desde)}`
+        : `De ${euros(desde)} a ${euros(tramo.hasta)}`;
+  return { texto, tipo: pct(tramo.tipo) };
+});
+---
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Parte de la ganancia</th>
+      <th scope="col">Tipo que se aplica a esa parte</th>
+    </tr>
+  </thead>
+  <tbody>
+    {filas.map((f) => (
+      <tr>
+        <td>{f.texto}</td>
+        <td>{f.tipo}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+{!IRPF_AHORRO_FUENTE_VERIFICAR.verificado && (
+  <p class="text-sm text-ink-muted">
+    Tipos generales (escala estatal más autonómica) según el Manual práctico de Renta 2025 de la
+    Agencia Tributaria, <strong class="text-accent">pendientes de verificación final</strong> para
+    el ejercicio en curso.
+  </p>
+)}

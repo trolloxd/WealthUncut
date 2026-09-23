@@ -43,6 +43,18 @@ export const COMPENSACION_AHORRO_VERIFICAR = {
   url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c12-integracion-compensacion-rentas/reglas-integracion-compensacion-rentas.html',
 } as const;
 
+// VERIFICAR: regla antiaplicación de pérdidas por recompra de valores homogéneos
+// (art. 33.5 f y g Ley 35/2006). Si vendes con pérdidas y recompras lo mismo dentro
+// de este plazo (antes o después), la pérdida no se computa hasta que vendas lo
+// recomprado. Las participaciones de fondos no cotizados entran en el plazo largo.
+// Fuente: AEAT, Manual práctico de Renta 2025, pérdidas que no se computan.
+// Registrado el 2026-09-23.
+export const REGLA_RECOMPRA_VERIFICAR = {
+  valoresCotizados: 'dos meses',
+  valoresNoCotizados: 'un año',
+  url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/ganancias-perdidas-patrimoniales-que-no-bi/perdidas-patrimoniales-que-no-se-tales.html',
+} as const;
+
 // VERIFICAR: modelo 720 (declaración informativa de bienes y derechos en el
 // extranjero). Umbral por cada uno de los tres bloques, incremento que obliga a
 // volver a presentarlo y plazo. Fuente: AEAT, preguntas frecuentes del modelo 720,
