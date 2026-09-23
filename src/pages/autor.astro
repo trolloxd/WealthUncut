@@ -1,21 +1,68 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { AUTHOR, SITE } from '../config/site';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const profileJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  url: `${SITE.url}/autor/`,
+  mainEntity: { '@id': `${SITE.url}/autor/#person` },
+};
 ---
 
-<BaseLayout title="Autor" description={`Quién escribe en ${SITE.name}: ${AUTHOR.name}.`}>
+<BaseLayout
+  title={`${AUTHOR.name}, autor`}
+  description={`Quién escribe en ${SITE.name}: ${AUTHOR.name}, formación en International Business y experiencia en finanzas, desde Barcelona.`}
+  extraJsonLd={[profileJsonLd]}
+>
   <h1 class="mb-6 font-display text-3xl text-ink">{AUTHOR.name}</h1>
   <div class="prose max-w-none">
     <p>{AUTHOR.bio}</p>
+    <p>
+      Vivo en Barcelona. Escribo en español; hablo también catalán e inglés.
+    </p>
     <p>
       <strong>Por qué escribo esto:</strong> quería un sitio de finanzas para gente joven en
       España que no vendiera humo ni recomendaciones genéricas, con herramientas propias,
       cifras verificadas y criterio razonado en vez de contenido de relleno.
     </p>
+
+    <h2>Cómo trabajo</h2>
+    <ul>
+      <li>
+        Cada cifra fiscal sale de una fuente oficial (Agencia Tributaria, BOE, CNMV, INE) y se
+        indica en el artículo. Las que están pendientes de verificación final se marcan como tales.
+      </li>
+      <li>Los ejemplos numéricos están calculados, no estimados, con la misma lógica que las calculadoras del sitio.</li>
+      <li>No doy recomendaciones de inversión personalizadas ni recomiendo productos concretos.</li>
+      <li>
+        Si un artículo tiene enlaces de afiliado, lo digo al principio del artículo. Más en
+        la <a href="/transparencia/">página de transparencia</a>.
+      </li>
+    </ul>
+    <p>El detalle completo está en la <a href="/metodologia/">metodología</a>.</p>
+
+    {posts.length > 0 && (
+      <>
+        <h2>Artículos publicados</h2>
+        <ul>
+          {posts.map((post) => (
+            <li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
+          ))}
+        </ul>
+      </>
+    )}
+
     <h2>Cómo contactar</h2>
     <p>
-      {/* TODO(david): añadir email de contacto y redes reales antes de publicar. */}
-      Puedes escribirme para correcciones, sugerencias o dudas sobre cualquier artículo.
+      Para correcciones, sugerencias o dudas sobre cualquier artículo, escríbeme a
+      {' '}<a href="mailto:david.perez.45678@gmail.com">david.perez.45678@gmail.com</a>. Si quieres
+      proponer un tema, también puedes usar el <a href="/sugerencias/">buzón de sugerencias</a>.
     </p>
   </div>
 </BaseLayout>

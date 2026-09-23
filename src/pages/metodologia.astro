@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../config/site';
 ---
 
-<BaseLayout title="Metodología" description={`Cómo se investiga, verifica y actualiza el contenido de ${SITE.name}.`}>
+<BaseLayout title="Metodología" description={`Cómo se investiga, calcula, verifica y actualiza el contenido de ${SITE.name}: fuentes oficiales, cifras calculadas y correcciones.`}>
   <h1 class="mb-6 font-display text-3xl text-ink">Metodología</h1>
   <div class="prose max-w-none">
     <h2>Cómo trabajamos</h2>
@@ -13,16 +13,45 @@ import { SITE } from '../config/site';
       <li>Cada artículo muestra su fecha de publicación y, si aplica, la de última actualización.</li>
       <li>No damos recomendaciones de inversión personalizadas: solo información y educación financiera.</li>
     </ul>
+
+    <h2>Qué fuentes usamos</h2>
+    <p>Priorizamos siempre la fuente primaria frente a otros blogs o foros:</p>
+    <ul>
+      <li><strong>Fiscalidad</strong>: Agencia Tributaria (manuales prácticos de la renta, preguntas frecuentes) y BOE.</li>
+      <li><strong>Productos de inversión</strong>: CNMV (guías, registros oficiales, advertencias) y los documentos de datos fundamentales de cada producto.</li>
+      <li><strong>Datos económicos</strong>: INE, Banco de España y Banco Central Europeo.</li>
+      <li><strong>Mercados e índices</strong>: los proveedores de los índices (por ejemplo, MSCI o S&P Dow Jones Indices) y sus informes.</li>
+    </ul>
+
+    <h2>Cómo calculamos</h2>
+    <p>
+      Los ejemplos numéricos de los artículos no son estimaciones: se calculan con la misma lógica
+      que las calculadoras del sitio. Cada ejemplo indica sus supuestos (aportaciones, años,
+      rentabilidad bruta, comisiones) y se simplifica donde hace falta (por ejemplo, rentabilidad
+      constante cada año). Esas simplificaciones se explican junto a cada cálculo para que sepas
+      qué no tiene en cuenta.
+    </p>
+
+    <h2>Qué significa "pendiente de verificación"</h2>
+    <p>
+      Algunas cifras fiscales aparecen marcadas como pendientes de verificación final para el
+      ejercicio en curso. Significa que están tomadas de la fuente oficial más reciente disponible,
+      pero que todavía no hemos confirmado que sigan vigentes sin cambios. Mientras tengan esa marca,
+      compruébalas en la fuente enlazada antes de tomar una decisión basada en ellas.
+    </p>
+
     <h2>Enlaces de afiliado</h2>
     <p>
       Cuando un artículo incluye enlaces de afiliado, lo indicamos de forma visible al principio
       del artículo. Consulta el detalle en la <a href="/transparencia/">página de transparencia</a>.
     </p>
-    <h2>Correcciones</h2>
+
+    <h2>Correcciones y actualizaciones</h2>
     <p>
       Si detectas un error o un dato desactualizado, puedes contactarme a través de la{' '}
       <a href="/autor/">página de autor</a>. Corregimos y anotamos los cambios relevantes en la
-      fecha de "última actualización" del artículo.
+      fecha de "última actualización" del artículo. Cuando cambia la normativa fiscal (por ejemplo,
+      los tramos del IRPF del ahorro), revisamos todos los artículos y herramientas que la usan.
     </p>
   </div>
 </BaseLayout>
