@@ -1,75 +1,164 @@
 ---
 title: "Modelo 720: quién tiene que presentarlo (y quién no)"
-description: "Qué es el modelo 720, quién está obligado a declarar bienes en el extranjero, y qué pasa si tu broker está fuera de España."
+description: "Cuándo es obligatorio el modelo 720 si inviertes con un broker extranjero: umbral por bloque, cómo se calcula, cuándo hay que repetirlo, plazo y sanciones actuales, con ejemplos."
 pubDate: 2026-09-23
 updatedDate: 2026-09-23
 author: "David Pérez Mitjà"
 tags: ["impuestos", "brokers"]
 sources:
-  - label: "Agencia Tributaria: modelo 720"
-    url: "https://sede.agenciatributaria.gob.es/"
+  - label: "AEAT: modelo 720, preguntas frecuentes"
+    url: "https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-720-decla_____sobre-bienes-derechos-extranjero_/preguntas-frecuentes.html"
+  - label: "AEAT: modelo 720, frecuencia en la presentación de la declaración"
+    url: "https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-720-decla_____sobre-bienes-derechos-extranjero_/preguntas-frecuentes/frecuencia-presentacion-declaracion.html"
+  - label: "AEAT: modelo 720, valoración de los bienes y derechos"
+    url: "https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-720-decla_____sobre-bienes-derechos-extranjero_/preguntas-frecuentes/valoracion.html"
+  - label: "AEAT: modelo 720, sanciones y efectos"
+    url: "https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-720-decla_____sobre-bienes-derechos-extranjero_/preguntas-frecuentes/sanciones-efectos.html"
+  - label: "BOE: Orden HAP/72/2013, que aprueba el modelo 720"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2013-954"
 hasAffiliateLinks: false
 draft: true
 ---
 
-Si inviertes a través de un broker con sede fuera de España (algo muy habitual: DEGIRO,
-Interactive Brokers y otros muchos operan desde otros países europeos), es razonable
-preguntarse si eso te obliga a declarar algo especial. La respuesta corta: depende del valor
-total de lo que tengas fuera, no de si el broker es español o no.
+import { MODELO_720_VERIFICAR } from '../../config/finance';
+
+export const euros = (n) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'always' }).format(n)} €`;
+
+Si inviertes a través de un broker con sede fuera de España (algo muy habitual entre quienes
+empiezan con fondos indexados y ETF), tarde o temprano aparece la pregunta: ¿tengo que presentar
+el modelo 720? La respuesta corta: **solo si lo que tienes fuera supera {euros(MODELO_720_VERIFICAR.umbralPorBloque)}
+en alguno de sus tres bloques a 31 de diciembre.** Por debajo de esa cifra, no hay obligación,
+aunque el broker sea extranjero.
+
+Aquí va el detalle, con los casos que más dudas generan.
 
 ## Qué es el modelo 720
 
-Es una declaración informativa (no liquidas ni pagas nada al presentarla) sobre bienes y
-derechos situados en el extranjero, agrupados en tres categorías:
+Es una **declaración informativa**: no pagas nada al presentarla. Sirve para que Hacienda sepa qué
+bienes y derechos tienes en el extranjero. Los impuestos por lo que ganes con esas inversiones se
+pagan igual que siempre, en tu declaración de la renta. Se divide en tres bloques independientes:
 
-- Cuentas en entidades financieras.
-- Valores, derechos, seguros y rentas depositados, gestionados u obtenidos en el extranjero
-  (aquí entran las acciones, fondos y ETF que tengas en un broker extranjero).
-- Bienes inmuebles en el extranjero.
+1. **Cuentas** en entidades financieras situadas en el extranjero (cuentas corrientes, de ahorro,
+   de efectivo en un broker extranjero).
+2. **Valores, derechos, seguros y rentas** depositados, gestionados u obtenidos en el extranjero:
+   aquí entran las acciones, los ETF y los fondos que tengas a través de un broker extranjero.
+3. **Bienes inmuebles** situados en el extranjero.
 
 ## Cuándo es obligatorio presentarlo
 
-Existe un umbral de valor conjunto por cada categoría por debajo del cual no hay obligación de
-declarar. **La cifra exacta del umbral está pendiente de verificar en este artículo**: ha
-generado controversia legal en los últimos años (el Tribunal de Justicia de la UE llegó a
-declarar parte del régimen sancionador contrario al derecho europeo) y conviene confirmar el
-umbral y las sanciones vigentes directamente en la sede electrónica de la Agencia Tributaria o
-con un asesor fiscal antes de dar por buena cualquier cifra que leas, incluida esta.
+Tienes que presentarlo si eres residente fiscal en España y el valor conjunto de **alguno de los
+tres bloques** supera {euros(MODELO_720_VERIFICAR.umbralPorBloque)}. Cada bloque se mira por
+separado:
 
-Una vez has presentado el modelo 720 una vez, en años siguientes solo hay que volver a
-presentarlo si el valor de alguna categoría aumenta significativamente respecto a la última
-declaración, o si dejas de ser titular de algo que ya declaraste.
+- Si tienes {euros(45000)} en ETF en un broker extranjero y nada más fuera, no presentas nada.
+- Si tienes {euros(30000)} en una cuenta en un banco extranjero y {euros(30000)} en ETF en un
+  broker extranjero, tampoco: son {euros(60000)} en total, pero ningún bloque supera el umbral.
+- Si tienes {euros(55000)} en ETF en un broker extranjero, presentas el bloque de valores.
 
-## Por qué esto no depende de si el broker "es español"
+La obligación no es solo del titular: también afecta a autorizados, beneficiarios o quienes tengan
+poder de disposición sobre una cuenta. Si compartes una cuenta extranjera, conviene revisarlo.
 
-Lo que importa no es la nacionalidad de la empresa que te da el servicio de bróker, sino dónde
-está situado o registrado el activo. Un broker con sucursal en España pero que custodia tus
-activos a través de una entidad en otro país europeo puede hacer que tu situación entre dentro
-del ámbito del modelo 720, igual que un broker sin ninguna presencia en España. Antes de asumir
-que "no me afecta porque uso un broker con oficina en España", conviene revisar dónde están
-realmente depositados tus activos.
+### Cómo se calcula el valor
+
+- **Valores, ETF y fondos**: su valor a 31 de diciembre (cotización o valor liquidativo), pasado a
+  euros con el tipo de cambio de ese día.
+- **Cuentas**: se mira tanto el saldo a 31 de diciembre como el saldo medio del último trimestre.
+  Si cualquiera de los dos supera el umbral, cuenta.
+
+Un detalle práctico: el valor se mira **solo a 31 de diciembre**. Si durante el año llegaste a
+tener {euros(60000)} pero a final de año tienes {euros(48000)} en valores, ese año no hay obligación
+por ese bloque.
+
+## Cuándo hay que volver a presentarlo
+
+Presentarlo una vez no te obliga a repetirlo cada año. Solo vuelves a presentarlo si:
+
+- El valor conjunto de un bloque ya declarado **aumenta más de {euros(MODELO_720_VERIFICAR.incrementoParaRepetir)}**
+  respecto a la última declaración que presentaste por ese bloque, o
+- **Dejas de ser titular** de algo que declaraste (lo vendes, cierras la cuenta), o
+- Aparece un bloque nuevo que supera el umbral.
+
+Ejemplo, siguiendo el caso de {euros(55000)} en ETF:
+
+| Año | Valor a 31 de diciembre | ¿Presentas? | Por qué |
+|---|---|---|---|
+| 1 | {euros(55000)} | Sí | Supera {euros(MODELO_720_VERIFICAR.umbralPorBloque)} por primera vez |
+| 2 | {euros(70000)} | No | Sube {euros(15000)}, menos de {euros(MODELO_720_VERIFICAR.incrementoParaRepetir)} |
+| 3 | {euros(76000)} | Sí | Sube {euros(21000)} respecto a lo último declarado ({euros(55000)}) |
+| 4 | {euros(80000)} | No | Sube {euros(4000)} respecto a lo último declarado ({euros(76000)}) |
+
+Fíjate en el año 3: la comparación se hace con **la última declaración presentada**, no con el año
+anterior. Por eso subir poco a poco puede acabar obligándote.
+
+## Plazo
+
+Se presenta {MODELO_720_VERIFICAR.plazo} al que se refiere la información, por internet en la sede
+electrónica de la Agencia Tributaria. Es un plazo distinto al de la declaración de la renta:
+primero va el 720 (enero a marzo), y después la renta (primavera). Confirma cada año el calendario
+exacto en la sede, por si cambia.
+
+## Qué pasa si no lo presentas
+
+Hasta 2022, el modelo 720 tenía un régimen sancionador propio con multas muy elevadas. El Tribunal
+de Justicia de la Unión Europea declaró en enero de 2022 que ese régimen era contrario al derecho
+europeo por desproporcionado, y la Ley 5/2022 lo eliminó. Hoy se aplica el **régimen general de
+infracciones de la Ley General Tributaria** para las declaraciones informativas, y las sanciones se
+calculan de forma independiente para cada uno de los tres bloques.
+
+Esto no significa que no pase nada: presentar tarde o no presentar sigue teniendo sanción. Pero ya
+no es el escenario desproporcionado del que hablan muchos artículos antiguos. Si crees que tenías
+que presentarlo y no lo hiciste, consulta a un asesor fiscal antes de actuar: presentarlo fuera de
+plazo sin requerimiento previo suele tener un tratamiento más favorable.
+
+## Por qué no depende de si el broker "es español"
+
+Lo que importa es **dónde están depositados o registrados los activos**, no la nacionalidad de la
+marca que te presta el servicio. Un broker con oficina o sucursal en España puede custodiar tus
+activos a través de una entidad de otro país, y entonces esos activos cuentan como situados en el
+extranjero. Al revés, un broker extranjero que opera a través de una entidad española y te da un
+IBAN español puede cambiar el análisis de las cuentas.
+
+Cómo comprobarlo:
+
+1. Mira qué entidad aparece en tu contrato y en tus extractos como depositaria o custodia de los
+   valores, y en qué país está.
+2. Revisa si tu broker envía información fiscal a Hacienda en España y si tus operaciones aparecen
+   en el borrador de la renta. Si no aparecen, es una pista de que la entidad está fuera.
+3. Ante la duda, pregunta al servicio de atención de tu broker "¿dónde están depositados mis
+   valores, y estoy obligado al modelo 720 por ellos?". La mayoría tienen una respuesta preparada.
 
 ## Qué hacer si crees que te puede afectar
 
-Esto es información general, no una determinación de tu obligación concreta. Si tienes
-inversiones en brokers extranjeros y no sabes si superas los umbrales, la vía más segura es
-consultarlo con un asesor fiscal o directamente en la sede electrónica de la Agencia Tributaria,
-no asumir que no te afecta porque el importe "parece poco".
+- Haz la cuenta a 31 de diciembre por bloques, no sumándolo todo.
+- Si estás cerca del umbral, apunta el valor de cada año: te hará falta para saber si tienes que
+  repetir.
+- Guarda los extractos a 31 de diciembre del broker y de las cuentas extranjeras.
+- Si tus inversiones fuera de España son relevantes para tu patrimonio, un asesor fiscal puede
+  ahorrarte más de lo que cuesta.
+
+Esto es información general, no una determinación de tu obligación concreta.
 
 ## Preguntas frecuentes
 
-**¿Cuándo se presenta el modelo 720?**
-La presentación se hace generalmente entre el 1 de enero y el 31 de marzo del año siguiente al
-que corresponde la información, pero confirma el plazo exacto del ejercicio en curso en la sede
-electrónica de la Agencia Tributaria, ya que los plazos administrativos pueden variar.
+**¿Cuándo es obligatorio el modelo 720?**
+Cuando eres residente fiscal en España y el valor conjunto de alguno de los tres bloques (cuentas,
+valores, inmuebles) en el extranjero supera {euros(MODELO_720_VERIFICAR.umbralPorBloque)} a 31 de
+diciembre. Si ningún bloque lo supera, no hay obligación.
 
-**¿Qué pasa si tenía que presentarlo y no lo hice?**
-Existe un régimen de sanciones y, en años recientes, ha habido cambios legales relevantes sobre
-su alcance tras la sentencia del Tribunal de Justicia de la UE mencionada arriba. Si crees que
-estás en esta situación, consúltalo con un asesor fiscal en vez de guiarte por foros o artículos
-genéricos, incluido este.
+**¿Pago algo al presentar el modelo 720?**
+No. Es informativo. Los rendimientos y las ganancias de esas inversiones tributan en la renta como
+cualquier otra inversión. Ver [cómo tributan los fondos](/blog/como-tributan-los-fondos-de-inversion-en-espana/).
 
-**¿Afecta esto a un fondo indexado español comprado a través de un broker español?**
-Si tanto el fondo como el broker están en España, normalmente no entra en el ámbito del modelo
-720, que está pensado para activos situados en el extranjero. La duda real aparece cuando el
-broker, el fondo o el ETF están registrados o depositados fuera de España.
+**¿Afecta a un fondo indexado español comprado a través de un broker español?**
+Si tanto el fondo como la entidad donde está depositado son españoles, no son bienes situados en el
+extranjero. La duda aparece con fondos domiciliados fuera (por ejemplo, en Irlanda o Luxemburgo)
+comprados a través de entidades españolas: depende de cómo estén depositados, así que compruébalo
+con tu entidad.
+
+**¿Y las criptomonedas?**
+Las monedas virtuales custodiadas en el extranjero tienen su propia declaración informativa, el
+modelo 721, con reglas parecidas. No se declaran en el 720.
+
+**Soy menor de edad y tengo una cuenta en un broker extranjero, ¿me afecta?**
+La obligación depende de la residencia fiscal y de los importes, no de la edad. En el caso de un
+menor, la presentan sus representantes legales.
