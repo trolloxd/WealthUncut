@@ -8,8 +8,14 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 );
 ---
 
-<BaseLayout title="Blog" description={`Artículos de ${SITE.name} sobre cuentas, brokers, fondos indexados e impuestos.`}>
-  <h1 class="mb-8 font-display text-3xl text-ink">Blog</h1>
+<BaseLayout title="Blog" description={`Artículos de ${SITE.name} sobre fondos indexados, impuestos de la inversión en España y primeros pasos para invertir, con cifras calculadas y fuentes oficiales.`}>
+  <h1 class="mb-4 font-display text-3xl text-ink">Blog</h1>
+  <p class="mb-10 max-w-2xl text-ink-muted">
+    Fondos indexados, impuestos de la inversión en España y primeros pasos para empezar, con
+    ejemplos calculados y fuentes oficiales citadas en cada artículo. Si quieres ir directo a los
+    números, prueba la{' '}
+    <a href="/blog/rentabilidad-neta-fondo-indexado/" class="text-brand underline decoration-brand/30 hover:decoration-brand">calculadora de rentabilidad neta</a>.
+  </p>
   <ul class="grid gap-8">
     {posts.map((post) => (
       <li class="border-b border-border pb-8 last:border-none">
@@ -17,7 +23,9 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
           <h2 class="font-display text-xl text-ink group-hover:text-brand">{post.data.title}</h2>
           <p class="mt-2 text-ink-muted">{post.data.description}</p>
           <p class="mt-3 text-xs text-ink-faint">
-            {post.data.pubDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+            <time datetime={post.data.pubDate.toISOString().slice(0, 10)}>
+              {post.data.pubDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </time>
           </p>
         </a>
       </li>
