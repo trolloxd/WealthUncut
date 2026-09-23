@@ -4,10 +4,10 @@
  * No añadir tramos ni tipos nuevos sin fuente + fecha.
  */
 
-// VERIFICAR — tramos del IRPF del ahorro (rendimientos del capital mobiliario
+// VERIFICAR: tramos del IRPF del ahorro (rendimientos del capital mobiliario
 // y ganancias patrimoniales). Fuente: Agencia Tributaria (agenciatributaria.es).
 // Registrado el 2026-09-23 a partir de los tramos publicados en ejercicios
-// recientes — confirmar que siguen vigentes para el ejercicio fiscal actual
+// recientes; confirmar que siguen vigentes para el ejercicio fiscal actual
 // antes de publicar cualquier calculadora que los use.
 export const IRPF_AHORRO_BRACKETS_VERIFICAR = [
   { hasta: 6000, tipo: 0.19 },
@@ -18,7 +18,7 @@ export const IRPF_AHORRO_BRACKETS_VERIFICAR = [
 ] as const;
 
 export const IRPF_AHORRO_FUENTE_VERIFICAR = {
-  fuente: 'Agencia Tributaria — Impuesto sobre la Renta de las Personas Físicas, base del ahorro',
+  fuente: 'Agencia Tributaria, Impuesto sobre la Renta de las Personas Físicas, base del ahorro',
   url: 'https://sede.agenciatributaria.gob.es/',
   fechaRegistro: '2026-09-23',
   verificado: false,
