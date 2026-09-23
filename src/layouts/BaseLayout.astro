@@ -35,7 +35,9 @@ const {
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, SITE.url);
-const pageTitle = title === SITE.name ? title : `${title} · ${SITE.name}`;
+// Google corta los títulos hacia los 60 caracteres: el sufijo solo se añade si cabe.
+const withSuffix = `${title} · ${SITE.name}`;
+const pageTitle = title === SITE.name || withSuffix.length > 60 ? title : withSuffix;
 const ogImage = new URL('/og-default.png', SITE.url);
 
 const organizationJsonLd = {

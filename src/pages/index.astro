@@ -8,7 +8,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .slice(0, 5);
 ---
 
-<BaseLayout title={SITE.name} description={SITE.description} contentWidth="wide">
+<BaseLayout title={`${SITE.name}: finanzas prácticas para jóvenes en España`} description={SITE.description} contentWidth="wide">
   <section class="mx-auto max-w-2xl py-10 text-center">
     <p class="text-xs font-semibold uppercase tracking-widest text-brand">
       {SITE.name} · Finanzas sin humo
