@@ -249,12 +249,13 @@ Criterios aplicados en todos:
 
 ## Pendiente de David
 
-1. **Conectar el conector de Cloudflare en Claude.** No lo puedo hacer yo: su inicio de sesión
-   solo se abre desde tu interfaz de Claude. Escribe `/mcp` en esta conversación (o ve a
-   Conectores), busca "cloudflare" y pulsa iniciar sesión. Un minuto.
-2. **Antes de hacer push desde tu ordenador, haz `git pull`**: el workflow de publicación añade
+- ~~Conectar el conector de Cloudflare en Claude~~: descartado. Al intentarlo, Cloudflare rechaza
+   la dirección de retorno de la app de escritorio ("Redirect URI must use HTTPS or a local loopback
+   address"); es un fallo entre ambos, no de tu cuenta. No hace falta: los despliegues se comprueban
+   en la web en producción o en el panel de Cloudflare desde tu Chrome.
+1. **Antes de hacer push desde tu ordenador, haz `git pull`**: el workflow de publicación añade
    commits en GitHub los días de publicación.
-3. Opcional: tus perfiles de LinkedIn y X en `src/config/site.ts` (no los conozco, no los invento).
+2. Opcional: tus perfiles de LinkedIn y X en `src/config/site.ts` (no los conozco, no los invento).
 
 ### Ideas para cuando quieras (no las he hecho porque son funcionalidades nuevas, no arreglos)
 
