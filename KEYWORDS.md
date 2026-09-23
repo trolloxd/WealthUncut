@@ -137,6 +137,11 @@ genuina de la gente, no una idea forzada.
 | fondo de emergencia cuanto debe ser | `fondo-de-emergencia-cuanto-necesitas` | Borrador | Clúster 5 |
 | primeros pasos para invertir en españa, como empezar a invertir siendo joven | `primeros-pasos-para-invertir-en-espana` | Borrador | **Pilar clúster 5** |
 
+Herramientas (añadidas el 2026-09-23) que refuerzan clústeres con intención de "calculadora":
+fondo de emergencia (clúster 5), fondo indexado vs ETF (clúster 3), impuestos al vender un fondo
+(clúster 4: "cuando pago impuestos por vender un fondo indexado"), inflación (clúster 5) y
+modelo 720 (clúster 4). Viven en `/herramientas/` y se enlazan desde su artículo.
+
 Huecos sin artículo todavía (candidatos a próximas piezas, sin escribir): plan de pensiones vs
 fondo indexado (clúster 6, validado), cuenta bancaria para jóvenes por edad (clúster 1, validado,
 esperar a tener afiliación), mejor broker para fondos indexados (clúster 2, validado, esperar a

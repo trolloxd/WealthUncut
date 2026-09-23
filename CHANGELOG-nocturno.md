@@ -247,6 +247,27 @@ Criterios aplicados en todos:
   ninguna página.
 - **Frase de afiliación y temas del gestor**: sin tocar, como pediste.
 
+## 9. Cuarta tanda: cinco herramientas nuevas
+
+Sección nueva `/herramientas/` (en el menú y en la portada) con cinco calculadoras, cada una en su
+propia página con explicación del método, ejemplos calculados, límites, preguntas frecuentes y
+fuentes. Todas leen las cifras fiscales de `finance.ts` y están enlazadas desde su artículo.
+
+| Herramienta | Qué hace | Cómo la comprobé |
+|---|---|---|
+| Fondo de emergencia | Cifra según gastos esenciales y situación (criterio propio y explicado: 3 meses + 1 por factor de riesgo, de 3 a 8), cuánto falta y en cuánto tiempo | Valores por defecto revisados a mano en el navegador |
+| Fondo indexado vs ETF | Simulación mes a mes: comisión por compra, dinero parado entre compras, TER y los impuestos de cada cambio de producto (en el fondo, traspaso sin impuestos) | Con costes iguales da exactamente los 66.475 € del artículo de interés compuesto |
+| Impuestos al vender un fondo | FIFO por lotes, impuesto según tus otras ganancias o pérdidas del año, retención, lo que recibes y cuánto puedes retirar sin salir del 19% | Cálculo a mano de 4 escenarios, coincide al céntimo |
+| Inflación | Poder de compra del dinero parado o en una cuenta (con impuestos de los intereses) e interés mínimo para no perder | Tabla de la página calculada con script |
+| ¿Tengo que presentar el 720? | Bloque a bloque: umbral, regla de los 20.000 € respecto a la última declaración, venta de algo declarado | Pruebas de los casos límite (50.000 € justos, subidas de 15.000 € y 21.000 €, venta) |
+
+Además: arreglado un desbordamiento horizontal en móvil de las rejillas de las calculadoras
+(comprobado en las 7 páginas con calculadora a 375 px), y 0 enlaces rotos en 396 comprobados.
+
+No he hecho "muchas más" a propósito: la regla del proyecto es pocas y buenas, y Google penaliza
+herramientas de relleno. Estas cinco cubren keywords validadas y cada una aporta un cálculo que
+los artículos no podían hacer.
+
 ## Pendiente de David
 
 - ~~Conectar el conector de Cloudflare en Claude~~: descartado. Al intentarlo, Cloudflare rechaza

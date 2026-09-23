@@ -88,7 +88,13 @@ piezas pero buenas. Ritmo máximo: 3-4 piezas/semana. Herramientas antes que vol
   muestran como texto (evita 404) y se activan solos al publicar.
 - `src/components/TramosAhorroTabla.astro`: tabla de tramos del ahorro generada desde finance.ts.
 - `src/components/IndexFundCalculator.tsx`: simulador de rentabilidad neta (primera
-  herramienta).
+  herramienta, vive en el artículo `rentabilidad-neta-fondo-indexado`).
+- Herramientas en `/herramientas/` (carpeta nueva `src/pages/herramientas/`): cada una es una isla
+  React en `src/components/` (`EmergencyFundCalculator`, `FundVsEtfCalculator`,
+  `FundSaleTaxCalculator`, `InflationCalculator`, `Modelo720Checker`) con su página basada en
+  `src/layouts/ToolLayout.astro`. Piezas visuales comunes en `src/components/CalculatorUI.tsx`.
+  El listado (índice, portada) sale de `src/config/tools.ts`: una herramienta nueva se añade ahí.
+  Todas leen las cifras fiscales de `finance.ts`.
 - `src/pages/`: home, blog, autor, metodología, transparencia, legales, sugerencias (+ API con
   KV), RSS, 404.
 - `public/`: favicon propio, `og-default.png`, `_headers` (cabeceras de seguridad), robots.txt.
