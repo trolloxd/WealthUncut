@@ -122,6 +122,27 @@ genuina de la gente, no una idea forzada.
 3. Guardar Clúster 1 (cuentas/neobancos) y Clúster 2 (brokers) para cuando haya relaciones de
    afiliación activas, son los clústeres con más intención comercial.
 
+## Qué artículo cubre cada keyword (actualizado el 2026-09-23)
+
+| Keyword principal | Artículo | Estado | Pilar de su clúster |
+|---|---|---|---|
+| rentabilidad neta fondo indexado calculadora | `rentabilidad-neta-fondo-indexado` | Publicado | Herramienta central |
+| interes compuesto (calculadora, ejemplos) | `interes-compuesto-explicado-con-ejemplos` | Publicado | Clúster 5 |
+| que es un fondo indexado (y como funciona) | `que-es-un-fondo-indexado` | Borrador | **Pilar clúster 3** |
+| fondo indexado vs etf diferencias | `fondo-indexado-vs-etf-diferencias` | Borrador | Clúster 3 |
+| ter que es y cuanto es razonable pagar | `ter-fondo-que-es` | Borrador | Clúster 3 |
+| como tributan los fondos de inversion en españa, traspaso entre fondos tributa, irpf ahorro tramos | `como-tributan-los-fondos-de-inversion-en-espana` | Borrador | **Pilar clúster 4** |
+| modelo 720 cuando es obligatorio / obligados | `modelo-720-quien-tiene-que-presentarlo` | Borrador | Clúster 4 |
+| diferencia entre ahorrar e invertir | `diferencia-entre-ahorrar-e-invertir` | Borrador | Clúster 5 |
+| fondo de emergencia cuanto debe ser | `fondo-de-emergencia-cuanto-necesitas` | Borrador | Clúster 5 |
+| primeros pasos para invertir en españa, como empezar a invertir siendo joven | `primeros-pasos-para-invertir-en-espana` | Borrador | **Pilar clúster 5** |
+
+Huecos sin artículo todavía (candidatos a próximas piezas, sin escribir): plan de pensiones vs
+fondo indexado (clúster 6, validado), cuenta bancaria para jóvenes por edad (clúster 1, validado,
+esperar a tener afiliación), mejor broker para fondos indexados (clúster 2, validado, esperar a
+tener afiliación), impuesto por dividendos en España y cómo declarar ganancias de bolsa
+(clúster 4, sin validar).
+
 ## Siguiente paso
 
 Este documento ya tiene validación real (autocompletado) para 8 términos clave, pero sigue sin

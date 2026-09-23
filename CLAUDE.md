@@ -68,14 +68,24 @@ piezas pero buenas. Ritmo máximo: 3-4 piezas/semana. Herramientas antes que vol
 ## Estructura actual
 
 - `src/config/site.ts`: metadatos del sitio y del autor.
-- `src/config/finance.ts`: cifras fiscales VERIFICAR y lógica de cálculo del IRPF del ahorro.
+- `src/config/finance.ts`: cifras fiscales VERIFICAR (tramos del ahorro, retención, compensación,
+  regla de recompra, modelo 720, FGD) y lógica de cálculo del IRPF del ahorro. Los artículos
+  importan estas constantes en MDX en vez de escribir las cifras a mano.
 - `src/content.config.ts` + `src/content/blog/`: artículos en MDX.
-- `src/layouts/BaseLayout.astro`: head, SEO, JSON-LD (Organization, Person, WebSite, y
-  Article/BreadcrumbList vía `extraJsonLd` en páginas de blog).
-- `src/components/ArticleMeta.astro`: autoría, fecha de actualización, aviso de afiliación,
+- `src/layouts/BaseLayout.astro`: head, SEO, OG image, JSON-LD enlazado por `@id` (Organization,
+  Person, WebSite, y Article/BreadcrumbList vía `extraJsonLd` en páginas de blog). El sufijo
+  " · WealthUncut" del `<title>` solo se añade si cabe en 60 caracteres.
+- `src/components/ArticleMeta.astro`: autoría, fechas, aviso de afiliación, aviso educativo,
   fuentes.
+- `src/components/ArticleLink.astro`: sustituye a `<a>` en los MDX; los enlaces a borradores se
+  muestran como texto (evita 404) y se activan solos al publicar.
+- `src/components/TramosAhorroTabla.astro`: tabla de tramos del ahorro generada desde finance.ts.
 - `src/components/IndexFundCalculator.tsx`: simulador de rentabilidad neta (primera
   herramienta).
-- `src/pages/`: home, blog, autor, metodología, transparencia, legales, RSS, 404.
-- `KEYWORDS.md`: mapa de clusters y keywords hipótesis, pendiente de validar con el
-  Planificador de Keywords de Google.
+- `src/pages/`: home, blog, autor, metodología, transparencia, legales, sugerencias (+ API con
+  KV), RSS, 404.
+- `public/`: favicon propio, `og-default.png`, `_headers` (cabeceras de seguridad), robots.txt.
+- `KEYWORDS.md`: mapa de clusters y keywords, validado con autocompletado de Google, con el
+  artículo que cubre cada keyword.
+- Ojo con Astro: comprime el salto de línea entre texto y un `<a>` en la línea siguiente y se
+  pierde el espacio. Terminar la línea anterior con `{' '}`.

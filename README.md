@@ -1,43 +1,31 @@
-# Astro Starter Kit: Minimal
+# WealthUncut
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Sitio de finanzas prácticas para jóvenes en España: artículos y calculadoras sobre fondos
+indexados, impuestos de la inversión y primeros pasos. En producción en
+[wealthuncut.com](https://wealthuncut.com).
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+El contexto completo del proyecto (estrategia, reglas de contenido y cumplimiento, estructura)
+está en [`CLAUDE.md`](CLAUDE.md). El mapa de keywords, en [`KEYWORDS.md`](KEYWORDS.md).
 
-## 🚀 Project Structure
+## Comandos
 
-Inside of your Astro project, you'll see the following folders and files:
+| Comando | Qué hace |
+|---|---|
+| `npm install` | Instala dependencias |
+| `npm run dev` | Servidor local en `localhost:4321` |
+| `npm run build` | Genera el sitio en `./dist/` |
+| `npm run check` | Comprobación de tipos |
+| `npm run preview` | Sirve el build con el runtime de Cloudflare |
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Publicar un borrador
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+1. En el `.mdx` del artículo, cambia `draft: true` por `draft: false` (y actualiza `updatedDate`
+   si has cambiado el contenido).
+2. `npm run build` para comprobar que compila.
+3. Commit y push a `main`: Cloudflare despliega solo. Los enlaces de otros artículos hacia el que
+   acabas de publicar se activan automáticamente.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Stack
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Astro + MDX, islas de React para las calculadoras, Tailwind CSS v4, desplegado en Cloudflare
+Workers (static assets + KV para el buzón de sugerencias).
