@@ -2,6 +2,7 @@
 title: "Interés compuesto explicado con ejemplos reales"
 description: "Qué es el interés compuesto, con un ejemplo calculado de lo que cuesta esperar 10 años para empezar a invertir con el mismo dinero al mes."
 pubDate: 2026-09-23
+updatedDate: 2026-09-23
 author: "David Pérez Mitjà"
 tags: ["interés compuesto", "educación financiera", "fondos indexados"]
 sources:
@@ -21,24 +22,34 @@ de cálculo crece cada año, así que el mismo porcentaje da más euros en térm
 El efecto real no se nota en los primeros años. Se nota en la diferencia entre empezar diez
 años antes o diez años después, con exactamente el mismo dinero al mes.
 
+## La fórmula, para quien quiera verla
+
+El interés compuesto con aportaciones periódicas se calcula con la fórmula del valor futuro de
+una anualidad: `VF = A × [((1 + r)^n − 1) / r]`, donde `A` es la aportación periódica, `r` es
+la rentabilidad de cada periodo (por ejemplo, mensual) y `n` el número de periodos. No hace
+falta memorizarla para entender el efecto: basta con ver los números en la práctica, que es lo
+que hace el ejemplo de abajo y la calculadora al final del artículo.
+
 ## El ejemplo, calculado, no inventado
 
-Dos personas invierten 150 €/mes en un fondo indexado hasta los 65 años, con una rentabilidad
+Tres personas invierten 150 €/mes en un fondo indexado hasta los 65 años, con una rentabilidad
 bruta del 7% anual, un TER del 0,2% y sin comisión de broker, los mismos supuestos que usa
 [la calculadora de este sitio](/blog/rentabilidad-neta-fondo-indexado/). La única diferencia es
 la edad a la que empiezan.
 
-| | Empieza a los 25 | Empieza a los 35 |
-|---|---|---|
-| Años invertidos | 40 | 30 |
-| Total aportado | 72.000 € | 54.000 € |
-| Valor final bruto | 351.843 € | 169.084 € |
-| Valor final neto (tras impuestos) | 285.405 € | 143.734 € |
+| | Empieza a los 25 | Empieza a los 35 | Empieza a los 45 |
+|---|---|---|---|
+| Años invertidos | 40 | 30 | 20 |
+| Total aportado | 72.000 € | 54.000 € | 36.000 € |
+| Valor final bruto | 351.843 € | 169.084 € | 74.424 € |
+| Valor final neto (tras impuestos) | 285.405 € | 143.734 € | 66.475 € |
 
-La persona que empieza a los 25 aporta solo 18.000 € más en total (18.000 € es la diferencia de
-10 años de aportaciones), pero termina con **141.671 € más** en el bolsillo, neto de
-impuestos. Esa diferencia no viene de aportar más dinero. Viene de que esos primeros 10 años de
-aportaciones tienen 10 años más para componerse antes del final.
+La persona que empieza a los 25 aporta solo 18.000 € más que la que empieza a los 35 (la
+diferencia de 10 años de aportaciones), pero termina con **141.671 € más** en el bolsillo, neto
+de impuestos. Esa diferencia no viene de aportar más dinero. Viene de que esos primeros 10 años
+de aportaciones tienen 10 años más para componerse antes del final. La diferencia entre empezar
+a los 25 y a los 45 es aún mayor: 20 años de aportaciones extra (36.000 € más aportados) se
+traducen en **218.930 € más** netos.
 
 ## Por qué los primeros años "no se notan"
 
@@ -52,6 +63,21 @@ Esto tiene una consecuencia práctica: el coste de esperar no es proporcional al
 esperas. Esperar los primeros 5 años de tu vida laboral para empezar a invertir sale mucho más
 caro que esperar 5 años cuando ya llevas 20 invirtiendo, precisamente porque le quitas esos años
 al tramo donde el interés compuesto trabaja más.
+
+## Interés compuesto vs interés simple
+
+Con interés simple, solo el capital inicial genera intereses cada año, así que el crecimiento es
+lineal. Con interés compuesto, los intereses generados también generan intereses a partir del
+periodo siguiente, así que el crecimiento se acelera con el tiempo. La diferencia entre ambos
+es pequeña al principio y se dispara cuanto más largo es el horizonte, exactamente el mismo
+patrón que se ve en la tabla de arriba.
+
+## ¿De verdad lo dijo Einstein?
+
+Es habitual encontrar la frase "el interés compuesto es la fuerza más poderosa del universo"
+atribuida a Einstein. No existe ninguna fuente verificada (carta, artículo, discurso) que
+confirme que la dijo; es una atribución popular sin origen documentado. El concepto es real y
+útil, la cita probablemente no es suya.
 
 ## Pruébalo con tus propios números
 

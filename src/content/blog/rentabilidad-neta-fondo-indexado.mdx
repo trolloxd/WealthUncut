@@ -2,6 +2,7 @@
 title: "Cuánto te queda realmente de un fondo indexado"
 description: "Simulador propio para calcular la rentabilidad NETA de un fondo indexado en España, descontando TER, comisión del broker e IRPF del ahorro."
 pubDate: 2026-09-23
+updatedDate: 2026-09-23
 author: "David Pérez Mitjà"
 tags: ["fondos indexados", "calculadoras", "impuestos"]
 sources:
@@ -15,7 +16,10 @@ import IndexFundCalculator from '../../components/IndexFundCalculator';
 
 Cuando alguien te dice "los fondos indexados dan un 7% anual", esa cifra casi nunca es lo que
 tú te llevas. Entre medio están la comisión del fondo (TER), la comisión del broker si la
-tiene, y al final, cuando vendes, Hacienda se queda su parte a través del IRPF del ahorro.
+tiene, y al final, cuando vendes, Hacienda se queda su parte a través del IRPF del ahorro. La
+diferencia entre esa cifra de folleto y lo que de verdad acaba en tu bolsillo puede ser de
+varias decenas de miles de euros en un horizonte largo, y casi nadie la calcula antes de
+empezar a invertir.
 
 Esta calculadora hace ese descuento completo, con los tramos reales del IRPF del ahorro
 aplicados sobre la ganancia final, no sobre el capital total.
@@ -30,6 +34,63 @@ aplicados sobre la ganancia final, no sobre el capital total.
 3. Calculamos la ganancia total (valor final menos lo aportado) y le aplicamos los tramos
    progresivos del IRPF del ahorro, como si vendieras todo de una vez al final del periodo.
 
-Es una simplificación: no tiene en cuenta traspasos entre fondos (que en España no tributan),
-retiradas parciales, ni cambios futuros en la fiscalidad. Úsala para hacerte una idea realista
+## Un ejemplo paso a paso
+
+Supongamos que empiezas con 2.000 € y aportas 100 €/mes durante 15 años, con una rentabilidad
+bruta esperada del 6% y un TER del 0,25% (típico de un fondo indexado global de bajo coste):
+
+| Concepto | Importe |
+|---|---|
+| Total aportado (2.000 € + 100 €/mes × 180 meses) | 20.000 € |
+| Valor final bruto | 32.746 € |
+| Ganancia (bruto − aportado) | 12.746 € |
+| Impuesto sobre la ganancia (tramos IRPF ahorro) | 2.557 € |
+| **Valor final neto** | **30.190 €** |
+
+De los 12.746 € de ganancia, un 20% se queda en impuestos. El otro 80% es tuyo. Cambia
+cualquiera de estos supuestos en la calculadora de arriba para ver tu propio caso.
+
+## Por qué el TER importa más de lo que parece
+
+El TER es la comisión que más se puede comparar entre fondos antes de invertir, y su efecto se
+compone con el tiempo igual que la rentabilidad. Con 1.000 € iniciales, 200 €/mes durante 25
+años y una rentabilidad bruta del 7%, así cambia el resultado solo moviendo el TER:
+
+| TER anual | Valor final bruto | Valor final neto |
+|---|---|---|
+| 0,1% | 159.613 € | 138.052 € |
+| 0,2% | 157.231 € | 136.218 € |
+| 0,5% | 150.321 € | 130.897 € |
+| 1,0% | 139.550 € | 122.603 € |
+| 1,5% | 129.644 € | 114.976 € |
+| 2,0% | 120.533 € | 107.961 € |
+
+Pasar de un TER del 0,2% a uno del 1,5% (la diferencia entre un fondo indexado típico y muchos
+fondos gestionados activamente) se traduce en **21.242 € menos** en este ejemplo, con
+exactamente las mismas aportaciones y la misma rentabilidad bruta. Más detalle sobre qué es
+exactamente el TER y qué incluye en
+[este artículo](/blog/ter-fondo-que-es/).
+
+## Preguntas frecuentes
+
+**¿Cuánto necesito para empezar a invertir en un fondo indexado?**
+Depende del fondo y del broker: algunos permiten empezar desde 1 € en aportaciones periódicas,
+otros piden una aportación mínima inicial de varios cientos de euros. No hay un mínimo universal,
+conviene revisarlo en las condiciones concretas del fondo y del intermediario que elijas.
+
+**¿Cuándo pago impuestos exactamente?**
+Solo al reembolsar (vender) tus participaciones y convertirlas en dinero disponible. Los
+traspasos entre fondos de inversión no tributan en España. Más detalle en
+[cómo tributan los fondos de inversión en España](/blog/como-tributan-los-fondos-de-inversion-en-espana/).
+
+**¿Esta calculadora sirve también para un ETF?**
+El cálculo de comisiones y rentabilidad es el mismo, pero la fiscalidad no: los ETF tributan en
+cada venta, sin el diferimiento de los traspasos entre fondos. Ver
+[fondo indexado vs ETF](/blog/fondo-indexado-vs-etf-diferencias/).
+
+## Los límites de este cálculo
+
+Es una simplificación: no tiene en cuenta traspasos entre fondos, retiradas parciales, ni
+cambios futuros en la fiscalidad. Asume una rentabilidad bruta constante todos los años, cuando
+en la realidad varía (algunos años sube mucho, otros baja). Úsala para hacerte una idea realista
 del orden de magnitud, no como una proyección exacta ni como una recomendación de inversión.
