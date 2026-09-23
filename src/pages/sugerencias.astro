@@ -17,7 +17,7 @@ import { SITE } from '../config/site';
       dejes tu email, pero si lo haces podemos avisarte cuando publiquemos algo sobre tu tema.
     </p>
 
-    <form id="suggestion-form" class="card mt-8 grid gap-4 p-6">
+    <form id="suggestion-form" class="card relative mt-8 grid gap-4 p-6">
       <label class="grid gap-1 text-sm font-medium text-ink-muted">
         Tu sugerencia
         <textarea
@@ -32,8 +32,17 @@ import { SITE } from '../config/site';
       </label>
       <label class="grid gap-1 text-sm font-medium text-ink-muted">
         Email (opcional)
-        <input type="email" name="email" maxlength="200" class="campo-input" placeholder="tu@email.com" />
+        <input type="email" name="email" maxlength="200" autocomplete="email" class="campo-input" placeholder="tu@email.com" />
       </label>
+      <div aria-hidden="true" class="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label>No rellenes este campo <input type="text" name="web" tabindex="-1" autocomplete="off" /></label>
+      </div>
+      <p class="text-xs text-ink-faint">
+        Responsable: David Pérez Mitjà. Usamos tu sugerencia para decidir próximos artículos y, si
+        dejas tu email, solo para avisarte cuando publiquemos sobre tu tema. Puedes pedir que lo
+        borremos cuando quieras. Más información en la{' '}
+        <a href="/privacidad/" class="underline hover:text-ink">política de privacidad</a>.
+      </p>
       <button type="submit" class="btn-primary justify-self-start">Enviar sugerencia</button>
       <p id="suggestion-status" class="text-sm" role="status" aria-live="polite"></p>
     </form>
@@ -56,6 +65,7 @@ import { SITE } from '../config/site';
           body: JSON.stringify({
             mensaje: formData.get('mensaje'),
             email: formData.get('email'),
+            web: formData.get('web'),
           }),
         });
 
