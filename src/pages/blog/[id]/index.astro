@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { isPublished } from '../../../lib/posts';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ArticleMeta from '../../../components/ArticleMeta.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
@@ -7,7 +8,7 @@ import ArticleLink from '../../../components/ArticleLink.astro';
 import { SITE } from '../../../config/site';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const posts = await getCollection('blog', ({ data }) => isPublished(data));
   return posts.map((post) => ({
     params: { id: post.id },
     props: { post, allPosts: posts },

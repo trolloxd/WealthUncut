@@ -1,14 +1,15 @@
 ---
 /**
- * Sustituye a <a> dentro de los artículos MDX. Los borradores no se generan, así que un
- * enlace a uno daría 404 en producción: en ese caso se muestra el texto sin enlace. En
- * cuanto el artículo enlazado deja de ser borrador, el enlace vuelve a aparecer solo.
+ * Sustituye a <a> dentro de los artículos MDX. Los borradores y los artículos programados para
+ * más adelante no se generan, así que un enlace a uno daría 404: en ese caso se muestra el texto
+ * sin enlace. En cuanto el artículo enlazado se publica, el enlace vuelve a aparecer solo.
  */
 import { getCollection } from 'astro:content';
+import { isPublished } from '../lib/posts';
 
 const { href, ...rest } = Astro.props;
 
-const drafts = new Set((await getCollection('blog', ({ data }) => data.draft)).map((p) => p.id));
+const drafts = new Set((await getCollection('blog', ({ data }) => !isPublished(data))).map((p) => p.id));
 const slug = typeof href === 'string' ? href.match(/^\/blog\/([^/#?]+)\/?(?:[#?].*)?$/)?.[1] : undefined;
 const isDraftLink = slug !== undefined && drafts.has(slug);
 ---

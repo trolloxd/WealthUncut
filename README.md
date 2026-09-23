@@ -17,13 +17,14 @@ está en [`CLAUDE.md`](CLAUDE.md). El mapa de keywords, en [`KEYWORDS.md`](KEYWO
 | `npm run check` | Comprobación de tipos |
 | `npm run preview` | Sirve el build con el runtime de Cloudflare |
 
-## Publicar un borrador
+## Publicar o programar un artículo
 
-1. En el `.mdx` del artículo, cambia `draft: true` por `draft: false` (y actualiza `updatedDate`
-   si has cambiado el contenido).
-2. `npm run build` para comprobar que compila.
-3. Commit y push a `main`: Cloudflare despliega solo. Los enlaces de otros artículos hacia el que
-   acabas de publicar se activan automáticamente.
+1. En el `.mdx`, pon `draft: false` y en `pubDate` (y `updatedDate`) la fecha de publicación.
+2. Si la fecha es hoy o anterior, haz push y se publica en el siguiente despliegue.
+3. Si la fecha es futura, haz push igualmente: el artículo queda oculto y el workflow
+   `publicacion-programada.yml` lo publica ese día (solo martes, viernes o domingo; para otro día,
+   lánzalo a mano desde la pestaña Actions de GitHub).
+4. Los enlaces de otros artículos hacia él se activan solos al publicarse.
 
 ## Stack
 

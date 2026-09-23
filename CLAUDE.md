@@ -72,6 +72,11 @@ piezas pero buenas. Ritmo máximo: 3-4 piezas/semana. Herramientas antes que vol
   regla de recompra, modelo 720, FGD) y lógica de cálculo del IRPF del ahorro. Los artículos
   importan estas constantes en MDX en vez de escribir las cifras a mano.
 - `src/content.config.ts` + `src/content/blog/`: artículos en MDX.
+- `src/lib/posts.ts` (carpeta nueva): `isPublished()`, única regla de qué artículo está publicado
+  (no borrador y `pubDate` ya alcanzada). Un artículo con `pubDate` futura queda programado.
+- `.github/workflows/publicacion-programada.yml`: martes, viernes y domingo a las 05:00 UTC, si
+  algún artículo tiene `pubDate` de ese día, hace un commit vacío para que Cloudflare reconstruya
+  y lo publique.
 - `src/layouts/BaseLayout.astro`: head, SEO, OG image, JSON-LD enlazado por `@id` (Organization,
   Person, WebSite, y Article/BreadcrumbList vía `extraJsonLd` en páginas de blog). El sufijo
   " · WealthUncut" del `<title>` solo se añade si cabe en 60 caracteres.

@@ -1,0 +1,45 @@
+# Publicación programada de artículos.
+#
+# El sitio es estático: un artículo con `pubDate` futura no aparece hasta que se construye de nuevo
+# después de esa fecha (ver src/lib/posts.ts). Cloudflare construye y despliega en cada push a
+# main, así que este workflow, los días de publicación, comprueba si algún artículo tiene
+# `pubDate` igual a hoy y, si lo hay, hace un commit vacío para disparar el despliegue.
+#
+# Días de publicación: martes, viernes y domingo. 05:00 UTC = 07:00 en Madrid en horario de
+# verano (06:00 en invierno). También se puede lanzar a mano desde la pestaña Actions de GitHub.
+
+name: Publicación programada
+
+on:
+  schedule:
+    - cron: '0 5 * * 0,2,5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Buscar artículos programados para hoy
+        id: buscar
+        run: |
+          hoy=$(date -u +%Y-%m-%d)
+          articulos=$(grep -l "^pubDate: ${hoy}" src/content/blog/*.md* 2>/dev/null | xargs -r grep -L "^draft: true" || true)
+          echo "Hoy: ${hoy}"
+          echo "Artículos: ${articulos:-ninguno}"
+          if [ -n "$articulos" ]; then
+            echo "publicar=true" >> "$GITHUB_OUTPUT"
+            echo "lista=$(echo "$articulos" | xargs -n1 basename | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Disparar el despliegue
+        if: steps.buscar.outputs.publicar == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --allow-empty -m "Publicación programada: ${{ steps.buscar.outputs.lista }}"
+          git push

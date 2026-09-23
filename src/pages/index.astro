@@ -1,9 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
+import { isPublished } from '../lib/posts';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE, AUTHOR } from '../config/site';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft))
+const posts = (await getCollection('blog', ({ data }) => isPublished(data)))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 5);
 ---
