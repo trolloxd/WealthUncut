@@ -1,6 +1,11 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../config/site';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
 ---
 
 <BaseLayout title="Página no encontrada" description={`Esta página no existe en ${SITE.name}.`} noindex>
@@ -14,5 +19,19 @@ import { SITE } from '../config/site';
       <a href="/" class="btn-primary">Volver al inicio</a>
       <a href="/blog/" class="btn-secondary">Ver el blog</a>
     </div>
+    {posts.length > 0 && (
+      <div class="mt-10 w-full border-t border-border pt-8">
+        <h2 class="mb-4 font-display text-xl text-ink">Quizá buscabas</h2>
+        <ul class="grid gap-3">
+          {posts.map((post) => (
+            <li>
+              <a href={`/blog/${post.id}/`} class="text-brand underline decoration-brand/30 hover:decoration-brand">
+                {post.data.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
   </div>
 </BaseLayout>

@@ -81,6 +81,7 @@ export default function IndexFundCalculator() {
           <input
             type="number"
             min={0}
+            inputMode="numeric"
             value={aportacionInicial}
             onChange={(e) => setAportacionInicial(Number(e.target.value))}
             className="campo-input"
@@ -90,6 +91,7 @@ export default function IndexFundCalculator() {
           <input
             type="number"
             min={0}
+            inputMode="numeric"
             value={aportacionMensual}
             onChange={(e) => setAportacionMensual(Number(e.target.value))}
             className="campo-input"
@@ -109,6 +111,7 @@ export default function IndexFundCalculator() {
           <input
             type="number"
             step={0.1}
+            inputMode="decimal"
             value={rentabilidadBrutaAnual}
             onChange={(e) => setRentabilidadBrutaAnual(Number(e.target.value))}
             className="campo-input"
@@ -118,6 +121,7 @@ export default function IndexFundCalculator() {
           <input
             type="number"
             step={0.01}
+            inputMode="decimal"
             value={terAnual}
             onChange={(e) => setTerAnual(Number(e.target.value))}
             className="campo-input"
@@ -127,6 +131,7 @@ export default function IndexFundCalculator() {
           <input
             type="number"
             step={0.01}
+            inputMode="decimal"
             value={comisionBrokerAnual}
             onChange={(e) => setComisionBrokerAnual(Number(e.target.value))}
             className="campo-input"
