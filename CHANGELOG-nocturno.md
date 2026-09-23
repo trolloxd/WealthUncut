@@ -179,6 +179,32 @@ Criterios aplicados en todos:
   `KEYWORDS.md` (qué artículo cubre cada keyword y qué huecos quedan) y `README.md` (el de la
   plantilla de Astro sustituido por uno del proyecto, con cómo publicar un borrador).
 
+## 7. Segunda tanda: rendimiento medido y artículos publicados
+
+- **Medición real con Lighthouse (móvil) sobre producción.** Antes: portada 97, calculadora 89;
+  accesibilidad, buenas prácticas y SEO a 100. Problemas encontrados: CSS que bloqueaba el primer
+  pintado (hasta 940 ms en la calculadora) y un desplazamiento de diseño de 0,072 en la portada
+  porque Fraunces llegaba tarde y el titular cambiaba de líneas.
+- Arreglos: precarga de las dos fuentes principales (mismos archivos que usa el CSS, sin doble
+  descarga), Inter solo en el subconjunto latino (cubre español y catalán) y CSS incrustado en el
+  HTML (~9 KB comprimido). Resultado: **desplazamiento de diseño 0,072 → 0,001** en la portada y
+  primer pintado de la calculadora 2,7 s → 2,3 s. Puntuación de rendimiento en móvil después:
+  **portada 97 → 99** (LCP 1,8 s), **calculadora 89 → 91**, interés compuesto 95. Lighthouse
+  varía unos puntos entre ejecuciones; lo que no depende del ruido es el desplazamiento de diseño.
+  Lo que queda en la calculadora es sobre todo el JavaScript de React de la herramienta, que es
+  necesario para que funcione.
+- Validado en producción: todos los bloques JSON-LD se leen sin errores, el sitemap tiene fechas y
+  no incluye el 404, y ninguna tabla desborda en móvil.
+- **"Interés compuesto explicado"**: 752 → 1.348 palabras. Tabla de interés simple vs compuesto,
+  regla del 72 comparada con el cálculo exacto, el ejemplo de las edades en euros de hoy (con el 2%
+  del BCE) y preguntas frecuentes ("cuánto se gana con 100 € al mes"). Todo calculado.
+- **"Cuánto te queda realmente de un fondo indexado"**: 678 → 1.012 palabras. Tabla de sensibilidad
+  a la rentabilidad bruta (3% a 8%, que es el dato que más mueve el resultado), cómo pasarlo a euros
+  de hoy y por qué vender por partes puede pagar algo menos de impuestos que el cálculo de la
+  calculadora.
+- **404**: ahora sugiere los artículos publicados en vez de solo "volver al inicio".
+- **Calculadora en móvil**: teclado numérico/decimal en los campos.
+
 ## Pendiente de David
 
 Ordenado por prioridad. Nada de esto lo he hecho yo porque requiere tu decisión, tu cuenta o una
@@ -240,6 +266,14 @@ validación profesional.
     Cloudflare Email Routing es gratuito: Cloudflare → wealthuncut.com → Email → Email Routing →
     activar → dirección de destino (tu gmail) → crear `contacto@`. Después dime y lo cambio en todo
     el sitio.
+
+### Ideas para cuando quieras (no las he hecho porque son funcionalidades nuevas, no arreglos)
+
+- Imagen para redes distinta por artículo (ahora todos comparten `og-default.png`).
+- Que la calculadora muestre también el resultado en euros de hoy (descontando inflación); ahora el
+  artículo lo explica con un ejemplo, pero la herramienta no lo calcula.
+- Próximos artículos con keyword ya validada y sin cubrir: plan de pensiones vs fondo indexado,
+  dividendos y cómo declarar ganancias de bolsa (ver `KEYWORDS.md`).
 
 ### Notas técnicas (no requieren acción)
 
