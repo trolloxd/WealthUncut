@@ -205,67 +205,56 @@ Criterios aplicados en todos:
 - **404**: ahora sugiere los artículos publicados en vez de solo "volver al inicio".
 - **Calculadora en móvil**: teclado numérico/decimal en los campos.
 
+## 8. Tercera tanda: lo que me pediste que hiciera yo
+
+- **Borradores programados** (uno cada martes, viernes y domingo, pilares primero):
+
+  | Fecha | Artículo |
+  |---|---|
+  | Vie 25/09 | Qué es un fondo indexado |
+  | Dom 27/09 | Cómo tributan los fondos de inversión |
+  | Mar 29/09 | TER de un fondo |
+  | Vie 02/10 | Fondo indexado vs ETF |
+  | Dom 04/10 | Primeros pasos para invertir |
+  | Mar 06/10 | Diferencia entre ahorrar e invertir |
+  | Vie 09/10 | Fondo de emergencia |
+  | Dom 11/10 | Modelo 720 |
+
+  Cómo funciona: nueva regla única `isPublished()` (`src/lib/posts.ts`, carpeta nueva): un
+  artículo con fecha futura no se genera ni se enlaza. El workflow de GitHub
+  `publicacion-programada.yml` se ejecuta martes, viernes y domingo a las 07:00 (hora de Madrid en
+  verano) y, si algún artículo tiene esa fecha, hace un commit vacío para que Cloudflare
+  reconstruya el sitio. Probado: un artículo con fecha de hoy se publica y con fecha futura no; el
+  workflow se ejecutó en GitHub y **su push funcionó** (el commit "Publicación programada" de hoy).
+  También se puede lanzar a mano desde Actions con la opción "forzar".
+- **Cifras verificadas**: todas las constantes de `finance.ts` comprobadas contra la fuente
+  primaria (Manual de Renta 2025 de la AEAT, preguntas frecuentes del 720, BOE y FGD) y marcadas
+  como verificadas, con lo que se comprobó en cada comentario. Desaparecen los avisos "pendiente de
+  verificar" de la calculadora y de la tabla de tramos. Son las cifras del ejercicio 2025: hay que
+  revisarlas cuando salga el manual del ejercicio 2026.
+- **Afirmaciones confirmadas**: escala autonómica del ahorro igual en toda España (art. 76 LIRPF),
+  regla de recompra de 1 año para valores no cotizados, requisitos del traspaso con fondos
+  extranjeros (registro en la CNMV, más de 500 partícipes) y la reducción de sanción del 720. Esta
+  última ahora se explica con cifras: art. 198 LGT, 20 € por dato, mínimo 300 €, máximo 20.000 €,
+  a la mitad si se presenta tarde sin requerimiento.
+- **Search Console**: ya estaba dado de alta y verificado, con el sitemap enviado y leído
+  correctamente (9 páginas). La página de la calculadora ya aparece indexada. Pedí volver a rastrearla
+  y Google devolvió un error temporal; no hace falta repetirlo, el sitemap ya le indica la fecha de
+  actualización.
+- **Email del dominio**: Cloudflare Email Routing activado (MX, SPF y DKIM publicados y
+  comprobados con DNS público), regla `contacto@wealthuncut.com` → tu gmail, activa. La web ya
+  muestra `contacto@wealthuncut.com` en autor, aviso legal y privacidad; tu gmail no aparece en
+  ninguna página.
+- **Frase de afiliación y temas del gestor**: sin tocar, como pediste.
+
 ## Pendiente de David
 
-Ordenado por prioridad. Nada de esto lo he hecho yo porque requiere tu decisión, tu cuenta o una
-validación profesional.
-
-### Urgente (5-15 minutos cada una)
-
-1. **Confirmar las cifras `VERIFICAR` de `src/config/finance.ts`** contra las fuentes enlazadas en
-   cada constante. Cuando estén confirmadas, cambia `verificado: false` a `true` en
-   `IRPF_AHORRO_FUENTE_VERIFICAR` y desaparece el aviso "pendiente de verificar" de la calculadora
-   y de la tabla de tramos. Lista:
-   - Tramos del ahorro 19/21/23/27/**30%** (el 30% es el cambio de esta noche).
-   - Retención del 19% en reembolsos de fondos.
-   - Compensación de pérdidas: 25% cruzado, 4 años de arrastre.
-   - Regla de recompra: 2 meses (cotizados) / 1 año (no cotizados, como los fondos).
-   - Modelo 720: 50.000 € por bloque, 20.000 € de incremento, plazo de enero a marzo.
-   - Fondo de Garantía de Depósitos: 100.000 €.
-2. **Dar de alta el sitio en Google Search Console** (no es monetización, pero sin esto no sabrás
-   si Google te indexa): search.google.com/search-console → Añadir propiedad → "Dominio" →
-   `wealthuncut.com` → copia el registro TXT → Cloudflare → wealthuncut.com → DNS → Añadir
-   registro TXT → Verificar. Después, en "Sitemaps", envía `https://wealthuncut.com/sitemap-index.xml`.
-   Opcional: Bing Webmaster Tools permite importar la propiedad desde Search Console en un clic.
-3. **Autorizar el conector de Cloudflare** en Claude (aparece como pendiente de autenticación en
-   esta sesión). Esta noche verifiqué cada despliegue mirando la web en producción, pero sin el
-   conector no puedo leer los logs de build de Cloudflare si algún día falla uno.
-
-### Decisiones de contenido
-
-4. **Publicar los 8 borradores, a tu ritmo.** La regla de `CLAUDE.md` es máximo 3-4 piezas por
-   semana. Propuesta de orden (primero los que ya enlaza la calculadora publicada, que ahora mismo
-   salen como texto sin enlace):
-   - Semana 1: qué es un fondo indexado, cómo tributan los fondos, TER.
-   - Semana 2: fondo indexado vs ETF, primeros pasos, ahorrar vs invertir.
-   - Semana 3: fondo de emergencia, modelo 720.
-   Al publicar: `draft: false`, pon en `pubDate` y `updatedDate` la fecha real de publicación
-   (ahora todos tienen el 23 de septiembre) y haz push.
-5. **Revisar estas afirmaciones** de los artículos nuevos; están basadas en fuentes oficiales pero
-   son matices legales que conviene que confirmes (o tu gestor):
-   - Que la escala autonómica del ahorro es igual en toda España (la fija la ley estatal).
-   - Que la regla de recompra de 1 año se aplica a participaciones de fondos no cotizados.
-   - Que presentar el 720 fuera de plazo sin requerimiento tiene un tratamiento más favorable.
-   - El caso de fondos extranjeros (Irlanda, Luxemburgo) comprados a través de entidades españolas
-     y el 720: el artículo lo deja como "compruébalo con tu entidad", sin afirmar nada.
-6. **Tus perfiles sociales** (LinkedIn, X): están vacíos en `src/config/site.ts`. Si los añades,
-   conviene incluirlos también en el schema `Person` como `sameAs`; refuerza la autoría ante Google.
-
-### Legales (para el gestor o abogado)
-
-7. Lo que ya estaba pendiente: si "Barcelona, España" sin dirección exacta cumple el art. 10 de la
-   LSSI-CE, o si hace falta una dirección de notificación.
-8. **El aviso legal y la página de transparencia dicen en presente que el sitio participa en
-   programas de afiliación**, pero todavía no tienes ninguno. No lo he cambiado porque son textos
-   legales pendientes de revisión, pero conviene que digan "puede participar" hasta que haya
-   afiliados reales.
-9. Plazo de conservación de las sugerencias y transferencias internacionales de Cloudflare (el
-   `[PENDIENTE]` nuevo de la política de privacidad).
-10. **Tu gmail personal es público** en el aviso legal, la privacidad y ahora la página de autor
-    (ya lo era antes de esta noche). Si prefieres un email del dominio (`contacto@wealthuncut.com`),
-    Cloudflare Email Routing es gratuito: Cloudflare → wealthuncut.com → Email → Email Routing →
-    activar → dirección de destino (tu gmail) → crear `contacto@`. Después dime y lo cambio en todo
-    el sitio.
+1. **Conectar el conector de Cloudflare en Claude.** No lo puedo hacer yo: su inicio de sesión
+   solo se abre desde tu interfaz de Claude. Escribe `/mcp` en esta conversación (o ve a
+   Conectores), busca "cloudflare" y pulsa iniciar sesión. Un minuto.
+2. **Antes de hacer push desde tu ordenador, haz `git pull`**: el workflow de publicación añade
+   commits en GitHub los días de publicación.
+3. Opcional: tus perfiles de LinkedIn y X en `src/config/site.ts` (no los conozco, no los invento).
 
 ### Ideas para cuando quieras (no las he hecho porque son funcionalidades nuevas, no arreglos)
 
