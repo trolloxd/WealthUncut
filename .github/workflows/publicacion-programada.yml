@@ -49,3 +49,24 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit --allow-empty -m "Publicación programada: ${{ steps.buscar.outputs.lista }}"
           git push
+
+      # Avisa a Bing y al resto de buscadores de IndexNow en cuanto el artículo está en la web.
+      # La clave es pública a propósito: el protocolo la verifica con el archivo del mismo nombre
+      # en la raíz del sitio (public/<clave>.txt).
+      - name: Avisar a los buscadores (IndexNow)
+        if: steps.buscar.outputs.publicar == 'true' && steps.buscar.outputs.slugs != ''
+        env:
+          INDEXNOW_KEY: 779801530cd4a0cab1b93d7a35c775c8
+        run: |
+          urls=""
+          for slug in ${{ steps.buscar.outputs.slugs }}; do
+            url="https://wealthuncut.com/blog/${slug}/"
+            for i in $(seq 1 40); do
+              [ "$(curl -s -o /dev/null -w '%{http_code}' "$url")" = "200" ] && break
+              sleep 15
+            done
+            urls="${urls}\"${url}\","
+          done
+          body="{\"host\":\"wealthuncut.com\",\"key\":\"${INDEXNOW_KEY}\",\"keyLocation\":\"https://wealthuncut.com/${INDEXNOW_KEY}.txt\",\"urlList\":[${urls}\"https://wealthuncut.com/blog/\",\"https://wealthuncut.com/\"]}"
+          echo "$body"
+          curl -s -o /dev/null -w "IndexNow: %{http_code}" -X POST -H 'Content-Type: application/json; charset=utf-8' -d "$body" https://api.indexnow.org/indexnow
