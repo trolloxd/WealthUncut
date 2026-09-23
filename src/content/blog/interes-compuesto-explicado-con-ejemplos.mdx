@@ -1,0 +1,66 @@
+---
+title: "Interés compuesto explicado con ejemplos: por qué 10 años de diferencia valen 140.000 €"
+description: "Qué es el interés compuesto, con un ejemplo calculado (no inventado) de lo que cuesta esperar 10 años para empezar a invertir con el mismo dinero al mes."
+pubDate: 2026-09-23
+author: "David Pérez Mitjà"
+tags: ["interés compuesto", "educación financiera", "fondos indexados"]
+sources:
+  - label: "Agencia Tributaria — IRPF, base del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/"
+hasAffiliateLinks: false
+draft: false
+---
+
+import IndexFundCalculator from '../../components/IndexFundCalculator';
+
+"Interés compuesto" es una de esas frases que todo el mundo repite y poca gente calcula de
+verdad. La idea es simple: los intereses que ganas un año se suman al capital, y al año
+siguiente generan intereses también. No es dinero extra "por arte de magia" — es que tu base
+de cálculo crece cada año, así que el mismo porcentaje da más euros en términos absolutos.
+
+El efecto real no se nota en los primeros años. Se nota en la diferencia entre empezar diez
+años antes o diez años después, con exactamente el mismo dinero al mes.
+
+## El ejemplo, calculado, no inventado
+
+Dos personas invierten 150 €/mes en un fondo indexado hasta los 65 años, con una rentabilidad
+bruta del 7% anual, un TER del 0,2% y sin comisión de broker — los mismos supuestos que usa
+[la calculadora de este sitio](/blog/rentabilidad-neta-fondo-indexado/). La única diferencia es
+la edad a la que empiezan.
+
+| | Empieza a los 25 | Empieza a los 35 |
+|---|---|---|
+| Años invertidos | 40 | 30 |
+| Total aportado | 72.000 € | 54.000 € |
+| Valor final bruto | 351.843 € | 169.084 € |
+| Valor final neto (tras impuestos) | 285.405 € | 143.734 € |
+
+La persona que empieza a los 25 aporta solo 18.000 € más en total (18.000 € es la diferencia de
+10 años de aportaciones) — pero termina con **141.671 € más** en el bolsillo, neto de
+impuestos. Esa diferencia no viene de aportar más dinero. Viene de que esos primeros 10 años de
+aportaciones tienen 10 años más para componerse antes del final.
+
+## Por qué los primeros años "no se notan"
+
+Con estos mismos supuestos, después de 5 años de aportar 150 €/mes, el saldo bruto es de
+10.628 €, de los cuales 9.000 € son simplemente lo que has aportado tú. El interés
+compuesto todavía no ha hecho gran cosa. Es en la segunda mitad del periodo donde la curva se
+dispara, porque para entonces el capital acumulado (no solo tu aportación mensual) es lo que
+genera la mayor parte del crecimiento.
+
+Esto tiene una consecuencia práctica: el coste de esperar no es proporcional al tiempo que
+esperas. Esperar los primeros 5 años de tu vida laboral para empezar a invertir sale mucho más
+caro que esperar 5 años cuando ya llevas 20 invirtiendo, precisamente porque le quitas esos años
+al tramo donde el interés compuesto trabaja más.
+
+## Pruébalo con tus propios números
+
+<IndexFundCalculator client:load />
+
+## Los límites de este cálculo
+
+Esto es una simplificación con fines educativos, con los mismos supuestos y limitaciones que la
+calculadora: rentabilidad constante (en la realidad varía año a año), impuesto aplicado de una
+sola vez al final sobre la ganancia total, y sin contar traspasos entre fondos ni retiradas
+parciales. Nadie invierte 40 años seguidos sin tocar el dinero ni un cambio de circunstancias —
+el ejemplo sirve para ver el orden de magnitud del efecto, no como una promesa de resultado.

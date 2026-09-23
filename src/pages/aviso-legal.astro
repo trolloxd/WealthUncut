@@ -6,10 +6,11 @@ import { SITE, AUTHOR } from '../config/site';
 <BaseLayout title="Aviso legal" description={`Condiciones de uso y datos identificativos de ${SITE.name}.`}>
   <h1 class="mb-2 font-display text-3xl text-ink">Aviso legal</h1>
   <p class="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
-    <strong>Borrador pendiente de revisión legal.</strong> Este texto es una plantilla de partida
-    y no debe publicarse tal cual: faltan datos identificativos reales y conviene que lo revise
-    un profesional antes de activarlo, especialmente si más adelante se procesan pagos o datos
-    sensibles.
+    <strong>Borrador pendiente de revisión legal.</strong> Falta el NIF (David no quiere que
+    quede una cifra inventada aquí) y hay que confirmar con un gestor o abogado si mostrar solo
+    la localidad (en vez de la dirección exacta) cumple el artículo 10 de la LSSI-CE, dado que
+    David prefiere no publicar su domicilio completo. No publicar tal cual sin resolver estos
+    dos puntos.
   </p>
 
   <div class="prose max-w-none">
@@ -21,8 +22,8 @@ import { SITE, AUTHOR } from '../config/site';
     <ul>
       <li>Titular: {AUTHOR.name}</li>
       <li>NIF: [PENDIENTE — completar antes de publicar]</li>
-      <li>Domicilio: [PENDIENTE — completar antes de publicar]</li>
-      <li>Correo electrónico de contacto: [PENDIENTE — completar antes de publicar]</li>
+      <li>Domicilio: Barcelona, España</li>
+      <li>Correo electrónico de contacto: david.perez.45678@gmail.com</li>
       <li>Sitio web: {SITE.url}</li>
     </ul>
 
