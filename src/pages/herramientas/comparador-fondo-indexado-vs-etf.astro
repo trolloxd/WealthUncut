@@ -1,0 +1,96 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import FundVsEtfCalculator from '../../components/FundVsEtfCalculator';
+---
+
+<ToolLayout
+  title="Fondo indexado o ETF: comparador con tus números"
+  name="Comparador fondo indexado vs ETF"
+  description="Compara cuánto te quedaría con un fondo indexado o con un ETF en España: comisiones por compra, TER e impuestos al cambiar de producto, con tus propios números."
+  pubDate={new Date('2026-09-23')}
+  sources={[
+    { label: 'AEAT, Manual práctico de Renta 2025: régimen especial de diferimiento (traspasos entre IIC)', url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/determinacion-importe-ganancias-perdidas-patrimon-especificas/transmisiones-reembolsos-acciones-iic/regimen-especial-diferimiento-tributacion.html' },
+    { label: 'AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro', url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html' },
+    { label: 'CNMV: Los fondos cotizados (ETF), guía informativa', url: 'https://cnmv.es/DocPortal/Publicaciones/Guias/Los_fondos_cotizados_ETF.pdf' },
+  ]}
+>
+  <p>
+    Un fondo indexado y un ETF pueden seguir el mismo índice, pero en España no te dejan lo mismo en
+    el bolsillo. Tres cosas marcan la diferencia: lo que pagas cada vez que compras, el TER de cada
+    producto y, sobre todo, que <strong>cambiar de un fondo a otro no tributa y cambiar de un ETF a
+    otro sí</strong>. Esta calculadora lo simula mes a mes con tus números.
+  </p>
+
+  <FundVsEtfCalculator client:load />
+
+  <h2>Cómo leer el resultado</h2>
+  <ul>
+    <li>
+      <strong>Comisiones de compra</strong>: cada compra de ETF paga la comisión de tu broker. Con
+      aportaciones pequeñas pesa mucho: 2 € sobre 150 € es un 1,3% de entrada. Comprar menos veces
+      al año las reduce, a cambio de tener el dinero parado hasta la siguiente compra (la
+      calculadora también lo tiene en cuenta).
+    </li>
+    <li>
+      <strong>Impuestos al cambiar</strong>: cada vez que cambias de producto (para rebalancear, para
+      pasarte a uno más barato o para cambiar de estrategia), el ETF vende y paga impuestos sobre la
+      ganancia acumulada. El fondo hace un traspaso y no paga nada hasta el final. Ese dinero que no
+      pagas sigue invertido y componiéndose.
+    </li>
+    <li>
+      <strong>TER</strong>: si el ETF es más barato que el fondo, puede compensar lo anterior en
+      horizontes largos. Pon el TER real de los dos productos que estés comparando.
+    </li>
+  </ul>
+
+  <h2>Algunos resultados de ejemplo</h2>
+  <p>
+    Con 150 €/mes durante 20 años, un 7% bruto anual y el mismo TER (0,2%) en los dos:
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Escenario</th><th scope="col">Fondo (neto)</th><th scope="col">ETF (neto)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Sin comisiones y sin cambios</td><td>66.475 €</td><td>66.475 €</td></tr>
+      <tr><td>ETF con 2 € por compra, compra mensual</td><td>66.475 €</td><td>65.691 €</td></tr>
+      <tr><td>ETF con 2 € por compra, compra trimestral</td><td>66.475 €</td><td>65.893 €</td></tr>
+      <tr><td>Un cambio de producto a mitad, sin comisiones</td><td>66.475 €</td><td>65.541 €</td></tr>
+      <tr><td>Tres cambios de producto y 2 € por compra</td><td>66.475 €</td><td>64.149 €</td></tr>
+      <tr><td>Sin cambios, pero el ETF con TER del 0,07%</td><td>66.475 €</td><td>67.347 €</td></tr>
+    </tbody>
+  </table>
+  <p>
+    La conclusión no es que uno gane siempre: si vas a aportar poco a poco y reajustar la cartera,
+    el fondo suele salir por delante; si compras pocas veces, no vas a tocar nada en años y el ETF es
+    claramente más barato, puede ganar el ETF. Por eso compensa hacer la cuenta con tus números.
+  </p>
+
+  <h2>Qué simplifica</h2>
+  <ul>
+    <li>Rentabilidad constante todos los años (en la realidad varía mucho).</li>
+    <li>Cada venta tributa como si no tuvieras otras ganancias ni pérdidas ese año.</li>
+    <li>Los cambios de producto se reparten a lo largo del periodo y usan todo el saldo.</li>
+    <li>No incluye custodia, cambio de divisa ni el diferencial de compraventa del ETF.</li>
+    <li>El traspaso solo vale entre fondos que cumplan los requisitos (en fondos extranjeros, entre otros, estar registrados en la CNMV); los ETF nunca lo tienen.</li>
+  </ul>
+
+  <p>
+    La explicación completa de las diferencias está en{' '}
+    <ArticleLink href="/blog/fondo-indexado-vs-etf-diferencias/">fondo indexado vs ETF</ArticleLink>, y
+    cómo tributa cada venta, en{' '}
+    <ArticleLink href="/blog/como-tributan-los-fondos-de-inversion-en-espana/">cómo tributan los fondos de inversión</ArticleLink>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Qué es mejor, un fondo indexado o un ETF?</strong><br />
+    Depende de cómo vayas a invertir. Con aportaciones periódicas pequeñas y cambios de producto,
+    suele ganar el fondo por comisiones y por el traspaso sin impuestos. Con pocas compras y un ETF
+    claramente más barato, puede ganar el ETF.</p>
+  <p><strong>¿Puedo traspasar de un ETF a un fondo sin pagar impuestos?</strong><br />
+    No. Salir de un ETF es siempre una venta que tributa por la ganancia.</p>
+  <p><strong>¿Dónde encuentro el TER de cada producto?</strong><br />
+    En su documento de datos fundamentales, como "costes corrientes". Más en{' '}
+    <ArticleLink href="/blog/ter-fondo-que-es/">qué es el TER</ArticleLink>.</p>
+</ToolLayout>

@@ -1,0 +1,67 @@
+---
+/**
+ * Página de una herramienta (/herramientas/<slug>/): misma autoría, fechas, aviso educativo y
+ * fuentes que un artículo, más JSON-LD de aplicación web. El contenido (calculadora, explicación,
+ * preguntas frecuentes) va en el slot, dentro de .prose.
+ */
+import BaseLayout from './BaseLayout.astro';
+import ArticleMeta from '../components/ArticleMeta.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE, AUTHOR } from '../config/site';
+
+interface Props {
+  title: string;
+  /** Nombre corto para las migas de pan y el listado de herramientas. */
+  name: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  sources?: { label: string; url: string }[];
+}
+
+const { title, name, description, pubDate, updatedDate, sources = [] } = Astro.props;
+const url = new URL(Astro.url.pathname, SITE.url).href;
+
+const appJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  '@id': `${url}#app`,
+  name,
+  description,
+  url,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Web',
+  inLanguage: SITE.locale,
+  isAccessibleForFree: true,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+  author: { '@id': `${SITE.url}/autor/#person`, '@type': 'Person', name: AUTHOR.name },
+  publisher: { '@id': `${SITE.url}/#organization` },
+  isPartOf: { '@id': `${SITE.url}/#website` },
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Herramientas', item: `${SITE.url}/herramientas/` },
+    { '@type': 'ListItem', position: 3, name, item: url },
+  ],
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  publishedDate={pubDate}
+  updatedDate={updatedDate}
+  extraJsonLd={[appJsonLd, breadcrumbJsonLd]}
+>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Herramientas', href: '/herramientas/' }, { label: name }]} />
+  <article class="prose max-w-none">
+    <h1>{title}</h1>
+    <ArticleMeta author={AUTHOR.name} pubDate={pubDate} updatedDate={updatedDate} sources={sources} hasAffiliateLinks={false}>
+      <slot />
+    </ArticleMeta>
+  </article>
+</BaseLayout>

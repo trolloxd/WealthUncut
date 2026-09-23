@@ -1,0 +1,98 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import EmergencyFundCalculator from '../../components/EmergencyFundCalculator';
+import { FGD_COBERTURA } from '../../config/finance';
+
+const euros = (n: number) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'always' }).format(n)} €`;
+---
+
+<ToolLayout
+  title="Calculadora de fondo de emergencia: cuánto necesitas"
+  name="Calculadora de fondo de emergencia"
+  description="Calcula cuánto debe ser tu fondo de emergencia según tus gastos esenciales y tu situación, cuánto te falta y en cuánto tiempo lo completas."
+  pubDate={new Date('2026-09-23')}
+  sources={[
+    { label: 'INE: Encuesta de Presupuestos Familiares, año 2025', url: 'https://www.ine.es/dyngs/Prensa/EPF2025.htm' },
+    { label: 'Fondo de Garantía de Depósitos: depósitos dinerarios', url: FGD_COBERTURA.url },
+  ]}
+>
+  <p>
+    El fondo de emergencia es el dinero que te permite pagar un imprevisto (un despido, una
+    reparación, una baja) sin endeudarte ni vender inversiones en mal momento. Esta calculadora te
+    dice cuánto necesitas según tus gastos reales y tu situación, cuánto te falta y cuánto tardarás
+    en reunirlo al ritmo que puedes ahorrar.
+  </p>
+
+  <EmergencyFundCalculator client:load />
+
+  <h2>Cómo calcula los meses de colchón</h2>
+  <p>
+    La referencia habitual en educación financiera es tener entre 3 y 6 meses de gastos
+    esenciales. Para concretar dentro de ese rango, la calculadora usa un criterio propio y sencillo:
+    parte de 3 meses y suma meses por cada factor que hace más probable o más largo quedarte sin
+    ingresos.
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Factor</th><th scope="col">Meses que suma</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Base para cualquier persona</td><td>3</td></tr>
+      <tr><td>Contrato temporal o de prácticas</td><td>+1</td></tr>
+      <tr><td>Autónomo o ingresos variables</td><td>+2</td></tr>
+      <tr><td>Personas a tu cargo</td><td>+1</td></tr>
+      <tr><td>Única fuente de ingresos del hogar</td><td>+1</td></tr>
+      <tr><td>Coche, vivienda en propiedad u otros posibles gastos grandes</td><td>+1</td></tr>
+    </tbody>
+  </table>
+  <p>
+    El resultado va de 3 a 8 meses. No es una norma ni una garantía: es una forma ordenada de pensar
+    en tu riesgo. Si tu sector tarda mucho en contratar o tienes deudas caras, tiene sentido ir más
+    arriba.
+  </p>
+
+  <h2>Qué cuenta como gasto esencial</h2>
+  <p>
+    Lo que tendrías que seguir pagando aunque recortaras todo lo demás: vivienda, suministros,
+    comida, transporte, seguros y pagos fijos que no puedes cancelar. No incluyas ocio, suscripciones
+    que darías de baja ni viajes. Los gastos anuales (seguro del coche, IBI) cuentan en su parte
+    mensual.
+  </p>
+  <p>
+    Como referencia, según la Encuesta de Presupuestos Familiares del INE (año 2025), el gasto medio
+    por persona en España fue de {euros(14066)} al año. Vivienda y suministros, alimentación y
+    transporte suman el 60,7% del presupuesto de los hogares: unos {euros(712)} al mes por persona.
+    Es una media nacional que incluye una estimación del alquiler de quien vive en casa propia, así
+    que úsala solo para comprobar que tus cifras son razonables.
+  </p>
+
+  <h2>Dónde guardarlo</h2>
+  <p>
+    En algo líquido y estable: una cuenta separada de la del día a día, una cuenta remunerada o
+    depósitos que puedas cancelar sin perder el capital. Los depósitos en entidades adheridas al Fondo
+    de Garantía de Depósitos están cubiertos hasta {euros(FGD_COBERTURA.importe)} por titular y
+    entidad. No en bolsa ni en fondos indexados: pueden caer un 30% justo el mes que lo necesites.
+    Lo explicamos con más detalle en{' '}
+    <ArticleLink href="/blog/fondo-de-emergencia-cuanto-necesitas/">cuánto necesitas de fondo de emergencia</ArticleLink>.
+  </p>
+
+  <h2>Y cuando lo tengas</h2>
+  <p>
+    El dinero que sigas ahorrando cada mes ya puede ir a objetivos a largo plazo. Si quieres ver
+    cuánto podría crecer invirtiéndolo, prueba la{' '}
+    <a href="/blog/rentabilidad-neta-fondo-indexado/">calculadora de rentabilidad neta</a>. La
+    diferencia entre las dos cosas está en{' '}
+    <ArticleLink href="/blog/diferencia-entre-ahorrar-e-invertir/">la diferencia entre ahorrar e invertir</ArticleLink>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Cuánto debe ser el fondo de emergencia?</strong><br />
+    Entre 3 y 6 meses de gastos esenciales es la referencia habitual; con ingresos inestables o
+    personas a cargo, más. Los gastos esenciales, no el sueldo.</p>
+  <p><strong>¿Puedo invertir mientras lo construyo?</strong><br />
+    Es una decisión personal. Lo importante es no invertir el dinero que ya sabes que vas a
+    necesitar pronto.</p>
+  <p><strong>¿Qué hago si lo uso?</strong><br />
+    Nada malo: para eso está. Vuelve a llenarlo antes de aumentar lo que inviertes.</p>
+</ToolLayout>

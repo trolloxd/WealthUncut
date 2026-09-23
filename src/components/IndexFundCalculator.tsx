@@ -1,13 +1,6 @@
 import { useMemo, useState } from 'react';
 import { calcularImpuestoAhorro, IRPF_AHORRO_FUENTE } from '../config/finance';
-
-function formatEuros(value: number): string {
-  return new Intl.NumberFormat('es-ES', {
-    style: 'currency',
-    currency: 'EUR',
-    maximumFractionDigits: 0,
-  }).format(value);
-}
+import { Campo, Resumen, formatEuros } from './CalculatorUI';
 
 interface Resultado {
   valorFinalBruto: number;
@@ -165,40 +158,3 @@ export default function IndexFundCalculator() {
   );
 }
 
-function Campo({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="grid gap-1 text-sm font-medium text-ink-muted">
-      {label}
-      {children}
-    </label>
-  );
-}
-
-function Resumen({
-  etiqueta,
-  valor,
-  destacado = false,
-  negativo = false,
-}: {
-  etiqueta: string;
-  valor: string;
-  destacado?: boolean;
-  negativo?: boolean;
-}) {
-  return (
-    <div className="flex items-baseline justify-between gap-3">
-      <span className="text-sm text-ink-muted">{etiqueta}</span>
-      <span
-        className={
-          destacado
-            ? 'font-display text-xl font-semibold text-brand'
-            : negativo
-              ? 'text-base font-semibold text-accent'
-              : 'text-base font-semibold text-ink'
-        }
-      >
-        {valor}
-      </span>
-    </div>
-  );
-}

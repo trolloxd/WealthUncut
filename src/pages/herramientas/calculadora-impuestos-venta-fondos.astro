@@ -1,0 +1,91 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import TramosAhorroTabla from '../../components/TramosAhorroTabla.astro';
+import FundSaleTaxCalculator from '../../components/FundSaleTaxCalculator';
+import { IRPF_AHORRO_BRACKETS, IRPF_AHORRO_FUENTE, RETENCION_REEMBOLSO_FONDOS } from '../../config/finance';
+
+const [t1, t2] = IRPF_AHORRO_BRACKETS;
+const pct = (n: number) => `${Math.round(n * 100)}%`;
+const euros = (n: number) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'always' }).format(n)} €`;
+---
+
+<ToolLayout
+  title="Cuánto pagas a Hacienda al vender un fondo"
+  name="Calculadora de impuestos al vender un fondo"
+  description="Calcula cuánto pagas de IRPF al vender un fondo de inversión o un ETF en España: qué participaciones vendes por FIFO, ganancia, retención y lo que recibes."
+  pubDate={new Date('2026-09-23')}
+  sources={[
+    { label: 'AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro', url: IRPF_AHORRO_FUENTE.url },
+    { label: 'AEAT, Manual práctico de Renta 2025: transmisiones o reembolsos de participaciones en IIC (régimen general, FIFO)', url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/determinacion-importe-ganancias-perdidas-patrimon-especificas/transmisiones-reembolsos-acciones-iic/regimen-general.html' },
+    { label: 'AEAT, Manual práctico de Renta 2025: reglas de integración y compensación de rentas', url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c12-integracion-compensacion-rentas/reglas-integracion-compensacion-rentas.html' },
+  ]}
+>
+  <p>
+    Cuando vendes (reembolsas) participaciones de un fondo o un ETF, pagas impuestos solo por la
+    ganancia, no por todo lo que retiras. Pero qué ganancia es depende de qué participaciones
+    considera Hacienda que vendes, y el impuesto depende de tus otras ganancias del año. Esta
+    calculadora hace las dos cosas con tus compras reales.
+  </p>
+
+  <FundSaleTaxCalculator client:load />
+
+  <h2>Cómo calcula</h2>
+  <ol>
+    <li>
+      <strong>FIFO.</strong> Si compraste en varias veces y vendes solo una parte, la ley considera que
+      vendes primero las participaciones más antiguas. No puedes elegir. Por eso en una cartera que
+      ha subido, las primeras ventas suelen tener la ganancia más grande.
+    </li>
+    <li>
+      <strong>Ganancia.</strong> Valor de venta de esas participaciones menos lo que te costaron.
+    </li>
+    <li>
+      <strong>Impuesto.</strong> Se suma la ganancia a tus otras ganancias del ahorro del año y se
+      aplican los tramos. La calculadora muestra solo lo que añade esta venta. Si pones pérdidas en
+      "otras ganancias", las compensa.
+    </li>
+    <li>
+      <strong>Retención.</strong> Si la entidad es española, el día de la venta te retiene el{' '}
+      {Math.round(RETENCION_REEMBOLSO_FONDOS * 100)}% de la ganancia y lo ingresa a Hacienda por ti.
+      En la declaración de la renta del año siguiente se regulariza: pagas la diferencia o te la
+      devuelven.
+    </li>
+  </ol>
+
+  <h2>Tramos que se aplican</h2>
+  <TramosAhorroTabla />
+
+  <h2>El truco de repartir las ventas entre años</h2>
+  <p>
+    Como los tramos son progresivos, vender todo en un año puede hacer que parte de la ganancia pague
+    el {pct(t2.tipo)} o más. Si no necesitas todo el dinero a la vez, repartir los reembolsos entre
+    varios años puede mantener más ganancia en el tramo del {pct(t1.tipo)}. El dato "máximo a retirar
+    sin pasar del tramo del {pct(t1.tipo)}" te dice cuánto puedes sacar este año sin salir de él,
+    teniendo en cuenta tus otras ganancias.
+    Con un fondo, además, puedes cambiar de producto con un traspaso sin tributar.
+  </p>
+
+  <h2>Qué no tiene en cuenta</h2>
+  <ul>
+    <li>La compensación con intereses o dividendos (límite del 25%) y las pérdidas de años anteriores.</li>
+    <li>Participaciones compradas antes de 1995, que tienen reglas propias.</li>
+    <li>Comisiones de venta, que reducirían algo la ganancia.</li>
+    <li>La regla que impide computar una pérdida si recompras lo mismo poco antes o después.</li>
+  </ul>
+  <p>
+    Todo esto se explica en{' '}
+    <ArticleLink href="/blog/como-tributan-los-fondos-de-inversion-en-espana/">cómo tributan los fondos de inversión en España</ArticleLink>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Cuánto se paga a Hacienda por vender un fondo?</strong><br />
+    Un {pct(t1.tipo)} de la ganancia hasta {euros(t1.hasta)} de ganancias del ahorro en el año,
+    un {pct(t2.tipo)} de {euros(t1.hasta)} a {euros(t2.hasta)}, y más por encima. Solo sobre la ganancia, no sobre todo lo que vendes.</p>
+  <p><strong>¿Y si vendo con pérdidas?</strong><br />
+    No pagas nada, y la pérdida puede compensar otras ganancias del mismo año o de los cuatro
+    siguientes.</p>
+  <p><strong>¿Funciona para ETF y acciones?</strong><br />
+    Sí para el cálculo de FIFO, ganancia e impuesto. La diferencia es que con ETF y acciones no hay
+    traspaso sin impuestos, y la retención depende del tipo de producto y de la entidad.</p>
+</ToolLayout>
