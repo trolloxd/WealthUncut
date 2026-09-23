@@ -27,11 +27,13 @@ function simular(params: {
 }): Resultado {
   const { aportacionInicial, aportacionMensual, anios, rentabilidadBrutaAnual, terAnual, comisionBrokerAnual } = params;
 
+  // Puede ser negativa si las comisiones superan la rentabilidad; el mínimo evita un
+  // resultado sin sentido (perder más del 100% en un año).
   const rentabilidadNetaAnual = Math.max(
-    0,
+    -0.99,
     rentabilidadBrutaAnual / 100 - terAnual / 100 - comisionBrokerAnual / 100
   );
-  const meses = Math.round(anios * 12);
+  const meses = Math.max(0, Math.round(anios * 12));
   const rMensual = Math.pow(1 + rentabilidadNetaAnual, 1 / 12) - 1;
 
   let valorFinalBruto: number;
@@ -132,7 +134,7 @@ export default function IndexFundCalculator() {
         </Campo>
       </form>
 
-      <div className="flex flex-col justify-center gap-3 rounded-xl bg-cream p-5">
+      <div className="flex flex-col justify-center gap-3 rounded-xl bg-cream p-5" aria-live="polite">
         <Resumen etiqueta="Total aportado" valor={formatEuros(resultado.totalAportado)} />
         <Resumen etiqueta="Valor final bruto" valor={formatEuros(resultado.valorFinalBruto)} />
         <Resumen etiqueta="Ganancia" valor={formatEuros(resultado.ganancia)} />
