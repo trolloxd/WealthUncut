@@ -21,7 +21,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
     <div class="mt-8 flex flex-wrap justify-center gap-3">
       <a href="/blog/rentabilidad-neta-fondo-indexado/" class="btn-primary">Probar la calculadora</a>
-      <a href="/metodologia" class="btn-secondary">Cómo trabajamos</a>
+      <a href="/metodologia/" class="btn-secondary">Cómo trabajamos</a>
     </div>
 
     <dl class="mx-auto mt-10 flex max-w-md flex-wrap items-center justify-center gap-x-10 gap-y-3 border-t border-border pt-6 text-sm">
@@ -40,7 +40,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     </dl>
 
     <p class="mt-6 text-sm text-ink-faint">
-      Por <a href="/autor" class="underline hover:text-ink">{AUTHOR.name}</a> · sin recomendaciones de inversión personalizadas.
+      Por <a href="/autor/" class="underline hover:text-ink">{AUTHOR.name}</a> · sin recomendaciones de inversión personalizadas.
     </p>
   </section>
 

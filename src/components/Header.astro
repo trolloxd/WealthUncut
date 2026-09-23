@@ -2,10 +2,13 @@
 import { SITE } from '../config/site';
 
 const navItems = [
-  { href: '/blog', label: 'Blog' },
-  { href: '/autor', label: 'Autor' },
-  { href: '/metodologia', label: 'Metodología' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/autor/', label: 'Autor' },
+  { href: '/metodologia/', label: 'Metodología' },
 ];
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || (href === '/blog/' && path.startsWith('/blog/'));
 ---
 
 <header class="border-b border-border">
@@ -13,9 +16,13 @@ const navItems = [
     <a href="/" class="font-display text-xl font-semibold tracking-tight text-brand">
       {SITE.name}
     </a>
-    <nav class="order-3 flex w-full items-center gap-5 text-sm font-medium text-ink-muted sm:order-none sm:w-auto sm:gap-7">
+    <nav aria-label="Principal" class="order-3 flex w-full items-center gap-5 text-sm font-medium text-ink-muted sm:order-none sm:w-auto sm:gap-7">
       {navItems.map((item) => (
-        <a href={item.href} class="hover:text-ink">
+        <a
+          href={item.href}
+          aria-current={path === item.href ? 'page' : undefined}
+          class:list={['hover:text-ink', isCurrent(item.href) && 'text-ink']}
+        >
           {item.label}
         </a>
       ))}
