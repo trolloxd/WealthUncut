@@ -36,13 +36,13 @@ piezas pero buenas. Ritmo máximo: 3-4 piezas/semana. Herramientas antes que vol
   legal visible.
 - Enlaces de afiliado: `rel="sponsored nofollow"` + aviso de transparencia visible (página de
   divulgación + aviso en los artículos afectados, campo `hasAffiliateLinks` en el frontmatter).
-- Páginas legales en español (aviso legal, privacidad, cookies): **actualmente son borradores
-  con placeholders `[PENDIENTE]`, no publicar sin revisión legal**. El NIF queda pendiente a
-  propósito (David no quiere uno inventado). El domicilio muestra solo "Barcelona, España" (sin
-  dirección exacta) porque David no quiere su domicilio particular público; confirmar con un
-  gestor si esto satisface el artículo 10 de la LSSI-CE o si hace falta una dirección de
-  notificación (apartado de correos, domicilio virtual). Banner de consentimiento (CMP) real
-  pendiente de conectar antes de activar AdSense o analítica no esencial en el EEE.
+- Páginas legales en español (aviso legal, privacidad, cookies): **borradores pendientes de
+  revisión legal profesional antes de considerarlas definitivas**. NIF real ya añadido
+  (36745189Z). El domicilio muestra solo "Barcelona, España" (sin dirección exacta) porque
+  David no quiere su domicilio particular público; confirmar con un gestor si esto satisface el
+  artículo 10 de la LSSI-CE o si hace falta una dirección de notificación (apartado de correos,
+  domicilio virtual). Banner de consentimiento (CMP) real pendiente de conectar antes de activar
+  AdSense o analítica no esencial en el EEE.
 - **Todas las cifras fiscales y de comisiones viven en `src/config/finance.ts`**, con fuente y
   fecha, marcadas `VERIFICAR` hasta que David las confirme. Nunca inventar tramos ni tipos
   nuevos sin fuente y fecha. Lo mismo aplica a cualquier dato identificativo real (NIF,
