@@ -268,15 +268,37 @@ No he hecho "muchas más" a propósito: la regla del proyecto es pocas y buenas,
 herramientas de relleno. Estas cinco cubren keywords validadas y cada una aporta un cálculo que
 los artículos no podían hacer.
 
+## 10. Sección /mercados/ con edición diaria automática
+
+Decisión tuya (24/09): un artículo diario de mercados escrito y publicado automáticamente, sin
+revisión previa, con la condición de cero errores. Queda anotada en `CLAUDE.md` con el riesgo.
+
+- **Qué es**: `/mercados/` (en el menú y con la última edición en la portada). Cada día, "qué ha
+  pasado, por qué y cómo te afecta", con datos oficiales del BCE (tipos de cambio, tipo de
+  depósito, €STR, rentabilidad de la deuda a 2 y 10 años), tabla de variaciones y gráficas propias.
+  No se reproducen gráficas de índices bursátiles ni imágenes de terceros por licencias y derechos
+  de autor.
+- **Quién la escribe**: una rutina en la nube de Claude (Opus 5.5) que se ejecuta cada día a las
+  05:00 UTC (07:00 en Madrid en verano, 06:00 en invierno) y no depende de tu ordenador. Sigue
+  `MERCADOS-PROCEDIMIENTO.md`: cada cifra en dos fuentes independientes o en la oficial, y si algo
+  no se puede verificar, no se publica. Puedes verla, pausarla o cambiarla en
+  https://claude.ai/code/routines/trig_0194xBpuUmcsYU1qUKrdg2yt
+- **Primera edición** (24/09), hecha por mí con el mismo procedimiento. Detectó dos datos malos
+  antes de publicar: el paro semanal de EE. UU. no coincidía entre fuentes (se publicó como "por
+  debajo de 200.000") y una fuente situaba el dato PCE el 25/09 cuando el calendario oficial dice
+  el 30/09.
+
 ## Pendiente de David
 
 - ~~Conectar el conector de Cloudflare en Claude~~: descartado. Al intentarlo, Cloudflare rechaza
    la dirección de retorno de la app de escritorio ("Redirect URI must use HTTPS or a local loopback
    address"); es un fallo entre ambos, no de tu cuenta. No hace falta: los despliegues se comprueban
    en la web en producción o en el panel de Cloudflare desde tu Chrome.
-1. **Antes de hacer push desde tu ordenador, haz `git pull`**: el workflow de publicación añade
-   commits en GitHub los días de publicación.
-2. Opcional: tus perfiles de LinkedIn y X en `src/config/site.ts` (no los conozco, no los invento).
+1. **Antes de hacer push desde tu ordenador, haz `git pull`**: el workflow de publicación y la
+   rutina de mercados añaden commits en GitHub.
+2. **Echa un vistazo a las primeras ediciones de /mercados/** (viernes y fin de semana). La rutina
+   es nueva: si algo del tono o del formato no te gusta, dímelo y ajusto el procedimiento.
+3. Opcional: tus perfiles de LinkedIn y X en `src/config/site.ts` (no los conozco, no los invento).
 
 ### Ideas para cuando quieras (no las he hecho porque son funcionalidades nuevas, no arreglos)
 
