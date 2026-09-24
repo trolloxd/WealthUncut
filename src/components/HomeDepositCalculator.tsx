@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT, ITP_VIVIENDA_USADA, calcularITP } from '../config/finance';
-import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, formatPct } from './CalculatorUI';
+import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros } from './CalculatorUI';
 
 export type ComunidadItpId = keyof typeof ITP_VIVIENDA_USADA;
 

@@ -89,6 +89,30 @@ cambiarlas). A diferencia de las cifras fiscales, aquí no hay una fuente oficia
 son ofertas y productos de bancos y gestoras, así que la verificación es cruzar comparadores
 financieros reconocidos, nunca inventar.
 
+## Seguridad (2026-09-24)
+
+- **Cabeceras** en `public/_headers`: `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`,
+  `Permissions-Policy`, `Strict-Transport-Security` (HSTS), `Cross-Origin-Opener-Policy` y
+  `Cross-Origin-Resource-Policy`. Cloudflare las sirve tal cual junto a los assets estáticos.
+- **CSP estricta** vía `security.csp` en `astro.config.mjs`: Astro calcula el hash SHA-256 de cada
+  `<script>`/`<style>` propio (inline, por el `inlineStylesheets: 'always'` y la hidratación de las
+  islas) y genera una etiqueta `<meta http-equiv="Content-Security-Policy">` distinta por página,
+  sin `'unsafe-inline'`. `frame-ancestors` no se incluye ahí a propósito (la spec de CSP no permite
+  esa directiva por `<meta>`, solo por cabecera HTTP): la protección de esa directiva ya la da
+  `X-Frame-Options`. Si se añade algún script de terceros (p. ej. Turnstile), hay que sumar su
+  origen a `scriptDirective.resources`/`connect-src`/`frame-src` en `astro.config.mjs`.
+- **`src/pages/api/sugerencias.ts`** (único endpoint que escribe datos): límite de 5 peticiones por
+  IP y hora contra el propio KV (clave `ratelimit:sugerencias:<ip>`, con `expirationTtl`), rechazo
+  de cuerpos de más de 10 KB antes de parsear el JSON, honeypot invisible, y validación de longitud
+  del mensaje y del email. No hay ningún endpoint que lea el KV públicamente: las sugerencias solo
+  se pueden escribir, nunca listar ni leer desde fuera.
+- El resto del sitio es HTML estático servido por la red de Cloudflare, lo que ya da una protección
+  fuerte contra ataques volumétricos (DDoS de capa 3/4) sin configuración adicional.
+- Pendiente de que David lo active manualmente en el panel de Cloudflare (requiere su sesión, no se
+  puede hacer por API sin autorizar el conector): Bot Fight Mode (gratis, Security → Bots) y
+  comprobar que SSL/TLS está en modo "Full (strict)". Son un par de clics, no bloquean nada de lo
+  de arriba.
+
 ## Estructura actual
 
 - `src/config/site.ts`: metadatos del sitio y del autor.

@@ -553,10 +553,10 @@ export const ITP_VIVIENDA_USADA = {
   melilla: { nombre: 'Melilla', brackets: [{ hasta: Infinity, tipo: 0.06 }] },
 } as const;
 
-export const ITP_VIVIENDA_USADA_FUENTES = [
+export const ITP_VIVIENDA_USADA_FUENTES: { label: string; url: string }[] = [
   { label: 'Hipotips: tabla de ITP por comunidades autónomas para vivienda usada', url: 'https://hipotips.com/itp-por-comunidades-2025-conoce-los-tipos-reducidos/' },
   { label: 'Rankia: el ITP en cada comunidad autónoma', url: 'https://www.rankia.com/blog/mejores-hipotecas/3233016-impuesto-transmisiones-patrimoniales-itp-cada-comunidad-autonoma' },
-] as const;
+];
 
 // Estimación (no una cifra oficial única) de notaría, registro de la propiedad y gestoría al
 // comprar una vivienda: estos aranceles sí están regulados por el Estado (Real Decreto 1426/1989 y

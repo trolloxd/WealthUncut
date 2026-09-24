@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { calcularImpuestoAhorro, PLAN_PENSIONES } from '../config/finance';
-import { CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, formatPct } from './CalculatorUI';
+import { CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros } from './CalculatorUI';
 
 export interface ParamsPensionVsFondo {
   aportacionAnual: number;

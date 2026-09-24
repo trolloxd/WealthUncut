@@ -33,6 +33,29 @@ export default defineConfig({
   // El CSS completo pesa ~9 KB comprimido: incrustarlo evita un viaje de red que bloquea el
   // primer pintado (medido con Lighthouse en móvil).
   build: { inlineStylesheets: 'always' },
+  // Astro calcula el hash SHA-256 de cada <script>/<style> propios (inline, por el
+  // inlineStylesheets de arriba y la hidratación de las islas) y los mete en una etiqueta
+  // <meta http-equiv="Content-Security-Policy">, distinta en cada página. No usamos
+  // 'unsafe-inline': solo se ejecuta lo que Astro ha generado en el build, nada inyectado luego.
+  // Si se añade Turnstile (formulario de sugerencias) hay que sumar aquí
+  // https://challenges.cloudflare.com a scriptDirective.resources, frame-src y connect-src.
+  security: {
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+        // frame-ancestors no se puede entregar por <meta> (solo por cabecera HTTP, spec de CSP):
+        // la protección contra clickjacking real la da X-Frame-Options en public/_headers.
+        "frame-src 'none'",
+        "img-src 'self' data:",
+        "font-src 'self'",
+        "connect-src 'self'",
+        'upgrade-insecure-requests',
+      ],
+    },
+  },
   adapter: cloudflare(),
   integrations: [
     react(),

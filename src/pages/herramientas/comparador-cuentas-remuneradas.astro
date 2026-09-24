@@ -4,8 +4,6 @@ import ArticleLink from '../../components/ArticleLink.astro';
 import CuentasRemuneradasTabla from '../../components/CuentasRemuneradasTabla.astro';
 import datos from '../../data/cuentas-remuneradas/ultimo.json';
 import { FGD_COBERTURA } from '../../config/finance';
-
-const fecha = new Date(`${datos.fecha}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
 <ToolLayout
