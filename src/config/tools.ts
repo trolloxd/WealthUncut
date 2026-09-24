@@ -30,4 +30,9 @@ export const TOOLS = [
     name: '¿Tengo que presentar el modelo 720?',
     description: 'Comprobación bloque a bloque si tienes cuentas, fondos o ETF en el extranjero.',
   },
+  {
+    href: '/herramientas/simulador-hipoteca-euribor/',
+    name: 'Simulador de hipoteca con el euríbor real',
+    description: 'Cuota de una hipoteca fija, variable o mixta con el euríbor real y escenarios de subida y bajada.',
+  },
 ] as const;

@@ -1,0 +1,85 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import MortgageCalculator from '../../components/MortgageCalculator';
+import euriborData from '../../data/euribor/ultimo.json';
+
+const euriborInicial: number = euriborData.ultimoValor;
+const euriborMes = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' }).format(
+  new Date(`${euriborData.ultimoMes}-01T00:00:00Z`)
+);
+---
+
+<ToolLayout
+  title="Simulador de hipoteca con el euríbor real"
+  name="Simulador de hipoteca"
+  description="Calcula la cuota de una hipoteca fija, variable o mixta con el euríbor a 12 meses real del Banco Central Europeo, con escenarios de subida y bajada."
+  pubDate={new Date('2026-09-24')}
+  sources={[
+    {
+      label: `Banco Central Europeo: euríbor a 12 meses, media mensual (${euriborMes})`,
+      url: euriborData.fuenteUrl,
+    },
+  ]}
+>
+  <p>
+    La cuota de una hipoteca depende del capital, el plazo y el tipo de interés, y si es variable o
+    mixta, también del euríbor. Este simulador usa el dato real del euríbor a 12 meses que publica
+    el Banco Central Europeo, y te deja probar qué pasa con la cuota si sube o baja.
+  </p>
+
+  <MortgageCalculator client:load euriborInicial={euriborInicial} euriborMes={euriborMes} />
+
+  <h2>Qué significa fija, variable y mixta</h2>
+  <p>
+    En una hipoteca <strong>fija</strong> el tipo de interés no cambia durante toda la vida del
+    préstamo: la cuota es siempre la misma. En una <strong>variable</strong> el tipo es el euríbor
+    más un diferencial que fija el banco (por ejemplo, euríbor + 0,60%), y se revisa normalmente
+    cada 6 o 12 meses, así que la cuota sube o baja con el euríbor. Una <strong>mixta</strong>{' '}
+    combina las dos: unos años a tipo fijo al principio (típicamente entre 3 y 10) y el resto a
+    variable.
+  </p>
+
+  <h2>Qué es el euríbor a 12 meses</h2>
+  <p>
+    Es el tipo de interés al que los bancos de la zona euro se prestan dinero entre ellos a un año,
+    y es el índice de referencia que usan la mayoría de hipotecas variables en España. Sube y baja
+    sobre todo en función de los tipos de interés que marca el Banco Central Europeo. La cifra que
+    aparece por defecto en el simulador es la media mensual que publica el BCE; el dato oficial que
+    usan los bancos para revisar tu hipoteca lo publica el Banco de España, y puede diferir
+    ligeramente de este.
+  </p>
+
+  <h2>Qué no incluye esta simulación</h2>
+  <p>
+    La cuota se calcula con el sistema de amortización francés (cuota constante, con más
+    intereses y menos capital al principio), sin comisión de apertura, sin los seguros que muchos
+    bancos exigen o bonifican (vida, hogar) y sin tasación ni gastos de constitución (notaría,
+    registro, gestoría). La TAE de una oferta real, que sí incluye esos costes, será distinta al
+    tipo nominal que se usa aquí. Tampoco es una simulación de cómo cambiaría la cuota cada vez que
+    se revisa el euríbor durante los años: los escenarios muestran una cuota fija para cada
+    supuesto, para poder compararlos.
+  </p>
+
+  <h2>Cómo se calcula cuánto puedes pedir</h2>
+  <p>
+    La banca suele aplicar como referencia que la cuota no supere alrededor del 30-35% de tus
+    ingresos netos mensuales, aunque cada entidad tiene su propio criterio. Si necesitas calcular
+    antes cuánto ahorro hace falta para la entrada y los gastos de compra, esa cuenta es distinta a
+    la de la hipoteca; de momento puedes ver cómo tributa vender fondos si necesitas liquidar
+    inversiones para la entrada en la{' '}
+    <ArticleLink href="/herramientas/calculadora-impuestos-venta-fondos/">
+      calculadora de impuestos al vender un fondo
+    </ArticleLink>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Fija o variable, qué es mejor?</strong><br />
+    No hay una respuesta única: la fija da certeza sobre la cuota durante toda la vida del préstamo,
+    la variable suele empezar más barata pero puede subir. Depende de tu tolerancia al riesgo y de
+    cuánto margen tengas si la cuota sube. No es algo que esta calculadora pueda decidir por ti.</p>
+  <p><strong>¿Por qué mi cuota real no coincide exactamente con esta?</strong><br />
+    Porque esta simulación no incluye seguros, comisiones ni bonificaciones, y porque el euríbor que
+    aplica tu banco en cada revisión es el oficial del Banco de España del mes concreto de revisión,
+    no la media que usa este simulador por defecto.</p>
+</ToolLayout>
