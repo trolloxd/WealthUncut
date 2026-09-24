@@ -1,0 +1,30 @@
+{
+ "fecha": "2026-09-24",
+ "generado": "2026-09-24T19:00:00.000Z",
+ "nota": "Verificado cruzando al menos dos comparadores financieros independientes por cada cuenta o depósito (Rankia, Kelisto, El Economista, Raisin, Finect). No hay una fuente oficial única como el BOE o la AEAT: son ofertas comerciales que cambian con frecuencia. Si una cifra no coincidía entre fuentes, se ha revisado una tercera o se ha excluido la entidad.",
+ "cuentas": [
+  { "banco": "Revolut", "producto": "Cuenta Remunerada (Estándar)", "tae": 3.51, "importeMaximo": 25000, "duracion": "4 meses desde el alta", "requisitos": "Nuevo cliente", "vinculacion": false },
+  { "banco": "Raisin (vía Raisin)", "producto": "Cuenta Bienvenida", "tae": 3.10, "importeMaximo": 60000, "duracion": "3 meses", "requisitos": "Nuevo cliente de Raisin", "vinculacion": false },
+  { "banco": "Trade Republic", "producto": "Cuenta Trade Republic", "tae": 3.04, "importeMaximo": 50000, "duracion": "Indefinida", "requisitos": "Nuevo cliente, IBAN español", "vinculacion": false },
+  { "banco": "bunq", "producto": "Cuenta de Ahorro", "tae": 3.01, "importeMaximo": null, "duracion": "Indefinida (tipo variable)", "requisitos": "Ninguno", "vinculacion": false },
+  { "banco": "Bankinter", "producto": "Cuenta Digital", "tae": 3.00, "importeMaximo": 100000, "duracion": "Hasta 30/04/2027 si se contrata antes del 28/10/2026", "requisitos": "Nuevo cliente", "vinculacion": false },
+  { "banco": "B100", "producto": "Cuenta Save", "tae": 2.75, "importeMaximo": 100000, "duracion": "Hasta 30/06/2027", "requisitos": "Ninguno", "vinculacion": false },
+  { "banco": "Openbank", "producto": "Cuenta Remunerada", "tae": 2.75, "importeMaximo": null, "duracion": "12 meses", "requisitos": "Activar Bizum y traer ahorros", "vinculacion": false },
+  { "banco": "Banco Sabadell", "producto": "Cuenta Online", "tae": 2.02, "importeMaximo": 100000, "duracion": "12 meses", "requisitos": "Ninguno", "vinculacion": false },
+  { "banco": "Indexa Capital", "producto": "Cuenta Remunerada Indexada", "tae": 1.76, "importeMaximo": 450000, "duracion": "Indefinida", "requisitos": "Mínimo 10 €", "vinculacion": false },
+  { "banco": "Bankinter", "producto": "Cuenta Nómina", "tae": 5.00, "importeMaximo": 10000, "duracion": "12 meses", "requisitos": "Domiciliar la nómina", "vinculacion": true },
+  { "banco": "ABANCA", "producto": "Cuenta Remunerada", "tae": 2.00, "importeMaximo": null, "duracion": "12 meses", "requisitos": "Nuevo cliente, domiciliar nómina o pensión de 1.200 €+", "vinculacion": true }
+ ],
+ "depositos": [
+  { "banco": "MyInvestor", "producto": "Depósito Premium", "plazoMeses": 12, "tae": 3.50, "importeMinimo": 1000, "importeMaximo": 25000, "requisitos": "Suscripción de 7,99 €/mes a MyInvestor Premium", "cobertura": "FGD España" },
+  { "banco": "Deutsche Bank", "producto": "Confianza Más DB", "plazoMeses": 12, "tae": 3.50, "importeMinimo": 25000, "importeMaximo": 150000, "requisitos": "Con vinculación (2,50% sin vinculación)", "cobertura": "FGD España" },
+  { "banco": "MyInvestor", "producto": "Depósito a 12 meses", "plazoMeses": 12, "tae": 3.10, "importeMinimo": 10000, "importeMaximo": 100000, "requisitos": "Ninguno", "cobertura": "FGD España" },
+  { "banco": "Banca March", "producto": "Depósito Avantio 12 meses", "plazoMeses": 12, "tae": 2.80, "importeMinimo": 30000, "importeMaximo": 300000, "requisitos": "Ninguno", "cobertura": "FGD España" },
+  { "banco": "Self Bank", "producto": "Depósito a 12 meses", "plazoMeses": 12, "tae": 2.75, "importeMinimo": 6000, "importeMaximo": 100000, "requisitos": "Ninguno", "cobertura": "FGD España" },
+  { "banco": "Banco Mediolanum", "producto": "Depósito MIX", "plazoMeses": 12, "tae": 3.00, "importeMinimo": 2000, "importeMaximo": 500000, "requisitos": "Con inversión vinculada", "cobertura": "FGD España" },
+  { "banco": "Openbank", "producto": "Depósito a plazo fijo", "plazoMeses": 6, "tae": 2.75, "importeMinimo": 1, "importeMaximo": null, "requisitos": "Ninguno", "cobertura": "FGD España" },
+  { "banco": "Mano Bank (vía Raisin)", "producto": "Depósito a 12 meses", "plazoMeses": 12, "tae": 3.46, "importeMinimo": null, "importeMaximo": null, "requisitos": "Ninguno", "cobertura": "Fondo de garantía del país de origen del banco (no el FGD español)" },
+  { "banco": "BluOr Bank (vía Raisin)", "producto": "Depósito a 12 meses", "plazoMeses": 12, "tae": 3.35, "importeMinimo": null, "importeMaximo": null, "requisitos": "Ninguno", "cobertura": "Fondo de garantía del país de origen del banco (no el FGD español)" },
+  { "banco": "BankB (vía Raisin)", "producto": "Depósito a 7-8 años", "plazoMeses": 90, "tae": 3.75, "importeMinimo": null, "importeMaximo": null, "requisitos": "Dinero inmovilizado 7-8 años", "cobertura": "Fondo de garantía del país de origen del banco (no el FGD español)" }
+ ]
+}

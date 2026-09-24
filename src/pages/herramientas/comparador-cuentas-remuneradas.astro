@@ -1,0 +1,83 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import CuentasRemuneradasTabla from '../../components/CuentasRemuneradasTabla.astro';
+import datos from '../../data/cuentas-remuneradas/ultimo.json';
+import { FGD_COBERTURA } from '../../config/finance';
+
+const fecha = new Date(`${datos.fecha}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<ToolLayout
+  title="Comparador de cuentas remuneradas y depósitos"
+  name="Comparador de cuentas remuneradas"
+  description="Las cuentas remuneradas y depósitos con mejor TAE en España, actualizado con la fecha de cada dato, sin ranking pagado."
+  pubDate={new Date('2026-09-24')}
+  updatedDate={new Date(datos.fecha)}
+  sources={[
+    { label: 'Rankia: comparativas de cuentas remuneradas y depósitos', url: 'https://www.rankia.com/blog/cuentas-corrientes/7456167-9-mejores-cuentas-remuneradas-septiembre-2026' },
+    { label: 'Kelisto: mejores cuentas de ahorro', url: 'https://www.kelisto.es/cuentas-bancarias/mejor-compra/las-mejores-cuentas-ahorro-2851' },
+    { label: 'Raisin: depósitos a plazo fijo', url: 'https://www.raisin.com/es-es/depositos-a-plazo-fijo/' },
+    { label: 'Rankia: mejores depósitos de bancos españoles', url: 'https://www.rankia.com/blog/mejores-depositos/5753068-mejores-depositos-espanoles' },
+  ]}
+>
+  <p>
+    Esta tabla no lleva ranking pagado ni enlaces de afiliación: son las TAE que ofrecen los bancos
+    ahora mismo, ordenadas de mayor a menor, verificadas cruzando varios comparadores
+    independientes. Se actualiza con cierta frecuencia porque estas ofertas cambian; la fecha de la
+    última actualización está arriba, en "Actualizado el".
+  </p>
+
+  <CuentasRemuneradasTabla datos={datos} />
+
+  <h2>Cuenta remunerada vs. depósito: la diferencia que importa</h2>
+  <p>
+    Una <strong>cuenta remunerada</strong> paga intereses sobre el saldo que tengas cada día, y
+    puedes sacar el dinero cuando quieras sin penalización: es donde tiene sentido tener el fondo de
+    emergencia o el ahorro a corto plazo. Un <strong>depósito a plazo fijo</strong> suele pagar algo
+    más, pero el dinero queda inmovilizado hasta que vence el plazo (romperlo antes, si te dejan,
+    casi siempre supone perder parte de los intereses). Tiene sentido para dinero que sabes que no
+    vas a necesitar hasta una fecha concreta.
+  </p>
+
+  <h2>Por qué tantas ofertas son temporales</h2>
+  <p>
+    La mayoría de las TAE más altas de la tabla son promociones para clientes nuevos, con un plazo
+    (columna "Duración") y un importe máximo al que se aplica ese tipo. Pasado ese plazo, o por
+    encima de ese importe, el banco suele bajar la remuneración a un tipo mucho más bajo, a veces
+    casi cero. Conviene fijarse en la letra pequeña antes de mover todos tus ahorros: mira cuánto
+    dura la promoción y qué pasa cuando termine.
+  </p>
+
+  <h2>Qué es la cobertura del Fondo de Garantía de Depósitos</h2>
+  <p>
+    Todos los depósitos y cuentas de esta tabla están protegidos hasta{' '}
+    {FGD_COBERTURA.importe.toLocaleString('es-ES', { useGrouping: true })} € por titular y entidad si el banco quiebra: es
+    una cifra armonizada en toda la Unión Europea, no solo en España. La diferencia está en quién
+    paga esa garantía: si el banco opera con licencia española, responde el Fondo de Garantía de
+    Depósitos español; si es una entidad extranjera que opera aquí en libre prestación de servicios
+    (habitual en bancos accesibles a través de plataformas como Raisin), responde el fondo
+    equivalente de su país de origen. El límite es el mismo, pero el trámite en caso de quiebra
+    puede ser más lento o estar en otro idioma.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Por qué esta tabla no tiene enlaces para contratar directamente?</strong><br />
+    Porque de momento el sitio no tiene acuerdos de afiliación con estos bancos. Si en el futuro los
+    tiene, se marcará claramente con el aviso de afiliación correspondiente, como en el resto del
+    sitio.</p>
+  <p><strong>¿Qué pasa si tengo más de 100.000 € ahorrados?</strong><br />
+    Por encima de esa cifra, en la misma entidad, la parte que exceda no está cubierta por ningún
+    fondo de garantía. Repartir el dinero entre varias entidades (cada una con su propio límite de
+    100.000 €) es la forma habitual de mantenerlo cubierto.</p>
+  <p><strong>¿Merece la pena mover el dinero cada pocos meses para perseguir la TAE más alta?</strong><br />
+    Depende de cuánto tiempo y esfuerzo te lleve y de la diferencia real: mover 3.000 € del 3% al
+    3,5% son unos 15 € al año más, antes de impuestos. Para cantidades grandes sí puede compensar;
+    para cantidades pequeñas, a veces no vale la pena la gestión.</p>
+
+  <p>
+    Si quieres calcular cuánto te queda realmente después de impuestos con una TAE concreta, puedes
+    usar la{' '}
+    <ArticleLink href="/herramientas/calculadora-inflacion/">calculadora de inflación y poder de compra</ArticleLink>.
+  </p>
+</ToolLayout>

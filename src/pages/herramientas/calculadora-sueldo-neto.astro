@@ -42,7 +42,7 @@ import {
     {(SS_TRABAJADOR.formacionProfesional * 100).toFixed(2)}% por formación profesional y el{' '}
     {(SS_TRABAJADOR.mei * 100).toFixed(2)}% del Mecanismo de Equidad Intergeneracional: un{' '}
     {((SS_TRABAJADOR.contingenciasComunes + SS_TRABAJADOR.desempleoIndefinido + SS_TRABAJADOR.formacionProfesional + SS_TRABAJADOR.mei) * 100).toFixed(2)}%
-    en total sobre tu sueldo, hasta un tope de {SS_TRABAJADOR.baseMaximaMensual.toLocaleString('es-ES')} € al mes.
+    en total sobre tu sueldo, hasta un tope de {SS_TRABAJADOR.baseMaximaMensual.toLocaleString('es-ES', { useGrouping: true })} € al mes.
   </p>
   <p>
     El IRPF es más complicado: no es un porcentaje fijo sobre todo el sueldo, sino una escala

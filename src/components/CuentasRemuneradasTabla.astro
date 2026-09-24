@@ -1,0 +1,93 @@
+---
+/** Tablas del comparador de cuentas remuneradas y depósitos, ordenadas de mayor a menor TAE. */
+interface Cuenta {
+  banco: string;
+  producto: string;
+  tae: number;
+  importeMaximo: number | null;
+  duracion: string;
+  requisitos: string;
+  vinculacion: boolean;
+}
+interface Deposito {
+  banco: string;
+  producto: string;
+  plazoMeses: number;
+  tae: number;
+  importeMinimo: number | null;
+  importeMaximo: number | null;
+  requisitos: string;
+  cobertura: string;
+}
+interface Props {
+  datos: { fecha: string; nota: string; cuentas: Cuenta[]; depositos: Deposito[] };
+}
+
+const { datos } = Astro.props;
+const cuentas = [...datos.cuentas].sort((a, b) => b.tae - a.tae);
+const depositos = [...datos.depositos].sort((a, b) => b.tae - a.tae);
+
+const euros = (v: number | null) => (v === null ? 'Sin límite indicado' : v.toLocaleString('es-ES', { useGrouping: true }) + ' €');
+const fecha = new Date(`${datos.fecha}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<div class="not-prose my-8 overflow-x-auto">
+  <table class="w-full text-sm">
+    <caption class="mb-2 text-left text-sm font-semibold text-ink">Cuentas remuneradas ({fecha})</caption>
+    <thead>
+      <tr class="border-b border-border text-left text-xs text-ink-muted">
+        <th scope="col" class="py-2 pr-3 font-medium">Banco</th>
+        <th scope="col" class="py-2 pr-3 text-right font-medium">TAE</th>
+        <th scope="col" class="py-2 pr-3 text-right font-medium">Hasta</th>
+        <th scope="col" class="py-2 pr-3 font-medium">Duración</th>
+        <th scope="col" class="py-2 font-medium">Requisitos</th>
+      </tr>
+    </thead>
+    <tbody>
+      {cuentas.map((c) => (
+        <tr class={`border-b border-border/60 ${c.vinculacion ? 'bg-cream/60' : ''}`}>
+          <td class="py-2 pr-3 text-ink">{c.banco} <span class="text-xs text-ink-faint">({c.producto})</span></td>
+          <td class="py-2 pr-3 text-right font-semibold text-brand">{c.tae.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+          <td class="py-2 pr-3 text-right text-ink-muted">{euros(c.importeMaximo)}</td>
+          <td class="py-2 pr-3 text-ink-muted">{c.duracion}</td>
+          <td class="py-2 text-ink-muted">{c.requisitos}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p class="mt-2 text-xs text-ink-faint">
+    Filas con fondo distinto: cuentas con vinculación (piden domiciliar la nómina u otro requisito fuerte). Datos
+    verificados cruzando comparadores financieros independientes: {datos.nota}
+  </p>
+</div>
+
+<div class="not-prose my-8 overflow-x-auto">
+  <table class="w-full text-sm">
+    <caption class="mb-2 text-left text-sm font-semibold text-ink">Depósitos a plazo fijo ({fecha})</caption>
+    <thead>
+      <tr class="border-b border-border text-left text-xs text-ink-muted">
+        <th scope="col" class="py-2 pr-3 font-medium">Banco</th>
+        <th scope="col" class="py-2 pr-3 text-right font-medium">Plazo</th>
+        <th scope="col" class="py-2 pr-3 text-right font-medium">TAE</th>
+        <th scope="col" class="py-2 pr-3 text-right font-medium">Mínimo</th>
+        <th scope="col" class="py-2 font-medium">Cobertura</th>
+      </tr>
+    </thead>
+    <tbody>
+      {depositos.map((d) => (
+        <tr class="border-b border-border/60">
+          <td class="py-2 pr-3 text-ink">{d.banco} <span class="text-xs text-ink-faint">({d.producto})</span></td>
+          <td class="py-2 pr-3 text-right text-ink-muted">{d.plazoMeses} {d.plazoMeses === 1 ? 'mes' : 'meses'}</td>
+          <td class="py-2 pr-3 text-right font-semibold text-brand">{d.tae.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+          <td class="py-2 pr-3 text-right text-ink-muted">{euros(d.importeMinimo)}</td>
+          <td class="py-2 text-xs text-ink-muted">{d.cobertura}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p class="mt-2 text-xs text-ink-faint">
+    "Cobertura" indica qué fondo de garantía de depósitos respalda el dinero hasta 100.000 € por titular y entidad:
+    el español (FGD) si el banco opera con licencia española, o el de su país de origen si es una entidad extranjera
+    (la cifra de cobertura es la misma en toda la UE, pero el fondo que paga en caso de quiebra es distinto).
+  </p>
+</div>

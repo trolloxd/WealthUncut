@@ -50,4 +50,9 @@ export const TOOLS = [
     name: '¿Cuánto ahorrar para la entrada de un piso?',
     description: 'Entrada, impuesto de compra (ITP) de tu comunidad y gastos, y cuánto tardarás en ahorrarlo.',
   },
+  {
+    href: '/herramientas/comparador-cuentas-remuneradas/',
+    name: 'Comparador de cuentas remuneradas y depósitos',
+    description: 'Las TAE reales de ahora mismo, actualizado, sin ranking pagado ni afiliación.',
+  },
 ] as const;
