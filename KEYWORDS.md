@@ -111,6 +111,31 @@ Pilar: relevante para jóvenes que empiezan pronto, menos saturado que los clús
 sugerencia real, confirma que la comparación que ya teníamos en la hipótesis es una duda
 genuina de la gente, no una idea forzada.
 
+## Clúster 7: Sueldo neto y nómina
+
+Pilar: volumen muy alto, casi ninguna calculadora existente aplica bien los tramos autonómicos.
+Añadido el 2026-09-24 a raíz de una idea de David; keywords sin validar todavía con
+autocompletado.
+
+- calculadora sueldo neto
+- de bruto a neto calculadora
+- cuanto es mi sueldo neto españa
+- irpf por comunidad autonoma comparativa
+- cuanto se paga de seguridad social nomina
+- retencion irpf nomina como se calcula
+
+## Clúster 8: Vivienda: hipoteca, euríbor y entrada
+
+Pilar: la vivienda es la preocupación económica número uno de la gente joven en España. Añadido
+el 2026-09-24; keywords sin validar todavía con autocompletado.
+
+- simulador hipoteca euribor
+- cuanto tengo que ahorrar para la entrada de un piso
+- itp comprar vivienda por comunidad autonoma
+- hipoteca fija variable o mixta cual elegir
+- euribor hoy hipoteca
+- gastos de comprar una vivienda de segunda mano
+
 ## Priorización sugerida para las primeras piezas
 
 1. Empezar por el Clúster 3 (fondos indexados) y Clúster 4 (fiscalidad), ya tenemos la
@@ -142,11 +167,24 @@ fondo de emergencia (clúster 5), fondo indexado vs ETF (clúster 3), impuestos 
 (clúster 4: "cuando pago impuestos por vender un fondo indexado"), inflación (clúster 5) y
 modelo 720 (clúster 4). Viven en `/herramientas/` y se enlazan desde su artículo.
 
-Huecos sin artículo todavía (candidatos a próximas piezas, sin escribir): plan de pensiones vs
-fondo indexado (clúster 6, validado), cuenta bancaria para jóvenes por edad (clúster 1, validado,
-esperar a tener afiliación), mejor broker para fondos indexados (clúster 2, validado, esperar a
-tener afiliación), impuesto por dividendos en España y cómo declarar ganancias de bolsa
-(clúster 4, sin validar).
+Herramientas añadidas el 2026-09-24 (a partir de una lista de ideas de David, construidas y
+publicadas por Claude en una sesión autónoma): simulador de hipoteca con euríbor real (clúster 8),
+plan de pensiones vs fondo indexado (clúster 6, cubre el hueco que quedaba abierto), calculadora
+de sueldo neto por comunidad autónoma (clúster 7, nuevo) y ahorro para la entrada de un piso
+(clúster 8). Pendientes de artículo en MDX propio (de momento son solo `/herramientas/`, sin pieza
+de blog que las desarrolle y enlace desde fuera).
+
+Huecos sin artículo todavía (candidatos a próximas piezas, sin escribir): cuenta bancaria para
+jóvenes por edad (clúster 1, validado, esperar a tener afiliación), mejor broker para fondos
+indexados (clúster 2, validado, esperar a tener afiliación), impuesto por dividendos en España y
+cómo declarar ganancias de bolsa (clúster 4, sin validar).
+
+Pendiente y deliberadamente no construido el 2026-09-24: comparador de cuentas remuneradas y
+comparador de fondos indexados disponibles en España (los otros dos de la lista de ideas de
+David). A diferencia de las calculadoras de arriba, que son fórmulas sobre cifras oficiales
+verificables, estos dos exigen mantener tablas de productos comerciales reales (TAE de bancos
+concretos, TER de fondos concretos) que David señaló expresamente que quiere revisar él antes de
+publicar, y que no se pueden verificar contra una fuente oficial única como el BOE o la AEAT.
 
 ## Siguiente paso
 
