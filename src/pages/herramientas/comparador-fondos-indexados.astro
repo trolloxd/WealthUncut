@@ -1,0 +1,73 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import FondosIndexadosTabla from '../../components/FondosIndexadosTabla.astro';
+import datos from '../../data/fondos-indexados/ultimo.json';
+---
+
+<ToolLayout
+  title="Comparador de fondos indexados disponibles en España"
+  name="Comparador de fondos indexados"
+  description="TER, índice que replica y en qué plataformas está cada fondo indexado disponible en España, sin ranking pagado."
+  pubDate={new Date('2026-09-24')}
+  updatedDate={new Date(datos.fecha)}
+  sources={[
+    { label: 'Rankia: mejores fondos indexados para invertir en España', url: 'https://www.rankia.com/blog/etf/5454741-mejores-fondos-indexados-para-invertir-espana' },
+    { label: 'HelpMyCash: mejores fondos indexados al MSCI World', url: 'https://www.helpmycash.com/invertir/fondos-indexados-msci-world/' },
+    { label: 'Quefondos: ficha de Fidelity MSCI World Index Fund', url: 'https://www.quefondos.com/es/fondos/ficha/index.html?isin=IE00BYX5NX33' },
+  ]}
+>
+  <p>
+    Ningún fondo de esta tabla paga por aparecer ni está ordenado por afiliación: van de menor a
+    mayor TER (el coste anual que se lleva la gestora, la variable que más pesa en tu rentabilidad a
+    largo plazo). Son fondos de inversión, no ETF, así que se pueden traspasar entre ellos sin pagar
+    impuestos hasta que vendas de verdad.
+  </p>
+
+  <FondosIndexadosTabla datos={datos} />
+
+  <h2>Por qué fondo y no ETF si el índice es el mismo</h2>
+  <p>
+    Un ETF que replica el MSCI World y un fondo indexado que replica el mismo MSCI World invierten,
+    por dentro, en prácticamente lo mismo. La diferencia está en Hacienda: un ETF, a efectos
+    fiscales en España, se trata como una acción, así que cada vez que lo vendes para comprar otro
+    tributa la ganancia. Un fondo de inversión permite el <strong>traspaso</strong>: cambiar de un
+    fondo a otro sin vender de verdad, sin que Hacienda se entere hasta que saques el dinero del
+    todo. Para alguien que va a ir ajustando su cartera durante años, esa diferencia puede valer más
+    que unas décimas de TER.
+  </p>
+
+  <h2>Por qué el TER importa tanto</h2>
+  <p>
+    El TER se cobra cada año sobre todo lo que tienes invertido, ganes o pierdas ese año, y se resta
+    silenciosamente del valor liquidativo, sin aparecer como un cargo en ningún extracto. La
+    diferencia entre un 0,10% y un 0,30% de TER parece pequeña, pero sobre 30 años de aportaciones
+    puede suponer varios miles de euros menos al final. Puedes verlo con tus propios números en la{' '}
+    <ArticleLink href="/blog/rentabilidad-neta-fondo-indexado/">calculadora de rentabilidad neta de un fondo indexado</ArticleLink>.
+  </p>
+
+  <h2>La clase del fondo importa tanto como la gestora</h2>
+  <p>
+    Un mismo fondo suele tener varias "clases" de participaciones con distinto ISIN: minorista,
+    institucional, con cobertura de divisa o sin ella. La clase institucional casi siempre tiene un
+    TER más bajo, pero exige un mínimo de inversión inicial altísimo (a veces 100.000 € o más) que
+    la deja fuera del alcance de un particular. Algunas plataformas negocian acuerdos con la gestora
+    para dar acceso a esa clase más barata desde importes mucho más bajos: es el caso de MyInvestor
+    con algunos fondos de iShares. Antes de comparar el TER de dos fondos, comprueba que estás
+    mirando la misma clase (revisa el ISIN) y en qué plataforma se contrata.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Cuál es "el mejor" fondo indexado?</strong><br />
+    No hay uno objetivamente mejor: depende del índice al que quieras exposición (MSCI World, S&P
+    500, emergentes), de la plataforma donde inviertas y de si buscas cobertura de divisa. Para el
+    mismo índice, un TER más bajo es mejor en igualdad de condiciones, pero no es el único factor.</p>
+  <p><strong>¿Por qué no aparecen ETFs en esta tabla?</strong><br />
+    Porque no permiten el traspaso sin tributar, la ventaja fiscal más importante de invertir a
+    largo plazo en fondos desde España. Puedes comparar fondo vs. ETF con tus números en el{' '}
+    <a href="/herramientas/comparador-fondo-indexado-vs-etf/">comparador de fondo indexado vs ETF</a>.</p>
+  <p><strong>¿El TER es lo único que pagas?</strong><br />
+    No siempre: algunos bancos cobran comisión de custodia o de traspaso aparte del TER del fondo,
+    aunque cada vez es menos habitual en las plataformas centradas en fondos indexados. Revisa las
+    condiciones de tu plataforma, no solo el TER del fondo.</p>
+</ToolLayout>

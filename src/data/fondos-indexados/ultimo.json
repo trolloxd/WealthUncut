@@ -1,0 +1,67 @@
+{
+ "fecha": "2026-09-24",
+ "generado": "2026-09-24T19:30:00.000Z",
+ "nota": "TER e ISIN verificados cruzando al menos dos fuentes independientes por fondo (Rankia, HelpMyCash, Morningstar, Quefondos, Finect, El Economista) y, cuando ha sido posible, contra el ISIN en la propia gestora. No hay una fuente oficial única centralizada (a diferencia del IRPF): son datos comerciales de gestoras que pueden cambiar el TER con el tiempo.",
+ "fondos": [
+  {
+   "gestora": "Fidelity",
+   "nombre": "Fidelity MSCI World Index Fund P-ACC-EUR",
+   "isin": "IE00BYX5NX33",
+   "indice": "MSCI World",
+   "ter": 0.10,
+   "minimoNota": "Sin mínimo relevante en la mayoría de plataformas",
+   "traspasable": true,
+   "plataformas": "Disponible en casi todas las plataformas de fondos en España (MyInvestor, Renta 4, Openbank, Self Bank, entre otras)"
+  },
+  {
+   "gestora": "Vanguard",
+   "nombre": "Vanguard Global Stock Index Fund Investor EUR Acc",
+   "isin": "IE00B03HCZ61",
+   "indice": "MSCI World (réplica algo más amplia que el estándar)",
+   "ter": 0.18,
+   "minimoNota": "Sin mínimo relevante en la mayoría de plataformas",
+   "traspasable": true,
+   "plataformas": "MyInvestor, Renta 4 (con posible comisión de custodia si no hay otros fondos con retrocesión), Self Bank"
+  },
+  {
+   "gestora": "iShares (BlackRock)",
+   "nombre": "iShares Developed World Index Fund (IE) D Acc EUR",
+   "isin": "IE00BD0NCM55",
+   "indice": "MSCI World",
+   "ter": 0.10,
+   "minimoNota": "La clase D exige 100.000 € de mínimo institucional, pero algunas plataformas (MyInvestor, mediante acuerdo con BlackRock) dan acceso desde 1 €",
+   "traspasable": true,
+   "plataformas": "MyInvestor (acceso a la clase de menor coste desde 1 €), Openbank"
+  },
+  {
+   "gestora": "Amundi",
+   "nombre": "Amundi Index MSCI World AE-C",
+   "isin": "LU0996182563",
+   "indice": "MSCI World",
+   "ter": 0.30,
+   "minimoNota": "Sin mínimo relevante en la mayoría de plataformas",
+   "traspasable": true,
+   "plataformas": "Openbank, MyInvestor, y en general en la mayoría de bancos tradicionales"
+  },
+  {
+   "gestora": "Vanguard",
+   "nombre": "Vanguard U.S. 500 Stock Index Fund Investor EUR Acc",
+   "isin": "IE0032620787",
+   "indice": "S&P 500",
+   "ter": 0.10,
+   "minimoNota": "Sin mínimo relevante en la mayoría de plataformas",
+   "traspasable": true,
+   "plataformas": "MyInvestor, Self Bank"
+  },
+  {
+   "gestora": "Vanguard",
+   "nombre": "Vanguard Emerging Markets Stock Index Fund Investor EUR Acc",
+   "isin": "IE0031786142",
+   "indice": "Mercados emergentes (FTSE Emerging)",
+   "ter": 0.23,
+   "minimoNota": "Sin mínimo relevante en la mayoría de plataformas",
+   "traspasable": true,
+   "plataformas": "MyInvestor, Self Bank"
+  }
+ ]
+}

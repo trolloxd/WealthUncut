@@ -1,0 +1,53 @@
+---
+/** Tabla del comparador de fondos indexados, ordenada de menor a mayor TER. */
+interface Fondo {
+  gestora: string;
+  nombre: string;
+  isin: string;
+  indice: string;
+  ter: number;
+  minimoNota: string;
+  traspasable: boolean;
+  plataformas: string;
+}
+interface Props {
+  datos: { fecha: string; nota: string; fondos: Fondo[] };
+}
+
+const { datos } = Astro.props;
+const fondos = [...datos.fondos].sort((a, b) => a.ter - b.ter);
+const fecha = new Date(`${datos.fecha}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<div class="not-prose my-8 overflow-x-auto">
+  <table class="w-full text-sm">
+    <caption class="mb-2 text-left text-sm font-semibold text-ink">Fondos indexados disponibles en España ({fecha})</caption>
+    <thead>
+      <tr class="border-b border-border text-left text-xs text-ink-muted">
+        <th scope="col" class="py-2 pr-3 font-medium">Fondo</th>
+        <th scope="col" class="py-2 pr-3 font-medium">Índice</th>
+        <th scope="col" class="py-2 pr-3 text-right font-medium">TER</th>
+        <th scope="col" class="py-2 pr-3 font-medium">ISIN</th>
+        <th scope="col" class="py-2 font-medium">Dónde está</th>
+      </tr>
+    </thead>
+    <tbody>
+      {fondos.map((f) => (
+        <tr class="border-b border-border/60">
+          <td class="py-2 pr-3 text-ink">
+            {f.gestora} <span class="text-xs text-ink-faint">({f.nombre})</span>
+            {f.minimoNota && <div class="text-xs text-ink-faint">{f.minimoNota}</div>}
+          </td>
+          <td class="py-2 pr-3 text-ink-muted">{f.indice}</td>
+          <td class="py-2 pr-3 text-right font-semibold text-brand">{f.ter.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+          <td class="py-2 pr-3 font-mono text-xs text-ink-muted">{f.isin}</td>
+          <td class="py-2 text-xs text-ink-muted">{f.plataformas}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p class="mt-2 text-xs text-ink-faint">
+    Todos son fondos de inversión (no ETF), así que se pueden traspasar a otro fondo sin tributar por la ganancia
+    hasta que se venda de verdad. {datos.nota}
+  </p>
+</div>

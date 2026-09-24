@@ -55,4 +55,9 @@ export const TOOLS = [
     name: 'Comparador de cuentas remuneradas y depósitos',
     description: 'Las TAE reales de ahora mismo, actualizado, sin ranking pagado ni afiliación.',
   },
+  {
+    href: '/herramientas/comparador-fondos-indexados/',
+    name: 'Comparador de fondos indexados',
+    description: 'TER, índice y dónde está cada fondo disponible en España, ordenado por coste.',
+  },
 ] as const;
