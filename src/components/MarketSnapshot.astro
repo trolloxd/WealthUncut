@@ -1,0 +1,70 @@
+---
+/** Tabla resumen: último dato de cada serie, variación frente al dato anterior y a hace un mes. */
+interface Serie {
+  nombre: string;
+  unidad: string;
+  decimales: number;
+  obs: [string, number][];
+}
+
+interface Props {
+  datos: { series: Record<string, Serie>; fuente: string; fuenteUrl: string };
+  series?: string[];
+}
+
+const { datos, series = Object.keys(datos.series) } = Astro.props;
+
+const fmt = (v: number, d: number) => v.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fecha = (f: string) => new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+
+const filas = series
+  .map((id) => datos.series[id])
+  .filter(Boolean)
+  .map((s) => {
+    const [f, v] = s.obs.at(-1)!;
+    const anterior = s.obs.at(-2)?.[1];
+    // Hace un mes: la observación más cercana a 30 días antes del último dato.
+    const objetivo = new Date(`${f}T12:00:00Z`).getTime() - 30 * 864e5;
+    const mes = [...s.obs].reverse().find(([fo]) => new Date(`${fo}T12:00:00Z`).getTime() <= objetivo)?.[1];
+    const esTipo = s.unidad === '%';
+    const variacion = (ref?: number) => {
+      if (ref === undefined) return '';
+      const dif = v - ref;
+      if (esTipo) {
+        const pb = Math.round(dif * 100);
+        return `${pb > 0 ? '+' : ''}${pb} pb`;
+      }
+      const pct = (dif / ref) * 100;
+      return `${pct > 0 ? '+' : ''}${fmt(pct, 2)}%`;
+    };
+    return { nombre: s.nombre, valor: `${fmt(v, s.decimales)}${esTipo ? '%' : ''}`, fecha: fecha(f), dia: variacion(anterior), mes: variacion(mes) };
+  });
+---
+
+<div class="not-prose my-8 overflow-x-auto">
+  <table class="w-full text-sm">
+    <caption class="mb-2 text-left text-sm font-semibold text-ink">Los datos de referencia</caption>
+    <thead>
+      <tr class="border-b border-border text-left text-xs text-ink-muted">
+        <th scope="col" class="py-2 pr-3 font-medium">Indicador</th>
+        <th scope="col" class="py-2 pr-3 text-right font-medium">Último</th>
+        <th scope="col" class="py-2 pr-3 text-right font-medium">Vs. anterior</th>
+        <th scope="col" class="py-2 text-right font-medium">Vs. hace 1 mes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {filas.map((f) => (
+        <tr class="border-b border-border/60">
+          <td class="py-2 pr-3 text-ink">{f.nombre} <span class="text-xs text-ink-faint">({f.fecha})</span></td>
+          <td class="py-2 pr-3 text-right font-semibold text-ink">{f.valor}</td>
+          <td class="py-2 pr-3 text-right text-ink-muted">{f.dia}</td>
+          <td class="py-2 text-right text-ink-muted">{f.mes}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p class="mt-2 text-xs text-ink-faint">
+    Fuente: <a href={datos.fuenteUrl} class="underline" rel="noopener" target="_blank">{datos.fuente}</a>. En tipos de
+    interés, la variación se expresa en puntos básicos (pb): 100 pb = 1 punto porcentual.
+  </p>
+</div>

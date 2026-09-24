@@ -67,6 +67,14 @@ piezas pero buenas. Ritmo máximo: 3-4 piezas/semana. Herramientas antes que vol
   decírselo explícitamente, no asumir.
 - No añadir dependencias, abstracciones ni features que no se hayan pedido.
 
+## Sección /mercados/ (decisión de David, 2026-09-24)
+
+David decidió publicar cada día un artículo de mercados escrito y publicado automáticamente, sin
+revisión humana previa, sabiendo que choca con la regla de "pocas piezas" y que Google puede
+penalizar contenido automatizado. La condición es cero errores: el procedimiento completo, con la
+verificación en dos fuentes y la regla de no publicar si algo no se puede verificar, está en
+`MERCADOS-PROCEDIMIENTO.md`. Lo ejecuta cada mañana una rutina en la nube de Claude Code.
+
 ## Estructura actual
 
 - `src/config/site.ts`: metadatos del sitio y del autor.
@@ -74,6 +82,9 @@ piezas pero buenas. Ritmo máximo: 3-4 piezas/semana. Herramientas antes que vol
   regla de recompra, modelo 720, FGD) y lógica de cálculo del IRPF del ahorro. Los artículos
   importan estas constantes en MDX en vez de escribir las cifras a mano.
 - `src/content.config.ts` + `src/content/blog/`: artículos en MDX.
+- `src/content/mercados/AAAA-MM-DD.mdx`: ediciones diarias de mercados; `src/data/mercados/` (carpeta
+  nueva): datos oficiales del BCE de cada día, generados por `scripts/datos-mercados.mjs` (carpeta
+  nueva); `MarketSnapshot.astro` y `MarketChart.astro` (gráficas SVG sin librerías) los muestran.
 - `src/lib/posts.ts` (carpeta nueva): `isPublished()`, única regla de qué artículo está publicado
   (no borrador y `pubDate` ya alcanzada). Un artículo con `pubDate` futura queda programado.
 - `.github/workflows/publicacion-programada.yml`: martes, viernes y domingo a las 05:00 UTC, si

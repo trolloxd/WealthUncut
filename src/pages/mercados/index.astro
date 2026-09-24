@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { isPublished } from '../../lib/posts';
+
+const dias = (await getCollection('mercados', ({ data }) => isPublished(data))).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const fecha = (d: Date) => d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<BaseLayout
+  title="Mercados hoy: qué ha pasado y por qué te afecta"
+  description="Cada mañana, lo más importante de los mercados explicado sin jerga: qué ha pasado, por qué y a qué afecta a tus ahorros, con datos oficiales y gráficas."
+>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Mercados' }]} />
+  <h1 class="mb-4 font-display text-3xl text-ink">Mercados</h1>
+  <p class="mb-10 max-w-2xl text-ink-muted">
+    Cada mañana, lo más importante del día anterior en los mercados, explicado sin jerga: qué ha
+    pasado, por qué y a qué afecta a tus ahorros, tu hipoteca o tus inversiones. Con datos oficiales
+    del Banco Central Europeo y cada cifra contrastada en varias fuentes. Es información, no una
+    recomendación de inversión.
+  </p>
+  {dias.length === 0 ? (
+    <p class="text-ink-muted">Todavía no hay ninguna edición publicada.</p>
+  ) : (
+    <ul class="grid gap-8">
+      {dias.map((dia) => (
+        <li class="border-b border-border pb-8 last:border-none">
+          <a href={`/mercados/${dia.id}/`} class="group block">
+            <p class="text-xs font-semibold uppercase tracking-wide text-brand">
+              <time datetime={dia.id}>{fecha(dia.data.pubDate)}</time>
+            </p>
+            <h2 class="mt-1 font-display text-xl text-ink group-hover:text-brand">{dia.data.title}</h2>
+            <p class="mt-2 text-ink-muted">{dia.data.description}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>

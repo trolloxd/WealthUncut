@@ -1,0 +1,69 @@
+---
+/**
+ * Gráfica de línea en SVG, sin librerías, a partir de una serie de src/data/mercados/*.json.
+ * Se genera al construir la web: no carga JavaScript en el navegador.
+ */
+interface Serie {
+  nombre: string;
+  unidad: string;
+  decimales: number;
+  url: string;
+  obs: [string, number][];
+}
+
+interface Props {
+  datos: { series: Record<string, Serie>; fuente: string };
+  serie: string;
+  /** Últimas N observaciones a dibujar (por defecto, todas). */
+  ultimas?: number;
+  titulo?: string;
+}
+
+const { datos, serie: id, ultimas, titulo } = Astro.props;
+const serie = datos.series[id];
+if (!serie) throw new Error(`MarketChart: la serie "${id}" no está en los datos`);
+
+const obs = ultimas ? serie.obs.slice(-ultimas) : serie.obs;
+const valores = obs.map(([, v]) => v);
+const min = Math.min(...valores);
+const max = Math.max(...valores);
+const margen = (max - min || Math.abs(max) || 1) * 0.08;
+const yMin = min - margen;
+const yMax = max + margen;
+
+const W = 640;
+const H = 240;
+const PAD = { top: 16, right: 64, bottom: 28, left: 12 };
+const x = (i: number) => PAD.left + (i / Math.max(1, obs.length - 1)) * (W - PAD.left - PAD.right);
+const y = (v: number) => PAD.top + (1 - (v - yMin) / (yMax - yMin)) * (H - PAD.top - PAD.bottom);
+const puntos = obs.map(([, v], i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+
+const fmt = (v: number) => v.toLocaleString('es-ES', { minimumFractionDigits: serie.decimales, maximumFractionDigits: serie.decimales });
+const fecha = (f: string) =>
+  new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: '2-digit' });
+const [primeraFecha, primerValor] = obs[0];
+const [ultimaFecha, ultimoValor] = obs.at(-1)!;
+const sufijo = serie.unidad === '%' ? '%' : '';
+const descripcion = `${serie.nombre}: de ${fmt(primerValor)}${sufijo} el ${fecha(primeraFecha)} a ${fmt(ultimoValor)}${sufijo} el ${fecha(ultimaFecha)}. Mínimo ${fmt(min)}${sufijo}, máximo ${fmt(max)}${sufijo}.`;
+---
+
+<figure class="not-prose my-8">
+  <figcaption class="mb-2 text-sm font-semibold text-ink">
+    {titulo ?? serie.nombre} <span class="font-normal text-ink-muted">({serie.unidad})</span>
+  </figcaption>
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={descripcion} class="h-auto w-full rounded-xl border border-border bg-cream-elevated">
+    {[max, (max + min) / 2, min].map((v) => (
+      <g>
+        <line x1={PAD.left} x2={W - PAD.right} y1={y(v)} y2={y(v)} stroke="var(--color-border)" stroke-width="1" />
+        <text x={W - PAD.right + 6} y={y(v) + 4} font-size="11" fill="var(--color-ink-muted)">{fmt(v)}</text>
+      </g>
+    ))}
+    <polyline points={puntos} fill="none" stroke="var(--color-brand)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+    <circle cx={x(obs.length - 1)} cy={y(ultimoValor)} r="3.5" fill="var(--color-brand)" />
+    <text x={PAD.left} y={H - 8} font-size="11" fill="var(--color-ink-muted)">{fecha(primeraFecha)}</text>
+    <text x={W - PAD.right} y={H - 8} font-size="11" fill="var(--color-ink-muted)" text-anchor="end">{fecha(ultimaFecha)}</text>
+  </svg>
+  <p class="mt-1 text-xs text-ink-faint">
+    Fuente: <a href={serie.url} class="underline" rel="noopener" target="_blank">{datos.fuente}</a>. Último dato: {fecha(ultimaFecha)}.
+  </p>
+</figure>
