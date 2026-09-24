@@ -45,4 +45,9 @@ export const TOOLS = [
     name: 'Calculadora de sueldo neto',
     description: 'De bruto a neto con la Seguridad Social y el IRPF real de tu comunidad autónoma, no solo la escala estatal.',
   },
+  {
+    href: '/herramientas/ahorro-entrada-piso/',
+    name: '¿Cuánto ahorrar para la entrada de un piso?',
+    description: 'Entrada, impuesto de compra (ITP) de tu comunidad y gastos, y cuánto tardarás en ahorrarlo.',
+  },
 ] as const;

@@ -471,3 +471,103 @@ export function calcularImpuestoAhorro(ganancia: number): number {
 
   return impuesto;
 }
+
+/**
+ * Impuesto de Transmisiones Patrimoniales (ITP) para la compra de vivienda usada, tipo general
+ * (sin las bonificaciones para vivienda habitual, jóvenes, familia numerosa, discapacidad, VPO o
+ * zonas rurales que casi todas las comunidades ofrecen y que pueden bajarlo bastante: conviene
+ * comprobar con la comunidad autónoma correspondiente si se cumplen sus requisitos). Donde hay
+ * tramos, es una escala progresiva igual que la del IRPF: cada tramo de precio paga su tipo, no
+ * todo el precio al tipo del tramo en el que cae. Vivienda nueva no lleva ITP, sino IVA (10%, 4%
+ * si es VPO) más AJD, no incluido aquí.
+ *
+ * No es una cifra tan estable ni tan centralizada como el IRPF (no hay un manual único de la
+ * AEAT: cada comunidad publica su propia normativa y las agencias inmobiliarias resumen), así que
+ * se ha verificado cruzando dos fuentes especializadas independientes entre sí, con especial
+ * atención a cambios recientes (la Comunitat Valenciana bajó del 10% al 9% el 1 de junio de 2026).
+ * Verificado el 2026-09-24; revisar cada año, varias comunidades cambian el ITP en sus presupuestos.
+ */
+export const ITP_VIVIENDA_USADA = {
+  andalucia: { nombre: 'Andalucía', brackets: [{ hasta: Infinity, tipo: 0.07 }] },
+  aragon: {
+    nombre: 'Aragón',
+    brackets: [
+      { hasta: 400000, tipo: 0.08 },
+      { hasta: 450000, tipo: 0.085 },
+      { hasta: 500000, tipo: 0.09 },
+      { hasta: 750000, tipo: 0.095 },
+      { hasta: Infinity, tipo: 0.1 },
+    ],
+  },
+  asturias: {
+    nombre: 'Asturias',
+    brackets: [
+      { hasta: 300000, tipo: 0.08 },
+      { hasta: 500000, tipo: 0.09 },
+      { hasta: Infinity, tipo: 0.1 },
+    ],
+  },
+  baleares: {
+    nombre: 'Illes Balears',
+    brackets: [
+      { hasta: 400000, tipo: 0.08 },
+      { hasta: 600000, tipo: 0.09 },
+      { hasta: 1000000, tipo: 0.1 },
+      { hasta: 2000000, tipo: 0.12 },
+      { hasta: Infinity, tipo: 0.13 },
+    ],
+  },
+  canarias: { nombre: 'Canarias', brackets: [{ hasta: Infinity, tipo: 0.065 }] },
+  cantabria: { nombre: 'Cantabria', brackets: [{ hasta: Infinity, tipo: 0.09 }] },
+  castillaLaMancha: { nombre: 'Castilla-La Mancha', brackets: [{ hasta: Infinity, tipo: 0.09 }] },
+  castillaYLeon: { nombre: 'Castilla y León', brackets: [{ hasta: Infinity, tipo: 0.08 }] },
+  cataluna: {
+    nombre: 'Cataluña',
+    brackets: [
+      { hasta: 1000000, tipo: 0.1 },
+      { hasta: Infinity, tipo: 0.11 },
+    ],
+  },
+  extremadura: {
+    nombre: 'Extremadura',
+    brackets: [
+      { hasta: 360000, tipo: 0.08 },
+      { hasta: 600000, tipo: 0.1 },
+      { hasta: Infinity, tipo: 0.11 },
+    ],
+  },
+  galicia: { nombre: 'Galicia', brackets: [{ hasta: Infinity, tipo: 0.08 }] },
+  madrid: { nombre: 'Madrid', brackets: [{ hasta: Infinity, tipo: 0.06 }] },
+  murcia: { nombre: 'Murcia', brackets: [{ hasta: Infinity, tipo: 0.08 }] },
+  laRioja: { nombre: 'La Rioja', brackets: [{ hasta: Infinity, tipo: 0.07 }] },
+  valencia: {
+    nombre: 'Comunitat Valenciana',
+    brackets: [
+      { hasta: 1000000, tipo: 0.09 },
+      { hasta: Infinity, tipo: 0.11 },
+    ],
+  },
+  navarra: { nombre: 'Navarra', brackets: [{ hasta: Infinity, tipo: 0.06 }] },
+  paisVasco: { nombre: 'País Vasco', brackets: [{ hasta: Infinity, tipo: 0.07 }] },
+  ceuta: { nombre: 'Ceuta', brackets: [{ hasta: Infinity, tipo: 0.06 }] },
+  melilla: { nombre: 'Melilla', brackets: [{ hasta: Infinity, tipo: 0.06 }] },
+} as const;
+
+export const ITP_VIVIENDA_USADA_FUENTES = [
+  { label: 'Hipotips: tabla de ITP por comunidades autónomas para vivienda usada', url: 'https://hipotips.com/itp-por-comunidades-2025-conoce-los-tipos-reducidos/' },
+  { label: 'Rankia: el ITP en cada comunidad autónoma', url: 'https://www.rankia.com/blog/mejores-hipotecas/3233016-impuesto-transmisiones-patrimoniales-itp-cada-comunidad-autonoma' },
+] as const;
+
+// Estimación (no una cifra oficial única) de notaría, registro de la propiedad y gestoría al
+// comprar una vivienda: estos aranceles sí están regulados por el Estado (Real Decreto 1426/1989 y
+// 1427/1989) pero dependen del precio, si hay hipoteca, el número de páginas de la escritura y
+// otros factores, así que no hay un porcentaje único válido para todos los casos. Se usa aquí una
+// cifra orientativa habitual en el sector (en torno a 1.000-1.500 € en total para una vivienda de
+// precio medio, aproximada como un 1% del precio para que escale). Es una estimación, no una cifra
+// VERIFICAR con fuente oficial: se advierte así en la propia calculadora.
+export const GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT = 0.01;
+
+/** ITP de una vivienda usada en una comunidad, aplicando la escala igual que el IRPF. */
+export function calcularITP(precio: number, comunidad: keyof typeof ITP_VIVIENDA_USADA): number {
+  return calcularProgresivo(precio, ITP_VIVIENDA_USADA[comunidad].brackets);
+}

@@ -1,0 +1,84 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import HomeDepositCalculator from '../../components/HomeDepositCalculator';
+import { ITP_VIVIENDA_USADA_FUENTES } from '../../config/finance';
+---
+
+<ToolLayout
+  title="¿Cuánto tengo que ahorrar para la entrada de un piso?"
+  name="Ahorro para la entrada de un piso"
+  description="Cuánto necesitas ahorrado entre la entrada, el impuesto de compra (ITP) de tu comunidad y los gastos, y cuánto tardarás en conseguirlo ahorrando cada mes."
+  pubDate={new Date('2026-09-24')}
+  sources={ITP_VIVIENDA_USADA_FUENTES}
+>
+  <p>
+    Comprar una vivienda no cuesta solo el precio de la vivienda: el banco no suele financiar más
+    del 80% (a veces menos), y encima del 20% restante hay que pagar el impuesto de compra y los
+    gastos de notaría, registro y gestoría. Esta calculadora suma todo eso según tu comunidad
+    autónoma y te dice cuánto te falta y cuánto tardarás en ahorrarlo.
+  </p>
+
+  <HomeDepositCalculator client:load />
+
+  <h2>De qué se compone lo que necesitas ahorrado</h2>
+  <ul>
+    <li>
+      <strong>La entrada.</strong> Los bancos suelen financiar hasta el 80% del precio de compra o
+      de tasación (la que sea menor), así que lo habitual es tener que aportar al menos el 20%
+      restante de tu bolsillo. Algunas entidades y programas para jóvenes financian más, hasta el
+      95% en casos concretos, normalmente con avales públicos o del ICO.
+    </li>
+    <li>
+      <strong>El ITP (Impuesto de Transmisiones Patrimoniales).</strong> Se paga al comprar una
+      vivienda de segunda mano (la nueva lleva IVA más AJD en su lugar) y lo fija cada comunidad
+      autónoma: va del 6% en Madrid al 9-10% en la Comunitat Valenciana o Cataluña. Casi todas las
+      comunidades tienen tipos reducidos para vivienda habitual, jóvenes, familias numerosas o
+      personas con discapacidad, que esta calculadora no aplica automáticamente porque dependen de
+      requisitos concretos (edad, precio máximo, que sea tu primera vivienda); revisa si los cumples
+      en tu comunidad, porque puede bajar bastante lo que pagas.
+    </li>
+    <li>
+      <strong>Notaría, registro y gestoría.</strong> Son aranceles regulados por el Estado que
+      dependen del precio y de si hay hipoteca, así que no hay una cifra única: la calculadora usa
+      una estimación orientativa, no una tarifa oficial.
+    </li>
+  </ul>
+
+  <h2>Por qué la comunidad autónoma cambia tanto el resultado</h2>
+  <p>
+    Con el mismo piso de 180.000 €, el ITP puede ir desde 10.800 € en Madrid (6%) hasta 16.200 € en
+    la Comunitat Valenciana (9%, hasta 1 millón de euros): una diferencia de 5.400 € solo por el
+    impuesto, sin contar la entrada. Prueba a cambiar de comunidad en la calculadora dejando el
+    resto igual para ver cuánto pesa.
+  </p>
+
+  <h2>Qué no calcula esta herramienta</h2>
+  <ul>
+    <li>Los tipos reducidos del ITP por vivienda habitual, edad, familia numerosa o discapacidad.</li>
+    <li>La tasación de la vivienda, que suele pagarla quien compra (unos 300-600 €) y que el banco exige antes de conceder la hipoteca.</li>
+    <li>Los seguros que muchos bancos piden o bonifican al firmar la hipoteca (vida, hogar).</li>
+    <li>Programas de avales públicos para jóvenes que permiten financiar más del 80%.</li>
+  </ul>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Por qué se cuenta la entrada como un 20% y no como lo que me deje el banco?</strong><br />
+    Porque hasta que no pides la hipoteca no sabes exactamente cuánto te van a conceder: el 20% es
+    la referencia general más extendida y la más prudente para planificar cuánto ahorrar, aunque
+    algunos bancos o programas concretos financien más.</p>
+  <p><strong>¿El ITP se paga de golpe o se puede fraccionar?</strong><br />
+    Se paga en el momento de la compra, normalmente a través de la gestoría que tramita la
+    escritura, junto con el resto de gastos. No se puede meter dentro de la hipoteca salvo que el
+    banco te conceda financiación adicional para ello, algo poco habitual.</p>
+  <p><strong>¿Y si compro una vivienda de obra nueva?</strong><br />
+    Entonces no pagas ITP sino IVA (10% en general, 4% en VPO) más el Impuesto de Actos Jurídicos
+    Documentados (AJD), que también fija cada comunidad; el cálculo cambia y esta calculadora no lo
+    cubre.</p>
+
+  <p>
+    Una vez sepas cuánto necesitas de entrada, puedes simular la cuota de la hipoteca sobre el resto
+    en el{' '}
+    <ArticleLink href="/herramientas/simulador-hipoteca-euribor/">simulador de hipoteca con el euríbor real</ArticleLink
+    >.
+  </p>
+</ToolLayout>
