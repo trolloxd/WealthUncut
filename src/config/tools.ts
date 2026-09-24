@@ -35,4 +35,9 @@ export const TOOLS = [
     name: 'Simulador de hipoteca con el euríbor real',
     description: 'Cuota de una hipoteca fija, variable o mixta con el euríbor real y escenarios de subida y bajada.',
   },
+  {
+    href: '/herramientas/plan-pensiones-vs-fondo-indexado/',
+    name: 'Plan de pensiones vs fondo indexado',
+    description: 'Cuánto te queda neto con la reducción fiscal de la aportación y los impuestos al rescatarlo o venderlo.',
+  },
 ] as const;

@@ -1,0 +1,102 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import PensionVsFundCalculator from '../../components/PensionVsFundCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import { PLAN_PENSIONES } from '../../config/finance';
+---
+
+<ToolLayout
+  title="Plan de pensiones vs fondo indexado: la comparación fiscal"
+  name="Plan de pensiones vs fondo indexado"
+  description="Compara cuánto te queda neto ahorrando en un plan de pensiones o en un fondo indexado, con la reducción fiscal de la aportación y los impuestos al rescatarlo o venderlo."
+  pubDate={new Date('2026-09-24')}
+  sources={[
+    {
+      label: 'Agencia Tributaria: Manual práctico de Renta 2025, reducciones por aportaciones a sistemas de previsión social',
+      url: PLAN_PENSIONES.url,
+    },
+  ]}
+>
+  <p>
+    Un plan de pensiones y un fondo indexado pueden invertir en lo mismo por dentro, pero tributan
+    de forma completamente distinta: uno te da un beneficio fiscal al aportar y te cobra impuestos
+    al final como si fuera sueldo; el otro no te da nada a la entrada, pero solo paga impuestos por
+    la ganancia, y al tipo (más bajo) del ahorro. Esta calculadora te deja ver, con tus números,
+    cuál te deja más dinero neto.
+  </p>
+
+  <PensionVsFundCalculator client:load />
+
+  <h2>Por qué no basta con mirar la rentabilidad</h2>
+  <p>
+    Aportar a un plan de pensiones individual reduce tu base imponible hasta{' '}
+    {formatEuros(PLAN_PENSIONES.limiteIndividual)}{' '}
+    al año (más si tu empresa aporta a un plan de empleo): si tu tipo marginal es del 30%, aportar
+    1.000 € te devuelve 300 € en la siguiente declaración. Pero cuando rescatas el plan, todo lo que
+    sacas (lo aportado y lo que ha ganado) tributa como si fuera un sueldo más, a tu tipo marginal de
+    ese momento, que puede llegar al 47% en la escala estatal más la autonómica. Un fondo indexado no
+    te da nada a la entrada, pero cuando lo vendes solo paga impuestos por la ganancia, con los tipos
+    del ahorro (entre el 19% y el 30%).
+  </p>
+
+  <h2>Cuándo sale a cuenta el plan de pensiones</h2>
+  <p>
+    En términos generales, el plan de pensiones compensa más cuanto mayor sea tu tipo marginal hoy
+    frente al que tendrás cuando lo rescates. Es habitual que en la jubilación los ingresos (y por
+    tanto el tipo marginal) sean más bajos que en los años de más sueldo, lo que favorece al plan.
+    Pero no es una regla fija: depende de tu pensión pública esperada, de otros ingresos que tengas
+    entonces y de cómo decidas rescatarlo (de golpe o poco a poco, que cambia mucho el tipo al que
+    tributa). Prueba distintos escenarios en la calculadora para ver cuánto pesa esa diferencia.
+  </p>
+
+  <h2>Lo que la calculadora no puede decidir por ti</h2>
+  <ul>
+    <li>
+      <strong>Liquidez.</strong> El dinero de un plan de pensiones queda bloqueado hasta la
+      jubilación (o supuestos excepcionales: paro de larga duración, enfermedad grave, entre otros).
+      Un fondo indexado lo puedes vender cuando quieras.
+    </li>
+    <li>
+      <strong>Comisiones reales.</strong> Muchos planes de pensiones en España tienen comisiones
+      (TER) bastante más altas que un fondo indexado; ese diferencial de coste come rentabilidad cada
+      año, y la calculadora te deja probarlo con tus cifras.
+    </li>
+    <li>
+      <strong>Cómo rescatas el plan.</strong> Rescatarlo todo de golpe puede dispararte a un tramo
+      alto de IRPF ese año; hacerlo poco a poco o como renta suele salir mejor, pero eso ya no lo
+      calcula esta herramienta.
+    </li>
+  </ul>
+
+  <h2>Qué tipo marginal poner</h2>
+  <p>
+    Es el porcentaje que pagarías de IRPF por el último euro que ganas, no la media de todo lo que
+    ganas. La escala estatal del IRPF general va del 19% al 47%, y cada comunidad autónoma añade su
+    propio tramo autonómico, así que el tipo marginal real depende de dónde vivas y de tu renta. Si
+    no lo sabes, la casilla de "resultado de la declaración" del programa Renta de la AEAT o tu
+    gestor te lo pueden dar con precisión; como orientación, alguien con un sueldo bruto medio en
+    España suele moverse en tipos marginales de entre el 24% y el 37%.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Puedo tener plan de pensiones y fondo indexado a la vez?</strong><br />
+    Sí, no son excluyentes. Mucha gente usa el plan de pensiones solo hasta el límite que le compensa
+    fiscalmente, y el resto del ahorro lo invierte en fondos indexados por la liquidez.</p>
+  <p><strong>¿Y los planes de pensiones de empleo (los que aporta la empresa)?</strong><br />
+    Si tu empresa aporta, esa parte es dinero extra que no sale de tu bolsillo: normalmente compensa
+    aceptarlo aunque las comisiones sean más altas, porque no es una aportación que decidas tú, sino
+    un complemento salarial con forma de plan de pensiones. Esta calculadora compara aportaciones que
+    decides tú, no esa parte.</p>
+  <p><strong>¿Qué pasa si me quedo en paro o me jubilo en otro país?</strong><br />
+    Son supuestos que pueden cambiar cuándo y cómo puedes rescatar el plan, y no están dentro de esta
+    calculadora. Conviene consultarlo con un profesional en tu caso concreto.</p>
+
+  <p>
+    Si quieres ver cómo tributa vender un fondo indexado en detalle, con las reglas de FIFO y la
+    compensación de pérdidas, está en la{' '}
+    <ArticleLink href="/herramientas/calculadora-impuestos-venta-fondos/">
+      calculadora de impuestos al vender un fondo
+    </ArticleLink>.
+  </p>
+</ToolLayout>

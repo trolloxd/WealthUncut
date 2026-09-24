@@ -82,6 +82,23 @@ export const FGD_COBERTURA = {
   url: 'https://www.fgd.es/informacion-general/que-es-el-fgd/depositos-dinerarios/',
 } as const;
 
+// Límite de reducción en la base imponible general del IRPF por aportaciones a un plan de
+// pensiones individual (sistema individual, sin aportación de empresa): 1.500 €/año desde la Ley
+// 11/2020. Con aportación empresarial a un plan de empleo el límite conjunto sube hasta 8.500 €
+// adicionales; para autónomos que aportan a su propio plan de empleo simplificado, hasta 4.250 €
+// adicionales. Al rescatarlo, todo lo cobrado (aportaciones y rendimiento) tributa como rendimiento
+// del trabajo en la base general, no en la del ahorro. Fuente: AEAT, Manual práctico de Renta 2025,
+// capítulo 13, reducciones por aportaciones a sistemas de previsión social. Verificado el 2026-09-24.
+export const PLAN_PENSIONES = {
+  limiteIndividual: 1500,
+  limiteAdicionalEmpleo: 8500,
+  limiteAdicionalAutonomos: 4250,
+  tributaComo: 'rendimiento del trabajo en la base general del IRPF (no en la base del ahorro)',
+  url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c13-determinacion-renta-contribuyente-sujeta-gravamen/reducciones-base-imponible-general/reducciones-aportaciones-contribuciones-sistemas-prevision-social/normas-comunes-aplicables-aportaciones-sistemas-social/cuadro-reducciones-aportaciones-contribuciones-sps.html',
+  fechaRegistro: '2026-09-24',
+  verificado: true,
+} as const;
+
 // Artículos con ejemplos resueltos que usan los tipos del ahorro (19%, 21%, 23%) escritos en el
 // texto: si cambian los tramos, revisar como-tributan-los-fondos-de-inversion-en-espana,
 // ter-fondo-que-es, rentabilidad-neta-fondo-indexado, interes-compuesto-explicado-con-ejemplos
