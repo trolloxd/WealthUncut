@@ -40,4 +40,9 @@ export const TOOLS = [
     name: 'Plan de pensiones vs fondo indexado',
     description: 'Cuánto te queda neto con la reducción fiscal de la aportación y los impuestos al rescatarlo o venderlo.',
   },
+  {
+    href: '/herramientas/calculadora-sueldo-neto/',
+    name: 'Calculadora de sueldo neto',
+    description: 'De bruto a neto con la Seguridad Social y el IRPF real de tu comunidad autónoma, no solo la escala estatal.',
+  },
 ] as const;

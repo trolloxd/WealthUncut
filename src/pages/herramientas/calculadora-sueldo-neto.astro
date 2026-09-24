@@ -1,0 +1,106 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import SalaryCalculator from '../../components/SalaryCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import {
+  IRPF_GASTO_DEDUCIBLE_TRABAJO,
+  IRPF_GENERAL_ESTATAL,
+  IRPF_MINIMO_CONTRIBUYENTE,
+  IRPF_REDUCCION_TRABAJO,
+  SS_TRABAJADOR,
+} from '../../config/finance';
+---
+
+<ToolLayout
+  title="Calculadora de sueldo neto: de bruto a neto por comunidad autónoma"
+  name="Calculadora de sueldo neto"
+  description="Cuánto sueldo neto te queda de un bruto anual, con la Seguridad Social y el IRPF real de tu comunidad autónoma, no solo la escala estatal."
+  pubDate={new Date('2026-09-24')}
+  sources={[
+    { label: 'Agencia Tributaria: Manual práctico de Renta 2025, gravamen estatal y autonómico', url: IRPF_GENERAL_ESTATAL.url },
+    { label: 'Agencia Tributaria: mínimo del contribuyente', url: IRPF_MINIMO_CONTRIBUYENTE.url },
+    { label: 'Agencia Tributaria: reducción por obtención de rendimientos del trabajo', url: IRPF_REDUCCION_TRABAJO.url },
+    { label: 'BOE: Orden PJC/297/2026, cotización a la Seguridad Social 2026', url: SS_TRABAJADOR.url },
+  ]}
+>
+  <p>
+    La mayoría de calculadoras de sueldo neto usan solo la escala estatal del IRPF, como si vivieras
+    en cualquier parte de España pagaras lo mismo. No es así: cada comunidad autónoma fija su propia
+    escala, y la diferencia entre vivir en una u otra puede ser de varios cientos de euros al año
+    para el mismo sueldo. Esta calculadora usa la escala real de cada comunidad.
+  </p>
+
+  <SalaryCalculator client:load />
+
+  <h2>Qué se resta de tu sueldo bruto</h2>
+  <p>
+    De tu bruto salen dos cosas antes de llegar al neto: la Seguridad Social, que se descuenta cada
+    mes en la nómina, y el IRPF. La cotización a la Seguridad Social del trabajador en 2026 es del{' '}
+    {(SS_TRABAJADOR.contingenciasComunes * 100).toFixed(2)}% por contingencias comunes, el{' '}
+    {(SS_TRABAJADOR.desempleoIndefinido * 100).toFixed(2)}% por desempleo (contrato indefinido), el{' '}
+    {(SS_TRABAJADOR.formacionProfesional * 100).toFixed(2)}% por formación profesional y el{' '}
+    {(SS_TRABAJADOR.mei * 100).toFixed(2)}% del Mecanismo de Equidad Intergeneracional: un{' '}
+    {((SS_TRABAJADOR.contingenciasComunes + SS_TRABAJADOR.desempleoIndefinido + SS_TRABAJADOR.formacionProfesional + SS_TRABAJADOR.mei) * 100).toFixed(2)}%
+    en total sobre tu sueldo, hasta un tope de {SS_TRABAJADOR.baseMaximaMensual.toLocaleString('es-ES')} € al mes.
+  </p>
+  <p>
+    El IRPF es más complicado: no es un porcentaje fijo sobre todo el sueldo, sino una escala
+    progresiva (pagas más porcentaje cuanto más ganas, pero solo por el tramo que supera cada
+    umbral) que se aplica en dos capas, la estatal (igual en toda España) y la autonómica (distinta
+    en cada comunidad). Antes de aplicar la escala, se restan las cotizaciones ya pagadas, un gasto
+    deducible genérico de {formatEuros(IRPF_GASTO_DEDUCIBLE_TRABAJO)} y, si cobras menos de 19.747,50 € al
+    año, una reducción adicional que baja lo que pagas.
+  </p>
+
+  <h2>Por qué importa la comunidad autónoma</h2>
+  <p>
+    Con el mismo sueldo bruto, alguien en Madrid paga menos IRPF que alguien en la Comunitat
+    Valenciana, porque cada una fija tipos distintos sobre la misma base. Prueba a cambiar la
+    comunidad en la calculadora sin tocar el sueldo: verás cómo cambia el neto. Esta calculadora
+    cubre las 15 comunidades de régimen común y Ceuta y Melilla; no incluye País Vasco ni Navarra,
+    que tienen un sistema foral propio con sus propias Haciendas Forales.
+  </p>
+
+  <h2>Qué no incluye esta calculadora</h2>
+  <ul>
+    <li>Hijos, cónyuge o ascendientes a cargo, que bajan el mínimo personal y familiar y, con él, el IRPF.</li>
+    <li>Otras rentas (alquileres, ganancias, otro trabajo), que pueden cambiar la reducción por rendimientos del trabajo.</li>
+    <li>Retribución en especie (seguro médico, cheques guardería, tarjeta transporte) ni aportaciones a un plan de pensiones de empleo.</li>
+    <li>Deducciones autonómicas específicas (por alquiler, nacimiento, entre otras), que varían mucho de una comunidad a otra.</li>
+  </ul>
+  <p>
+    Si tu situación tiene cualquiera de estos elementos, el resultado real será distinto (casi
+    siempre, mejor) que el de esta calculadora. Para tu caso exacto, el simulador de la propia AEAT o
+    un gestor son más fiables.
+  </p>
+
+  <h2>Retención en nómina vs. IRPF real del año</h2>
+  <p>
+    Lo que ves descontado cada mes en la nómina es una <strong>retención a cuenta</strong>, calculada
+    con un procedimiento distinto (Reglamento del IRPF) que reparte una estimación del impuesto anual
+    entre las pagas que te quedan. Puede no coincidir exactamente mes a mes con lo que sale de esta
+    calculadora, pero al final del año se regulariza en la declaración de la renta: si te retuvieron
+    de más, Hacienda te devuelve la diferencia; si de menos, te toca pagarla. El número que da esta
+    calculadora es una estimación de tu IRPF real del año, que es lo que de verdad importa.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Por qué el neto cambia según elija 12 o 14 pagas?</strong><br />
+    El bruto y los impuestos anuales son los mismos: lo único que cambia es en cuántas pagas se
+    reparte ese neto anual. Con 12 pagas, cada una es mayor porque incluye lo que en 14 pagas irían
+    en las dos extras.</p>
+  <p><strong>¿Esto sirve para autónomos?</strong><br />
+    No: los autónomos cotizan por su base elegida dentro de unos tramos según sus rendimientos
+    reales, un sistema distinto al de las personas asalariadas que calcula esta herramienta.</p>
+  <p><strong>¿Y si trabajo parte del año en una comunidad y parte en otra?</strong><br />
+    La escala autonómica que se aplica es la de la comunidad donde residas más días del año, no la
+    de cada nómina. Esta calculadora asume que resides todo el año en la misma.</p>
+
+  <p>
+    Si quieres ver cómo cambiaría tu situación aportando a un plan de pensiones, está la{' '}
+    <ArticleLink href="/herramientas/plan-pensiones-vs-fondo-indexado/">
+      comparadora de plan de pensiones vs fondo indexado
+    </ArticleLink>.
+  </p>
+</ToolLayout>
