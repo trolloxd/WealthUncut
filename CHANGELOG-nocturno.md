@@ -278,8 +278,8 @@ revisión previa, con la condición de cero errores. Queda anotada en `CLAUDE.md
   depósito, €STR, rentabilidad de la deuda a 2 y 10 años), tabla de variaciones y gráficas propias.
   No se reproducen gráficas de índices bursátiles ni imágenes de terceros por licencias y derechos
   de autor.
-- **Quién la escribe**: una rutina en la nube de Claude (Opus 5.5) que se ejecuta cada día a las
-  05:00 UTC (07:00 en Madrid en verano, 06:00 en invierno) y no depende de tu ordenador. Sigue
+- **Quién la escribe**: una rutina en la nube de Claude (Opus 5.5) que se ejecuta cada noche a las
+  01:00 UTC (03:00 en Madrid en verano, 02:00 en invierno, para que el uso de Claude esté libre cuando te levantes) y no depende de tu ordenador. Sigue
   `MERCADOS-PROCEDIMIENTO.md`: cada cifra en dos fuentes independientes o en la oficial, y si algo
   no se puede verificar, no se publica. Puedes verla, pausarla o cambiarla en
   https://claude.ai/code/routines/trig_0194xBpuUmcsYU1qUKrdg2yt
