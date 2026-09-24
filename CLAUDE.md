@@ -75,6 +75,20 @@ penalizar contenido automatizado. La condición es cero errores: el procedimient
 verificación en dos fuentes y la regla de no publicar si algo no se puede verificar, está en
 `MERCADOS-PROCEDIMIENTO.md`. Lo ejecuta cada mañana una rutina en la nube de Claude Code.
 
+## Herramientas con datos que caducan (decisión de David, 2026-09-24)
+
+Además de las calculadoras basadas en fórmulas sobre cifras oficiales (IRPF, Seguridad Social,
+ITP, todas en `finance.ts`), hay dos comparadores con datos comerciales que cambian con el tiempo:
+cuentas remuneradas/depósitos y fondos indexados. David pidió expresamente que esto se mantenga
+actualizado solo, con la misma filosofía que `/mercados/`: verificar en al menos dos fuentes
+independientes y no tocar el dato si no se puede verificar con garantías. El procedimiento de cada
+uno está en `CUENTAS-PROCEDIMIENTO.md` y `FONDOS-PROCEDIMIENTO.md`, y lo ejecutan sendas rutinas en
+la nube de Claude Code (semanal la de cuentas, mensual la de fondos, gestionadas con la misma
+infraestructura que la rutina de mercados; ver `RemoteTrigger`/la skill `schedule` para verlas o
+cambiarlas). A diferencia de las cifras fiscales, aquí no hay una fuente oficial única (BOE, AEAT):
+son ofertas y productos de bancos y gestoras, así que la verificación es cruzar comparadores
+financieros reconocidos, nunca inventar.
+
 ## Estructura actual
 
 - `src/config/site.ts`: metadatos del sitio y del autor.
@@ -102,10 +116,18 @@ verificación en dos fuentes y la regla de no publicar si algo no se puede verif
   herramienta, vive en el artículo `rentabilidad-neta-fondo-indexado`).
 - Herramientas en `/herramientas/` (carpeta nueva `src/pages/herramientas/`): cada una es una isla
   React en `src/components/` (`EmergencyFundCalculator`, `FundVsEtfCalculator`,
-  `FundSaleTaxCalculator`, `InflationCalculator`, `Modelo720Checker`) con su página basada en
+  `FundSaleTaxCalculator`, `InflationCalculator`, `Modelo720Checker`, `MortgageCalculator`,
+  `PensionVsFundCalculator`, `SalaryCalculator`, `HomeDepositCalculator`) con su página basada en
   `src/layouts/ToolLayout.astro`. Piezas visuales comunes en `src/components/CalculatorUI.tsx`.
   El listado (índice, portada) sale de `src/config/tools.ts`: una herramienta nueva se añade ahí.
-  Todas leen las cifras fiscales de `finance.ts`.
+  Todas leen las cifras fiscales de `finance.ts` (tramos IRPF estatal y autonómico de las 15 CCAA
+  de régimen común + Ceuta/Melilla, cotizaciones SS, ITP por comunidad, límites de plan de
+  pensiones). Los dos comparadores con datos comerciales (`CuentasRemuneradasTabla.astro`,
+  `FondosIndexadosTabla.astro`) son componentes Astro sin interactividad que leen directamente
+  `src/data/cuentas-remuneradas/ultimo.json` y `src/data/fondos-indexados/ultimo.json` (ver
+  sección de arriba).
+- `src/data/euribor/ultimo.json`, generado por `scripts/datos-euribor.mjs` (BCE, euríbor a 12
+  meses, media mensual): lo usa el simulador de hipoteca como valor de partida.
 - `src/pages/`: home, blog, autor, metodología, transparencia, legales, sugerencias (+ API con
   KV), RSS, 404.
 - `public/`: favicon propio, `og-default.png`, `_headers` (cabeceras de seguridad), robots.txt.
