@@ -179,12 +179,13 @@ jóvenes por edad (clúster 1, validado, esperar a tener afiliación), mejor bro
 indexados (clúster 2, validado, esperar a tener afiliación), impuesto por dividendos en España y
 cómo declarar ganancias de bolsa (clúster 4, sin validar).
 
-Pendiente y deliberadamente no construido el 2026-09-24: comparador de cuentas remuneradas y
-comparador de fondos indexados disponibles en España (los otros dos de la lista de ideas de
-David). A diferencia de las calculadoras de arriba, que son fórmulas sobre cifras oficiales
-verificables, estos dos exigen mantener tablas de productos comerciales reales (TAE de bancos
-concretos, TER de fondos concretos) que David señaló expresamente que quiere revisar él antes de
-publicar, y que no se pueden verificar contra una fuente oficial única como el BOE o la AEAT.
+Herramientas añadidas el 2026-09-24, más tarde la misma sesión, tras confirmar David que no hacía
+falta esperar su revisión: comparador de cuentas remuneradas y depósitos (clúster 1) y comparador
+de fondos indexados disponibles en España (clúster 3). A diferencia de las calculadoras basadas en
+fórmulas, estos dos mantienen tablas de productos comerciales reales (TAE de bancos, TER de
+fondos), verificadas cruzando comparadores financieros independientes (no hay una fuente oficial
+única como el BOE o la AEAT para esto) y con actualización automática programada: semanal para
+cuentas (`CUENTAS-PROCEDIMIENTO.md`), mensual para fondos (`FONDOS-PROCEDIMIENTO.md`).
 
 ## Siguiente paso
 
