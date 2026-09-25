@@ -187,6 +187,11 @@ fondos), verificadas cruzando comparadores financieros independientes (no hay un
 única como el BOE o la AEAT para esto) y con actualización automática programada: semanal para
 cuentas (`CUENTAS-PROCEDIMIENTO.md`), mensual para fondos (`FONDOS-PROCEDIMIENTO.md`).
 
+Herramienta añadida el 2026-09-25: ranking de IRPF por comunidad autónoma (clúster 7, cubre
+"irpf por comunidad autonoma comparativa"), pensada como pieza diferenciadora y de posible
+viralidad (nadie más compara el mismo sueldo en las 17 comunidades a la vez); reutiliza el 100%
+de las cifras ya verificadas de la calculadora de sueldo neto, sin datos nuevos que verificar.
+
 ## Siguiente paso
 
 Este documento ya tiene validación real (autocompletado) para 8 términos clave, pero sigue sin

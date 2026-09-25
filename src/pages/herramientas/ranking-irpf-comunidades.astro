@@ -1,0 +1,73 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import IrpfRankingCalculator, { calcularRanking } from '../../components/IrpfRankingCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import { IRPF_GENERAL_ESTATAL } from '../../config/finance';
+
+const ejemplo = calcularRanking(30000);
+const mejor = ejemplo[0];
+const peor = ejemplo[ejemplo.length - 1];
+const diferencia = mejor.netoAnual - peor.netoAnual;
+---
+
+<ToolLayout
+  title="¿Dónde pagas menos IRPF? Ranking de comunidades autónomas"
+  name="Ranking de IRPF por comunidad autónoma"
+  description="Con el mismo sueldo bruto, cuánto neto te queda en cada comunidad autónoma: ranking completo, de la que menos IRPF cobra a la que más."
+  pubDate={new Date('2026-09-25')}
+  sources={[
+    { label: 'Agencia Tributaria: Manual práctico de Renta 2025, gravamen estatal y autonómico', url: IRPF_GENERAL_ESTATAL.url },
+  ]}
+  faqs={[
+    {
+      pregunta: '¿Por qué el mismo sueldo da un neto distinto según la comunidad?',
+      respuesta: 'Porque el IRPF tiene una parte autonómica que cada comunidad fija por su cuenta: mismo bruto, misma Seguridad Social, pero un tramo del impuesto distinto según dónde resides a 31 de diciembre.',
+    },
+    {
+      pregunta: '¿Este ranking cambia con el sueldo?',
+      respuesta: 'Sí: al ser tramos progresivos, el orden y sobre todo la diferencia en euros varían según el bruto. Con sueldos bajos la diferencia suele ser pequeña; con sueldos altos puede ser de varios miles de euros al año. Cambia el número de la calculadora para verlo con el tuyo.',
+    },
+    {
+      pregunta: '¿Debería mudarme a la comunidad con menos IRPF?',
+      respuesta: 'El IRPF es un factor entre muchos: coste de la vivienda, oportunidades laborales, cercanía a tu entorno y otros impuestos autonómicos (sucesiones, patrimonio) pesan tanto o más. Esta herramienta aísla solo la variable del IRPF, no es una recomendación de dónde vivir.',
+    },
+  ]}
+>
+  <p>
+    Con el mismo sueldo bruto, dos personas en dos comunidades autónomas distintas no se llevan lo
+    mismo a casa. Con {formatEuros(30000)} brutos al año, por ejemplo, la diferencia entre{' '}
+    {mejor.nombre} y {peor.nombre} es de {formatEuros(diferencia)} al año, solo por la parte
+    autonómica del IRPF. Mete tu sueldo y mira dónde queda tu comunidad.
+  </p>
+
+  <IrpfRankingCalculator client:load />
+
+  <h2>Por qué existe esta diferencia</h2>
+  <p>
+    El IRPF de un asalariado se calcula en dos capas: una escala estatal, igual en toda España, y
+    una escala autonómica, que fija cada comunidad. Las dos se aplican sobre la misma base, así que
+    la única variable que cambia de una comunidad a otra es esa segunda escala. No es un impuesto
+    aparte ni una comunidad "cobra más veces": es la misma factura del IRPF, repartida de forma
+    distinta.
+  </p>
+
+  <h2>Lo que este ranking no tiene en cuenta</h2>
+  <ul>
+    <li>
+      Circunstancias personales (hijos, discapacidad, ascendientes a cargo) que bajan el IRPF real
+      en cualquier comunidad, y que la{' '}
+      <ArticleLink href="/herramientas/calculadora-sueldo-neto/">calculadora de sueldo neto</ArticleLink> tampoco
+      aplica.
+    </li>
+    <li>Deducciones autonómicas específicas (por alquiler, nacimiento, entre otras), que varían mucho de una comunidad a otra y pueden cambiar el resultado real.</li>
+    <li>Otros impuestos que también varían por comunidad, como sucesiones y donaciones o patrimonio, que no entran en esta comparación.</li>
+    <li>El coste de vida, que suele pesar más que la diferencia de IRPF entre comunidades con salarios similares.</li>
+  </ul>
+
+  <p>
+    Si quieres el desglose completo de tu caso (Seguridad Social, reducción por rendimientos del
+    trabajo, mínimo del contribuyente), está en la{' '}
+    <ArticleLink href="/herramientas/calculadora-sueldo-neto/">calculadora de sueldo neto por comunidad autónoma</ArticleLink>.
+  </p>
+</ToolLayout>

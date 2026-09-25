@@ -117,6 +117,14 @@ puede crear) para activar el envío real; hasta entonces, `/newsletter/` en sí 
   esa directiva por `<meta>`, solo por cabecera HTTP): la protección de esa directiva ya la da
   `X-Frame-Options`. Si se añade algún script de terceros (p. ej. Turnstile), hay que sumar su
   origen a `scriptDirective.resources`/`connect-src`/`frame-src` en `astro.config.mjs`.
+- **Importante para cualquier componente React nuevo con un tamaño/posición calculado en tiempo
+  real** (barras de progreso, gráficas, anchos dinámicos...): la CSP bloquea `style={{...}}` en
+  cuanto se aplica en el navegador, y también bloquea atributos SVG con nombre de propiedad CSS
+  fijados dinámicamente (`width`, `height`, `x`, `rx`... en un `<rect>` que React actualiza), no
+  solo `style=`. La única forma que funciona sin abrir la CSP es usar clases de Tailwind estáticas
+  (literales en el código, para que el build las genere) y elegir la clase que toque según el
+  valor calculado, redondeando a un número manejable de pasos si el valor es continuo. Ver
+  `IrpfRankingCalculator.tsx` (`claseAncho`) como ejemplo ya resuelto así.
 - **`src/pages/api/sugerencias.ts`** (único endpoint que escribe datos): límite de 5 peticiones por
   IP y hora contra el propio KV (clave `ratelimit:sugerencias:<ip>`, con `expirationTtl`), rechazo
   de cuerpos de más de 10 KB antes de parsear el JSON, honeypot invisible, y validación de longitud
