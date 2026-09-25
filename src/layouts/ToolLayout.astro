@@ -17,9 +17,15 @@ interface Props {
   pubDate: Date;
   updatedDate?: Date;
   sources?: { label: string; url: string }[];
+  /**
+   * Mismo texto que las preguntas frecuentes ya escritas en el slot (no las sustituye: el slot
+   * sigue llevando el HTML visible, con sus enlaces). Esto solo genera el FAQPage JSON-LD para
+   * que Google pueda mostrarlas como resultado enriquecido. Texto plano, sin enlaces ni HTML.
+   */
+  faqs?: { pregunta: string; respuesta: string }[];
 }
 
-const { title, name, description, pubDate, updatedDate, sources = [] } = Astro.props;
+const { title, name, description, pubDate, updatedDate, sources = [], faqs = [] } = Astro.props;
 const url = new URL(Astro.url.pathname, SITE.url).href;
 
 const appJsonLd = {
@@ -48,6 +54,21 @@ const breadcrumbJsonLd = {
     { '@type': 'ListItem', position: 3, name, item: url },
   ],
 };
+
+const faqJsonLd =
+  faqs.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqs.map((f) => ({
+          '@type': 'Question',
+          name: f.pregunta,
+          acceptedAnswer: { '@type': 'Answer', text: f.respuesta },
+        })),
+      }
+    : null;
+
+const extraJsonLd = [appJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJsonLd] : [])];
 ---
 
 <BaseLayout
@@ -55,7 +76,7 @@ const breadcrumbJsonLd = {
   description={description}
   publishedDate={pubDate}
   updatedDate={updatedDate}
-  extraJsonLd={[appJsonLd, breadcrumbJsonLd]}
+  extraJsonLd={extraJsonLd}
 >
   <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Herramientas', href: '/herramientas/' }, { label: name }]} />
   <article class="prose max-w-none">

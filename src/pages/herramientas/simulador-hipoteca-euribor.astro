@@ -21,6 +21,16 @@ const euriborMes = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'nume
       url: euriborData.fuenteUrl,
     },
   ]}
+  faqs={[
+    {
+      pregunta: '¿Fija o variable, qué es mejor?',
+      respuesta: 'No hay una respuesta única: la fija da certeza sobre la cuota durante toda la vida del préstamo, la variable suele empezar más barata pero puede subir. Depende de tu tolerancia al riesgo y de cuánto margen tengas si la cuota sube. No es algo que esta calculadora pueda decidir por ti.',
+    },
+    {
+      pregunta: '¿Por qué mi cuota real no coincide exactamente con esta?',
+      respuesta: 'Porque esta simulación no incluye seguros, comisiones ni bonificaciones, y porque el euríbor que aplica tu banco en cada revisión es el oficial del Banco de España del mes concreto de revisión, no la media que usa este simulador por defecto.',
+    },
+  ]}
 >
   <p>
     La cuota de una hipoteca depende del capital, el plazo y el tipo de interés, y si es variable o

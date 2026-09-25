@@ -18,6 +18,20 @@ const euros = (n: number) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'a
     { label: 'AEAT: modelo 720, forma de calcular el límite que obliga a declarar', url: 'https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-720-decla_____sobre-bienes-derechos-extranjero_/preguntas-frecuentes/forma-calcular-limite-que-obliga-declarar.html' },
     { label: 'BOE: Ley 58/2003, General Tributaria (artículo 198)', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2003-23186' },
   ]}
+  faqs={[
+    {
+      pregunta: '¿Pago algo al presentar el modelo 720?',
+      respuesta: 'No. Es informativo. Los rendimientos de esas inversiones tributan en la renta como cualquier otra inversión; puedes estimarlo con la calculadora de impuestos al vender un fondo.',
+    },
+    {
+      pregunta: '¿Y las criptomonedas en el extranjero?',
+      respuesta: 'Tienen su propia declaración, el modelo 721. No entran en esta comprobación.',
+    },
+    {
+      pregunta: '¿Me afecta si todo está en un banco español?',
+      respuesta: 'Si la entidad donde están depositados los activos es española, no son bienes situados en el extranjero.',
+    },
+  ]}
 >
   <p>
     Si tienes dinero, fondos o ETF en un broker o banco extranjero, puede que tengas que presentar el

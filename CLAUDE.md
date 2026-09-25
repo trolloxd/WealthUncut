@@ -168,7 +168,11 @@ actualizaciones" en `metodologia.astro`.
   React en `src/components/` (`EmergencyFundCalculator`, `FundVsEtfCalculator`,
   `FundSaleTaxCalculator`, `InflationCalculator`, `Modelo720Checker`, `MortgageCalculator`,
   `PensionVsFundCalculator`, `SalaryCalculator`, `HomeDepositCalculator`) con su página basada en
-  `src/layouts/ToolLayout.astro`. Piezas visuales comunes en `src/components/CalculatorUI.tsx`.
+  `src/layouts/ToolLayout.astro`, que acepta un prop `faqs` (pregunta/respuesta en texto plano,
+  sin HTML) para generar el FAQPage JSON-LD a partir de las mismas preguntas frecuentes que ya
+  llevan escritas en el slot: toda herramienta nueva con sección de preguntas frecuentes debe
+  pasar también ese prop, con el mismo texto (sin enlaces) que la versión visible. Piezas
+  visuales comunes en `src/components/CalculatorUI.tsx`.
   El listado (índice, portada) sale de `src/config/tools.ts`: una herramienta nueva se añade ahí.
   Todas leen las cifras fiscales de `finance.ts` (tramos IRPF estatal y autonómico de las 15 CCAA
   de régimen común + Ceuta/Melilla, cotizaciones SS, ITP por comunidad, límites de plan de

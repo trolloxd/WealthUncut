@@ -11,6 +11,20 @@ import { ITP_VIVIENDA_USADA_FUENTES } from '../../config/finance';
   description="Cuánto necesitas ahorrado entre la entrada, el impuesto de compra (ITP) de tu comunidad y los gastos, y cuánto tardarás en conseguirlo ahorrando cada mes."
   pubDate={new Date('2026-09-24')}
   sources={ITP_VIVIENDA_USADA_FUENTES}
+  faqs={[
+    {
+      pregunta: '¿Por qué se cuenta la entrada como un 20% y no como lo que me deje el banco?',
+      respuesta: 'Porque hasta que no pides la hipoteca no sabes exactamente cuánto te van a conceder: el 20% es la referencia general más extendida y la más prudente para planificar cuánto ahorrar, aunque algunos bancos o programas concretos financien más.',
+    },
+    {
+      pregunta: '¿El ITP se paga de golpe o se puede fraccionar?',
+      respuesta: 'Se paga en el momento de la compra, normalmente a través de la gestoría que tramita la escritura, junto con el resto de gastos. No se puede meter dentro de la hipoteca salvo que el banco te conceda financiación adicional para ello, algo poco habitual.',
+    },
+    {
+      pregunta: '¿Y si compro una vivienda de obra nueva?',
+      respuesta: 'Entonces no pagas ITP sino IVA (10% en general, 4% en VPO) más el Impuesto de Actos Jurídicos Documentados (AJD), que también fija cada comunidad; el cálculo cambia y esta calculadora no lo cubre.',
+    },
+  ]}
 >
   <p>
     Comprar una vivienda no cuesta solo el precio de la vivienda: el banco no suele financiar más

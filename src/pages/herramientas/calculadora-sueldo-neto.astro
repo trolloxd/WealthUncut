@@ -23,6 +23,20 @@ import {
     { label: 'Agencia Tributaria: reducción por obtención de rendimientos del trabajo', url: IRPF_REDUCCION_TRABAJO.url },
     { label: 'BOE: Orden PJC/297/2026, cotización a la Seguridad Social 2026', url: SS_TRABAJADOR.url },
   ]}
+  faqs={[
+    {
+      pregunta: '¿Por qué el neto cambia según elija 12 o 14 pagas?',
+      respuesta: 'El bruto y los impuestos anuales son los mismos: lo único que cambia es en cuántas pagas se reparte ese neto anual. Con 12 pagas, cada una es mayor porque incluye lo que en 14 pagas irían en las dos extras.',
+    },
+    {
+      pregunta: '¿Esto sirve para autónomos?',
+      respuesta: 'No: los autónomos cotizan por su base elegida dentro de unos tramos según sus rendimientos reales, un sistema distinto al de las personas asalariadas que calcula esta herramienta.',
+    },
+    {
+      pregunta: '¿Y si trabajo parte del año en una comunidad y parte en otra?',
+      respuesta: 'La escala autonómica que se aplica es la de la comunidad donde residas más días del año, no la de cada nómina. Esta calculadora asume que resides todo el año en la misma.',
+    },
+  ]}
 >
   <p>
     La mayoría de calculadoras de sueldo neto usan solo la escala estatal del IRPF, como si vivieras

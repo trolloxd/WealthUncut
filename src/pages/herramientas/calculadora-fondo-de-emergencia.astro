@@ -16,6 +16,20 @@ const euros = (n: number) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'a
     { label: 'INE: Encuesta de Presupuestos Familiares, año 2025', url: 'https://www.ine.es/dyngs/Prensa/EPF2025.htm' },
     { label: 'Fondo de Garantía de Depósitos: depósitos dinerarios', url: FGD_COBERTURA.url },
   ]}
+  faqs={[
+    {
+      pregunta: '¿Cuánto debe ser el fondo de emergencia?',
+      respuesta: 'Entre 3 y 6 meses de gastos esenciales es la referencia habitual; con ingresos inestables o personas a cargo, más. Los gastos esenciales, no el sueldo.',
+    },
+    {
+      pregunta: '¿Puedo invertir mientras lo construyo?',
+      respuesta: 'Es una decisión personal. Lo importante es no invertir el dinero que ya sabes que vas a necesitar pronto.',
+    },
+    {
+      pregunta: '¿Qué hago si lo uso?',
+      respuesta: 'Nada malo: para eso está. Vuelve a llenarlo antes de aumentar lo que inviertes.',
+    },
+  ]}
 >
   <p>
     El fondo de emergencia es el dinero que te permite pagar un imprevisto (un despido, una

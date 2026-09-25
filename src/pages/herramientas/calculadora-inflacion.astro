@@ -15,6 +15,20 @@ import InflationCalculator from '../../components/InflationCalculator';
     { label: 'INE: IPC, diciembre 2023 (tasa anual 3,1%)', url: 'https://ine.es/dyngs/Prensa/IPC1223.htm' },
     { label: 'Banco Central Europeo: estrategia de política monetaria (objetivo de inflación del 2%)', url: 'https://www.ecb.europa.eu/mopo/strategy/html/index.es.html' },
   ]}
+  faqs={[
+    {
+      pregunta: '¿Cómo se calcula la pérdida de poder adquisitivo?',
+      respuesta: 'Se divide el dinero futuro entre (1 + inflación) elevado al número de años. Con un 2% durante 10 años, se divide entre 1,219.',
+    },
+    {
+      pregunta: '¿Una cuenta remunerada protege de la inflación?',
+      respuesta: 'Solo si su interés, después de impuestos, es mayor que la inflación. Si no, pierdes menos que con el dinero parado, pero sigues perdiendo.',
+    },
+    {
+      pregunta: '¿Los fondos indexados protegen de la inflación?',
+      respuesta: 'A largo plazo, las acciones han tendido a crecer por encima de la inflación, pero no hay ninguna garantía y en plazos cortos pueden perder mucho. Puedes simularlo en la calculadora de rentabilidad neta de un fondo indexado.',
+    },
+  ]}
 >
   <p>
     El dinero parado no baja nunca en la cuenta, pero cada año compra menos. Esta calculadora te dice

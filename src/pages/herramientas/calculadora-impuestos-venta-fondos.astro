@@ -20,6 +20,20 @@ const euros = (n: number) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'a
     { label: 'AEAT, Manual práctico de Renta 2025: transmisiones o reembolsos de participaciones en IIC (régimen general, FIFO)', url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/determinacion-importe-ganancias-perdidas-patrimon-especificas/transmisiones-reembolsos-acciones-iic/regimen-general.html' },
     { label: 'AEAT, Manual práctico de Renta 2025: reglas de integración y compensación de rentas', url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c12-integracion-compensacion-rentas/reglas-integracion-compensacion-rentas.html' },
   ]}
+  faqs={[
+    {
+      pregunta: '¿Cuánto se paga a Hacienda por vender un fondo?',
+      respuesta: `Un ${pct(t1.tipo)} de la ganancia hasta ${euros(t1.hasta)} de ganancias del ahorro en el año, un ${pct(t2.tipo)} de ${euros(t1.hasta)} a ${euros(t2.hasta)}, y más por encima. Solo sobre la ganancia, no sobre todo lo que vendes.`,
+    },
+    {
+      pregunta: '¿Y si vendo con pérdidas?',
+      respuesta: 'No pagas nada, y la pérdida puede compensar otras ganancias del mismo año o de los cuatro siguientes.',
+    },
+    {
+      pregunta: '¿Funciona para ETF y acciones?',
+      respuesta: 'Sí para el cálculo de FIFO, ganancia e impuesto. La diferencia es que con ETF y acciones no hay traspaso sin impuestos, y la retención depende del tipo de producto y de la entidad.',
+    },
+  ]}
 >
   <p>
     Cuando vendes (reembolsas) participaciones de un fondo o un ETF, pagas impuestos solo por la
