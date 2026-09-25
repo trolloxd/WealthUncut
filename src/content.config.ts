@@ -47,4 +47,16 @@ const mercados = defineCollection({
   }),
 });
 
-export const collections = { blog, mercados };
+// Registro público de correcciones: qué se ha corregido y cuándo, en cualquier artículo o
+// herramienta ya publicado. Ver /correcciones/ y "Correcciones y actualizaciones" en metodologia.astro.
+const correcciones = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/correcciones' }),
+  schema: z.object({
+    fecha: z.coerce.date(),
+    pieza: z.string(), // título del artículo o herramienta corregido
+    url: z.string(), // ruta a esa pieza, p. ej. /blog/slug/ o /herramientas/slug/
+    resumen: z.string(), // qué se corrigió, en una frase
+  }),
+});
+
+export const collections = { blog, mercados, correcciones };

@@ -108,10 +108,20 @@ financieros reconocidos, nunca inventar.
   se pueden escribir, nunca listar ni leer desde fuera.
 - El resto del sitio es HTML estático servido por la red de Cloudflare, lo que ya da una protección
   fuerte contra ataques volumétricos (DDoS de capa 3/4) sin configuración adicional.
-- Pendiente de que David lo active manualmente en el panel de Cloudflare (requiere su sesión, no se
-  puede hacer por API sin autorizar el conector): Bot Fight Mode (gratis, Security → Bots) y
-  comprobar que SSL/TLS está en modo "Full (strict)". Son un par de clics, no bloquean nada de lo
-  de arriba.
+- David ya activó a mano en el panel de Cloudflare (2026-09-24): Bot Fight Mode y SSL/TLS en modo
+  "Full (strict)". Confirmado que el sitio sigue respondiendo bien tras el cambio.
+
+## Correcciones públicas (decisión de David, 2026-09-25)
+
+`/correcciones/` es el registro público de errores encontrados y arreglados en contenido ya
+publicado, para reforzar la promesa de cero errores con transparencia en vez de fingir que nunca
+falla nada. Vive como content collection en `src/content/correcciones/` (`correccion` en
+`content.config.ts`: `fecha`, `pieza`, `url`, `resumen`, más el cuerpo del archivo con el detalle).
+Está vacía a propósito hasta que haga falta la primera entrada; no crear una de ejemplo. Se
+diferencia de las actualizaciones rutinarias de `/mercados/` o de los comparadores de cuentas/
+fondos (que cambian porque el dato real ha cambiado, no porque algo estuviera mal escrito): aquí
+solo va lo que estaba mal cuando se publicó. Enlazada desde el footer y desde "Correcciones y
+actualizaciones" en `metodologia.astro`.
 
 ## Estructura actual
 

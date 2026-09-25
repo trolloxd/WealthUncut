@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config/site';
+
+const correcciones = (await getCollection('correcciones')).sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+---
+
+<BaseLayout
+  title="Correcciones"
+  description={`Qué se ha corregido en ${SITE.name} y cuándo: el registro público de errores encontrados y arreglados.`}
+>
+  <h1 class="mb-4 font-display text-3xl text-ink">Correcciones</h1>
+  <p class="mb-10 max-w-2xl text-ink-muted">
+    Aquí anotamos cualquier corrección relevante a un artículo o herramienta ya publicado: qué
+    decía antes, qué estaba mal y qué dice ahora. La meta es cero errores, no fingir que nunca los
+    hay. Si detectas algo que crees que está mal, puedes{' '}
+    <a href="/sugerencias/" class="text-brand underline decoration-brand/30 hover:decoration-brand">avisarnos aquí</a>.
+  </p>
+
+  {correcciones.length === 0 ? (
+    <p class="rounded-xl bg-cream p-6 text-ink-muted">
+      Todavía no hemos tenido que corregir nada. En cuanto lo hagamos, aparecerá aquí con la fecha
+      y el detalle, aunque sea un error pequeño.
+    </p>
+  ) : (
+    <ul class="grid gap-8">
+      {correcciones.map((c) => (
+        <li class="border-b border-border pb-8 last:border-none">
+          <p class="text-xs text-ink-faint">
+            <time datetime={c.data.fecha.toISOString().slice(0, 10)}>
+              {c.data.fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </time>
+          </p>
+          <h2 class="mt-1 font-display text-lg text-ink">
+            <a href={c.data.url} class="hover:text-brand">{c.data.pieza}</a>
+          </h2>
+          <p class="mt-2 text-ink-muted">{c.data.resumen}</p>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>
