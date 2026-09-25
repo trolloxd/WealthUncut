@@ -4,6 +4,7 @@ import { isPublished } from '../lib/posts';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE, AUTHOR } from '../config/site';
 import { TOOLS } from '../config/tools';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
 
 const ultimaEdicion = (await getCollection('mercados', ({ data }) => isPublished(data))).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -102,5 +103,9 @@ const posts = (await getCollection('blog', ({ data }) => isPublished(data)))
         </li>
       ))}
     </ul>
+  </section>
+
+  <section class="mx-auto mt-12 max-w-md border-t border-border pt-12">
+    <NewsletterSignup />
   </section>
 </BaseLayout>

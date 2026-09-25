@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import { isPublished } from '../../lib/posts';
+
+const numeros = (await getCollection('newsletter', ({ data }) => isPublished(data))).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const fecha = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<BaseLayout
+  title="5 minutos de finanzas: el boletín semanal"
+  description="Un resumen semanal en 5 minutos: lo más importante de mercados, la herramienta y el artículo de la semana de WealthUncut."
+>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Newsletter' }]} />
+  <h1 class="mb-4 font-display text-3xl text-ink">5 minutos de finanzas</h1>
+  <p class="mb-8 max-w-2xl text-ink-muted">
+    Un email a la semana con lo esencial: qué ha pasado en los mercados y por qué te afecta, más la
+    herramienta y el artículo que más merece la pena esa semana. Nada que no puedas leer en el
+    tiempo de un café.
+  </p>
+
+  <div class="mb-10 max-w-md">
+    <NewsletterSignup />
+  </div>
+
+  <h2 class="mb-6 font-display text-xl text-ink">Números anteriores</h2>
+  {numeros.length === 0 ? (
+    <p class="text-ink-muted">Todavía no se ha enviado ningún número.</p>
+  ) : (
+    <ul class="grid gap-8">
+      {numeros.map((n) => (
+        <li class="border-b border-border pb-8 last:border-none">
+          <a href={`/newsletter/${n.id}/`} class="group block">
+            <p class="text-xs font-semibold uppercase tracking-wide text-brand">
+              Número {n.data.numero} · <time datetime={n.id}>{fecha(n.data.pubDate)}</time>
+            </p>
+            <h3 class="mt-1 font-display text-xl text-ink group-hover:text-brand">{n.data.title}</h3>
+            <p class="mt-2 text-ink-muted">{n.data.description}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>

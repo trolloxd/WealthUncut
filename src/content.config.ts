@@ -47,6 +47,20 @@ const mercados = defineCollection({
   }),
 });
 
+// Boletín semanal "5 minutos de finanzas": recopila lo publicado esa semana (mercados, artículo y
+// herramienta destacados). Nunca contiene datos o afirmaciones nuevas, solo enlaza y resume lo que
+// ya está publicado y verificado en otra parte del sitio. Archivo: AAAA-MM-DD.mdx (fecha de envío).
+const newsletter = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/newsletter' }),
+  schema: z.object({
+    numero: z.number(),
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    draft: z.boolean().default(false),
+  }),
+});
+
 // Registro público de correcciones: qué se ha corregido y cuándo, en cualquier artículo o
 // herramienta ya publicado. Ver /correcciones/ y "Correcciones y actualizaciones" en metodologia.astro.
 const correcciones = defineCollection({
@@ -59,4 +73,4 @@ const correcciones = defineCollection({
   }),
 });
 
-export const collections = { blog, mercados, correcciones };
+export const collections = { blog, mercados, newsletter, correcciones };

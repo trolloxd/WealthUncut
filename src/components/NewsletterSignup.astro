@@ -1,0 +1,86 @@
+---
+interface Props {
+  compacta?: boolean;
+}
+const { compacta = false } = Astro.props;
+---
+
+<div class:list={['card not-prose', compacta ? 'p-5' : 'p-6']}>
+  <p class="font-display text-lg text-ink">5 minutos de finanzas</p>
+  <p class="mt-1 text-sm text-ink-muted">
+    Un resumen semanal de mercados, la herramienta y el artículo de la semana. Sin spam, cancela
+    cuando quieras.
+  </p>
+  <form id="newsletter-form" class="mt-4 grid gap-3 sm:flex sm:items-start sm:gap-2">
+    <div class="grid gap-1 sm:flex-1">
+      <label for="newsletter-email" class="sr-only">Tu email</label>
+      <input
+        id="newsletter-email"
+        type="email"
+        name="email"
+        required
+        maxlength="200"
+        autocomplete="email"
+        placeholder="tu@email.com"
+        class="campo-input"
+      />
+    </div>
+    <div aria-hidden="true" class="absolute -left-[9999px] h-px w-px overflow-hidden">
+      <label>No rellenes este campo <input type="text" name="web" tabindex="-1" autocomplete="off" /></label>
+    </div>
+    <button type="submit" class="btn-primary whitespace-nowrap">Suscribirme</button>
+  </form>
+  <label class="mt-2 flex items-start gap-2 text-xs text-ink-faint">
+    <input id="newsletter-consent" type="checkbox" required form="newsletter-form" class="mt-0.5 shrink-0" />
+    <span>
+      Acepto que WealthUncut guarde mi email para enviarme este boletín, según la{' '}
+      <a href="/privacidad/" class="underline hover:text-ink">política de privacidad</a>.
+    </span>
+  </label>
+  <p id="newsletter-status" class="mt-2 text-sm" role="status" aria-live="polite"></p>
+</div>
+
+<script>
+  const form = document.getElementById('newsletter-form') as HTMLFormElement;
+  const consent = document.getElementById('newsletter-consent') as HTMLInputElement;
+  const status = document.getElementById('newsletter-status')!;
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (!consent.checked) {
+      status.textContent = 'Tienes que aceptar la política de privacidad para suscribirte.';
+      status.className = 'mt-2 text-sm text-accent';
+      return;
+    }
+
+    status.textContent = 'Enviando...';
+    status.className = 'mt-2 text-sm text-ink-muted';
+
+    const formData = new FormData(form);
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.get('email'),
+          web: formData.get('web'),
+          consentimiento: consent.checked,
+        }),
+      });
+
+      if (!res.ok) throw new Error('request failed');
+      const data = (await res.json()) as { yaExistia?: boolean };
+
+      status.textContent = data.yaExistia
+        ? 'Ya estabas suscrito con ese email.'
+        : 'Hecho, ya estás suscrito. Te avisamos en el próximo número.';
+      status.className = 'mt-2 text-sm text-brand';
+      form.reset();
+      consent.checked = false;
+    } catch {
+      status.textContent = 'No se ha podido completar. Inténtalo de nuevo en un momento.';
+      status.className = 'mt-2 text-sm text-accent';
+    }
+  });
+</script>

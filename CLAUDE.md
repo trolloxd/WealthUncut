@@ -89,6 +89,22 @@ cambiarlas). A diferencia de las cifras fiscales, aquí no hay una fuente oficia
 son ofertas y productos de bancos y gestoras, así que la verificación es cruzar comparadores
 financieros reconocidos, nunca inventar.
 
+## Newsletter "5 minutos de finanzas" (decisión de David, 2026-09-25)
+
+`/newsletter/` recopila cada semana lo publicado esa semana (mercados, artículo y herramienta
+destacados), nunca datos nuevos: content collection `newsletter` en `src/content/newsletter/`
+(`AAAA-MM-DD.mdx`, fecha de envío). Procedimiento y reglas de qué destacar en
+`NEWSLETTER-PROCEDIMIENTO.md`; lo ejecuta una rutina semanal en la nube (domingo), misma
+infraestructura que `/mercados/`. `NewsletterSignup.astro` es el formulario de suscripción
+(portada, índice del boletín y pie de cada número); `src/pages/api/newsletter.ts` guarda el email
+en el mismo KV que `sugerencias.ts` (prefijo `newsletter:`, sin namespace nuevo), con el mismo
+honeypot y límite de peticiones. **Todavía no envía ningún email de verdad**: solo guarda
+suscripciones a la espera de que David elija un proveedor de email marketing (cuenta que solo él
+puede crear) para activar el envío real; hasta entonces, `/newsletter/` en sí mismo es el boletín
+(contenido público, indexable, con su propio valor de SEO). Cuando se elija proveedor, actualizar
+`privacidad.astro` (ya tiene la nota [PENDIENTE] correspondiente) y el paso 6 de
+`NEWSLETTER-PROCEDIMIENTO.md`.
+
 ## Seguridad (2026-09-24)
 
 - **Cabeceras** en `public/_headers`: `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`,
