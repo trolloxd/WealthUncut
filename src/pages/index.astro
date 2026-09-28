@@ -63,7 +63,7 @@ const posts = (await getCollection('blog', ({ data }) => isPublished(data)))
         <a href="/mercados/" class="text-sm font-medium text-brand underline decoration-brand/30 hover:decoration-brand">Ver todas</a>
       </div>
       <a href={`/mercados/${ultimaEdicion.id}/`} class="card group block p-6 transition-colors hover:border-brand/40">
-        <span class="text-xs font-semibold uppercase tracking-wide text-brand">Mercados hoy</span>
+        <span class="text-xs font-semibold uppercase tracking-wide text-brand">Noticias de hoy</span>
         <span class="mt-2 block font-display text-xl text-ink group-hover:text-brand">{ultimaEdicion.data.title}</span>
         <span class="mt-2 block text-sm text-ink-muted">{ultimaEdicion.data.description}</span>
       </a>

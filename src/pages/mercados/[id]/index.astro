@@ -44,7 +44,7 @@ const breadcrumbJsonLd = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE.url}/` },
-    { '@type': 'ListItem', position: 2, name: 'Mercados', item: `${SITE.url}/mercados/` },
+    { '@type': 'ListItem', position: 2, name: 'Noticias', item: `${SITE.url}/mercados/` },
     { '@type': 'ListItem', position: 3, name: title, item: url },
   ],
 };
@@ -58,7 +58,7 @@ const breadcrumbJsonLd = {
   updatedDate={updatedDate}
   extraJsonLd={[articleJsonLd, breadcrumbJsonLd]}
 >
-  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Mercados', href: '/mercados/' }, { label: title }]} />
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Noticias', href: '/mercados/' }, { label: title }]} />
   <article class="prose max-w-none">
     <h1>{title}</h1>
     <ArticleMeta author={author} pubDate={pubDate} updatedDate={updatedDate} sources={sources} hasAffiliateLinks={false}>
