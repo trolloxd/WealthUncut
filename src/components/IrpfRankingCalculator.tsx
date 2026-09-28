@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { IRPF_GENERAL_AUTONOMICO } from '../config/finance';
 import { calcularSueldoNeto, type ComunidadId } from './SalaryCalculator';
-import { CampoNumero, formatEuros } from './CalculatorUI';
+import { CampoNumero, claseAnchoBarra, formatEuros } from './CalculatorUI';
 
 const COMUNIDADES = Object.entries(IRPF_GENERAL_AUTONOMICO).map(([id, c]) => ({ id: id as ComunidadId, nombre: c.nombre }));
 
@@ -10,37 +10,6 @@ export interface FilaRanking {
   nombre: string;
   netoAnual: number;
   irpfAnual: number;
-}
-
-// Anchos de barra como clases de Tailwind estáticas (nunca style="width:...%" ni un atributo SVG
-// calculado): la CSP del sitio no permite aplicar estilos en tiempo de ejecución, ni siquiera vía
-// atributos SVG con nombre de propiedad CSS (width, height, x, rx...), que React también bloquea
-// bajo 'style-src'. Redondeando a múltiplos de 5 hay solo 18 clases, todas literales aquí para que
-// Tailwind las incluya en el CSS del build.
-const ANCHO_CLASE: Record<number, string> = {
-  15: 'w-[15%]',
-  20: 'w-[20%]',
-  25: 'w-[25%]',
-  30: 'w-[30%]',
-  35: 'w-[35%]',
-  40: 'w-[40%]',
-  45: 'w-[45%]',
-  50: 'w-[50%]',
-  55: 'w-[55%]',
-  60: 'w-[60%]',
-  65: 'w-[65%]',
-  70: 'w-[70%]',
-  75: 'w-[75%]',
-  80: 'w-[80%]',
-  85: 'w-[85%]',
-  90: 'w-[90%]',
-  95: 'w-[95%]',
-  100: 'w-[100%]',
-};
-
-function claseAncho(pct: number): string {
-  const redondeado = Math.min(100, Math.max(15, Math.round(pct / 5) * 5));
-  return ANCHO_CLASE[redondeado];
 }
 
 export function calcularRanking(brutoAnual: number): FilaRanking[] {
@@ -82,7 +51,7 @@ export default function IrpfRankingCalculator() {
               <span className="text-right text-xs text-ink-faint">{i + 1}</span>
               <span className="truncate text-ink">{f.nombre}</span>
               <span className="block h-4 w-full overflow-hidden rounded-full bg-cream" aria-hidden="true">
-                <span className={`block h-full rounded-full ${color} ${claseAncho(anchoBarra)}`} />
+                <span className={`block h-full rounded-full ${color} ${claseAnchoBarra(anchoBarra, 15)}`} />
               </span>
               <span className="text-right font-semibold text-ink">{formatEuros(f.netoAnual)}</span>
             </div>

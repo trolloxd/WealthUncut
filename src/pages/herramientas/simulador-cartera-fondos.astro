@@ -1,0 +1,74 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import FundPortfolioSimulator from '../../components/FundPortfolioSimulator.tsx';
+import datos from '../../data/fondos-indexados/ultimo.json';
+---
+
+<ToolLayout
+  title="Simulador de cartera de fondos indexados"
+  name="Simulador de cartera de fondos"
+  description="Construye una cartera con fondos indexados disponibles en España, reparte el peso entre ellos y simula cuánto podrías tener al cabo de los años."
+  pubDate={new Date('2026-09-28')}
+  updatedDate={new Date(datos.fecha)}
+  sources={[
+    { label: 'Comparador de fondos indexados de WealthUncut (TER e ISIN de cada fondo)', url: '/herramientas/comparador-fondos-indexados/' },
+  ]}
+  faqs={[
+    {
+      pregunta: '¿De dónde salen las rentabilidades de cada fondo?',
+      respuesta: 'Son supuestos de partida razonables según el tipo de índice (MSCI World, S&P 500, emergentes), no una rentabilidad histórica real ni una previsión. Puedes y debes cambiarlas por las que tú creas más realistas para cada fondo.',
+    },
+    {
+      pregunta: '¿Por qué solo aparecen estos fondos?',
+      respuesta: 'Son los mismos fondos, con el mismo TER e ISIN verificados, que en el comparador de fondos indexados: fondos de inversión (no ETF) indexados y disponibles para minoristas en España.',
+    },
+    {
+      pregunta: '¿Esto es una recomendación de cartera?',
+      respuesta: 'No. Es una herramienta educativa para entender cómo el peso de cada fondo y su coste afectan al resultado final, con tus propios números y supuestos. No tiene en cuenta tu situación personal ni es asesoramiento de inversión.',
+    },
+  ]}
+>
+  <p>
+    Elige qué peso quieres darle a cada fondo, cuánto vas a aportar y durante cuánto tiempo, y la
+    herramienta simula el resultado bruto y neto de impuestos al final del periodo. Los fondos son
+    los mismos, con el mismo TER e ISIN, que en el{' '}
+    <ArticleLink href="/herramientas/comparador-fondos-indexados/">comparador de fondos indexados</ArticleLink>.
+  </p>
+
+  <FundPortfolioSimulator client:load fondos={datos.fondos} />
+
+  <h2>Cómo calcula el resultado</h2>
+  <p>
+    Cada fondo compone por separado, con la rentabilidad bruta anual que le asignes menos su TER,
+    en función del peso que le des dentro de la cartera. Al final del periodo se suman todos los
+    fondos y se calcula el impuesto una sola vez sobre la ganancia total, con los tramos del IRPF
+    del ahorro. No simula reequilibrios entre fondos, volatilidad año a año ni el orden real en que
+    llegan las subidas y bajadas (lo que se conoce como riesgo de secuencia), así que es una
+    simplificación útil para comparar decisiones, no una predicción.
+  </p>
+
+  <h2>Por qué las rentabilidades son un supuesto, no un dato verificado</h2>
+  <p>
+    A diferencia del TER de cada fondo (verificado contra al menos dos fuentes independientes, como
+    en el comparador), la rentabilidad futura de un índice no se puede verificar: nadie la conoce de
+    antemano. Los valores de partida de esta herramienta son solo un punto de arranque razonable
+    según el tipo de índice; edítalos con el criterio que prefieras, incluida la rentabilidad
+    histórica real de cada índice si quieres basarte en ella, y compara varios escenarios en lugar de
+    fiarte de un único número.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿De dónde salen las rentabilidades de cada fondo?</strong><br />
+    Son supuestos de partida razonables según el tipo de índice (MSCI World, S&P 500, emergentes),
+    no una rentabilidad histórica real ni una previsión. Puedes y debes cambiarlas por las que tú
+    creas más realistas para cada fondo.</p>
+  <p><strong>¿Por qué solo aparecen estos fondos?</strong><br />
+    Son los mismos fondos, con el mismo TER e ISIN verificados, que en el{' '}
+    <a href="/herramientas/comparador-fondos-indexados/">comparador de fondos indexados</a>: fondos
+    de inversión (no ETF) indexados y disponibles para minoristas en España.</p>
+  <p><strong>¿Esto es una recomendación de cartera?</strong><br />
+    No. Es una herramienta educativa para entender cómo el peso de cada fondo y su coste afectan al
+    resultado final, con tus propios números y supuestos. No tiene en cuenta tu situación personal ni
+    es asesoramiento de inversión.</p>
+</ToolLayout>
