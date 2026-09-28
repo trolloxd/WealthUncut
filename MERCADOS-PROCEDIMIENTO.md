@@ -64,9 +64,18 @@ como hechos ("el IBEX subirá"); como mucho, qué están esperando los analistas
 
 Fuentes válidas para contrastar: Reuters, Bloomberg, Financial Times, The Wall Street Journal, CNBC,
 Associated Press, Expansión, Cinco Días, El Economista, El Confidencial (sección de mercados), la
-web de BME (Bolsa de Madrid), STOXX, S&P Dow Jones Indices, Nasdaq, y las webs oficiales de bancos
-centrales y organismos estadísticos. No valen como fuente: foros, redes sociales, blogs, webs de
-brokers con fines comerciales ni otros agregadores automáticos.
+web de BME (Bolsa de Madrid), STOXX, S&P Dow Jones Indices, Nasdaq, Rankia (sección de mercados), y
+las webs oficiales de bancos centrales (BCE, Reserva Federal, Banco de Inglaterra, Banco de Japón,
+Banco de España) y organismos estadísticos (INE, Eurostat, BLS, BEA). No valen como fuente: foros,
+redes sociales, blogs (salvo Rankia, ya listada), webs de brokers con fines comerciales ni otros
+agregadores automáticos.
+
+Si un día el entorno de la rutina no puede acceder a los grandes medios (Reuters, Bloomberg, CNBC,
+FT, AP, El Economista, El Confidencial devuelven error o bloqueo del propio sitio, no del proxy de
+red del entorno, que es un problema distinto), sirve verificar con Rankia más la fuente oficial que
+corresponda (BCE, INE, BME), siempre que sigan siendo dos fuentes independientes que coincidan en la
+cifra. Esto no relaja la regla de dos fuentes, solo amplía qué cuenta como fuente cuando los medios
+habituales bloquean el acceso automatizado.
 
 ## 4. Estructura del artículo
 
