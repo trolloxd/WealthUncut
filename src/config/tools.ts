@@ -61,11 +61,6 @@ export const TOOLS = [
     description: 'TER, índice y dónde está cada fondo disponible en España, ordenado por coste.',
   },
   {
-    href: '/herramientas/simulador-cartera-fondos/',
-    name: 'Simulador de cartera de fondos',
-    description: 'Reparte el peso entre varios fondos indexados y simula cuánto podrías tener al cabo de los años.',
-  },
-  {
     href: '/herramientas/ranking-irpf-comunidades/',
     name: '¿Dónde pagas menos IRPF?',
     description: 'Ranking de las 17 comunidades autónomas con tu mismo sueldo, de la que más neto deja a la que menos.',

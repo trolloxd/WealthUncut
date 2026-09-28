@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ArticleMeta from '../components/ArticleMeta.astro';
+import ArticleLink from '../components/ArticleLink.astro';
+import FundPortfolioSimulator from '../components/FundPortfolioSimulator.tsx';
+import { SITE, AUTHOR } from '../config/site';
+import datos from '../data/myinvestor-fondos/ultimo.json';
+
+const title = 'Carteras: simula tu cartera de fondos indexados';
+const description = 'Busca entre los fondos indexados de MyInvestor, arma tu propia cartera y simula cuánto podrías tener al cabo de los años, con su rentabilidad histórica real.';
+const pubDate = new Date('2026-09-28');
+const url = new URL(Astro.url.pathname, SITE.url).href;
+
+const appJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  '@id': `${url}#app`,
+  name: 'Carteras',
+  description,
+  url,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Web',
+  inLanguage: SITE.locale,
+  isAccessibleForFree: true,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+  author: { '@id': `${SITE.url}/autor/#person`, '@type': 'Person', name: AUTHOR.name },
+  publisher: { '@id': `${SITE.url}/#organization` },
+  isPartOf: { '@id': `${SITE.url}/#website` },
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Carteras', item: url },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} publishedDate={pubDate} extraJsonLd={[appJsonLd, breadcrumbJsonLd]}>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Carteras' }]} />
+  <article class="prose max-w-none">
+    <h1>Simula tu cartera de fondos indexados</h1>
+    <ArticleMeta
+      author={AUTHOR.name}
+      pubDate={pubDate}
+      updatedDate={new Date(datos.fecha)}
+      sources={[{ label: 'MyInvestor: fondos de inversión (ISIN, TER y rentabilidades)', url: 'https://myinvestor.es/inversion/fondos-inversion/' }]}
+      hasAffiliateLinks={false}
+    >
+      <p>
+        Busca un fondo indexado disponible en MyInvestor por nombre, gestora o índice, añádelo a tu
+        cartera y repite con los que quieras. Reparte el peso entre ellos, pon cuánto vas a aportar y
+        durante cuánto tiempo, y la herramienta simula el resultado bruto y neto de impuestos al final
+        del periodo.
+      </p>
+
+      <FundPortfolioSimulator client:load fondos={datos.fondos} />
+
+      <h2>De dónde salen los datos de cada fondo</h2>
+      <p>
+        El ISIN, el TER y la rentabilidad de cada año son los que MyInvestor publica en su propia
+        web para los fondos que comercializa. A diferencia del{' '}
+        <ArticleLink href="/herramientas/comparador-fondos-indexados/">comparador de fondos indexados</ArticleLink>,
+        centrado en unos pocos fondos con el TER contrastado en varias fuentes, aquí la fuente es la
+        propia plataforma: es la única que puede decir con autoridad qué fondos ofrece y qué
+        rentabilidad han tenido ahí. Esta lista no incluye todavía el catálogo completo de MyInvestor
+        (más de 2.400 fondos entre gestión activa e indexada): de momento reúne los fondos indexados
+        más vendidos y los indexados propios de MyInvestor. La rentabilidad de partida de cada fondo es
+        la media de sus años completos (el año en curso va aparte, por estar a mitad de recorrido), no
+        una previsión: puedes cambiarla por la que tú creas más realista.
+      </p>
+
+      <h2>Cómo calcula el resultado</h2>
+      <p>
+        Cada fondo compone por separado, con la rentabilidad bruta anual que le asignes menos su TER,
+        según el peso que le des dentro de la cartera. Al final del periodo se suman todos los fondos y
+        se calcula el impuesto una sola vez sobre la ganancia total, con los tramos del IRPF del ahorro.
+        No simula reequilibrios entre fondos, volatilidad año a año ni el orden real en que llegan las
+        subidas y bajadas (el riesgo de secuencia), así que es una simplificación útil para comparar
+        decisiones, no una predicción.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <p><strong>¿Esto es una recomendación de cartera?</strong><br />
+        No. Es una herramienta educativa para entender cómo el peso de cada fondo y su coste afectan al
+        resultado final, con tus propios números. No tiene en cuenta tu situación personal ni es
+        asesoramiento de inversión.</p>
+      <p><strong>¿Por qué solo aparecen fondos de MyInvestor?</strong><br />
+        Porque son los que tienen ISIN, TER y rentabilidad histórica real verificables en una fuente
+        pública concreta. Muchos de estos fondos también están disponibles en otras plataformas (Renta
+        4, Self Bank, Openbank...), pero sus condiciones exactas pueden variar.</p>
+      <p><strong>¿Puedo fiarme de la rentabilidad esperada por defecto?</strong><br />
+        Es una media histórica, no una previsión: ningún fondo va a repetir exactamente su
+        rentabilidad pasada. Úsala como punto de partida y prueba varios escenarios en vez de fiarte de
+        un único número.</p>
+    </ArticleMeta>
+  </article>
+</BaseLayout>

@@ -8,25 +8,25 @@ interface Fondo {
   isin: string;
   indice: string;
   ter: number;
-  minimoNota: string;
-  traspasable: boolean;
-  plataformas: string;
+  terNota?: string;
+  perfilRiesgo: number;
+  rentabilidadesAnuales: Record<string, number>;
 }
 
 interface Props {
   fondos: Fondo[];
 }
 
-/**
- * Rentabilidad bruta anual de partida por tipo de índice: son supuestos razonables para arrancar
- * la simulación, no una previsión ni una cifra verificada como el TER. El usuario los puede
- * cambiar fondo a fondo.
- */
-function rentabilidadPorDefecto(indice: string): number {
-  const i = indice.toLowerCase();
-  if (i.includes('s&p 500')) return 8;
-  if (i.includes('emergentes')) return 6;
-  return 7; // MSCI World / mercados desarrollados
+/** Media de los años completos (todos menos el más reciente, que es el año en curso, parcial). */
+function mediaHistorica(rentabilidades: Record<string, number>): number {
+  const valores = Object.values(rentabilidades).slice(1);
+  if (valores.length === 0) return 0;
+  return valores.reduce((a, b) => a + b, 0) / valores.length;
+}
+
+function ultimoAnioCompleto(rentabilidades: Record<string, number>): { anio: string; valor: number } | null {
+  const entradas = Object.entries(rentabilidades).slice(1);
+  return entradas.length > 0 ? { anio: entradas[0][0], valor: entradas[0][1] } : null;
 }
 
 interface ResultadoFondo {
@@ -55,49 +55,78 @@ function simularFondo(params: {
 }
 
 export default function FundPortfolioSimulator({ fondos }: Props) {
-  const [pesos, setPesos] = useState<Record<string, number>>(() => {
-    // Cartera de ejemplo con tres fondos de índices distintos, para no arrancar con la
-    // herramienta vacía. El usuario puede cambiar cualquier peso a 0.
-    const inicial: Record<string, number> = Object.fromEntries(fondos.map((f) => [f.isin, 0]));
-    const mundial = fondos.find((f) => f.indice.toLowerCase().includes('world'));
-    const sp500 = fondos.find((f) => f.indice.toLowerCase().includes('s&p 500'));
-    const emergentes = fondos.find((f) => f.indice.toLowerCase().includes('emergentes'));
-    if (mundial) inicial[mundial.isin] = 50;
-    if (sp500) inicial[sp500.isin] = 30;
-    if (emergentes) inicial[emergentes.isin] = 20;
-    return inicial;
+  const [busqueda, setBusqueda] = useState('');
+  const [isinsEnCartera, setIsinsEnCartera] = useState<string[]>(() => {
+    // Cartera de ejemplo con tres fondos de índices distintos, para no arrancar vacío.
+    const candidatos = ['IE00BYX5NX33', 'IE0031786696', 'IE0032620787'];
+    return candidatos.filter((isin) => fondos.some((f) => f.isin === isin));
   });
-  const [rentabilidades, setRentabilidades] = useState<Record<string, number>>(() =>
-    Object.fromEntries(fondos.map((f) => [f.isin, rentabilidadPorDefecto(f.indice)]))
-  );
+  const [pesos, setPesos] = useState<Record<string, number>>({});
+  const [rentabilidades, setRentabilidades] = useState<Record<string, number>>({});
   const [aportacionInicial, setAportacionInicial] = useState(1000);
   const [aportacionMensual, setAportacionMensual] = useState(150);
   const [anios, setAnios] = useState(20);
 
-  const pesoTotal = useMemo(() => Object.values(pesos).reduce((a, b) => a + b, 0), [pesos]);
+  function pesoDe(isin: string): number {
+    return pesos[isin] ?? Math.round(100 / Math.max(1, isinsEnCartera.length));
+  }
+  function rentabilidadDe(isin: string): number {
+    if (rentabilidades[isin] !== undefined) return rentabilidades[isin];
+    const fondo = fondos.find((f) => f.isin === isin);
+    return fondo ? Math.round(mediaHistorica(fondo.rentabilidadesAnuales) * 10) / 10 : 7;
+  }
+
+  const resultadosBusqueda = useMemo(() => {
+    const q = busqueda.trim().toLowerCase();
+    if (!q) return [];
+    return fondos
+      .filter((f) => !isinsEnCartera.includes(f.isin))
+      .filter(
+        (f) =>
+          f.nombre.toLowerCase().includes(q) ||
+          f.gestora.toLowerCase().includes(q) ||
+          f.indice.toLowerCase().includes(q) ||
+          f.isin.toLowerCase().includes(q)
+      )
+      .slice(0, 8);
+  }, [busqueda, fondos, isinsEnCartera]);
+
+  function anadirFondo(isin: string) {
+    setIsinsEnCartera((prev) => (prev.includes(isin) ? prev : [...prev, isin]));
+    setBusqueda('');
+  }
+
+  function quitarFondo(isin: string) {
+    setIsinsEnCartera((prev) => prev.filter((i) => i !== isin));
+    setPesos((prev) => {
+      const { [isin]: _, ...resto } = prev;
+      return resto;
+    });
+  }
+
+  const fondosEnCartera = isinsEnCartera.map((isin) => fondos.find((f) => f.isin === isin)!).filter(Boolean);
+  const pesoTotal = fondosEnCartera.reduce((a, f) => a + pesoDe(f.isin), 0);
 
   const resultado = useMemo(() => {
     const meses = Math.max(0, Math.round(anios * 12));
     const totalAportado = aportacionInicial + aportacionMensual * meses;
 
-    if (pesoTotal <= 0) {
+    if (pesoTotal <= 0 || fondosEnCartera.length === 0) {
       return { totalAportado, valorFinalBruto: 0, ganancia: 0, impuesto: 0, valorFinalNeto: 0, porFondo: [] as ResultadoFondo[] };
     }
 
-    const porFondo: ResultadoFondo[] = fondos
-      .filter((f) => pesos[f.isin] > 0)
-      .map((f) => {
-        const peso = pesos[f.isin] / pesoTotal; // normalizado a 100% aunque el usuario no llegue exacto
-        const aportado = aportacionInicial * peso + aportacionMensual * peso * meses;
-        const valorFinalBruto = simularFondo({
-          aportacionInicial: aportacionInicial * peso,
-          aportacionMensual: aportacionMensual * peso,
-          meses,
-          rentabilidadBrutaAnual: rentabilidades[f.isin] ?? 7,
-          terAnual: f.ter,
-        });
-        return { isin: f.isin, peso: pesos[f.isin] / pesoTotal, aportado, valorFinalBruto };
+    const porFondo: ResultadoFondo[] = fondosEnCartera.map((f) => {
+      const peso = pesoDe(f.isin) / pesoTotal;
+      const aportado = aportacionInicial * peso + aportacionMensual * peso * meses;
+      const valorFinalBruto = simularFondo({
+        aportacionInicial: aportacionInicial * peso,
+        aportacionMensual: aportacionMensual * peso,
+        meses,
+        rentabilidadBrutaAnual: rentabilidadDe(f.isin),
+        terAnual: f.ter,
       });
+      return { isin: f.isin, peso, aportado, valorFinalBruto };
+    });
 
     const valorFinalBruto = porFondo.reduce((a, r) => a + r.valorFinalBruto, 0);
     const ganancia = Math.max(0, valorFinalBruto - totalAportado);
@@ -105,66 +134,115 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
     const valorFinalNeto = valorFinalBruto - impuesto;
 
     return { totalAportado, valorFinalBruto, ganancia, impuesto, valorFinalNeto, porFondo };
-  }, [fondos, pesos, rentabilidades, aportacionInicial, aportacionMensual, anios, pesoTotal]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fondosEnCartera, pesos, rentabilidades, aportacionInicial, aportacionMensual, anios, pesoTotal]);
 
   const maxValorFondo = Math.max(1, ...resultado.porFondo.map((r) => r.valorFinalBruto));
-
-  function actualizarPeso(isin: string, valor: number) {
-    setPesos((prev) => ({ ...prev, [isin]: Math.min(100, Math.max(0, valor)) }));
-  }
-
-  function actualizarRentabilidad(isin: string, valor: number) {
-    setRentabilidades((prev) => ({ ...prev, [isin]: valor }));
-  }
 
   return (
     <div className="card not-prose grid gap-6 p-6 lg:grid-cols-2">
       <div className="grid gap-5">
-        <div className="grid gap-3">
-          {fondos.map((f) => (
-            <div key={f.isin} className="grid grid-cols-[1fr_4.5rem] items-start gap-3 border-b border-border/60 pb-3 last:border-0 sm:grid-cols-[1fr_4.5rem_5.5rem]">
-              <div className="min-w-0">
-                <p className="truncate text-sm font-medium text-ink">{f.gestora}</p>
-                <p className="text-xs text-ink-faint">{f.indice} · TER {f.ter.toLocaleString('es-ES', { minimumFractionDigits: 2 })}%</p>
-              </div>
-              <label className="grid gap-0.5 text-xs text-ink-muted">
-                Peso %
-                <input
-                  type="number"
-                  min={0}
-                  max={100}
-                  step={5}
-                  inputMode="numeric"
-                  value={pesos[f.isin]}
-                  onChange={(e) => actualizarPeso(f.isin, Number(e.target.value))}
-                  className="campo-input"
-                  aria-label={`Peso en la cartera de ${f.nombre}`}
-                />
-              </label>
-              <label className="hidden gap-0.5 text-xs text-ink-muted sm:grid">
-                Rent. % anual
-                <input
-                  type="number"
-                  step={0.5}
-                  inputMode="decimal"
-                  value={rentabilidades[f.isin]}
-                  onChange={(e) => actualizarRentabilidad(f.isin, Number(e.target.value))}
-                  className="campo-input"
-                  aria-label={`Rentabilidad bruta anual esperada de ${f.nombre}`}
-                />
-              </label>
-            </div>
-          ))}
+        <div className="grid gap-2">
+          <label className="grid gap-1 text-sm font-medium text-ink-muted">
+            Buscar fondo (nombre, gestora o índice)
+            <input
+              type="text"
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+              placeholder="Ej. emergentes, Vanguard, Nasdaq..."
+              className="campo-input"
+              aria-label="Buscar fondo para añadir a la cartera"
+            />
+          </label>
+          {resultadosBusqueda.length > 0 && (
+            <ul className="grid gap-1 rounded-xl border border-border bg-cream p-2">
+              {resultadosBusqueda.map((f) => (
+                <li key={f.isin}>
+                  <button
+                    type="button"
+                    onClick={() => anadirFondo(f.isin)}
+                    className="flex w-full items-center justify-between gap-2 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-white"
+                  >
+                    <span>
+                      <span className="font-medium text-ink">{f.gestora}</span>{' '}
+                      <span className="text-ink-faint">({f.indice})</span>
+                    </span>
+                    <span className="shrink-0 text-xs font-semibold text-brand">+ Añadir</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          {busqueda.trim() !== '' && resultadosBusqueda.length === 0 && (
+            <p className="text-xs text-ink-faint">Ningún fondo de la lista coincide con "{busqueda}".</p>
+          )}
         </div>
 
-        <p className={`text-xs ${pesoTotal === 100 ? 'text-ink-faint' : 'text-accent'}`} aria-live="polite">
-          Suma de pesos: {pesoTotal}%.{' '}
-          {pesoTotal === 100
-            ? 'La cartera está completa.'
-            : pesoTotal === 0
-              ? 'Asigna un peso a al menos un fondo.'
+        <div className="grid gap-3">
+          {fondosEnCartera.length === 0 && (
+            <p className="rounded-xl bg-cream p-4 text-sm text-ink-muted">
+              Busca arriba y añade al menos un fondo para empezar tu cartera.
+            </p>
+          )}
+          {fondosEnCartera.map((f) => {
+            const ultimo = ultimoAnioCompleto(f.rentabilidadesAnuales);
+            return (
+              <div key={f.isin} className="grid grid-cols-[1fr_4.5rem] items-start gap-3 border-b border-border/60 pb-3 last:border-0 sm:grid-cols-[1fr_4.5rem_5.5rem_1.5rem]">
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium text-ink">{f.gestora}</p>
+                  <p className="text-xs text-ink-faint">
+                    {f.indice} · TER {f.ter.toLocaleString('es-ES', { minimumFractionDigits: 2 })}%
+                    {ultimo && ` · ${ultimo.anio}: ${ultimo.valor > 0 ? '+' : ''}${ultimo.valor.toLocaleString('es-ES')}%`}
+                  </p>
+                </div>
+                <label className="grid gap-0.5 text-xs text-ink-muted">
+                  Peso %
+                  <input
+                    type="number"
+                    min={0}
+                    max={100}
+                    step={5}
+                    inputMode="numeric"
+                    value={pesoDe(f.isin)}
+                    onChange={(e) => setPesos((prev) => ({ ...prev, [f.isin]: Math.min(100, Math.max(0, Number(e.target.value))) }))}
+                    className="campo-input"
+                    aria-label={`Peso en la cartera de ${f.nombre}`}
+                  />
+                </label>
+                <label className="hidden gap-0.5 text-xs text-ink-muted sm:grid">
+                  Rent. % anual
+                  <input
+                    type="number"
+                    step={0.5}
+                    inputMode="decimal"
+                    value={rentabilidadDe(f.isin)}
+                    onChange={(e) => setRentabilidades((prev) => ({ ...prev, [f.isin]: Number(e.target.value) }))}
+                    className="campo-input"
+                    aria-label={`Rentabilidad bruta anual esperada de ${f.nombre}`}
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() => quitarFondo(f.isin)}
+                  className="mt-4 text-ink-faint hover:text-accent sm:mt-5"
+                  aria-label={`Quitar ${f.nombre} de la cartera`}
+                  title="Quitar de la cartera"
+                >
+                  ✕
+                </button>
+              </div>
+            );
+          })}
+        </div>
+
+        {fondosEnCartera.length > 0 && (
+          <p className={`text-xs ${pesoTotal === 100 ? 'text-ink-faint' : 'text-accent'}`} aria-live="polite">
+            Suma de pesos: {pesoTotal}%.{' '}
+            {pesoTotal === 100
+              ? 'La cartera está completa.'
               : 'El cálculo normaliza estos pesos a 100% automáticamente, pero ajústalos para que la cartera refleje lo que quieres.'}
-        </p>
+          </p>
+        )}
 
         <div className="grid gap-4 sm:grid-cols-3">
           <CampoNumero label="Aportación inicial (€)" value={aportacionInicial} onChange={setAportacionInicial} step={100} />
@@ -225,10 +303,9 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
           le asignes menos su TER, sin comisión de custodia, y el impuesto se calcula una sola vez sobre
           la ganancia total al final del periodo con los tramos del IRPF del ahorro{' '}
           {!IRPF_AHORRO_FUENTE.verificado && <strong className="text-accent">(pendiente de verificar)</strong>}.
-          No simula reequilibrios, volatilidad ni el orden real en que llegan las rentabilidades: las
-          rentabilidades por defecto son supuestos de partida razonables, no una previsión ni una
-          rentabilidad histórica real de cada fondo. Cámbialas por las que tú creas más realistas. No es
-          una recomendación de inversión.
+          No simula reequilibrios, volatilidad ni el orden real en que llegan las rentabilidades. Los
+          valores de partida son la media de los años completos que MyInvestor publica para cada fondo,
+          no una previsión: cámbialos por el criterio que prefieras. No es una recomendación de inversión.
         </p>
       </div>
     </div>

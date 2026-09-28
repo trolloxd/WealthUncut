@@ -1,0 +1,100 @@
+{
+ "fecha": "2026-09-28",
+ "generado": "2026-09-28T18:00:00.000Z",
+ "fuente": "myinvestor.es/inversion/fondos-inversion/ (sección \"Más vendidos\" y \"Fondos indexados exclusivos MyInvestor\")",
+ "nota": "ISIN, TER y rentabilidades anuales tal y como los publica MyInvestor en su propia web para sus fondos disponibles. A diferencia del comparador de fondos indexados (que cruza varias fuentes para un TER que apenas cambia), aquí la fuente es la propia plataforma, la única autoridad sobre qué fondos ofrece y qué rentabilidad han tenido en ella. Rentabilidades pasadas, tal como las publica MyInvestor: no garantizan rentabilidades futuras. El año en curso es parcial (YTD).",
+ "fondos": [
+  {
+   "gestora": "Fidelity",
+   "nombre": "Fidelity MSCI World Index Fund P-ACC-EUR",
+   "isin": "IE00BYX5NX33",
+   "indice": "MSCI World",
+   "ter": 0.10,
+   "perfilRiesgo": 4,
+   "rentabilidadesAnuales": { "2026": 16.3, "2025": 6.7, "2024": 26.5, "2023": 19.6, "2022": -12.6, "2021": 31.0 }
+  },
+  {
+   "gestora": "Fidelity",
+   "nombre": "Fidelity S&P 500 Index Fund P-ACC-EUR",
+   "isin": "IE00BYX5MX67",
+   "indice": "S&P 500",
+   "ter": 0.10,
+   "perfilRiesgo": 5,
+   "rentabilidadesAnuales": { "2026": 17.2, "2025": 3.5, "2024": 32.8, "2023": 21.4, "2022": -13.1, "2021": 37.8 }
+  },
+  {
+   "gestora": "Vanguard",
+   "nombre": "Vanguard U.S. 500 Stock Index Fund Investor EUR Acc",
+   "isin": "IE0032620787",
+   "indice": "S&P 500",
+   "ter": 0.10,
+   "perfilRiesgo": 5,
+   "rentabilidadesAnuales": { "2026": 17.1, "2025": 3.5, "2024": 32.7, "2023": 21.3, "2022": -13.2, "2021": 37.8 }
+  },
+  {
+   "gestora": "Vanguard",
+   "nombre": "Vanguard Emerging Markets Stock Index Fund EUR Acc",
+   "isin": "IE0031786696",
+   "indice": "Mercados emergentes",
+   "ter": 0.23,
+   "perfilRiesgo": 4,
+   "rentabilidadesAnuales": { "2026": 29.0, "2025": 17.6, "2024": 14.8, "2023": 5.5, "2022": -15.1, "2021": 4.5 }
+  },
+  {
+   "gestora": "Vanguard",
+   "nombre": "Vanguard Global Stock Index Fund EUR Acc",
+   "isin": "IE00B03HD191",
+   "indice": "MSCI World (réplica algo más amplia que el estándar)",
+   "ter": 0.18,
+   "perfilRiesgo": 4,
+   "rentabilidadesAnuales": { "2026": 16.3, "2025": 6.7, "2024": 26.5, "2023": 19.5, "2022": -12.8, "2021": 31.0 }
+  },
+  {
+   "gestora": "iShares (BlackRock)",
+   "nombre": "iShares Developed World Index (IE) D Acc EUR",
+   "isin": "IE00BD0NCM55",
+   "indice": "MSCI World",
+   "ter": 0.12,
+   "perfilRiesgo": 5,
+   "rentabilidadesAnuales": { "2026": 15.4, "2025": 7.2, "2024": 26.9, "2023": 18.8, "2022": -12.8, "2021": 32.7 }
+  },
+  {
+   "gestora": "Vanguard",
+   "nombre": "Vanguard Global Small-Cap Index Fund EUR Acc",
+   "isin": "IE00B42W4L06",
+   "indice": "Small cap global",
+   "ter": 0.30,
+   "perfilRiesgo": 4,
+   "rentabilidadesAnuales": { "2026": 17.0, "2025": 5.6, "2024": 15.2, "2023": 11.9, "2022": -13.5, "2021": 24.4 }
+  },
+  {
+   "gestora": "MyInvestor",
+   "nombre": "MyInvestor Nasdaq 100",
+   "isin": "ES0165265002",
+   "indice": "Nasdaq-100",
+   "ter": 0.40,
+   "perfilRiesgo": 5,
+   "rentabilidadesAnuales": { "2026": 23.1, "2025": 5.1, "2024": 32.5, "2023": 47.3, "2022": -38.6 }
+  },
+  {
+   "gestora": "MyInvestor",
+   "nombre": "MyInvestor S&P500 Equiponderado",
+   "isin": "ES0165242001",
+   "indice": "S&P 500 Equiponderado",
+   "ter": 0.59,
+   "terNota": "MyInvestor publica un TER máximo del 0,59% para su gama de indexados propios, sin desglosar la cifra exacta de este fondo en concreto.",
+   "perfilRiesgo": 4,
+   "rentabilidadesAnuales": { "2026": 13.7, "2025": -2.3, "2024": 18.1, "2023": 10.8, "2022": -13.2 }
+  },
+  {
+   "gestora": "MyInvestor",
+   "nombre": "MyInvestor Mundo Desarrollado y Emergente",
+   "isin": "ES0184894006",
+   "indice": "MSCI ACWI (desarrollados + emergentes)",
+   "ter": 0.59,
+   "terNota": "MyInvestor publica un TER máximo del 0,59% para su gama de indexados propios, sin desglosar la cifra exacta de este fondo en concreto.",
+   "perfilRiesgo": 4,
+   "rentabilidadesAnuales": { "2026": 16.2, "2025": 8.1, "2024": 23.3, "2023": 15.7, "2022": -24.0 }
+  }
+ ]
+}
