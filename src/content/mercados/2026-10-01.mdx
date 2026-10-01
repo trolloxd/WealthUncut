@@ -1,0 +1,137 @@
+---
+title: "Euríbor en el 3,243% y mal mes para la bolsa: así cierra septiembre"
+description: "El euríbor marca su media más alta desde julio de 2024, el IBEX cae un 2,7% en septiembre y la inflación PCE de EE. UU. sale mejor de lo esperado."
+pubDate: 2026-10-01
+author: "David Pérez Mitjà"
+tags: ["mercados", "euríbor", "hipotecas", "bolsa", "inflación"]
+sources:
+  - label: "Expansión: el euríbor se dispara en septiembre a su nivel más alto en dos años (30 de septiembre de 2026)"
+    url: "https://www.expansion.com/mercados/euribor/2026/09/30/6abcec10468aeb7e0e8b4591.html"
+  - label: "Rankia: euríbor hoy, 30 de septiembre de 2026, y media provisional del mes"
+    url: "https://www.rankia.com/blog/mejores-hipotecas/7489773-euribor-hoy-30-septiembre-2026"
+  - label: "BCE: euríbor a 12 meses, media mensual (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR1YD_.HSTA"
+  - label: "BCE: tipo de la facilidad de depósito (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/FM/FM.D.U2.EUR.4F.KR.DFR.LEV"
+  - label: "Expansión: el Ibex encadena su tercera sesión a la baja y salda septiembre con una caída del 2,7% (30 de septiembre de 2026)"
+    url: "https://www.expansion.com/mercados/cronica-bolsa/2026/09/30/6abca3cce5fdeae2348b4595.html"
+  - label: "Cinco Días: el Ibex cae un 2,7% en septiembre mientras los bonos cuestionan el optimismo de los mercados (30 de septiembre de 2026)"
+    url: "https://cincodias.elpais.com/mercados-financieros/2026-09-30/la-bolsa-y-el-ibex-35.html"
+  - label: "CNBC: S&P 500 falls Wednesday despite softer-than-expected inflation data (30 de septiembre de 2026)"
+    url: "https://www.cnbc.com/2026/09/29/stock-market-today-live-updates.html"
+  - label: "BEA (EE. UU.): Personal Income and Outlays, August 2026 (30 de septiembre de 2026)"
+    url: "https://www.bea.gov/news/2026/personal-income-and-outlays-august-2026"
+  - label: "BLS (EE. UU.): calendario de publicaciones de octubre de 2026"
+    url: "https://www.bls.gov/schedule/2026/10_sched_list.htm"
+---
+
+import datos from '../../data/mercados/2026-10-01.json';
+import MarketSnapshot from '../../components/MarketSnapshot.astro';
+import MarketChart from '../../components/MarketChart.astro';
+
+Septiembre ya tiene cifra para las hipotecas: el euríbor a 12 meses cierra el mes con una media
+del 3,243%, la más alta desde julio de 2024. El mismo día, las bolsas europeas despidieron el mes y
+el trimestre con caídas, aunque el dato de inflación que más mira la Reserva Federal salió algo
+mejor de lo esperado.
+
+## Lo más importante en 30 segundos
+
+- **Euríbor**: la media provisional de septiembre queda en el 3,243%, frente al 2,954% de agosto
+  y el 2,172% de septiembre de 2025.
+- **Bolsa española**: el IBEX 35 cayó ayer un 0,47% y cerró en 19.426,20 puntos. En septiembre
+  pierde un 2,7%, y en el tercer trimestre, un 0,23%.
+- **Wall Street**: cierre mixto. El S&P 500 cedió un 0,25%, el Dow Jones un 0,86% y el Nasdaq
+  subió un 0,24%.
+- **Inflación en EE. UU.**: el índice de precios PCE subió un 3,4% anual en agosto, y la
+  subyacente, un 3,0%, por debajo de lo que esperaban los analistas.
+
+## Euríbor: la media más alta en dos años
+
+Con el valor de ayer, último día hábil del mes, ya se puede calcular la media de septiembre: un
+**3,243%**, según coinciden Expansión y Rankia. Es una cifra provisional: la oficial, que es la que usan los bancos para revisar las
+hipotecas, la publica el Banco de España en los próximos días.
+
+Para ponerla en contexto, con la serie oficial del BCE:
+
+- En **agosto** la media fue del 2,954%, así que en un solo mes ha subido casi tres décimas.
+- En **septiembre de 2025** estaba en el 2,172%, más de un punto por debajo.
+- Hay que remontarse a **julio de 2024** para encontrar una media más alta.
+
+¿Por qué sube? El euríbor a 12 meses refleja lo que el mercado espera de los tipos del BCE para
+el próximo año. El BCE ya los subió el 10 de septiembre: el tipo de depósito, el que paga a los
+bancos por dejarle dinero, pasó del 2,25% al 2,5%. Y con la inflación empujada por el petróleo
+caro (por la guerra con Irán y el bloqueo de Ormuz), los analistas citados por Expansión no
+descartan más subidas.
+
+<MarketChart datos={datos} serie="dfr" titulo="Tipo de depósito del BCE (%)" />
+
+### A qué te afecta
+
+Si tienes una hipoteca variable que se revisa con el dato de septiembre, la cuota subirá. Un
+ejemplo con cálculo propio: en una hipoteca de 150.000 euros a 25 años con un diferencial del 1%,
+pasar de un euríbor del 2,172% al 3,243% sube la cuota de unos 725 a unos 812 euros al mes,
+alrededor de 87 euros más (más de 1.000 euros al año). La cifra real depende del capital pendiente
+y del plazo que te quede, y puedes calcularla con tus datos en el
+[simulador de hipoteca con euríbor](/herramientas/simulador-hipoteca-euribor/).
+
+La otra cara: con tipos más altos, las cuentas remuneradas y los depósitos tienden a pagar más.
+Puedes ver qué ofrecen hoy en el
+[comparador de cuentas remuneradas](/herramientas/comparador-cuentas-remuneradas/).
+
+## La bolsa española cierra septiembre en rojo
+
+El IBEX 35 volvió a hacer ayer una sesión de más a menos: llegó a subir y
+terminó en mínimos del día, con una caída del 0,47% hasta los 19.426,20 puntos. Con eso, septiembre
+se salda con una pérdida del 2,7%. Rompe una racha de cinco meses seguidos al alza, según Cinco
+Días. Las principales bolsas europeas también cayeron ayer.
+
+Las causas son las mismas que llevamos semanas contando: la deuda pública se está encareciendo
+mucho. La rentabilidad del bono de EE. UU. a 10 años ronda el 5,3%, en niveles de 2007, y la del
+bono español a 10 años supera el 4,1%. Cuando un bono seguro paga tanto, las acciones resultan
+menos atractivas en comparación, y eso frena las bolsas.
+
+En Wall Street el mes fue más desigual. Ayer el Dow Jones bajó un 0,86% y el S&P 500 un 0,25%,
+mientras el Nasdaq, cargado de tecnológicas, subió un 0,24%. Las grandes tecnológicas siguen
+sosteniendo a la bolsa estadounidense pese a la presión de los bonos.
+
+### Inflación en EE. UU.: un respiro, de momento
+
+El dato que todos esperaban ayer era el **índice de precios PCE** de agosto, la medida de
+inflación que más vigila la Reserva Federal. Según la oficina estadística de EE. UU. (BEA), los
+precios subieron un 3,4% respecto a hace un año, y un 3,0% sin contar alimentos ni energía (la
+subyacente). En el mes, subieron un 0,3% y un 0,2%, respectivamente.
+
+La subyacente salió por debajo de lo que esperaban los analistas, y según Cinco Días contuvo algo la
+subida de la rentabilidad de los bonos en las últimas horas. Pero el dato es de agosto: el petróleo se encareció
+mucho en septiembre, y los analistas citados por Expansión advierten de que eso puede notarse en la
+próxima lectura.
+
+### A qué te afecta
+
+Si tienes un fondo indexado global o del S&P 500, septiembre no ha sido un desastre, pero sí un
+mes de vaivenes, con caídas en Europa y una bolsa estadounidense sostenida por pocas empresas
+tecnológicas. Son movimientos normales en un fondo indexado a largo plazo; lo importante es que
+el dinero que inviertes no lo vayas a necesitar pronto. Si dudas de cuánto tener a mano antes de
+invertir, tienes la
+[calculadora de fondo de emergencia](/herramientas/calculadora-fondo-de-emergencia/).
+
+<MarketSnapshot datos={datos} />
+
+## Qué vigilar hoy
+
+- **Arranca el cuarto trimestre**: primera sesión de octubre en las bolsas, después de un
+  septiembre negativo en Europa.
+- **Bonos**: si las rentabilidades de la deuda siguen subiendo, la presión sobre las bolsas y
+  sobre el euríbor continuará.
+- **Mañana, viernes, a las 14:30** (hora peninsular española): EE. UU. publica su informe de
+  empleo de septiembre (BLS), uno de los datos que más pesan en las decisiones de la Reserva
+  Federal.
+- **Banco de España**: confirmación oficial de la media del euríbor de septiembre en los próximos
+  días.
+
+## Para entenderlo mejor
+
+Si quieres saber cómo funciona el producto que más se mueve con todo esto, empieza por
+[qué es un fondo indexado](/blog/que-es-un-fondo-indexado/). Y para ver el efecto del interés
+compuesto a largo plazo, aunque haya meses malos, lo explicamos en
+[el interés compuesto explicado con ejemplos](/blog/interes-compuesto-explicado-con-ejemplos/).
