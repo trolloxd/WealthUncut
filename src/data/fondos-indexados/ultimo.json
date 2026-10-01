@@ -1,7 +1,7 @@
 {
- "fecha": "2026-09-24",
- "generado": "2026-09-24T19:30:00.000Z",
- "nota": "TER e ISIN verificados cruzando al menos dos fuentes independientes por fondo (Rankia, HelpMyCash, Morningstar, Quefondos, Finect, El Economista) y, cuando ha sido posible, contra el ISIN en la propia gestora. No hay una fuente oficial única centralizada (a diferencia del IRPF): son datos comerciales de gestoras que pueden cambiar el TER con el tiempo.",
+ "fecha": "2026-10-01",
+ "generado": "2026-10-01T07:00:00.000Z",
+ "nota": "TER e ISIN verificados cruzando al menos dos fuentes independientes por fondo: documento oficial de la gestora (KIID/KID de iShares y Amundi, descripción del índice en los KIID de Vanguard) y comparadores reconocidos (Finect, Rankia, El Economista). El TER mostrado son los gastos corrientes oficiales. Cambios de esta actualización: el fondo de iShares pasa de 0,10% a 0,12% (gastos corrientes según su KIID de febrero de 2026 y Finect; 0,10% es solo la comisión de gestión), y se corrige el índice de los fondos Vanguard Global Stock (MSCI World) y Vanguard Emerging Markets (MSCI Emerging Markets). No hay una fuente oficial única centralizada (a diferencia del IRPF): son datos comerciales de gestoras que pueden cambiar el TER con el tiempo.",
  "fondos": [
   {
    "gestora": "Fidelity",
@@ -17,7 +17,7 @@
    "gestora": "Vanguard",
    "nombre": "Vanguard Global Stock Index Fund Investor EUR Acc",
    "isin": "IE00B03HCZ61",
-   "indice": "MSCI World (réplica algo más amplia que el estándar)",
+   "indice": "MSCI World",
    "ter": 0.18,
    "minimoNota": "Sin mínimo relevante en la mayoría de plataformas",
    "traspasable": true,
@@ -28,7 +28,7 @@
    "nombre": "iShares Developed World Index Fund (IE) D Acc EUR",
    "isin": "IE00BD0NCM55",
    "indice": "MSCI World",
-   "ter": 0.10,
+   "ter": 0.12,
    "minimoNota": "La clase D exige 100.000 € de mínimo institucional, pero algunas plataformas (MyInvestor, mediante acuerdo con BlackRock) dan acceso desde 1 €",
    "traspasable": true,
    "plataformas": "MyInvestor (acceso a la clase de menor coste desde 1 €), Openbank"
@@ -57,7 +57,7 @@
    "gestora": "Vanguard",
    "nombre": "Vanguard Emerging Markets Stock Index Fund Investor EUR Acc",
    "isin": "IE0031786142",
-   "indice": "Mercados emergentes (FTSE Emerging)",
+   "indice": "Mercados emergentes (MSCI Emerging Markets)",
    "ter": 0.23,
    "minimoNota": "Sin mínimo relevante en la mayoría de plataformas",
    "traspasable": true,
