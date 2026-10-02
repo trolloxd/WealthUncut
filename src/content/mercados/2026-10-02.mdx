@@ -1,0 +1,128 @@
+---
+title: "La deuda en máximos tumba al IBEX: cae un 2,17% y roza los 19.000"
+description: "Los bonos marcan máximos de décadas, la banca arrastra al IBEX hasta los 19.005 puntos y Wall Street aguanta gracias a los chips. Hoy, inflación y empleo."
+pubDate: 2026-10-02
+author: "David Pérez Mitjà"
+tags: ["mercados", "bolsa", "bonos", "bancos", "inflación"]
+sources:
+  - label: "Expansión: el Ibex cae hasta los 19.000 puntos con los nuevos máximos de la deuda (1 de octubre de 2026)"
+    url: "https://www.expansion.com/mercados/cronica-bolsa/2026/10/01/6abdf4a5e5fdeab4358b459c.html"
+  - label: "Rankia: índice IBEX 35, cierre y valores del 1 de octubre de 2026"
+    url: "https://www.rankia.com/indices-bursatiles/ibex-35-ibex"
+  - label: "Expansión: las nuevas líneas rojas de la deuda para la Bolsa (1 de octubre de 2026)"
+    url: "https://www.expansion.com/mercados/2026/10/01/6abe15a0e5fdea5f138b4599.html"
+  - label: "CNBC: S&P 500 closes higher to start October as Treasury yields retreat from multiyear highs (1 de octubre de 2026)"
+    url: "https://www.cnbc.com/2026/09/30/stock-market-today-live-updates.html"
+  - label: "Infobae (EFE): Wall Street revierte las pérdidas iniciales y cierra en alza (1 de octubre de 2026)"
+    url: "https://www.infobae.com/estados-unidos/2026/10/01/wall-street-revierte-las-perdidas-iniciales-y-cierra-en-alza/"
+  - label: "Rankia: índice Dow Jones Industrial Average"
+    url: "https://www.rankia.com/indices-bursatiles/dow-jones-industrial-average-dji"
+  - label: "Rankia: índice NASDAQ Composite"
+    url: "https://www.rankia.com/indices-bursatiles/nasdaq-composite-ixic"
+  - label: "Eurostat: la inflación anual de la zona euro sube al 3,2% en agosto de 2026 (17 de septiembre de 2026)"
+    url: "https://ec.europa.eu/eurostat/en/web/products-euro-indicators/w/2-17092026-ap"
+  - label: "BCE: rentabilidad a 10 años de la curva AAA de la zona euro (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/YC/YC.B.U2.EUR.4F.G_N_A.SV_C_YM.SR_10Y"
+  - label: "BLS (EE. UU.): calendario de publicaciones de octubre de 2026"
+    url: "https://www.bls.gov/schedule/2026/10_sched_list.htm"
+---
+
+import datos from '../../data/mercados/2026-10-02.json';
+import MarketSnapshot from '../../components/MarketSnapshot.astro';
+import MarketChart from '../../components/MarketChart.astro';
+
+El cuarto trimestre ha empezado con un susto en Europa. La subida de la rentabilidad de la deuda
+pública, que en EE. UU. tocó máximos desde 2002, hundió a los bancos y llevó al IBEX 35 a perder
+un 2,17% en un solo día. Wall Street, en cambio, terminó en verde gracias a las tecnológicas y a
+que los bonos aflojaron por la tarde.
+
+## Lo más importante en 30 segundos
+
+- **Bolsa española**: el IBEX 35 cayó ayer un 2,17% y cerró en 19.005,30 puntos, en el mínimo
+  del día. Es su cuarta sesión seguida a la baja.
+- **Bancos**: Santander perdió un 4,19%, BBVA un 4,03% y Sabadell un 3,92%. Unicaja y Bankinter
+  también cayeron más de un 3%.
+- **Deuda**: el bono de EE. UU. a 10 años llegó al 5,34% durante la sesión, su nivel más alto
+  desde 2002, antes de retroceder.
+- **Wall Street**: el S&P 500 subió un 0,19% (7.666,45 puntos), y el Dow Jones y el Nasdaq, un
+  0,04% cada uno.
+- **Euro**: el tipo de cambio de referencia del BCE bajó a 1,1298 dólares, desde 1,1355 el día
+  anterior.
+
+## Los bonos, otra vez los protagonistas
+
+El IBEX abrió en 19.279,70 puntos, llegó a 19.358,90 y terminó en 19.005,30, justo en el mínimo
+de la sesión. Las principales bolsas europeas también cerraron con caídas.
+
+La causa no fue una noticia concreta de una empresa, sino el mercado de deuda. Cuando los
+inversores venden bonos, su precio baja y la rentabilidad que pagan sube (son dos caras de la
+misma moneda). Ayer esa rentabilidad marcó máximos en muchos países: el bono de EE. UU. a 10 años
+tocó el 5,34%, algo que no se veía desde 2002, y el español a 10 años se situó por encima del
+4,1%.
+
+¿Por qué venden bonos los inversores? La preocupación de fondo es la deuda de los Estados.
+Según recoge Expansión, la gestora Tressis sostiene que el riesgo del petróleo es pasajero y el
+fiscal no. Es decir, que no solo pesa el petróleo caro, sino la sensación de que muchos gobiernos
+gastan más de lo que ingresan y tendrán que pagar más por financiarse.
+
+Los bancos fueron los más castigados. Expansión vincula la corrección del sector a los recelos que
+genera el mercado de deuda, y los bancos del resto de Europa también estuvieron entre los más
+penalizados.
+
+<MarketChart datos={datos} serie="bono10a" titulo="Rentabilidad a 10 años, curva AAA de la zona euro (%)" ultimas={90} />
+
+Con los datos oficiales del BCE, la rentabilidad a 10 años de los bonos de mejor calidad de la
+zona euro ha pasado del 2,92% a final de junio al 3,58% a final de septiembre. Es el
+encarecimiento del dinero que llevamos semanas contando.
+
+### A qué te afecta
+
+Cuando la deuda pública sube de rentabilidad, todo el dinero prestado tiende a encarecerse: las
+hipotecas a tipo fijo que ofrecen los bancos, los préstamos personales y, a través de las
+expectativas de tipos, también el euríbor. Si estás pensando en comprar casa, es un buen momento
+para comparar cuotas con calma en el
+[simulador de hipoteca con euríbor](/herramientas/simulador-hipoteca-euribor/).
+
+La parte buena es para el ahorrador: con tipos más altos, los depósitos y las cuentas remuneradas
+tienden a pagar más. Puedes ver las ofertas actuales en el
+[comparador de cuentas remuneradas](/herramientas/comparador-cuentas-remuneradas/).
+
+## Wall Street aguanta gracias a los chips
+
+En Nueva York la sesión fue muy distinta. Las bolsas abrieron con dudas, pero según CNBC
+recuperaron terreno cuando la rentabilidad de los bonos se retiró de sus máximos. El empujón vino
+de las empresas de chips, animadas por los resultados de Micron, uno de los grandes fabricantes de
+memoria, publicados la tarde anterior. El S&P 500 cerró con una subida del 0,19%, y el Dow Jones y
+el Nasdaq, con avances mínimos del 0,04%.
+
+La diferencia con Europa tiene una explicación sencilla: la bolsa estadounidense pesa mucho en
+tecnología e inteligencia artificial, y la española, poco. La española, en cambio, pesa mucho en
+bancos, y ayer fueron precisamente los bancos los que más sufrieron.
+
+### A qué te afecta
+
+Si tienes un fondo indexado global, buena parte de tu dinero está en EE. UU. y ayer apenas se
+movió. Si tu fondo es de bolsa española o europea, el golpe fue mayor. Son movimientos de un día,
+y en un fondo indexado a largo plazo lo que pesa es el tiempo que lo mantienes y lo que pagas en
+comisiones. Puedes ver cuánto se lleva cada coste en la
+[calculadora de rentabilidad neta](/blog/rentabilidad-neta-fondo-indexado/).
+
+<MarketSnapshot datos={datos} />
+
+## Qué vigilar hoy
+
+- **11:00** (hora peninsular española): Eurostat publica la estimación adelantada de la
+  inflación de septiembre en la zona euro. En agosto fue del 3,2% en el conjunto de la zona y del
+  4,6% en España. Es uno de los datos que mira el BCE antes de decidir los tipos.
+- **14:30**: EE. UU. publica su informe de empleo de septiembre (BLS), uno de los datos que más
+  pesan en las decisiones de la Reserva Federal.
+- **Bonos**: después de los máximos de ayer, cualquier dato de inflación o empleo más fuerte de
+  lo esperado puede volver a presionar la deuda y, con ella, a las bolsas.
+
+## Para entenderlo mejor
+
+Si quieres saber cómo afecta la inflación a tus ahorros con números concretos, prueba la
+[calculadora de inflación](/herramientas/calculadora-inflacion/). Y si la caída de ayer te ha
+hecho dudar de cuánto dinero tener a mano antes de invertir, la
+[calculadora de fondo de emergencia](/herramientas/calculadora-fondo-de-emergencia/) te ayuda a
+fijar ese colchón.
