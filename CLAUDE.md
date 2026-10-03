@@ -105,6 +105,15 @@ puede crear) para activar el envío real; hasta entonces, `/newsletter/` en sí 
 `privacidad.astro` (ya tiene la nota [PENDIENTE] correspondiente) y el paso 6 de
 `NEWSLETTER-PROCEDIMIENTO.md`.
 
+## Reposición automática de artículos (decisión de David, 2026-10-04)
+
+Los artículos de `/blog/` se publican martes, viernes y domingo con `pubDate` futura (ver
+`publicacion-programada.yml`). Cuando queda **un solo artículo programado o ninguno**, una rutina en
+la nube (lunes, miércoles y sábado, la comprobación casi siempre termina sin hacer nada) escribe un
+lote de 4 y los deja programados. Procedimiento, reglas de calidad y verificación en
+`ARTICULOS-PROCEDIMIENTO.md`; mismas reglas de este documento (cifras fiscales solo de
+`finance.ts`, sin guiones largos, sin recomendaciones personalizadas).
+
 ## Seguridad (2026-09-24)
 
 - **Cabeceras** en `public/_headers`: `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`,
