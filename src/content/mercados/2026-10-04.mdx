@@ -1,0 +1,142 @@
+---
+title: "Semana de actas: la Fed y el BCE explican sus subidas de tipos"
+description: "Qué vigilar del 5 al 9 de octubre: las actas de la Reserva Federal y del BCE, la producción industrial de España y lo que llega justo después."
+pubDate: 2026-10-04
+author: "David Pérez Mitjà"
+tags: ["mercados", "agenda semanal", "bce", "reserva federal", "tipos de interés"]
+sources:
+  - label: "Reserva Federal: calendario de reuniones del FOMC de 2026 y fechas de publicación de las actas"
+    url: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+  - label: "Reserva Federal: comunicado de política monetaria del 16 de septiembre de 2026"
+    url: "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm"
+  - label: "Rankia: próxima reunión de la Fed, 27 y 28 de octubre de 2026"
+    url: "https://www.rankia.com/blog/bolsa-desde-cero/6279811-proxima-reunion-fed"
+  - label: "BCE: decisiones de política monetaria del 10 de septiembre de 2026"
+    url: "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp260910~314e508016.en.html"
+  - label: "BCE: cuentas (actas) de las reuniones de política monetaria y próxima publicación"
+    url: "https://www.ecb.europa.eu/press/accounts/html/index.en.html"
+  - label: "BCE: calendario de reuniones de política monetaria del Consejo de Gobierno"
+    url: "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html"
+  - label: "BCE: tipo de la facilidad de depósito (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/FM/FM.D.U2.EUR.4F.KR.DFR.LEV"
+  - label: "BCE: rentabilidad a 2 años, curva AAA de la zona euro (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/YC/YC.B.U2.EUR.4F.G_N_A.SV_C_YM.SR_2Y"
+  - label: "INE: calendario semanal de notas de prensa, 5 a 9 de octubre de 2026"
+    url: "https://www.ine.es/daco/daco41/calen_semanal.pdf"
+  - label: "INE: Índices de Producción Industrial, julio de 2026 (10 de septiembre de 2026)"
+    url: "https://www.ine.es/dyngs/Prensa/IPI0726.htm"
+  - label: "Eurostat: la inflación anual de la zona euro sube al 3,8% en septiembre de 2026, estimación adelantada (2 de octubre de 2026)"
+    url: "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-02102026-ap"
+  - label: "BLS (EE. UU.): calendario de publicación del IPC de 2026"
+    url: "https://www.bls.gov/schedule/news_release/cpi.htm"
+  - label: "BLS (EE. UU.): The Employment Situation, septiembre de 2026 (2 de octubre de 2026)"
+    url: "https://www.bls.gov/news.release/empsit.nr0.htm"
+---
+
+import datos from '../../data/mercados/2026-10-04.json';
+import MarketSnapshot from '../../components/MarketSnapshot.astro';
+import MarketChart from '../../components/MarketChart.astro';
+
+La semana que empieza mañana viene con pocos datos de peso y mucha letra pequeña de los bancos
+centrales. La Reserva Federal y el BCE publican las actas de sus reuniones de septiembre, en las
+que los dos subieron los tipos de interés. Leerlas ayuda a entender qué les preocupa antes de sus
+próximas reuniones, a finales de octubre.
+
+## Lo más importante en 30 segundos
+
+- **Miércoles 7**: la Reserva Federal publica las actas de su reunión del 15 y 16 de septiembre,
+  en la que subió los tipos al rango del 3,75% al 4%.
+- **Jueves 8**: el BCE publica las cuentas (su versión de las actas) de la reunión del 9 y 10 de
+  septiembre, en la que subió el tipo de depósito al 2,50%.
+- **Martes 6, a las 9:00**: el INE publica la producción industrial de España de agosto. En julio
+  creció un 2,3% en un año (serie corregida de calendario y estacionalidad).
+- **Justo después**: el IPC de EE. UU. de septiembre llega el miércoles 14 y el dato definitivo de
+  inflación de la zona euro, el viernes 16.
+
+## Las actas de la Fed: por qué subió y qué viene ahora
+
+El 16 de septiembre, la Reserva Federal subió su tipo de interés de referencia al rango del 3,75%
+al 4%, y lo hizo por unanimidad (12 votos a favor, ninguno en contra). Las actas de esa reunión,
+que se publican tres semanas después de cada decisión, salen el miércoles 7.
+
+Las actas no traen decisiones nuevas, pero cuentan el debate de dentro: si había miembros que
+querían ir más deprisa o más despacio, y qué datos les hacían dudar. Llegan en un momento curioso.
+Desde aquella reunión, el informe de empleo de septiembre (BLS) mostró solo 29.000 empleos nuevos
+y una tasa de paro del 4,2%. Es decir, la Fed subió los tipos para frenar la inflación y ahora el
+mercado laboral da señales de cansancio.
+
+Por eso los inversores leerán las actas buscando una pista: cuánto pesa la inflación frente al
+empleo en la cabeza de los miembros de la Fed. La próxima reunión es el 27 y 28 de octubre.
+
+### A qué te afecta
+
+Si tienes un fondo indexado global, una parte muy grande suele estar invertida en empresas de EE. UU.,
+así que lo que haga la Fed mueve tu fondo. Y como el fondo cotiza en euros, también cuenta el
+cambio euro/dólar, que suele reaccionar a estas publicaciones.
+
+## Las actas del BCE: la inflación, en el centro
+
+El BCE subió sus tres tipos de interés oficiales 25 puntos básicos (0,25 puntos porcentuales) en
+su reunión del 9 y 10 de septiembre. El tipo de depósito, el que marca lo que cobran los bancos
+por dejar su dinero en el BCE, pasó del 2,25% al 2,50% el 16 de septiembre. Fue la segunda subida
+del año, tras la de junio.
+
+<MarketChart datos={datos} serie="dfr" titulo="Tipo de depósito del BCE (%)" />
+
+En esa reunión, los economistas del BCE previeron una inflación media del 3,0% en 2026, del 2,5%
+en 2027 y del 2,1% en 2028, todavía por encima del objetivo del 2%. El propio BCE repitió que
+decide reunión a reunión según los datos y que no se compromete de antemano con ninguna senda
+de tipos.
+
+Desde entonces, la inflación ha ido a más. Según la estimación adelantada de Eurostat, la zona
+euro cerró septiembre en el 3,8%, desde el 3,2% de agosto, empujada por la energía. Las cuentas
+del jueves 8 dirán cómo veía entonces el Consejo de Gobierno los riesgos sobre los precios. La
+siguiente reunión del BCE es el 28 y 29 de octubre.
+
+Los mercados de deuda llevan semanas moviéndose con estas expectativas. Según los datos del BCE,
+la rentabilidad a 2 años de la deuda de mejor calidad de la zona euro (la curva AAA) estaba en el
+3,11% el 1 de octubre, frente al 2,88% del 1 de septiembre.
+
+<MarketChart datos={datos} serie="bono2a" titulo="Rentabilidad a 2 años, curva AAA de la zona euro (%)" ultimas={90} />
+
+### A qué te afecta
+
+Si tienes una hipoteca variable, lo que decida el BCE se nota en el euríbor y, con unos meses de
+retraso, en tu cuota. Puedes ver cuánto te cambiaría la cuota con distintos niveles de euríbor en
+el [simulador de hipoteca](/herramientas/simulador-hipoteca-euribor/). Y si tienes dinero
+ahorrado, con los tipos más altos las cuentas remuneradas y los depósitos tienden a pagar algo
+más: el [comparador de cuentas remuneradas](/herramientas/comparador-cuentas-remuneradas/) recoge
+las ofertas actuales.
+
+## España: la producción industrial de agosto
+
+El martes 6, a las 9:00, el INE publica el Índice de Producción Industrial de agosto. Mide cuánto
+producen las fábricas, las minas y las empresas de energía en España. En julio, la producción
+creció un 2,3% en un año (con la serie corregida de efectos de calendario y estacionalidad) y un
+0,6% frente a junio.
+
+Es un dato que importa más de lo que parece: con la energía tan cara, la industria es uno de los
+sectores que primero nota el golpe en sus costes. Y el viernes 9 el INE publica también la
+estadística de transporte de personas de agosto.
+
+<MarketSnapshot datos={datos} />
+
+## Qué vigilar esta semana y la siguiente
+
+- **Martes 6, 9:00**: producción industrial de España, agosto (INE).
+- **Miércoles 7**: actas de la reunión de septiembre de la Reserva Federal.
+- **Jueves 8**: cuentas de la reunión de septiembre del BCE.
+- **Viernes 9, 9:00**: transporte de personas, agosto (INE).
+- **Miércoles 14, 14:30**: IPC de septiembre de EE. UU. (BLS).
+- **Viernes 16**: dato definitivo de inflación de septiembre de la zona euro (Eurostat).
+- **27 y 28 de octubre**: reunión de la Reserva Federal.
+- **28 y 29 de octubre**: reunión del BCE.
+
+Todas las horas son hora peninsular española.
+
+## Para entenderlo mejor
+
+Si la inflación y los tipos te hacen pensar en qué hacer con tus ahorros, empieza por lo básico
+en [primeros pasos para invertir en España](/blog/primeros-pasos-para-invertir-en-espana/). Y para ver
+cuánto poder de compra pierde el dinero parado, tienes la
+[calculadora de inflación](/herramientas/calculadora-inflacion/).
