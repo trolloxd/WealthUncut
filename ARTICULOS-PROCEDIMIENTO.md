@@ -41,6 +41,32 @@ veces por semana, pero casi siempre termina sin hacer nada.
 - Mejor 3 buenos que 4 flojos: si no hay 4 temas con valor real, escribe solo los que lo tengan.
 - Nunca recomendaciones personalizadas ni "qué debes comprar". Información y educación.
 
+## 3 bis. Actualidad: cada artículo parte de la situación de hoy
+
+Los artículos se escriben el día en que la cola se agota, no el día en que se publican (hasta 2-3
+semanas después). Por eso, antes de redactar cada artículo:
+
+1. **Mira cómo está el contexto hoy**: lee las últimas ediciones de `src/content/mercados/` (qué
+   está pasando en tipos, inflación, euríbor, bolsa, vivienda), y los datos vivos del sitio:
+   `src/data/euribor/ultimo.json`, `src/data/cuentas-remuneradas/ultimo.json`,
+   `src/data/fondos-indexados/ultimo.json` y `src/data/myinvestor-fondos/ultimo.json`.
+2. **Busca el dato oficial más reciente** del tema del artículo (inflación del INE, tipos del BCE,
+   euríbor, precio de la vivienda, paro, novedades de la AEAT o la CNMV) en su fuente oficial, y úsalo
+   con su fecha. Un artículo sobre hipotecas debe partir del euríbor actual; uno sobre ahorro, de la
+   inflación y de los tipos de las cuentas de ahora; uno sobre fiscalidad, de los tramos vigentes y de
+   cualquier cambio reciente.
+3. **Si hay una noticia o cambio reciente relevante para el tema** (una subida de tipos, una
+   modificación fiscal, un dato de inflación nuevo), el artículo debe recogerla, citando la fuente.
+4. **Todo dato que cambia con el tiempo lleva su fecha** ("según el INE, en agosto de 2026"; "el
+   euríbor a 12 meses cerró septiembre en el 3,25%") y nunca "ahora", "actualmente" o "este año" sin
+   fecha, porque cuando se publique ya puede haber cambiado.
+5. **Mejor importar que copiar**: si el dato está en `src/data/` (euríbor, TAE de cuentas, TER de
+   fondos, rentabilidades de MyInvestor), impórtalo en el MDX (`import datos from
+   '../../data/.../ultimo.json'`) en vez de escribir la cifra a mano. Así se actualiza solo cada vez
+   que lo refresca su rutina y el artículo no envejece.
+6. Si el tema no tiene ninguna conexión con la actualidad (un concepto atemporal), no la fuerces,
+   pero comprueba igualmente que ninguna cifra del artículo haya cambiado.
+
 ## 4. Formato
 
 Copia la estructura de un artículo existente (por ejemplo `primeros-pasos-para-invertir-en-espana.mdx`):
