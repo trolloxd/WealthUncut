@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { SITE } from '../../../config/site';
+import { isPublished } from '../../../lib/posts';
 
 export async function getStaticPaths() {
   const terminos = (await getCollection('glosario')).sort((a, b) => a.data.termino.localeCompare(b.data.termino, 'es'));
@@ -17,7 +18,13 @@ export async function getStaticPaths() {
 
 const { termino, vecinos } = Astro.props;
 const { Content } = await render(termino);
-const { titulo, description, relacionados } = termino.data;
+const { titulo, description } = termino.data;
+// Los artículos programados o en borrador no se generan: enlazarlos daría 404 hasta su fecha.
+const noPublicados = new Set((await getCollection('blog', ({ data }) => !isPublished(data))).map((p) => p.id));
+const relacionados = termino.data.relacionados.filter((r) => {
+  const slug = r.href.match(/^\/blog\/([^/#?]+)\/?$/)?.[1];
+  return !slug || !noPublicados.has(slug);
+});
 const url = `${SITE.url}/glosario/${termino.id}/`;
 
 const jsonLd = [
