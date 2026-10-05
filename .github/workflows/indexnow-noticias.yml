@@ -1,0 +1,41 @@
+# Avisa a Bing y al resto de buscadores de IndexNow cuando se publica una nueva edición de
+# /mercados/ (la rutina diaria hace push a main). La clave es pública a propósito: el protocolo la
+# verifica con el archivo del mismo nombre en la raíz del sitio (public/<clave>.txt).
+name: IndexNow de las noticias
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/mercados/*.mdx'
+
+permissions:
+  contents: read
+
+jobs:
+  avisar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Avisar a los buscadores (IndexNow)
+        env:
+          INDEXNOW_KEY: 779801530cd4a0cab1b93d7a35c775c8
+        run: |
+          nuevas=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'src/content/mercados/*.mdx' | xargs -r -n1 basename | sed -E 's/\.mdx$//')
+          echo "Ediciones nuevas: ${nuevas:-ninguna}"
+          [ -z "$nuevas" ] && exit 0
+          urls=""
+          for dia in $nuevas; do
+            url="https://wealthuncut.com/mercados/${dia}/"
+            for i in $(seq 1 40); do
+              [ "$(curl -s -o /dev/null -w '%{http_code}' "$url")" = "200" ] && break
+              sleep 15
+            done
+            urls="${urls}\"${url}\","
+          done
+          body="{\"host\":\"wealthuncut.com\",\"key\":\"${INDEXNOW_KEY}\",\"keyLocation\":\"https://wealthuncut.com/${INDEXNOW_KEY}.txt\",\"urlList\":[${urls}\"https://wealthuncut.com/mercados/\",\"https://wealthuncut.com/\"]}"
+          echo "$body"
+          curl -s -o /dev/null -w "IndexNow: %{http_code}" -X POST -H 'Content-Type: application/json; charset=utf-8' -d "$body" https://api.indexnow.org/indexnow

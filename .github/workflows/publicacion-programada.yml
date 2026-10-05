@@ -40,6 +40,8 @@ jobs:
             echo "publicar=true" >> "$GITHUB_OUTPUT"
             lista=$(echo "$articulos" | xargs -r -n1 basename | tr '\n' ' ')
             echo "lista=${lista:-reconstrucción manual}" >> "$GITHUB_OUTPUT"
+            slugs=$(echo "$articulos" | xargs -r -n1 basename | sed -E 's/\.mdx?$//' | tr '\n' ' ')
+            echo "slugs=${slugs}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Disparar el despliegue
