@@ -41,6 +41,9 @@ export default defineConfig({
   // https://challenges.cloudflare.com a scriptDirective.resources, frame-src y connect-src.
   security: {
     csp: {
+      // Contador de visitas de Cloudflare Web Analytics (sin cookies): Cloudflare inyecta su script
+      // en cada página, y sin este origen la CSP lo bloqueaba y no se medía nada.
+      scriptDirective: { resources: ["'self'", 'https://static.cloudflareinsights.com'] },
       directives: [
         "default-src 'self'",
         "object-src 'none'",
@@ -51,7 +54,7 @@ export default defineConfig({
         "frame-src 'none'",
         "img-src 'self' data:",
         "font-src 'self'",
-        "connect-src 'self'",
+        "connect-src 'self' https://cloudflareinsights.com",
         'upgrade-insecure-requests',
       ],
     },

@@ -5,17 +5,15 @@ import { SITE, AUTHOR } from '../config/site';
 import '../styles/global.css';
 // opsz = eje de peso + tamaño óptico: mismo aspecto que 'full' (los ejes SOFT y WONK no
 // se usan) con casi la mitad de peso de descarga.
-import '@fontsource-variable/fraunces/opsz.css';
 import '@fontsource-variable/fraunces/opsz-italic.css';
 // Inter solo en el subconjunto latino: cubre español y catalán (á, ñ, ç, l·l, €, ¿, ¡).
-import '@fontsource/inter/latin-400.css';
-import '@fontsource/inter/latin-500.css';
-import '@fontsource/inter/latin-600.css';
-import '@fontsource/inter/latin-700.css';
 // Se precargan las dos fuentes que se ven al abrir cualquier página (titulares y texto), para
 // que no lleguen tarde y muevan el diseño al cambiar de la fuente de sistema a la definitiva.
 import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
 import interLatin400 from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
+import interLatin500 from '@fontsource/inter/files/inter-latin-500-normal.woff2?url';
+import interLatin600 from '@fontsource/inter/files/inter-latin-600-normal.woff2?url';
+import interLatin700 from '@fontsource/inter/files/inter-latin-700-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -90,6 +88,9 @@ const allJsonLd = [organizationJsonLd, personJsonLd, websiteJsonLd, ...extraJson
     <meta name="theme-color" content="#faf6ed" />
     <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={interLatin400} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interLatin500} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interLatin600} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interLatin700} as="font" type="font/woff2" crossorigin />
     <meta name="generator" content={Astro.generator} />
 
     <title>{pageTitle}</title>

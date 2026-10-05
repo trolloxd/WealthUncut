@@ -164,6 +164,22 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
 - David ya activó a mano en el panel de Cloudflare (2026-09-24): Bot Fight Mode y SSL/TLS en modo
   "Full (strict)". Confirmado que el sitio sigue respondiendo bien tras el cambio.
 
+## Rendimiento, fuentes y analítica (2026-10-06)
+
+- Las fuentes (Fraunces y Inter) se declaran en `src/styles/global.css` con `font-display: optional` y
+  se precargan en `BaseLayout.astro`: con `swap` Lighthouse medía un salto de maquetación (CLS 0,325);
+  ahora es 0. Si se añade un peso o una fuente nueva, declararla igual y precargarla si se ve en el
+  primer pintado. Medir con `npx lighthouse <url>` (usa el Chrome local; la API gratuita de PageSpeed
+  se queda sin cuota).
+- Cloudflare inyecta solo el contador de Web Analytics (sin cookies): su origen
+  (`static.cloudflareinsights.com` / `cloudflareinsights.com`) está permitido en la CSP de
+  `astro.config.mjs`. Cloudflare inyecta además un script inline de detección de bots (Bot Fight
+  Mode) que la CSP bloquea y deja un error en consola; es inofensivo.
+- `/embed/<slug>/` (calculadoras incrustables, `src/config/embeds.ts`) es la única ruta sin cabeceras
+  anti-iframe (`public/_headers`). Nueva herramienta incrustable: registrarla en `embeds.ts` y en
+  `src/pages/embed/[slug].astro`.
+- Glosario en `src/content/glosario/` (se amplía en cada lote de la rutina de artículos).
+
 ## Correcciones públicas (decisión de David, 2026-09-25)
 
 `/correcciones/` es el registro público de errores encontrados y arreglados en contenido ya
