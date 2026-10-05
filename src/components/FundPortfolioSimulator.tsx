@@ -51,6 +51,20 @@ function ultimoAnioCompleto(rentabilidades: Record<string, number>): { anio: str
   return entradas.length > 0 ? { anio: entradas[0][0], valor: entradas[0][1] } : null;
 }
 
+type Bloque = 'Renta variable' | 'Renta fija' | 'Monetario' | 'Mixtos' | 'Otros';
+const BLOQUES: Bloque[] = ['Renta variable', 'Renta fija', 'Monetario', 'Mixtos', 'Otros'];
+
+/** Agrupa por la categoría de Morningstar que publica MyInvestor. Los fondos destacados son todos de renta variable. */
+function bloqueDe(f: Fondo): Bloque {
+  if (!f.catalogo) return 'Renta variable';
+  const c = f.indice;
+  if (/Money Market/i.test(c)) return 'Monetario';
+  if (/Fixed Income|Convertibles/i.test(c)) return 'Renta fija';
+  if (/Allocation|Target Date/i.test(c)) return 'Mixtos';
+  if (/Equity/i.test(c)) return 'Renta variable';
+  return 'Otros';
+}
+
 function tieneHistorico(f: Fondo): boolean {
   return Object.keys(f.rentabilidadesAnuales).length > 1;
 }
@@ -254,6 +268,18 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
     return { totalAportado, valorFinalBruto, ganancia, impuesto, valorFinalNeto, porFondo };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fondosEnCartera, pesos, rentabilidades, ters, aportacionInicial, aportacionMensual, anios, pesoTotal]);
+
+  const reparto = useMemo(() => {
+    const total = fondosEnCartera.reduce((a, f) => a + pesoDe(f.isin), 0);
+    if (total <= 0) return [];
+    return BLOQUES.map((bloque) => ({
+      bloque,
+      pct: (100 * fondosEnCartera.filter((f) => bloqueDe(f) === bloque).reduce((a, f) => a + pesoDe(f.isin), 0)) / total,
+    })).filter((r) => r.pct > 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fondosEnCartera, pesos]);
+
+  const fondosEnDivisa = fondosEnCartera.filter((f) => f.catalogo && f.catalogo.divisa !== 'EUR' && pesoDe(f.isin) > 0);
 
   const maxValorFondo = Math.max(1, ...resultado.porFondo.map((r) => r.valorFinalBruto));
 
@@ -483,6 +509,30 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
                 );
               })}
           </div>
+        )}
+
+        {reparto.length > 0 && (
+          <div className="grid gap-2">
+            <p className="text-xs font-medium text-ink-muted">Reparto de la cartera por tipo de activo</p>
+            {reparto.map((r) => (
+              <div key={r.bloque} className="grid grid-cols-[7rem_1fr_3rem] items-center gap-2 text-xs sm:grid-cols-[9rem_1fr_3.5rem]">
+                <span className="text-ink-muted">{r.bloque}</span>
+                <span className="block h-3 w-full overflow-hidden rounded-full bg-white" aria-hidden="true">
+                  <span className={`block h-full rounded-full bg-accent/70 ${claseAnchoBarra(r.pct, 5)}`} />
+                </span>
+                <span className="text-right font-semibold text-ink">{Math.round(r.pct)}%</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {fondosEnDivisa.length > 0 && (
+          <p className="rounded-lg bg-cream p-3 text-xs text-ink-muted" role="note">
+            <strong className="text-ink">Ojo con la divisa:</strong>{' '}
+            {fondosEnDivisa.map((f) => `${f.nombre} (${f.catalogo!.divisa})`).join(', ')}{' '}
+            {fondosEnDivisa.length === 1 ? 'cotiza' : 'cotizan'} en una divisa distinta del euro, así que su valor en euros
+            también depende del tipo de cambio, además de la rentabilidad del propio fondo. La simulación no lo modela.
+          </p>
         )}
 
         <p className="text-xs text-ink-faint">
