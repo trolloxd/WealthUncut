@@ -8,7 +8,7 @@
    "nombre": "Fidelity MSCI World Index Fund P-ACC-EUR",
    "isin": "IE00BYX5NX33",
    "indice": "MSCI World",
-   "ter": 0.10,
+   "ter": 0.1,
    "minimoNota": "Sin mínimo relevante en la mayoría de plataformas",
    "traspasable": true,
    "plataformas": "Disponible en casi todas las plataformas de fondos en España (MyInvestor, Renta 4, Openbank, Self Bank, entre otras)"
@@ -19,7 +19,7 @@
    "isin": "IE00B03HCZ61",
    "indice": "MSCI World",
    "ter": 0.18,
-   "minimoNota": "Sin mínimo relevante en la mayoría de plataformas",
+   "minimoNota": "Esta es la clase Investor EUR Acc. MyInvestor comercializa la clase EUR Acc del mismo fondo (ISIN IE00B03HD191) con el mismo TER del 0,18%.",
    "traspasable": true,
    "plataformas": "MyInvestor, Renta 4 (con posible comisión de custodia si no hay otros fondos con retrocesión), Self Bank"
   },
@@ -38,7 +38,7 @@
    "nombre": "Amundi Index MSCI World AE-C",
    "isin": "LU0996182563",
    "indice": "MSCI World",
-   "ter": 0.30,
+   "ter": 0.3,
    "minimoNota": "Sin mínimo relevante en la mayoría de plataformas",
    "traspasable": true,
    "plataformas": "Openbank, MyInvestor, y en general en la mayoría de bancos tradicionales"
@@ -48,7 +48,7 @@
    "nombre": "Vanguard U.S. 500 Stock Index Fund Investor EUR Acc",
    "isin": "IE0032620787",
    "indice": "S&P 500",
-   "ter": 0.10,
+   "ter": 0.1,
    "minimoNota": "Sin mínimo relevante en la mayoría de plataformas",
    "traspasable": true,
    "plataformas": "MyInvestor, Self Bank"
@@ -59,7 +59,7 @@
    "isin": "IE0031786142",
    "indice": "Mercados emergentes (MSCI Emerging Markets)",
    "ter": 0.23,
-   "minimoNota": "Sin mínimo relevante en la mayoría de plataformas",
+   "minimoNota": "Esta es la clase Investor EUR Acc. MyInvestor comercializa la clase EUR Acc del mismo fondo (ISIN IE0031786696) con el mismo TER del 0,23%.",
    "traspasable": true,
    "plataformas": "MyInvestor, Self Bank"
   }
