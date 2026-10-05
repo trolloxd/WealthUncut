@@ -56,3 +56,14 @@ Rentabilidades en tanto por ciento tal como las publica MyInvestor, de más reci
 `git pull --rebase origin main`, `git push origin HEAD:main`. No toques ningún otro archivo. Si el build
 falla, no publiques. Termina con un resumen breve: qué ha cambiado y qué has descartado por no poder
 verificarlo.
+
+## Catálogo completo (`catalogo.json`, añadido el 2026-10-06)
+
+`src/data/myinvestor-fondos/catalogo.json` es un listado aparte con todos los fondos de MyInvestor que
+David exportó a PDF desde el buscador de la app (1.675 ISIN únicos, 208 indexados). El buscador de
+`/carteras/` lo pide bajo demanda a `/datos/myinvestor-fondos.json` (`src/pages/datos/`) y lo mezcla con
+los destacados de `ultimo.json` (que mandan si un ISIN está en ambos). Columnas: `isin, nombre, indexado
+(1/0), divisa, categoria, rentabilidadYTD, rentabilidad1A`. **No tiene TER ni histórico anual** (el PDF
+los cortaba) y no hay que estimarlos: la herramienta pide el TER al usuario. Esta rutina mensual **no lo
+actualiza** (se rehace a mano cuando David exporte de nuevo el buscador); el PDF "menores costes" solo
+traía 2.120 de los 2.458 fondos que indicaba MyInvestor, así que el catálogo no es completo.

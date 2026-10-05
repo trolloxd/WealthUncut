@@ -7,11 +7,33 @@ interface Fondo {
   nombre: string;
   isin: string;
   indice: string;
-  ter: number;
+  ter: number | null;
   terNota?: string;
   perfilRiesgo: number;
   rentabilidadesAnuales: Record<string, number>;
+  /** Solo en los fondos del catálogo completo (sin TER ni histórico anual). */
+  catalogo?: { divisa: string; indexado: boolean; rentabilidadYTD: number | null; rentabilidad1A: number | null };
 }
+
+type FilaCatalogo = [string, string, number, string, string, number | null, number | null];
+
+/** Rentabilidad de partida de un fondo sin histórico anual: un supuesto genérico, no un dato del fondo. */
+const RENTABILIDAD_SUPUESTA = 5;
+
+function fondoDeCatalogo([isin, nombre, indexado, divisa, categoria, ytd, a1]: FilaCatalogo): Fondo {
+  return {
+    gestora: '',
+    nombre,
+    isin,
+    indice: categoria || 'Sin categoría',
+    ter: null,
+    perfilRiesgo: 0,
+    rentabilidadesAnuales: {},
+    catalogo: { divisa, indexado: indexado === 1, rentabilidadYTD: ytd, rentabilidad1A: a1 },
+  };
+}
+
+const formatoPct = (n: number) => `${n > 0 ? '+' : ''}${n.toLocaleString('es-ES')}%`;
 
 interface Props {
   fondos: Fondo[];
@@ -27,6 +49,10 @@ function mediaHistorica(rentabilidades: Record<string, number>): number {
 function ultimoAnioCompleto(rentabilidades: Record<string, number>): { anio: string; valor: number } | null {
   const entradas = Object.entries(rentabilidades).slice(1);
   return entradas.length > 0 ? { anio: entradas[0][0], valor: entradas[0][1] } : null;
+}
+
+function tieneHistorico(f: Fondo): boolean {
+  return Object.keys(f.rentabilidadesAnuales).length > 1;
 }
 
 interface ResultadoFondo {
@@ -54,8 +80,31 @@ function simularFondo(params: {
   );
 }
 
-export default function FundPortfolioSimulator({ fondos }: Props) {
+export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Props) {
   const [busqueda, setBusqueda] = useState('');
+  const [catalogo, setCatalogo] = useState<Fondo[]>([]);
+  const [estadoCatalogo, setEstadoCatalogo] = useState<'sin-cargar' | 'cargando' | 'listo' | 'error'>('sin-cargar');
+  const fondos = useMemo(() => {
+    const destacados = new Set(fondosDestacados.map((f) => f.isin));
+    return [...fondosDestacados, ...catalogo.filter((f) => !destacados.has(f.isin))];
+  }, [fondosDestacados, catalogo]);
+
+  async function cargarCatalogo(): Promise<Fondo[]> {
+    if (estadoCatalogo === 'listo') return catalogo;
+    setEstadoCatalogo('cargando');
+    try {
+      const res = await fetch('/datos/myinvestor-fondos.json');
+      if (!res.ok) throw new Error(String(res.status));
+      const json = (await res.json()) as { fondos: FilaCatalogo[] };
+      const cargados = json.fondos.map(fondoDeCatalogo);
+      setCatalogo(cargados);
+      setEstadoCatalogo('listo');
+      return cargados;
+    } catch {
+      setEstadoCatalogo('error');
+      return [];
+    }
+  }
   const [isinsEnCartera, setIsinsEnCartera] = useState<string[]>(() => {
     // Cartera de ejemplo con tres fondos de índices distintos, para no arrancar vacío.
     const candidatos = ['IE00BYX5NX33', 'IE0031786696', 'IE0032620787'];
@@ -63,6 +112,7 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
   });
   const [pesos, setPesos] = useState<Record<string, number>>({});
   const [rentabilidades, setRentabilidades] = useState<Record<string, number>>({});
+  const [ters, setTers] = useState<Record<string, number>>({});
   const [aportacionInicial, setAportacionInicial] = useEstadoUrl<number>('inicial', 1000);
   const [aportacionMensual, setAportacionMensual] = useEstadoUrl<number>('mensual', 150);
   const [anios, setAnios] = useEstadoUrl<number>('anios', 20, { max: 100 });
@@ -73,22 +123,26 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
   function rentabilidadDe(isin: string): number {
     if (rentabilidades[isin] !== undefined) return rentabilidades[isin];
     const fondo = fondos.find((f) => f.isin === isin);
-    return fondo ? Math.round(mediaHistorica(fondo.rentabilidadesAnuales) * 10) / 10 : 7;
+    if (!fondo) return 7;
+    if (!tieneHistorico(fondo)) return RENTABILIDAD_SUPUESTA;
+    return Math.round(mediaHistorica(fondo.rentabilidadesAnuales) * 10) / 10;
+  }
+  function terDe(f: Fondo): number {
+    return ters[f.isin] ?? f.ter ?? 0;
   }
 
   const resultadosBusqueda = useMemo(() => {
-    const q = busqueda.trim().toLowerCase();
-    if (!q) return [];
-    return fondos
+    const palabras = busqueda.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    if (palabras.length === 0) return [];
+    const coincidentes = fondos
       .filter((f) => !isinsEnCartera.includes(f.isin))
-      .filter(
-        (f) =>
-          f.nombre.toLowerCase().includes(q) ||
-          f.gestora.toLowerCase().includes(q) ||
-          f.indice.toLowerCase().includes(q) ||
-          f.isin.toLowerCase().includes(q)
-      )
-      .slice(0, 8);
+      .filter((f) => {
+        const texto = `${f.nombre} ${f.gestora} ${f.indice} ${f.isin}`.toLowerCase();
+        return palabras.every((p) => texto.includes(p));
+      });
+    // Primero los destacados (con TER e histórico), luego los indexados y al final el resto.
+    const prioridad = (f: Fondo) => (!f.catalogo ? 0 : f.catalogo.indexado ? 1 : 2);
+    return coincidentes.sort((a, b) => prioridad(a) - prioridad(b)).slice(0, 10);
   }, [busqueda, fondos, isinsEnCartera]);
 
   function anadirFondo(isin: string) {
@@ -104,38 +158,51 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
     });
   }
 
-  const cartera = (isins: string[], p: Record<string, number>, r: Record<string, number>) =>
-    isins.map((isin) => `${isin}:${p[isin] ?? ''}:${r[isin] ?? ''}`).join('|');
+  const cartera = (isins: string[], p: Record<string, number>, r: Record<string, number>, t: Record<string, number>) =>
+    isins.map((isin) => `${isin}:${p[isin] ?? ''}:${r[isin] ?? ''}${t[isin] !== undefined ? `:${t[isin]}` : ''}`).join('|');
   const carteraPorDefecto = useRef<string | null>(null);
   const [carteraLista, setCarteraLista] = useState(false);
 
   useEffect(() => {
-    carteraPorDefecto.current = cartera(isinsEnCartera, pesos, rentabilidades);
-    try {
-      const raw = new URLSearchParams(window.location.search).get('c');
-      if (raw && raw.length <= 400) {
-        const isins: string[] = [];
-        const nuevosPesos: Record<string, number> = {};
-        const nuevasRent: Record<string, number> = {};
-        for (const trozo of raw.split('|').slice(0, 12)) {
-          const [isin, peso, rent] = trozo.split(':');
-          if (!fondos.some((f) => f.isin === isin) || isins.includes(isin)) continue;
-          isins.push(isin);
-          const pn = Number(peso);
-          const rn = Number(rent);
-          if (peso !== '' && Number.isFinite(pn) && pn >= 0 && pn <= 100) nuevosPesos[isin] = pn;
-          if (rent !== '' && Number.isFinite(rn) && rn >= -100 && rn <= 100) nuevasRent[isin] = rn;
+    carteraPorDefecto.current = cartera(isinsEnCartera, pesos, rentabilidades, ters);
+    (async () => {
+      try {
+        const raw = new URLSearchParams(window.location.search).get('c');
+        if (raw && raw.length <= 600) {
+          const trozos = raw.split('|').slice(0, 12).map((t) => t.split(':'));
+          // Si la cartera compartida lleva fondos fuera de los destacados, hace falta el catálogo.
+          let universo = fondos;
+          if (trozos.some(([isin]) => !fondos.some((f) => f.isin === isin))) {
+            const cargados = await cargarCatalogo();
+            const destacados = new Set(fondosDestacados.map((f) => f.isin));
+            universo = [...fondosDestacados, ...cargados.filter((f) => !destacados.has(f.isin))];
+          }
+          const isins: string[] = [];
+          const nuevosPesos: Record<string, number> = {};
+          const nuevasRent: Record<string, number> = {};
+          const nuevosTers: Record<string, number> = {};
+          for (const [isin, peso, rent, ter] of trozos) {
+            if (!universo.some((f) => f.isin === isin) || isins.includes(isin)) continue;
+            isins.push(isin);
+            const pn = Number(peso);
+            const rn = Number(rent);
+            const tn = Number(ter);
+            if (peso !== '' && Number.isFinite(pn) && pn >= 0 && pn <= 100) nuevosPesos[isin] = pn;
+            if (rent !== '' && Number.isFinite(rn) && rn >= -100 && rn <= 100) nuevasRent[isin] = rn;
+            if (ter && Number.isFinite(tn) && tn >= 0 && tn <= 10) nuevosTers[isin] = tn;
+          }
+          if (isins.length > 0) {
+            setIsinsEnCartera(isins);
+            setPesos(nuevosPesos);
+            setRentabilidades(nuevasRent);
+            setTers(nuevosTers);
+          }
         }
-        if (isins.length > 0) {
-          setIsinsEnCartera(isins);
-          setPesos(nuevosPesos);
-          setRentabilidades(nuevasRent);
-        }
+      } catch {
+        // sin acceso a la URL: se queda la cartera por defecto
       }
-    } catch {
-      // sin acceso a la URL: se queda la cartera por defecto
-    }
-    setCarteraLista(true);
+      setCarteraLista(true);
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -143,7 +210,7 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
     if (!carteraLista) return;
     try {
       const url = new URL(window.location.href);
-      const actual = cartera(isinsEnCartera, pesos, rentabilidades);
+      const actual = cartera(isinsEnCartera, pesos, rentabilidades, ters);
       if (actual === carteraPorDefecto.current || isinsEnCartera.length === 0) url.searchParams.delete('c');
       else url.searchParams.set('c', actual);
       window.history.replaceState(null, '', url);
@@ -151,7 +218,7 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
       // ignorar
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isinsEnCartera, pesos, rentabilidades, carteraLista]);
+  }, [isinsEnCartera, pesos, rentabilidades, ters, carteraLista]);
 
   const fondosEnCartera = isinsEnCartera.map((isin) => fondos.find((f) => f.isin === isin)!).filter(Boolean);
   const pesoTotal = fondosEnCartera.reduce((a, f) => a + pesoDe(f.isin), 0);
@@ -172,7 +239,7 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
         aportacionMensual: aportacionMensual * peso,
         meses,
         rentabilidadBrutaAnual: rentabilidadDe(f.isin),
-        terAnual: f.ter,
+        terAnual: terDe(f),
       });
       return { isin: f.isin, peso, aportado, valorFinalBruto };
     });
@@ -184,27 +251,36 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
 
     return { totalAportado, valorFinalBruto, ganancia, impuesto, valorFinalNeto, porFondo };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fondosEnCartera, pesos, rentabilidades, aportacionInicial, aportacionMensual, anios, pesoTotal]);
+  }, [fondosEnCartera, pesos, rentabilidades, ters, aportacionInicial, aportacionMensual, anios, pesoTotal]);
 
   const maxValorFondo = Math.max(1, ...resultado.porFondo.map((r) => r.valorFinalBruto));
 
   return (
     <div className="card not-prose grid gap-6 p-6 lg:grid-cols-2">
-      <div className="grid gap-5">
+      <div className="grid min-w-0 grid-cols-1 gap-5">
         <div className="grid gap-2">
           <label className="grid gap-1 text-sm font-medium text-ink-muted">
-            Buscar fondo (nombre, gestora o índice)
+            Buscar fondo (nombre, categoría o ISIN)
             <input
               type="text"
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
-              placeholder="Ej. emergentes, Vanguard, Nasdaq..."
+              onFocus={() => {
+                if (estadoCatalogo === 'sin-cargar') void cargarCatalogo();
+              }}
+              placeholder="Ej. emergentes, Vanguard, Nasdaq, ISIN..."
               className="campo-input"
               aria-label="Buscar fondo para añadir a la cartera"
             />
           </label>
+          {estadoCatalogo === 'cargando' && <p className="text-xs text-ink-faint">Cargando el catálogo de fondos...</p>}
+          {estadoCatalogo === 'error' && (
+            <p className="text-xs text-accent">
+              No se ha podido cargar el catálogo completo; solo se pueden buscar los fondos destacados. Recarga la página para reintentarlo.
+            </p>
+          )}
           {resultadosBusqueda.length > 0 && (
-            <ul className="grid gap-1 rounded-xl border border-border bg-cream p-2">
+            <ul className="grid grid-cols-1 gap-1 rounded-xl border border-border bg-cream p-2">
               {resultadosBusqueda.map((f) => (
                 <li key={f.isin}>
                   <button
@@ -212,9 +288,12 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
                     onClick={() => anadirFondo(f.isin)}
                     className="flex w-full items-center justify-between gap-2 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-white"
                   >
-                    <span>
-                      <span className="font-medium text-ink">{f.gestora}</span>{' '}
-                      <span className="text-ink-faint">({f.indice})</span>
+                    <span className="min-w-0">
+                      <span className="block truncate font-medium text-ink">{f.gestora || f.nombre}</span>
+                      <span className="block truncate text-xs text-ink-faint">
+                        {f.indice}
+                        {f.catalogo && ` · ${f.catalogo.indexado ? 'Indexado' : 'Fondo de inversión'} · ${f.catalogo.divisa}`}
+                      </span>
                     </span>
                     <span className="shrink-0 text-xs font-semibold text-brand">+ Añadir</span>
                   </button>
@@ -222,7 +301,7 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
               ))}
             </ul>
           )}
-          {busqueda.trim() !== '' && resultadosBusqueda.length === 0 && (
+          {busqueda.trim() !== '' && resultadosBusqueda.length === 0 && estadoCatalogo !== 'cargando' && (
             <p className="text-xs text-ink-faint">Ningún fondo de la lista coincide con "{busqueda}".</p>
           )}
         </div>
@@ -238,10 +317,12 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
             return (
               <div key={f.isin} className="grid grid-cols-[1fr_4.5rem] items-start gap-3 border-b border-border/60 pb-3 last:border-0 sm:grid-cols-[1fr_4.5rem_5.5rem_1.5rem]">
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-ink">{f.gestora}</p>
+                  <p className="truncate text-sm font-medium text-ink">{f.gestora || f.nombre}</p>
                   <p className="text-xs text-ink-faint">
-                    {f.indice} · TER {f.ter.toLocaleString('es-ES', { minimumFractionDigits: 2 })}%
-                    {ultimo && ` · ${ultimo.anio}: ${ultimo.valor > 0 ? '+' : ''}${ultimo.valor.toLocaleString('es-ES')}%`}
+                    {f.indice}
+                    {f.ter !== null && ` · TER ${f.ter.toLocaleString('es-ES', { minimumFractionDigits: 2 })}%`}
+                    {ultimo && ` · ${ultimo.anio}: ${formatoPct(ultimo.valor)}`}
+                    {f.catalogo?.rentabilidad1A != null && ` · Últimos 12 meses: ${formatoPct(f.catalogo.rentabilidad1A)}`}
                   </p>
                 </div>
                 <label className="grid gap-0.5 text-xs text-ink-muted">
@@ -279,6 +360,47 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
                 >
                   ✕
                 </button>
+                {(f.ter === null || !tieneHistorico(f)) && (
+                  <div className="col-span-full grid gap-2 rounded-lg bg-cream p-3 text-xs text-ink-muted sm:grid-cols-[1fr_auto] sm:items-end">
+                    <p>
+                      En el catálogo no tenemos el{f.ter === null && ' TER'}
+                      {f.ter === null && !tieneHistorico(f) && ' ni el'}
+                      {!tieneHistorico(f) && ' histórico anual'} de este fondo.{' '}
+                      {f.ter === null && 'Ponlo tú (pestaña Comisiones del fondo en la app): con 0% el resultado sale inflado. '}
+                      {!tieneHistorico(f) && `La rentabilidad de partida (${RENTABILIDAD_SUPUESTA}%) es un supuesto genérico, no un dato del fondo.`}
+                    </p>
+                    <div className="flex gap-3">
+                      {f.ter === null && (
+                        <label className="grid gap-0.5">
+                          TER % anual
+                          <input
+                            type="number"
+                            min={0}
+                            max={10}
+                            step={0.05}
+                            inputMode="decimal"
+                            value={terDe(f)}
+                            onChange={(e) => setTers((prev) => ({ ...prev, [f.isin]: Math.min(10, Math.max(0, Number(e.target.value))) }))}
+                            className="campo-input w-24"
+                            aria-label={`TER anual de ${f.nombre}`}
+                          />
+                        </label>
+                      )}
+                      <label className="grid gap-0.5 sm:hidden">
+                        Rent. % anual
+                        <input
+                          type="number"
+                          step={0.5}
+                          inputMode="decimal"
+                          value={rentabilidadDe(f.isin)}
+                          onChange={(e) => setRentabilidades((prev) => ({ ...prev, [f.isin]: Number(e.target.value) }))}
+                          className="campo-input w-24"
+                          aria-label={`Rentabilidad bruta anual esperada de ${f.nombre}`}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}
@@ -336,7 +458,7 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
                 const anchoPct = (100 * r.valorFinalBruto) / maxValorFondo;
                 return (
                   <div key={r.isin} className="grid grid-cols-[7rem_1fr_5.5rem] items-center gap-2 text-xs sm:grid-cols-[9rem_1fr_6rem]">
-                    <span className="truncate text-ink-muted">{fondo.gestora}</span>
+                    <span className="truncate text-ink-muted">{fondo.gestora || fondo.nombre}</span>
                     <span className="block h-3 w-full overflow-hidden rounded-full bg-white" aria-hidden="true">
                       <span className={`block h-full rounded-full bg-brand/70 ${claseAnchoBarra(anchoPct, 10)}`} />
                     </span>
@@ -353,8 +475,9 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
           la ganancia total al final del periodo con los tramos del IRPF del ahorro{' '}
           {!IRPF_AHORRO_FUENTE.verificado && <strong className="text-accent">(pendiente de verificar)</strong>}.
           No simula reequilibrios, volatilidad ni el orden real en que llegan las rentabilidades. Los
-          valores de partida son la media de los años completos que MyInvestor publica para cada fondo,
-          no una previsión: cámbialos por el criterio que prefieras. No es una recomendación de inversión.
+          valores de partida son la media de los años completos que MyInvestor publica para cada fondo
+          (o, si no hay histórico, un supuesto genérico), no una previsión: cámbialos por el criterio que
+          prefieras. No es una recomendación de inversión.
         </p>
       </div>
     </div>

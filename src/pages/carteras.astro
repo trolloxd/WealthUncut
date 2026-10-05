@@ -7,11 +7,13 @@ import FundPortfolioSimulator from '../components/FundPortfolioSimulator.tsx';
 import { BotonCompartir } from '../components/CalculatorUI';
 import { SITE, AUTHOR } from '../config/site';
 import datos from '../data/myinvestor-fondos/ultimo.json';
+import catalogo from '../data/myinvestor-fondos/catalogo.json';
 
 const title = 'Carteras: simula tu cartera de fondos indexados';
-const description = 'Busca entre los fondos indexados de MyInvestor, arma tu propia cartera y simula cuánto podrías tener al cabo de los años, con su rentabilidad histórica real.';
+const description = 'Busca entre los fondos de MyInvestor, arma tu propia cartera y simula cuánto podrías tener al cabo de los años, con su rentabilidad histórica real.';
 const pubDate = new Date('2026-09-28');
 const url = new URL(Astro.url.pathname, SITE.url).href;
+const fechaCatalogo = new Date(catalogo.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 
 const appJsonLd = {
   '@context': 'https://schema.org',
@@ -52,7 +54,7 @@ const breadcrumbJsonLd = {
       hasAffiliateLinks={false}
     >
       <p>
-        Busca un fondo indexado disponible en MyInvestor por nombre, gestora o índice, añádelo a tu
+        Busca un fondo disponible en MyInvestor por nombre, gestora, categoría o ISIN, añádelo a tu
         cartera y repite con los que quieras. Reparte el peso entre ellos, pon cuánto vas a aportar y
         durante cuánto tiempo, y la herramienta simula el resultado bruto y neto de impuestos al final
         del periodo.
@@ -63,15 +65,22 @@ const breadcrumbJsonLd = {
 
       <h2>De dónde salen los datos de cada fondo</h2>
       <p>
-        El ISIN, el TER y la rentabilidad de cada año son los que MyInvestor publica en su propia
-        web para los fondos que comercializa. A diferencia del{' '}
+        Hay dos niveles de datos. Los fondos destacados (los indexados más vendidos y los propios de
+        MyInvestor) llevan ISIN, TER y la rentabilidad de cada año tal como los publica MyInvestor en su
+        propia web. A diferencia del{' '}
         <ArticleLink href="/herramientas/comparador-fondos-indexados/">comparador de fondos indexados</ArticleLink>,
         centrado en unos pocos fondos con el TER contrastado en varias fuentes, aquí la fuente es la
         propia plataforma: es la única que puede decir con autoridad qué fondos ofrece y qué
-        rentabilidad han tenido ahí. Esta lista no incluye todavía el catálogo completo de MyInvestor
-        (más de 2.400 fondos entre gestión activa e indexada): de momento reúne los fondos indexados
-        más vendidos y los indexados propios de MyInvestor. La rentabilidad de partida de cada fondo es
-        la media de sus años completos (el año en curso va aparte, por estar a mitad de recorrido), no
+        rentabilidad han tenido ahí.
+      </p>
+      <p>
+        Además, el buscador incluye el catálogo de fondos disponibles en MyInvestor ({datos.fondos.length}{' '}
+        destacados y {catalogo.fondos.length.toLocaleString('es-ES')} del catálogo, tanto indexados como de gestión activa), sacado
+        del buscador de la app a fecha de {fechaCatalogo}. De esos fondos solo se conoce el ISIN, el nombre,
+        la categoría, la divisa y la rentabilidad del último año, no el TER ni el histórico anual:
+        en esos casos la herramienta te pide el TER y deja la rentabilidad de partida como un supuesto
+        genérico del {5}% que puedes cambiar. La rentabilidad de partida de los fondos destacados es la
+        media de sus años completos (el año en curso va aparte, por estar a mitad de recorrido), no
         una previsión: puedes cambiarla por la que tú creas más realista.
       </p>
 
@@ -91,8 +100,7 @@ const breadcrumbJsonLd = {
         resultado final, con tus propios números. No tiene en cuenta tu situación personal ni es
         asesoramiento de inversión.</p>
       <p><strong>¿Por qué solo aparecen fondos de MyInvestor?</strong><br />
-        Porque son los que tienen ISIN, TER y rentabilidad histórica real verificables en una fuente
-        pública concreta. Muchos de estos fondos también están disponibles en otras plataformas (Renta
+        Porque es la plataforma de la que tenemos el catálogo y la rentabilidad publicada por ella misma. Muchos de estos fondos también están disponibles en otras plataformas (Renta
         4, Self Bank, Openbank...), pero sus condiciones exactas pueden variar.</p>
       <p><strong>¿Puedo fiarme de la rentabilidad esperada por defecto?</strong><br />
         Es una media histórica, no una previsión: ningún fondo va a repetir exactamente su
