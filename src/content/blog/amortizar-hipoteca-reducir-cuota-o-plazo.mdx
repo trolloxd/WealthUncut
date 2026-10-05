@@ -20,7 +20,7 @@ import { COMISION_AMORTIZACION_ANTICIPADA as COM } from '../../config/finance';
 import euribor from '../../data/euribor/ultimo.json';
 
 export const ejemplo = calcularAmortizacion({ capital: 150000, tipoAnual: 3, anios: 25, extra: 20000, comisionPct: 0 });
-export const anios = (meses) => `${Math.floor(meses / 12)} años y ${meses % 12} meses`;
+export const anios = (m) => `${Math.floor(m / 12)} ${Math.floor(m / 12) === 1 ? 'año' : 'años'}${m % 12 ? ` y ${m % 12} ${m % 12 === 1 ? 'mes' : 'meses'}` : ''}`;
 
 Si te sobran 20.000 € y tienes una hipoteca, tienes una pregunta que se parece a una de inversión: ¿es
 mejor devolver parte del préstamo ya o dejar el dinero donde está? Y si decides amortizar, el banco te

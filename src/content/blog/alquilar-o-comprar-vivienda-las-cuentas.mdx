@@ -1,0 +1,124 @@
+---
+title: "¿Alquilar o comprar? Las cuentas que casi nadie hace"
+description: "Comprar o alquilar y quién acaba con más patrimonio: un ejemplo calculado con hipoteca, impuestos y gastos, y qué supuestos cambian el resultado."
+pubDate: 2026-10-18
+updatedDate: 2026-10-18
+author: "David Pérez Mitjà"
+tags: ["vivienda", "hipoteca", "educación financiera"]
+sources:
+  - label: "Banco Central Europeo: euríbor a 12 meses, media mensual"
+    url: "https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR1YD_.HSTA"
+  - label: "Hipotips: tabla de ITP por comunidades autónomas para vivienda usada"
+    url: "https://hipotips.com/itp-por-comunidades-2025-conoce-los-tipos-reducidos/"
+  - label: "Rankia: el ITP en cada comunidad autónoma"
+    url: "https://www.rankia.com/blog/mejores-hipotecas/3233016-impuesto-transmisiones-patrimoniales-itp-cada-comunidad-autonoma"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { simularAlquilerVsCompra } from '../../components/AlquilerVsCompraCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import euribor from '../../data/euribor/ultimo.json';
+
+export const base = {
+  precio: 250000, entradaPct: 20, comunidad: 'cataluna', tipoHipoteca: 3, plazoHipoteca: 30,
+  mantenimientoPct: 1, revalorizacionPct: 2, costesVentaPct: 3, alquilerMensual: 900,
+  subidaAlquilerPct: 2, rentabilidadInversionPct: 5, horizonte: 20,
+};
+export const r = simularAlquilerVsCompra(base);
+export const escenarios = [0, 2, 4].map((rev) => ({ rev, res: simularAlquilerVsCompra({ ...base, revalorizacionPct: rev }) }));
+export const invs = [3, 5, 7].map((inv) => ({ inv, res: simularAlquilerVsCompra({ ...base, rentabilidadInversionPct: inv }) }));
+export const ganador = (d) => (d > 0 ? 'Comprar' : 'Alquilar');
+
+"Alquilar es tirar el dinero" y "comprar es endeudarse de por vida" son dos frases que se repiten
+mucho y que no se pueden comprobar sin hacer las cuentas. La comparación justa no es cuota contra
+alquiler: es **cuánto patrimonio tienes dentro de unos años** en cada caso, contando lo que cuesta
+comprar, lo que cuesta mantener la casa y lo que habrías hecho con el dinero si no la hubieras comprado.
+
+## Por qué cuota contra alquiler no vale
+
+Si comparas solo lo que pagas cada mes, ignoras tres cosas:
+
+1. **El desembolso inicial.** Entrada, impuesto de compra y gastos de notaría, registro y gestoría
+   suponen decenas de miles de euros que dejas de tener invertidos.
+2. **El mantenimiento.** IBI, comunidad, seguro y reparaciones. El que alquila no los paga.
+3. **El capital que devuelves.** Parte de la cuota no es un coste, es patrimonio: reduce tu deuda. Pero
+   la parte de intereses sí es un coste, igual que el alquiler.
+
+La forma de comparar bien es que los dos tengan el mismo presupuesto mensual: quien paga menos cada mes
+(el que alquila o el que compra) invierte la diferencia. Es lo que hace la herramienta
+[¿Alquilar o comprar?](/herramientas/alquilar-o-comprar-vivienda/).
+
+## Un ejemplo con números
+
+Imagina un piso usado de **250.000 €** en Cataluña, con **20 % de entrada** y una hipoteca a **30 años
+al 3 %**. Se compara con un alquiler de **900 € al mes** que sube un 2 % al año. Supuestos del ejemplo,
+todos inventados (los tuyos serán otros): el piso se revaloriza un 2 % al año, el mantenimiento cuesta
+un 1 % del valor anual, vender cuesta un 3 % y el dinero que no pones en la casa se invierte con una
+rentabilidad del 5 % bruto anual (con los impuestos del ahorro al final). Horizonte: **20 años**.
+
+- Desembolso inicial para comprar (entrada, ITP y gastos): **{formatEuros(r.desembolsoInicial)}**
+- Cuota mensual de la hipoteca: **{formatEuros(r.cuotaHipoteca)}**
+- Patrimonio a los 20 años si compras: **{formatEuros(r.patrimonioComprar)}**
+- Patrimonio a los 20 años si alquilas e inviertes: **{formatEuros(r.patrimonioAlquilar)}**
+- Resultado: **{ganador(r.diferencia)}** sale {formatEuros(Math.abs(r.diferencia))} por delante.
+
+## Lo que más cambia el resultado
+
+Ninguna de esas cifras es una predicción. Mira qué pasa al mover solo los dos supuestos que más pesan:
+
+**Si la vivienda se revaloriza más o menos al año:**
+
+| Revalorización anual | Quién gana | Diferencia |
+|---|---|---|
+| {escenarios[0].rev} % | {ganador(escenarios[0].res.diferencia)} | {formatEuros(Math.abs(escenarios[0].res.diferencia))} |
+| {escenarios[1].rev} % | {ganador(escenarios[1].res.diferencia)} | {formatEuros(Math.abs(escenarios[1].res.diferencia))} |
+| {escenarios[2].rev} % | {ganador(escenarios[2].res.diferencia)} | {formatEuros(Math.abs(escenarios[2].res.diferencia))} |
+
+**Si lo que inviertes rinde más o menos al año:**
+
+| Rentabilidad de la inversión | Quién gana | Diferencia |
+|---|---|---|
+| {invs[0].inv} % | {ganador(invs[0].res.diferencia)} | {formatEuros(Math.abs(invs[0].res.diferencia))} |
+| {invs[1].inv} % | {ganador(invs[1].res.diferencia)} | {formatEuros(Math.abs(invs[1].res.diferencia))} |
+| {invs[2].inv} % | {ganador(invs[2].res.diferencia)} | {formatEuros(Math.abs(invs[2].res.diferencia))} |
+
+En este ejemplo concreto, comprar sale por delante en casi todos los escenarios y solo pierde si la
+vivienda no se revaloriza nada, pero con otro precio, otro alquiler o otro tipo de interés el reparto
+puede cambiar por completo. Por eso la conclusión no es "comprar" ni "alquilar": es que **el resultado depende de dos números que nadie
+conoce de antemano**, cuánto subirá la vivienda y cuánto rendirá tu inversión. Y de cuánto aguantes en
+cada opción: comprar cuesta mucho al principio y se amortiza con los años.
+
+## Lo que la hoja de cálculo no dice
+
+- **Estabilidad.** Comprar fija tu coste de vivienda (si la hipoteca es fija) y te protege de subidas
+  de alquiler. Alquilar te da flexibilidad para mudarte.
+- **Disciplina.** El que alquila solo gana si de verdad invierte la diferencia. Si la gasta, la
+  comparación cambia.
+- **Riesgo.** Comprar concentra gran parte de tu patrimonio en un solo inmueble y con deuda.
+- **Tipos de interés.** Una hipoteca variable se mueve con el euríbor (último valor publicado por el
+  BCE: {euribor.ultimoValor.toLocaleString('es-ES')} % en {euribor.ultimoMes}). Mira cómo afecta en el
+  [simulador de hipoteca con el euríbor real](/herramientas/simulador-hipoteca-euribor/).
+
+## Cómo hacer tu propia cuenta
+
+1. Calcula cuánto tendrías que ahorrar para comprar con la
+   [calculadora de entrada de un piso](/herramientas/ahorro-entrada-piso/).
+2. Pon tus datos reales (precio, alquiler, comunidad, tipo de hipoteca) en la herramienta
+   [¿Alquilar o comprar?](/herramientas/alquilar-o-comprar-vivienda/).
+3. Prueba varios escenarios de revalorización y de rentabilidad, no uno solo.
+4. Mira también cuánto de tu sueldo neto te quedaría libre cada mes con la
+   [calculadora de sueldo neto](/herramientas/calculadora-sueldo-neto/).
+
+## Preguntas frecuentes
+
+**¿Comprar siempre es mejor si el alquiler es caro?**
+No necesariamente. Aunque el alquiler sea alto, comprar suma entrada, impuestos, intereses y
+mantenimiento. Solo las cuentas con tus datos lo dicen.
+
+**¿Qué pasa si compro una vivienda de obra nueva?**
+Los impuestos son otros (IVA y actos jurídicos documentados en lugar de ITP). La herramienta usa el ITP
+de vivienda usada, así que para obra nueva el desembolso inicial será distinto.
+
+**¿Esto es una recomendación?**
+No. Es una simulación con supuestos que puedes cambiar. Tu decisión depende de tu situación personal.

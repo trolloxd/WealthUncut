@@ -1,0 +1,112 @@
+---
+title: "Hipoteca fija, variable o mixta: qué cambia con el euríbor"
+description: "Diferencias entre una hipoteca fija, variable y mixta y cuánto cambia la cuota si el euríbor sube o baja, con un ejemplo calculado con el euríbor actual del BCE."
+pubDate: 2026-10-23
+updatedDate: 2026-10-23
+author: "David Pérez Mitjà"
+tags: ["hipoteca", "vivienda", "educación financiera"]
+sources:
+  - label: "Banco Central Europeo: euríbor a 12 meses, media mensual"
+    url: "https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR1YD_.HSTA"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { simularHipoteca } from '../../components/MortgageCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import euribor from '../../data/euribor/ultimo.json';
+
+export const base = { capital: 150000, plazoAnios: 25, tipoFijo: 2.8, diferencial: 0.8, euribor: euribor.ultimoValor, aniosFijosMixta: 5 };
+export const fija = simularHipoteca({ ...base, tipoHipoteca: 'fija' });
+export const mixta = simularHipoteca({ ...base, tipoHipoteca: 'mixta', tipoFijo: 2.4 });
+export const variable = (delta) => simularHipoteca({ ...base, tipoHipoteca: 'variable' }, euribor.ultimoValor + delta);
+export const fmt = (n) => n.toLocaleString('es-ES');
+
+Elegir entre fija, variable y mixta es la decisión que más condiciona lo que pagarás por tu hipoteca
+durante décadas, y la que más se decide mirando solo la cuota de hoy. La diferencia real es **quién
+asume el riesgo de que los tipos de interés cambien**: en la fija, el banco; en la variable, tú; en
+la mixta, los dos, por tramos.
+
+## Cómo funciona cada una
+
+- **Fija.** El tipo de interés queda fijado para toda la vida del préstamo. Tu cuota no cambia. A
+  cambio, el tipo de partida suele ser más alto que el de una variable, porque el banco cobra por
+  asumir el riesgo.
+- **Variable.** El tipo es el **euríbor a 12 meses más un diferencial** fijo (por ejemplo, euríbor + 0,8
+  puntos). Se revisa periódicamente, normalmente cada año o cada seis meses, y tu cuota sube o baja con él.
+- **Mixta.** Un tramo inicial a tipo fijo (por ejemplo, los primeros 5 o 10 años) y después pasa a
+  variable. Combina previsibilidad al principio con la incertidumbre del euríbor después.
+
+## Qué es el euríbor y cómo está hoy
+
+El euríbor es el tipo al que los bancos europeos se prestan dinero entre sí, y es la referencia de la
+mayoría de las hipotecas variables en España. La media mensual del euríbor a 12 meses publicada por el
+BCE para **{euribor.ultimoMes}** fue del **{fmt(euribor.ultimoValor)} %**. Puedes ver cómo ha evolucionado en las
+ediciones de [noticias de mercados](/mercados/) y usarlo como valor de partida en el
+[simulador de hipoteca con el euríbor real](/herramientas/simulador-hipoteca-euribor/).
+
+## Un ejemplo con números
+
+Hipoteca de **150.000 € a 25 años**. Los tipos son supuestos inventados para el ejemplo (los que te
+ofrezcan serán otros): fija al 2,8 %, mixta al 2,4 % durante 5 años y después euríbor + 0,8, y variable
+a euríbor + 0,8, con el euríbor al valor actual de {fmt(euribor.ultimoValor)} %.
+
+| Tipo | Cuota al principio | Total de intereses (si el euríbor no cambia) |
+|---|---|---|
+| Fija (2,8 %) | {formatEuros(fija.cuotaFase1)} | {formatEuros(fija.totalIntereses)} |
+| Mixta (2,4 % 5 años, luego variable) | {formatEuros(mixta.cuotaFase1)}, después {formatEuros(mixta.cuotaFase2)} | {formatEuros(mixta.totalIntereses)} |
+| Variable (euríbor + 0,8) | {formatEuros(variable(0).cuotaFase1)} | {formatEuros(variable(0).totalIntereses)} |
+
+No es una comparación de ofertas reales: con otros tipos y diferenciales el orden entre las tres puede ser
+el contrario. El resultado "si el euríbor no cambia" es el más cómodo de calcular y el menos probable: el euríbor se
+mueve. Lo importante es ver **cuánto cambia la cuota variable si sube o baja**:
+
+| Si el euríbor está en… | Cuota variable | Diferencia con hoy |
+|---|---|---|
+| {fmt(euribor.ultimoValor - 1)} % (−1 punto) | {formatEuros(variable(-1).cuotaFase1)} | {formatEuros(variable(-1).cuotaFase1 - variable(0).cuotaFase1)} |
+| {fmt(euribor.ultimoValor)} % (hoy) | {formatEuros(variable(0).cuotaFase1)} | 0 € |
+| {fmt(euribor.ultimoValor + 1)} % (+1 punto) | {formatEuros(variable(1).cuotaFase1)} | +{formatEuros(variable(1).cuotaFase1 - variable(0).cuotaFase1)} |
+| {fmt(euribor.ultimoValor + 2)} % (+2 puntos) | {formatEuros(variable(2).cuotaFase1)} | +{formatEuros(variable(2).cuotaFase1 - variable(0).cuotaFase1)} |
+
+La simulación aplica el nuevo euríbor a todo el plazo para poder comparar escenarios; en la realidad
+cambiaría año a año. Sirve para medir la sensibilidad, no para predecir.
+
+## Cómo decidir sin adivinar el euríbor
+
+Nadie sabe hacia dónde irá el euríbor, y es mejor no apostarlo. Preguntas más útiles:
+
+1. **¿Podría pagar la cuota si sube dos puntos?** Si la respuesta es "justo", la fija te da margen.
+2. **¿Cuánto tiempo vas a tener la hipoteca?** Si piensas amortizarla antes (con ahorro o venta), el
+   tipo a largo plazo pesa menos. Mira el efecto en
+   [amortizar la hipoteca: ¿reducir cuota o plazo?](/blog/amortizar-hipoteca-reducir-cuota-o-plazo/).
+3. **¿Cuánto aguantas la incertidumbre?** La variable puede salir más barata o más cara, y eso también
+   cuenta como coste.
+4. **¿Qué ofertas tienes realmente?** Compara el TAE completo (con bonificaciones y productos
+   vinculados), no solo el tipo nominal.
+
+## Las comisiones y vinculaciones también cuentan
+
+Una hipoteca barata en tipo puede no serlo si exige seguros, nómina o tarjeta. Pide siempre al banco la
+ficha de información personalizada, que está obligado a darte, y compara el coste total.
+
+## Calcula con tus datos
+
+1. Mira cuánto necesitas ahorrar antes en la
+   [calculadora de entrada de un piso](/herramientas/ahorro-entrada-piso/).
+2. Simula tu cuota con el
+   [simulador de hipoteca con el euríbor real](/herramientas/simulador-hipoteca-euribor/).
+3. Contrasta con la opción de alquilar en
+   [¿alquilar o comprar? Las cuentas que casi nadie hace](/blog/alquilar-o-comprar-vivienda-las-cuentas/).
+
+## Preguntas frecuentes
+
+**¿Cuándo se revisa el tipo de una hipoteca variable?**
+Lo marca tu contrato: lo habitual es cada seis o doce meses. Pregúntalo antes de firmar.
+
+**¿Puedo cambiar de variable a fija más adelante?**
+Sí, mediante una novación o una subrogación, aunque puede tener costes. Depende de tu banco y de tu
+contrato.
+
+**¿Esto es una recomendación?**
+No. Es información general con un ejemplo de supuestos inventados. La mejor opción depende de tus
+ingresos, tu horizonte y tu tolerancia al riesgo.

@@ -1,0 +1,93 @@
+---
+title: "Cuánto dinero necesitas ahorrar para comprar un piso"
+description: "Entrada, impuesto de compra y gastos: cuánto hay que tener ahorrado para comprar un piso según la comunidad, con ejemplos calculados y cuánto tardarías en lograrlo."
+pubDate: 2026-10-20
+updatedDate: 2026-10-20
+author: "David Pérez Mitjà"
+tags: ["vivienda", "ahorro", "educación financiera"]
+sources:
+  - label: "Hipotips: tabla de ITP por comunidades autónomas para vivienda usada"
+    url: "https://hipotips.com/itp-por-comunidades-2025-conoce-los-tipos-reducidos/"
+  - label: "Rankia: el ITP en cada comunidad autónoma"
+    url: "https://www.rankia.com/blog/mejores-hipotecas/3233016-impuesto-transmisiones-patrimoniales-itp-cada-comunidad-autonoma"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { calcularEntradaPiso } from '../../components/HomeDepositCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import { GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT } from '../../config/finance';
+
+export const base = { precioVivienda: 250000, porcentajeEntrada: 20, ahorroActual: 5000, ahorroMensual: 600 };
+export const madrid = calcularEntradaPiso({ ...base, comunidad: 'madrid' });
+export const cataluna = calcularEntradaPiso({ ...base, comunidad: 'cataluna' });
+export const andalucia = calcularEntradaPiso({ ...base, comunidad: 'andalucia' });
+export const anios = (m) => `${Math.floor(m / 12)} ${Math.floor(m / 12) === 1 ? 'año' : 'años'}${m % 12 ? ` y ${m % 12} ${m % 12 === 1 ? 'mes' : 'meses'}` : ''}`;
+
+Cuando se piensa en comprar un piso, la cifra que viene a la cabeza es la entrada. Pero la entrada es
+solo una parte de lo que necesitas tener ahorrado el día de la firma: el banco no suele financiar la
+totalidad del precio, y además hay que pagar un impuesto y unos gastos que dependen de dónde compres.
+Calcularlo antes te ahorra un susto y te dice cuánto tiempo necesitas.
+
+## Los tres bloques del dinero que necesitas
+
+1. **La entrada.** La parte del precio que no te financia el banco. Como referencia prudente para
+   planificar se suele usar un 20 % del precio, aunque algunos bancos o programas financian más. Hasta
+   que no pides la hipoteca no sabes cuánto te concederán.
+2. **El impuesto de compra.** En una vivienda usada se paga el Impuesto de Transmisiones Patrimoniales
+   (ITP), que cada comunidad autónoma fija con sus propios tipos. Es la partida que más cambia de un sitio
+   a otro. En una vivienda nueva el impuesto es otro (IVA y actos jurídicos documentados).
+3. **Los gastos.** Notaría, registro de la propiedad y gestoría. No hay un porcentaje único: dependen del
+   precio, de si hay hipoteca y de la escritura. Usamos como estimación un {(GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT * 100).toLocaleString('es-ES')} % del precio.
+
+Además, conviene tener un colchón aparte para imprevistos y la mudanza: míralo en
+[cuánto necesitas en tu fondo de emergencia](/blog/fondo-de-emergencia-cuanto-necesitas/).
+
+## Un ejemplo en tres comunidades
+
+Piso usado de **250.000 €**, entrada del **20 %**, y una persona que ya tiene **5.000 €** ahorrados y puede
+ahorrar **600 € al mes** (todo inventado para el ejemplo). Esto es lo que necesitaría tener según dónde compre:
+
+| | Madrid | Cataluña | Andalucía |
+|---|---|---|---|
+| Entrada | {formatEuros(madrid.entrada)} | {formatEuros(cataluna.entrada)} | {formatEuros(andalucia.entrada)} |
+| Impuesto (ITP) | {formatEuros(madrid.itp)} | {formatEuros(cataluna.itp)} | {formatEuros(andalucia.itp)} |
+| Gastos estimados | {formatEuros(madrid.gastos)} | {formatEuros(cataluna.gastos)} | {formatEuros(andalucia.gastos)} |
+| **Total necesario** | **{formatEuros(madrid.totalNecesario)}** | **{formatEuros(cataluna.totalNecesario)}** | **{formatEuros(andalucia.totalNecesario)}** |
+| Tiempo para llegar | {anios(madrid.meses)} | {anios(cataluna.meses)} | {anios(andalucia.meses)} |
+
+El mismo piso, con el mismo ahorro mensual, supone un esfuerzo distinto solo por el impuesto. Y todo esto
+es **antes** de pedir la hipoteca: la cuota la calculas en el
+[simulador de hipoteca con el euríbor real](/herramientas/simulador-hipoteca-euribor/).
+
+## Cómo acortar el camino
+
+- **Sube el ahorro mensual antes que esperar.** Pasar de 600 a 800 € al mes recorta años. Si no sabes
+  cuánto te queda libre, parte de tu [sueldo neto](/herramientas/calculadora-sueldo-neto/).
+- **Dónde guardar el dinero mientras ahorras.** Si el objetivo es a pocos años, no es dinero para
+  asumir riesgo de bolsa. Mira las opciones en el
+  [comparador de cuentas remuneradas y depósitos](/herramientas/comparador-cuentas-remuneradas/).
+- **No olvides la inflación.** El precio de las viviendas y tu dinero parado no evolucionan igual: la
+  [calculadora de inflación](/herramientas/calculadora-inflacion/) te muestra el efecto con tu cifra.
+- **Compara con alquilar.** Si comprar tarda mucho, haz las cuentas de
+  [alquilar o comprar](/blog/alquilar-o-comprar-vivienda-las-cuentas/) con tus datos.
+
+## Calcula tu propio caso
+
+La herramienta [¿Cuánto ahorrar para la entrada de un piso?](/herramientas/ahorro-entrada-piso/) hace
+estas cuentas con tu precio, tu comunidad y tu ahorro. Ten en cuenta que los tipos de ITP se pueden
+modificar y que hay tipos reducidos para algunos colectivos (jóvenes, familias numerosas...) que dependen
+de cada comunidad: comprueba en la web de la tuya los que te apliquen.
+
+## Preguntas frecuentes
+
+**¿Tengo que tener el 20 % ahorrado sí o sí?**
+No siempre, pero es la referencia más extendida y la más prudente para planificar. Algunos bancos
+financian más del 80 %, normalmente con condiciones más exigentes.
+
+**¿Se puede meter el impuesto y los gastos en la hipoteca?**
+Lo habitual es pagarlos con ahorros propios. Algunos bancos conceden financiación adicional, pero es poco
+frecuente y depende de tu perfil.
+
+**¿Esto es una recomendación?**
+No. Es un cálculo orientativo con supuestos. Tu situación concreta puede variar el resultado.
