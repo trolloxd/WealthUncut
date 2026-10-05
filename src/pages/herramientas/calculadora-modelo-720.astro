@@ -1,4 +1,5 @@
 ---
+import { BotonCompartir } from '../../components/CalculatorUI';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import ArticleLink from '../../components/ArticleLink.astro';
 import Modelo720Checker from '../../components/Modelo720Checker';
@@ -41,6 +42,8 @@ const euros = (n: number) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'a
 
   <Modelo720Checker client:load />
 
+
+  <BotonCompartir client:load />
   <h2>Las reglas que aplica</h2>
   <ul>
     <li>

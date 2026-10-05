@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT, ITP_VIVIENDA_USADA, calcularITP } from '../config/finance';
-import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros } from './CalculatorUI';
+import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, useEstadoUrl } from './CalculatorUI';
 
 export type ComunidadItpId = keyof typeof ITP_VIVIENDA_USADA;
 
@@ -47,11 +47,11 @@ function formatMeses(meses: number): string {
 }
 
 export default function HomeDepositCalculator() {
-  const [precioVivienda, setPrecioVivienda] = useState(180000);
-  const [porcentajeEntrada, setPorcentajeEntrada] = useState(20);
-  const [comunidad, setComunidad] = useState<ComunidadItpId>('madrid');
-  const [ahorroActual, setAhorroActual] = useState(5000);
-  const [ahorroMensual, setAhorroMensual] = useState(300);
+  const [precioVivienda, setPrecioVivienda] = useEstadoUrl<number>('precioVivienda', 180000);
+  const [porcentajeEntrada, setPorcentajeEntrada] = useEstadoUrl<number>('porcentajeEntrada', 20);
+  const [comunidad, setComunidad] = useEstadoUrl<ComunidadItpId>('comunidad', 'madrid', { validar: (v) => v in ITP_VIVIENDA_USADA });
+  const [ahorroActual, setAhorroActual] = useEstadoUrl<number>('ahorroActual', 5000);
+  const [ahorroMensual, setAhorroMensual] = useEstadoUrl<number>('ahorroMensual', 300);
 
   const r = useMemo(
     () => calcularEntradaPiso({ precioVivienda, porcentajeEntrada, comunidad, ahorroActual, ahorroMensual }),

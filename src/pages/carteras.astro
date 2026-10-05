@@ -4,6 +4,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import ArticleMeta from '../components/ArticleMeta.astro';
 import ArticleLink from '../components/ArticleLink.astro';
 import FundPortfolioSimulator from '../components/FundPortfolioSimulator.tsx';
+import { BotonCompartir } from '../components/CalculatorUI';
 import { SITE, AUTHOR } from '../config/site';
 import datos from '../data/myinvestor-fondos/ultimo.json';
 
@@ -58,6 +59,7 @@ const breadcrumbJsonLd = {
       </p>
 
       <FundPortfolioSimulator client:load fondos={datos.fondos} />
+      <BotonCompartir client:load />
 
       <h2>De dónde salen los datos de cada fondo</h2>
       <p>

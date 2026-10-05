@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { calcularImpuestoAhorro, IRPF_AHORRO_FUENTE } from '../config/finance';
-import { Campo, Resumen, formatEuros } from './CalculatorUI';
+import { Campo, Resumen, formatEuros, useEstadoUrl } from './CalculatorUI';
 
 interface Resultado {
   valorFinalBruto: number;
@@ -47,12 +47,12 @@ function simular(params: {
 }
 
 export default function IndexFundCalculator() {
-  const [aportacionInicial, setAportacionInicial] = useState(1000);
-  const [aportacionMensual, setAportacionMensual] = useState(150);
-  const [anios, setAnios] = useState(20);
-  const [rentabilidadBrutaAnual, setRentabilidadBrutaAnual] = useState(7);
-  const [terAnual, setTerAnual] = useState(0.2);
-  const [comisionBrokerAnual, setComisionBrokerAnual] = useState(0);
+  const [aportacionInicial, setAportacionInicial] = useEstadoUrl<number>('aportacionInicial', 1000);
+  const [aportacionMensual, setAportacionMensual] = useEstadoUrl<number>('aportacionMensual', 150);
+  const [anios, setAnios] = useEstadoUrl<number>('anios', 20, { max: 100 });
+  const [rentabilidadBrutaAnual, setRentabilidadBrutaAnual] = useEstadoUrl<number>('rentabilidadBrutaAnual', 7);
+  const [terAnual, setTerAnual] = useEstadoUrl<number>('terAnual', 0.2);
+  const [comisionBrokerAnual, setComisionBrokerAnual] = useEstadoUrl<number>('comisionBrokerAnual', 0);
 
   const resultado = useMemo(
     () =>

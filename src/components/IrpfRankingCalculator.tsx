@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { IRPF_GENERAL_AUTONOMICO } from '../config/finance';
 import { calcularSueldoNeto, type ComunidadId } from './SalaryCalculator';
-import { CampoNumero, claseAnchoBarra, formatEuros } from './CalculatorUI';
+import { CampoNumero, claseAnchoBarra, formatEuros, useEstadoUrl } from './CalculatorUI';
 
 const COMUNIDADES = Object.entries(IRPF_GENERAL_AUTONOMICO).map(([id, c]) => ({ id: id as ComunidadId, nombre: c.nombre }));
 
@@ -20,7 +20,7 @@ export function calcularRanking(brutoAnual: number): FilaRanking[] {
 }
 
 export default function IrpfRankingCalculator() {
-  const [brutoAnual, setBrutoAnual] = useState(30000);
+  const [brutoAnual, setBrutoAnual] = useEstadoUrl<number>('brutoAnual', 30000);
   const ranking = useMemo(() => calcularRanking(brutoAnual), [brutoAnual]);
   const mejor = ranking[0];
   const peor = ranking[ranking.length - 1];

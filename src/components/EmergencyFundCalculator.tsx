@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros } from './CalculatorUI';
+import { useMemo } from 'react';
+import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, useEstadoUrl } from './CalculatorUI';
 
 type Ingresos = 'indefinido' | 'temporal' | 'variable';
 
@@ -36,18 +36,18 @@ function mesesCubiertos(meses: number): string {
 }
 
 export default function EmergencyFundCalculator() {
-  const [vivienda, setVivienda] = useState(550);
-  const [suministros, setSuministros] = useState(90);
-  const [comida, setComida] = useState(250);
-  const [transporte, setTransporte] = useState(60);
-  const [seguros, setSeguros] = useState(30);
-  const [otrosFijos, setOtrosFijos] = useState(0);
-  const [ingresos, setIngresos] = useState<Ingresos>('indefinido');
-  const [personasACargo, setPersonasACargo] = useState(false);
-  const [unicaFuente, setUnicaFuente] = useState(true);
-  const [gastosGrandesPosibles, setGastosGrandesPosibles] = useState(false);
-  const [ahorroActual, setAhorroActual] = useState(1000);
-  const [aporteMensual, setAporteMensual] = useState(200);
+  const [vivienda, setVivienda] = useEstadoUrl<number>('vivienda', 550);
+  const [suministros, setSuministros] = useEstadoUrl<number>('suministros', 90);
+  const [comida, setComida] = useEstadoUrl<number>('comida', 250);
+  const [transporte, setTransporte] = useEstadoUrl<number>('transporte', 60);
+  const [seguros, setSeguros] = useEstadoUrl<number>('seguros', 30);
+  const [otrosFijos, setOtrosFijos] = useEstadoUrl<number>('otrosFijos', 0);
+  const [ingresos, setIngresos] = useEstadoUrl<Ingresos>('ingresos', 'indefinido', { validar: (v) => ['indefinido', 'temporal', 'variable'].includes(v) });
+  const [personasACargo, setPersonasACargo] = useEstadoUrl<boolean>('personasACargo', false);
+  const [unicaFuente, setUnicaFuente] = useEstadoUrl<boolean>('unicaFuente', true);
+  const [gastosGrandesPosibles, setGastosGrandesPosibles] = useEstadoUrl<boolean>('gastosGrandesPosibles', false);
+  const [ahorroActual, setAhorroActual] = useEstadoUrl<number>('ahorroActual', 1000);
+  const [aporteMensual, setAporteMensual] = useEstadoUrl<number>('aporteMensual', 200);
 
   const r = useMemo(() => {
     const gastosMes = vivienda + suministros + comida + transporte + seguros + otrosFijos;

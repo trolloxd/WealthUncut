@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, formatPct } from './CalculatorUI';
+import { useMemo } from 'react';
+import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, formatPct, useEstadoUrl } from './CalculatorUI';
 
 export type TipoHipoteca = 'fija' | 'variable' | 'mixta';
 
@@ -79,13 +79,13 @@ interface Props {
 }
 
 export default function MortgageCalculator({ euriborInicial, euriborMes }: Props) {
-  const [capital, setCapital] = useState(200000);
-  const [plazoAnios, setPlazoAnios] = useState(30);
-  const [tipoHipoteca, setTipoHipoteca] = useState<TipoHipoteca>('mixta');
-  const [tipoFijo, setTipoFijo] = useState(2.9);
-  const [diferencial, setDiferencial] = useState(0.6);
-  const [euribor, setEuribor] = useState(Number(euriborInicial.toFixed(2)));
-  const [aniosFijosMixta, setAniosFijosMixta] = useState(5);
+  const [capital, setCapital] = useEstadoUrl<number>('capital', 200000);
+  const [plazoAnios, setPlazoAnios] = useEstadoUrl<number>('plazoAnios', 30, { max: 100 });
+  const [tipoHipoteca, setTipoHipoteca] = useEstadoUrl<TipoHipoteca>('tipoHipoteca', 'mixta', { validar: (v) => ['fija', 'variable', 'mixta'].includes(v) });
+  const [tipoFijo, setTipoFijo] = useEstadoUrl<number>('tipoFijo', 2.9);
+  const [diferencial, setDiferencial] = useEstadoUrl<number>('diferencial', 0.6);
+  const [euribor, setEuribor] = useEstadoUrl<number>('euribor', Number(euriborInicial.toFixed(2)));
+  const [aniosFijosMixta, setAniosFijosMixta] = useEstadoUrl<number>('aniosFijosMixta', 5, { max: 100 });
 
   const params: ParamsHipoteca = { capital, plazoAnios, tipoHipoteca, tipoFijo, diferencial, euribor, aniosFijosMixta };
   const r = useMemo(() => simularHipoteca(params), [capital, plazoAnios, tipoHipoteca, tipoFijo, diferencial, euribor, aniosFijosMixta]);

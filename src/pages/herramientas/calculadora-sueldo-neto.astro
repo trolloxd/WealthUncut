@@ -1,4 +1,5 @@
 ---
+import { BotonCompartir } from '../../components/CalculatorUI';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import ArticleLink from '../../components/ArticleLink.astro';
 import SalaryCalculator from '../../components/SalaryCalculator';
@@ -47,6 +48,9 @@ import {
 
   <SalaryCalculator client:load />
 
+
+
+  <BotonCompartir client:load />
   <h2>Qué se resta de tu sueldo bruto</h2>
   <p>
     De tu bruto salen dos cosas antes de llegar al neto: la Seguridad Social, que se descuenta cada

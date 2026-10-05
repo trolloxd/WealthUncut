@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { calcularImpuestoAhorro, IRPF_AHORRO_FUENTE } from '../config/finance';
-import { CampoNumero, claseAnchoBarra, formatEuros } from './CalculatorUI';
+import { CampoNumero, claseAnchoBarra, formatEuros, useEstadoUrl } from './CalculatorUI';
 
 interface Fondo {
   gestora: string;
@@ -63,9 +63,9 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
   });
   const [pesos, setPesos] = useState<Record<string, number>>({});
   const [rentabilidades, setRentabilidades] = useState<Record<string, number>>({});
-  const [aportacionInicial, setAportacionInicial] = useState(1000);
-  const [aportacionMensual, setAportacionMensual] = useState(150);
-  const [anios, setAnios] = useState(20);
+  const [aportacionInicial, setAportacionInicial] = useEstadoUrl<number>('inicial', 1000);
+  const [aportacionMensual, setAportacionMensual] = useEstadoUrl<number>('mensual', 150);
+  const [anios, setAnios] = useEstadoUrl<number>('anios', 20, { max: 100 });
 
   function pesoDe(isin: string): number {
     return pesos[isin] ?? Math.round(100 / Math.max(1, isinsEnCartera.length));
@@ -103,6 +103,55 @@ export default function FundPortfolioSimulator({ fondos }: Props) {
       return resto;
     });
   }
+
+  const cartera = (isins: string[], p: Record<string, number>, r: Record<string, number>) =>
+    isins.map((isin) => `${isin}:${p[isin] ?? ''}:${r[isin] ?? ''}`).join('|');
+  const carteraPorDefecto = useRef<string | null>(null);
+  const [carteraLista, setCarteraLista] = useState(false);
+
+  useEffect(() => {
+    carteraPorDefecto.current = cartera(isinsEnCartera, pesos, rentabilidades);
+    try {
+      const raw = new URLSearchParams(window.location.search).get('c');
+      if (raw && raw.length <= 400) {
+        const isins: string[] = [];
+        const nuevosPesos: Record<string, number> = {};
+        const nuevasRent: Record<string, number> = {};
+        for (const trozo of raw.split('|').slice(0, 12)) {
+          const [isin, peso, rent] = trozo.split(':');
+          if (!fondos.some((f) => f.isin === isin) || isins.includes(isin)) continue;
+          isins.push(isin);
+          const pn = Number(peso);
+          const rn = Number(rent);
+          if (peso !== '' && Number.isFinite(pn) && pn >= 0 && pn <= 100) nuevosPesos[isin] = pn;
+          if (rent !== '' && Number.isFinite(rn) && rn >= -100 && rn <= 100) nuevasRent[isin] = rn;
+        }
+        if (isins.length > 0) {
+          setIsinsEnCartera(isins);
+          setPesos(nuevosPesos);
+          setRentabilidades(nuevasRent);
+        }
+      }
+    } catch {
+      // sin acceso a la URL: se queda la cartera por defecto
+    }
+    setCarteraLista(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!carteraLista) return;
+    try {
+      const url = new URL(window.location.href);
+      const actual = cartera(isinsEnCartera, pesos, rentabilidades);
+      if (actual === carteraPorDefecto.current || isinsEnCartera.length === 0) url.searchParams.delete('c');
+      else url.searchParams.set('c', actual);
+      window.history.replaceState(null, '', url);
+    } catch {
+      // ignorar
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isinsEnCartera, pesos, rentabilidades, carteraLista]);
 
   const fondosEnCartera = isinsEnCartera.map((isin) => fondos.find((f) => f.isin === isin)!).filter(Boolean);
   const pesoTotal = fondosEnCartera.reduce((a, f) => a + pesoDe(f.isin), 0);

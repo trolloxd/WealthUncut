@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { calcularImpuestoAhorro, IRPF_AHORRO_BRACKETS, RETENCION_REEMBOLSO_FONDOS } from '../config/finance';
-import { CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, formatPct } from './CalculatorUI';
+import { CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, formatPct, useEstadoUrl } from './CalculatorUI';
 
 export interface Lote {
   id: number;
@@ -47,9 +47,9 @@ export default function FundSaleTaxCalculator() {
     { id: 2, importe: 3000, precio: 12.5 },
     { id: 3, importe: 3000, precio: 15 },
   ]);
-  const [precioActual, setPrecioActual] = useState(18);
-  const [importeARetirar, setImporteARetirar] = useState(6000);
-  const [otrasGanancias, setOtrasGanancias] = useState(0);
+  const [precioActual, setPrecioActual] = useEstadoUrl<number>('precioActual', 18);
+  const [importeARetirar, setImporteARetirar] = useEstadoUrl<number>('importeARetirar', 6000);
+  const [otrasGanancias, setOtrasGanancias] = useEstadoUrl<number>('otrasGanancias', 0);
 
   const actualizar = (id: number, campo: 'importe' | 'precio', v: number) =>
     setLotes((ls) => ls.map((l) => (l.id === id ? { ...l, [campo]: v } : l)));

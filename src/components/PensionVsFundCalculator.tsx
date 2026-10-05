@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { calcularImpuestoAhorro, PLAN_PENSIONES } from '../config/finance';
-import { CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros } from './CalculatorUI';
+import { CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, useEstadoUrl } from './CalculatorUI';
 
 export interface ParamsPensionVsFondo {
   aportacionAnual: number;
@@ -65,13 +65,13 @@ export function compararPensionVsFondo(p: ParamsPensionVsFondo): ResultadoPensio
 }
 
 export default function PensionVsFundCalculator() {
-  const [aportacionAnual, setAportacionAnual] = useState(1500);
-  const [anios, setAnios] = useState(25);
-  const [rentabilidadBruta, setRentabilidadBruta] = useState(7);
-  const [terPlan, setTerPlan] = useState(1.2);
-  const [terFondo, setTerFondo] = useState(0.2);
-  const [tipoMarginalHoy, setTipoMarginalHoy] = useState(30);
-  const [tipoMarginalJubilacion, setTipoMarginalJubilacion] = useState(19);
+  const [aportacionAnual, setAportacionAnual] = useEstadoUrl<number>('aportacionAnual', 1500);
+  const [anios, setAnios] = useEstadoUrl<number>('anios', 25, { max: 100 });
+  const [rentabilidadBruta, setRentabilidadBruta] = useEstadoUrl<number>('rentabilidadBruta', 7);
+  const [terPlan, setTerPlan] = useEstadoUrl<number>('terPlan', 1.2);
+  const [terFondo, setTerFondo] = useEstadoUrl<number>('terFondo', 0.2);
+  const [tipoMarginalHoy, setTipoMarginalHoy] = useEstadoUrl<number>('tipoMarginalHoy', 30);
+  const [tipoMarginalJubilacion, setTipoMarginalJubilacion] = useEstadoUrl<number>('tipoMarginalJubilacion', 19);
 
   const r = useMemo(
     () => compararPensionVsFondo({ aportacionAnual, anios, rentabilidadBruta, terPlan, terFondo, tipoMarginalHoy, tipoMarginalJubilacion }),

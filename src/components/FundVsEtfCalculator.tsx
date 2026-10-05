@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { calcularImpuestoAhorro } from '../config/finance';
-import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros } from './CalculatorUI';
+import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, useEstadoUrl } from './CalculatorUI';
 
 export interface ParamsComparador {
   aportacionMensual: number;
@@ -96,14 +96,14 @@ export function comparar(p: ParamsComparador): { fondo: ResultadoProducto; etf: 
 }
 
 export default function FundVsEtfCalculator() {
-  const [aportacionMensual, setAportacionMensual] = useState(150);
-  const [anios, setAnios] = useState(20);
-  const [rentabilidadBruta, setRentabilidadBruta] = useState(7);
-  const [terFondo, setTerFondo] = useState(0.2);
-  const [terEtf, setTerEtf] = useState(0.2);
-  const [comisionCompraEtf, setComisionCompraEtf] = useState(2);
-  const [comprasEtfAlAnio, setComprasEtfAlAnio] = useState(12);
-  const [cambiosDeProducto, setCambiosDeProducto] = useState(1);
+  const [aportacionMensual, setAportacionMensual] = useEstadoUrl<number>('aportacionMensual', 150);
+  const [anios, setAnios] = useEstadoUrl<number>('anios', 20, { max: 100 });
+  const [rentabilidadBruta, setRentabilidadBruta] = useEstadoUrl<number>('rentabilidadBruta', 7);
+  const [terFondo, setTerFondo] = useEstadoUrl<number>('terFondo', 0.2);
+  const [terEtf, setTerEtf] = useEstadoUrl<number>('terEtf', 0.2);
+  const [comisionCompraEtf, setComisionCompraEtf] = useEstadoUrl<number>('comisionCompraEtf', 2);
+  const [comprasEtfAlAnio, setComprasEtfAlAnio] = useEstadoUrl<number>('comprasEtfAlAnio', 12);
+  const [cambiosDeProducto, setCambiosDeProducto] = useEstadoUrl<number>('cambiosDeProducto', 1);
 
   const { fondo, etf } = useMemo(
     () =>

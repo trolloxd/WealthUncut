@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { IRPF_AHORRO_BRACKETS } from '../config/finance';
-import { CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, formatPct } from './CalculatorUI';
+import { CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, formatPct, useEstadoUrl } from './CalculatorUI';
 
 // Los intereses tributan cada año en la base del ahorro; para los importes habituales de una
 // cuenta remunerada, en el primer tramo.
@@ -17,10 +17,10 @@ export function poderAdquisitivo(p: { importe: number; anios: number; inflacion:
 }
 
 export default function InflationCalculator() {
-  const [importe, setImporte] = useState(10000);
-  const [anios, setAnios] = useState(10);
-  const [inflacion, setInflacion] = useState(2);
-  const [interesBruto, setInteresBruto] = useState(0);
+  const [importe, setImporte] = useEstadoUrl<number>('importe', 10000);
+  const [anios, setAnios] = useEstadoUrl<number>('anios', 10, { max: 100 });
+  const [inflacion, setInflacion] = useEstadoUrl<number>('inflacion', 2);
+  const [interesBruto, setInteresBruto] = useEstadoUrl<number>('interesBruto', 0);
 
   const r = useMemo(() => poderAdquisitivo({ importe, anios, inflacion, interesBruto }), [importe, anios, inflacion, interesBruto]);
 

@@ -1,4 +1,5 @@
 ---
+import { BotonCompartir } from '../../components/CalculatorUI';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import ArticleLink from '../../components/ArticleLink.astro';
 import MortgageCalculator from '../../components/MortgageCalculator';
@@ -40,6 +41,8 @@ const euriborMes = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'nume
 
   <MortgageCalculator client:load euriborInicial={euriborInicial} euriborMes={euriborMes} />
 
+
+  <BotonCompartir client:load />
   <h2>Qué significa fija, variable y mixta</h2>
   <p>
     En una hipoteca <strong>fija</strong> el tipo de interés no cambia durante toda la vida del

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { MODELO_720 } from '../config/finance';
-import { CampoNumero, NotaCalculo, PanelResultados, formatEuros } from './CalculatorUI';
+import { CampoNumero, NotaCalculo, PanelResultados, formatEuros, useEstadoUrl } from './CalculatorUI';
 
 export interface Bloque {
   valor: number; // valor que cuenta este año
@@ -31,8 +31,8 @@ export function evaluarBloque(b: Bloque): { obligado: boolean; motivo: string } 
 const vacio: Bloque = { valor: 0, declaradoAntes: false, valorUltimaDeclaracion: 0, extinguido: false };
 
 export default function Modelo720Checker() {
-  const [saldoCuentas31, setSaldoCuentas31] = useState(3000);
-  const [saldoCuentasMedio, setSaldoCuentasMedio] = useState(3000);
+  const [saldoCuentas31, setSaldoCuentas31] = useEstadoUrl<number>('saldoCuentas31', 3000);
+  const [saldoCuentasMedio, setSaldoCuentasMedio] = useEstadoUrl<number>('saldoCuentasMedio', 3000);
   const [cuentas, setCuentas] = useState<Bloque>(vacio);
   const [valores, setValores] = useState<Bloque>({ ...vacio, valor: 55000 });
   const [inmuebles, setInmuebles] = useState<Bloque>(vacio);

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import {
   IRPF_GENERAL_AUTONOMICO,
   IRPF_GENERAL_ESTATAL,
@@ -8,7 +8,7 @@ import {
   calcularProgresivo,
   calcularReduccionTrabajo,
 } from '../config/finance';
-import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, formatPct } from './CalculatorUI';
+import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, formatPct, useEstadoUrl } from './CalculatorUI';
 
 export type ComunidadId = keyof typeof IRPF_GENERAL_AUTONOMICO;
 
@@ -77,9 +77,9 @@ const COMUNIDADES = Object.entries(IRPF_GENERAL_AUTONOMICO)
   .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
 
 export default function SalaryCalculator() {
-  const [brutoAnual, setBrutoAnual] = useState(24000);
-  const [comunidad, setComunidad] = useState<ComunidadId>('madrid');
-  const [pagas, setPagas] = useState(14);
+  const [brutoAnual, setBrutoAnual] = useEstadoUrl<number>('brutoAnual', 24000);
+  const [comunidad, setComunidad] = useEstadoUrl<ComunidadId>('comunidad', 'madrid', { validar: (v) => v in IRPF_GENERAL_AUTONOMICO });
+  const [pagas, setPagas] = useEstadoUrl<number>('pagas', 14);
 
   const r = useMemo(() => calcularSueldoNeto({ brutoAnual, comunidad, pagas }), [brutoAnual, comunidad, pagas]);
 

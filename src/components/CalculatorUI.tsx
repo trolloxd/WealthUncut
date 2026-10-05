@@ -1,5 +1,5 @@
 /** Piezas visuales y de formato compartidas por todas las calculadoras del sitio. */
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 export function formatEuros(value: number): string {
   return new Intl.NumberFormat('es-ES', {
@@ -137,4 +137,90 @@ const ANCHO_BARRA_CLASE: Record<number, string> = {
 export function claseAnchoBarra(pct: number, minimo = 0): string {
   const redondeado = Math.min(100, Math.max(minimo, Math.round(pct / 5) * 5));
   return ANCHO_BARRA_CLASE[redondeado];
+}
+
+/**
+ * Como useState, pero el valor viaja en la URL (?clave=valor) para poder compartir un resultado.
+ * El primer render usa el valor por defecto (para que coincida con el HTML del servidor) y al
+ * montar se lee la URL. Los valores de la URL se validan: un enlace manipulado nunca puede
+ * dejar la herramienta en un estado imposible ni colgar el navegador.
+ */
+export function useEstadoUrl<T extends string | number | boolean>(
+  clave: string,
+  inicial: T,
+  opciones?: { validar?: (v: T) => boolean; max?: number }
+): [T, (v: T) => void] {
+  const [valor, setValor] = useState<T>(inicial);
+  const [listo, setListo] = useState(false);
+
+  useEffect(() => {
+    try {
+      const raw = new URLSearchParams(window.location.search).get(clave);
+      if (raw !== null) {
+        let parsed: unknown;
+        if (typeof inicial === 'number') {
+          const n = Number(raw);
+          parsed = raw.trim() !== '' && Number.isFinite(n) && n >= -100 && n <= (opciones?.max ?? 10_000_000) ? n : undefined;
+        } else if (typeof inicial === 'boolean') {
+          parsed = raw === '1' ? true : raw === '0' ? false : undefined;
+        } else {
+          parsed = raw.length <= 40 ? raw : undefined;
+        }
+        if (parsed !== undefined && (!opciones?.validar || opciones.validar(parsed as T))) setValor(parsed as T);
+      }
+    } catch {
+      // sin acceso a la URL: se queda el valor por defecto
+    }
+    setListo(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!listo) return;
+    try {
+      const url = new URL(window.location.href);
+      if (valor === inicial) url.searchParams.delete(clave);
+      else url.searchParams.set(clave, typeof valor === 'boolean' ? (valor ? '1' : '0') : String(valor));
+      window.history.replaceState(null, '', url);
+    } catch {
+      // ignorar
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [valor, listo]);
+
+  return [valor, setValor];
+}
+
+/** Comparte (o copia) el enlace de la página actual, que ya lleva los datos de quien lo calcula. */
+export function BotonCompartir({ texto = 'Compartir mi resultado' }: { texto?: string }) {
+  const [aviso, setAviso] = useState('');
+
+  async function compartir() {
+    const url = window.location.href;
+    if (typeof navigator.share === 'function') {
+      try {
+        await navigator.share({ title: document.title, url });
+      } catch {
+        // el usuario canceló
+      }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setAviso('Enlace copiado. Pégalo donde quieras: lleva tus datos.');
+    } catch {
+      setAviso('Copia la dirección de la barra del navegador: lleva tus datos.');
+    }
+  }
+
+  return (
+    <div className="not-prose mt-4 flex flex-wrap items-center gap-3">
+      <button type="button" onClick={compartir} className="btn-secondary text-sm">
+        {texto}
+      </button>
+      <span className="text-xs text-ink-faint" role="status" aria-live="polite">
+        {aviso}
+      </span>
+    </div>
+  );
 }

@@ -1,4 +1,5 @@
 ---
+import { BotonCompartir } from '../../components/CalculatorUI';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import ArticleLink from '../../components/ArticleLink.astro';
 import EmergencyFundCalculator from '../../components/EmergencyFundCalculator';
@@ -40,6 +41,8 @@ const euros = (n: number) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'a
 
   <EmergencyFundCalculator client:load />
 
+
+  <BotonCompartir client:load />
   <h2>Cómo calcula los meses de colchón</h2>
   <p>
     La referencia habitual en educación financiera es tener entre 3 y 6 meses de gastos

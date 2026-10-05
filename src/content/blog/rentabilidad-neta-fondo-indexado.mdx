@@ -13,6 +13,7 @@ draft: false
 ---
 
 import IndexFundCalculator from '../../components/IndexFundCalculator';
+import { BotonCompartir } from '../../components/CalculatorUI';
 
 Cuando alguien te dice "los fondos indexados dan un 7% anual", esa cifra casi nunca es lo que
 tú te llevas. Entre medio están la comisión del fondo (TER), la comisión del broker si la
@@ -25,6 +26,8 @@ Esta calculadora de rentabilidad neta hace ese descuento completo, con los tramo
 aplicados sobre la ganancia final, no sobre el capital total.
 
 <IndexFundCalculator client:load />
+
+<BotonCompartir client:visible />
 
 ## Cómo lo calculamos
 
