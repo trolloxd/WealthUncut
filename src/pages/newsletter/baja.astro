@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+---
+
+<BaseLayout
+  title="Darse de baja del boletín"
+  description="Cancela tu suscripción al boletín 5 minutos de finanzas y borra tu email de la lista."
+  noindex
+>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Newsletter', href: '/newsletter/' }, { label: 'Darse de baja' }]} />
+  <div class="mx-auto max-w-xl py-2">
+    <h1 class="font-display text-3xl text-ink sm:text-4xl">Darse de baja del boletín</h1>
+    <p class="mt-4 text-ink-muted">
+      Escribe el email con el que te suscribiste y lo borramos de la lista. No recibirás más números.
+    </p>
+
+    <form id="baja-form" class="card relative mt-8 grid gap-3 p-6 sm:flex sm:items-start sm:gap-2">
+      <div class="grid gap-1 sm:flex-1">
+        <label for="baja-email" class="sr-only">Tu email</label>
+        <input
+          id="baja-email"
+          type="email"
+          name="email"
+          required
+          maxlength="200"
+          autocomplete="email"
+          placeholder="tu@email.com"
+          class="campo-input"
+        />
+      </div>
+      <div aria-hidden="true" class="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label>No rellenes este campo <input type="text" name="web" tabindex="-1" autocomplete="off" /></label>
+      </div>
+      <button type="submit" class="btn-primary whitespace-nowrap">Darme de baja</button>
+    </form>
+    <p id="baja-status" class="mt-3 text-sm" role="status" aria-live="polite"></p>
+  </div>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('baja-form') as HTMLFormElement;
+  const status = document.getElementById('baja-status')!;
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    status.textContent = 'Enviando...';
+    status.className = 'mt-3 text-sm text-ink-muted';
+
+    const formData = new FormData(form);
+    try {
+      const res = await fetch('/api/newsletter-baja', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.get('email'), web: formData.get('web') }),
+      });
+      if (!res.ok) throw new Error('request failed');
+
+      status.textContent = 'Hecho. Si ese email estaba en la lista, ya lo hemos borrado.';
+      status.className = 'mt-3 text-sm text-brand';
+      form.reset();
+    } catch {
+      status.textContent = 'No se ha podido completar. Inténtalo de nuevo en un momento.';
+      status.className = 'mt-3 text-sm text-accent';
+    }
+  });
+</script>
