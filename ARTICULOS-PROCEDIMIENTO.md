@@ -61,6 +61,13 @@ draft: false
 ---
 ```
 
+- **Etiquetas (`tags`)**: usa solo este vocabulario, porque de ellas salen solos los enlaces
+  internos (bloque "Pruébalo con tus números" con herramientas afines y "Sigue leyendo" con
+  artículos afines): `fondos indexados`, `impuestos`, `educación financiera`, `etf`, `brokers`,
+  `interés compuesto`, `calculadoras`, `ahorro`, `vivienda`, `hipoteca`, `pensiones`, `nómina`,
+  `cuentas`. Entre 2 y 3 por artículo, y que al menos una coincida con la herramienta que enlazas.
+- En el cuerpo, enlaza (en Markdown, con la ruta completa) a la herramienta principal y a 2-4
+  artículos ya existentes.
 - 1.400-2.000 palabras, español de España, frases cortas, sin jerga (o explicada en la misma frase).
 - Respuesta directa a la pregunta del título en las primeras líneas, tabla o ejemplo calculado en el
   cuerpo, enlaces internos a 2-4 artículos o herramientas relacionados (solo a los que ya existan

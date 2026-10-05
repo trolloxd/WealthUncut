@@ -58,14 +58,15 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ error: 'missing_consent' }), { status: 400 });
   }
 
-  // Una clave por email (no por envío) para que suscribirse dos veces no duplique la entrada.
+  // Una clave por email (no por envío) para que suscribirse dos veces no duplique la entrada. La
+  // respuesta es idéntica exista o no ya el email, para que nadie pueda comprobar quién está
+  // suscrito probando direcciones.
   const key = `newsletter:suscripcion:${email}`;
-  const yaExistia = (await SUGERENCIAS.get(key)) !== null;
-  if (!yaExistia) {
+  if ((await SUGERENCIAS.get(key)) === null) {
     await SUGERENCIAS.put(key, JSON.stringify({ email, suscritoEn: new Date().toISOString() }));
   }
 
-  return new Response(JSON.stringify({ ok: true, yaExistia }), {
+  return new Response(JSON.stringify({ ok: true }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });

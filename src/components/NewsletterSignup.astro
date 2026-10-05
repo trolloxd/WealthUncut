@@ -74,11 +74,8 @@ const { compacta = false } = Astro.props;
       });
 
       if (!res.ok) throw new Error('request failed');
-      const data = (await res.json()) as { yaExistia?: boolean };
 
-      status.textContent = data.yaExistia
-        ? 'Ya estabas suscrito con ese email.'
-        : 'Hecho, ya estás suscrito. Te avisamos en el próximo número.';
+      status.textContent = 'Hecho, ya estás suscrito. Te avisamos en el próximo número.';
       status.className = 'mt-2 text-sm text-brand';
       form.reset();
       consent.checked = false;

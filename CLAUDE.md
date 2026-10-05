@@ -114,6 +114,16 @@ lote de 4 y los deja programados. Procedimiento, reglas de calidad y verificaci�
 `ARTICULOS-PROCEDIMIENTO.md`; mismas reglas de este documento (cifras fiscales solo de
 `finance.ts`, sin guiones largos, sin recomendaciones personalizadas).
 
+## Rutinas de mantenimiento (decisión de David, 2026-10-05)
+
+David pidió automatizar todo lo automatizable. Además de mercados, cuentas, fondos, newsletter y
+reposición de artículos, hay rutinas en la nube para: euríbor (mensual), catálogo de `/carteras/`
+(mensual, `MYINVESTOR-FONDOS-PROCEDIMIENTO.md`), seguridad de dependencias (semanal), salud del sitio
+(semanal, solo informa) y revisión de cifras fiscales (feb/abr/jun, solo informa y nunca edita
+`finance.ts`). Detalle en `MANTENIMIENTO-PROCEDIMIENTO.md`. El kit de promoción que publica David a
+mano está en `PROMOCION.md`. Los enlaces internos entre artículos y herramientas salen solos de las
+etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo).
+
 ## Seguridad (2026-09-24)
 
 - **Cabeceras** en `public/_headers`: `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`,

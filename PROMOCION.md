@@ -105,3 +105,26 @@ tramos y retención). ¿Me decís si algo está mal?
 - **A partir del 25/09**: el hilo de SPIVA (enlaza a "Qué es un fondo indexado").
 - **A partir del 02/10**: la respuesta de fondo vs ETF puede enlazar también al artículo.
 - Ritmo razonable: 2 o 3 publicaciones por semana, repartidas entre sitios.
+
+## Novedades (añadido el 2026-10-05): herramientas posteriores al kit original
+
+Mismas reglas de arriba: aporta primero, di que la web es tuya y una comunidad cada vez.
+
+- **¿Dónde pagas menos IRPF?** (compara tu mismo sueldo en las 17 comunidades):
+  https://wealthuncut.com/herramientas/ranking-irpf-comunidades/. Encaja en hilos de "¿merece la
+  pena mudarse a otra comunidad?" o "¿cuánto me queda de X bruto?".
+- **Calculadora de sueldo neto** con el IRPF real de tu comunidad:
+  https://wealthuncut.com/herramientas/calculadora-sueldo-neto/.
+- **Simulador de hipoteca con el euríbor real** (fija, variable o mixta):
+  https://wealthuncut.com/herramientas/simulador-hipoteca-euribor/. Encaja en hilos sobre subidas
+  del euríbor.
+- **Carteras**: busca fondos indexados de MyInvestor, reparte el peso y mira cuánto podrías tener:
+  https://wealthuncut.com/carteras/. Encaja en "¿qué cartera de fondos indexados me hago?" (aclara
+  siempre que es una simulación educativa, no una recomendación).
+
+Para conseguir enlaces desde blogs, el correo de presentación puede decir, en dos líneas, qué hace
+la herramienta (por ejemplo, el ranking de IRPF) y que es gratuita, sin registro y con fuentes
+oficiales citadas.
+
+Activa también **Cloudflare Web Analytics** para wealthuncut.com (Analytics > Web analytics) y así
+verás visitas reales y no solo bots.

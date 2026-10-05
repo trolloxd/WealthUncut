@@ -6,6 +6,7 @@ import ArticleMeta from '../../../components/ArticleMeta.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import ArticleLink from '../../../components/ArticleLink.astro';
 import { SITE } from '../../../config/site';
+import { herramientasRelacionadas } from '../../../config/tools';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => isPublished(data));
@@ -27,6 +28,8 @@ const related = allPosts
   .sort((a, b) => b.shared - a.shared || b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf())
   .slice(0, 3)
   .map((r) => r.post);
+
+const herramientas = herramientasRelacionadas(tags, `/blog/${post.id}/`, 3);
 
 const articleJsonLd = {
   '@context': 'https://schema.org',
@@ -71,6 +74,28 @@ const breadcrumbJsonLd = {
       <Content components={{ a: ArticleLink }} />
     </ArticleMeta>
   </article>
+
+  <aside aria-labelledby="herramientas-relacionadas" class="mt-12 border-t border-border pt-8">
+    <h2 id="herramientas-relacionadas" class="mb-5 font-display text-xl text-ink">Pruébalo con tus números</h2>
+    <ul class="grid gap-4">
+      {herramientas.map((t) => (
+        <li>
+          <a href={t.href} class="group block">
+            <span class="font-display text-lg text-ink group-hover:text-brand">{t.name}</span>
+            <span class="mt-1 block text-sm text-ink-muted">{t.description}</span>
+          </a>
+        </li>
+      ))}
+      {tags.includes('fondos indexados') && (
+        <li>
+          <a href="/carteras/" class="group block">
+            <span class="font-display text-lg text-ink group-hover:text-brand">Simula tu cartera de fondos indexados</span>
+            <span class="mt-1 block text-sm text-ink-muted">Busca fondos, reparte el peso entre ellos y mira cuánto podrías tener.</span>
+          </a>
+        </li>
+      )}
+    </ul>
+  </aside>
 
   {related.length > 0 && (
     <aside aria-labelledby="sigue-leyendo" class="mt-12 border-t border-border pt-8">

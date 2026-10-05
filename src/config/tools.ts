@@ -1,68 +1,94 @@
-/** Listado de herramientas del sitio: lo usan la página /herramientas/, la portada y el menú. */
+/**
+ * Listado de herramientas del sitio: lo usan la página /herramientas/, la portada, el menú y los
+ * bloques de enlaces relacionados. `tags` usa el mismo vocabulario que las etiquetas de los
+ * artículos del blog, para enlazar cada artículo con las herramientas y guías que le encajan.
+ */
 export const TOOLS = [
   {
     href: '/blog/rentabilidad-neta-fondo-indexado/',
     name: 'Rentabilidad neta de un fondo indexado',
     description: 'Cuánto te queda de verdad después de TER, comisiones e IRPF del ahorro.',
+    tags: ['fondos indexados', 'calculadoras', 'impuestos'],
   },
   {
     href: '/herramientas/calculadora-impuestos-venta-fondos/',
     name: 'Impuestos al vender un fondo',
     description: 'Qué participaciones vendes por FIFO, cuánto pagas, la retención y lo que recibes.',
+    tags: ['impuestos', 'fondos indexados'],
   },
   {
     href: '/herramientas/comparador-fondo-indexado-vs-etf/',
     name: 'Fondo indexado vs ETF',
     description: 'Comisiones por compra, TER e impuestos al cambiar de producto, con tus números.',
+    tags: ['fondos indexados', 'etf', 'impuestos'],
   },
   {
     href: '/herramientas/calculadora-fondo-de-emergencia/',
     name: 'Fondo de emergencia',
     description: 'Cuánto colchón necesitas según tus gastos y tu situación, y cuándo lo tendrás.',
+    tags: ['educación financiera', 'ahorro'],
   },
   {
     href: '/herramientas/calculadora-inflacion/',
     name: 'Inflación y poder de compra',
     description: 'Cuánto pierde tu dinero parado o en una cuenta, y qué interés necesitas para no perder.',
+    tags: ['educación financiera', 'ahorro', 'interés compuesto'],
   },
   {
     href: '/herramientas/calculadora-modelo-720/',
     name: '¿Tengo que presentar el modelo 720?',
     description: 'Comprobación bloque a bloque si tienes cuentas, fondos o ETF en el extranjero.',
+    tags: ['impuestos', 'brokers'],
   },
   {
     href: '/herramientas/simulador-hipoteca-euribor/',
     name: 'Simulador de hipoteca con el euríbor real',
     description: 'Cuota de una hipoteca fija, variable o mixta con el euríbor real y escenarios de subida y bajada.',
+    tags: ['vivienda', 'hipoteca'],
   },
   {
     href: '/herramientas/plan-pensiones-vs-fondo-indexado/',
     name: 'Plan de pensiones vs fondo indexado',
     description: 'Cuánto te queda neto con la reducción fiscal de la aportación y los impuestos al rescatarlo o venderlo.',
+    tags: ['pensiones', 'fondos indexados', 'impuestos'],
   },
   {
     href: '/herramientas/calculadora-sueldo-neto/',
     name: 'Calculadora de sueldo neto',
     description: 'De bruto a neto con la Seguridad Social y el IRPF real de tu comunidad autónoma, no solo la escala estatal.',
+    tags: ['nómina', 'impuestos', 'educación financiera'],
   },
   {
     href: '/herramientas/ahorro-entrada-piso/',
     name: '¿Cuánto ahorrar para la entrada de un piso?',
     description: 'Entrada, impuesto de compra (ITP) de tu comunidad y gastos, y cuánto tardarás en ahorrarlo.',
+    tags: ['vivienda', 'ahorro'],
   },
   {
     href: '/herramientas/comparador-cuentas-remuneradas/',
     name: 'Comparador de cuentas remuneradas y depósitos',
     description: 'Las TAE reales de ahora mismo, actualizado, sin ranking pagado ni afiliación.',
+    tags: ['ahorro', 'cuentas'],
   },
   {
     href: '/herramientas/comparador-fondos-indexados/',
     name: 'Comparador de fondos indexados',
     description: 'TER, índice y dónde está cada fondo disponible en España, ordenado por coste.',
+    tags: ['fondos indexados'],
   },
   {
     href: '/herramientas/ranking-irpf-comunidades/',
     name: '¿Dónde pagas menos IRPF?',
     description: 'Ranking de las 17 comunidades autónomas con tu mismo sueldo, de la que más neto deja a la que menos.',
+    tags: ['impuestos', 'nómina'],
   },
 ] as const;
+
+/** Herramientas más afines a un conjunto de etiquetas (las que comparten más), con relleno por orden. */
+export function herramientasRelacionadas(tags: readonly string[], excluirHref?: string, max = 3) {
+  return TOOLS.filter((t) => t.href !== excluirHref)
+    .map((t, i) => ({ t, i, shared: t.tags.filter((x) => tags.includes(x)).length }))
+    .sort((a, b) => b.shared - a.shared || a.i - b.i)
+    .slice(0, max)
+    .map((r) => r.t);
+}

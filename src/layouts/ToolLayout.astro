@@ -8,6 +8,9 @@ import BaseLayout from './BaseLayout.astro';
 import ArticleMeta from '../components/ArticleMeta.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { SITE, AUTHOR } from '../config/site';
+import { getCollection } from 'astro:content';
+import { isPublished } from '../lib/posts';
+import { TOOLS, herramientasRelacionadas } from '../config/tools';
 
 interface Props {
   title: string;
@@ -69,6 +72,16 @@ const faqJsonLd =
     : null;
 
 const extraJsonLd = [appJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJsonLd] : [])];
+
+// Enlaces internos: otras herramientas y guías del blog afines por etiquetas.
+const rutaActual = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const etiquetas: string[] = [...(TOOLS.find((t) => t.href === rutaActual)?.tags ?? [])];
+const otrasHerramientas = herramientasRelacionadas(etiquetas, rutaActual, 4);
+const guias = (await getCollection('blog', ({ data }) => isPublished(data)))
+  .map((p) => ({ p, shared: p.data.tags.filter((t) => etiquetas.includes(t)).length }))
+  .sort((a, b) => b.shared - a.shared || b.p.data.pubDate.valueOf() - a.p.data.pubDate.valueOf())
+  .slice(0, 3)
+  .map((r) => r.p);
 ---
 
 <BaseLayout
@@ -85,4 +98,41 @@ const extraJsonLd = [appJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJsonLd] : 
       <slot />
     </ArticleMeta>
   </article>
+
+  <aside aria-labelledby="mas-herramientas" class="mt-12 grid gap-10 border-t border-border pt-8 sm:grid-cols-2">
+    <div>
+      <h2 id="mas-herramientas" class="mb-4 font-display text-xl text-ink">Otras herramientas</h2>
+      <ul class="grid gap-3">
+        {otrasHerramientas.map((t) => (
+          <li>
+            <a href={t.href} class="group block">
+              <span class="font-medium text-ink group-hover:text-brand">{t.name}</span>
+              <span class="mt-0.5 block text-sm text-ink-muted">{t.description}</span>
+            </a>
+          </li>
+        ))}
+        <li>
+          <a href="/carteras/" class="group block">
+            <span class="font-medium text-ink group-hover:text-brand">Simula tu cartera de fondos indexados</span>
+            <span class="mt-0.5 block text-sm text-ink-muted">Busca fondos, reparte el peso y mira cuánto podrías tener.</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    {guias.length > 0 && (
+      <div>
+        <h2 class="mb-4 font-display text-xl text-ink">Guías relacionadas</h2>
+        <ul class="grid gap-3">
+          {guias.map((p) => (
+            <li>
+              <a href={`/blog/${p.id}/`} class="group block">
+                <span class="font-medium text-ink group-hover:text-brand">{p.data.title}</span>
+                <span class="mt-0.5 block text-sm text-ink-muted">{p.data.description}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </aside>
 </BaseLayout>
