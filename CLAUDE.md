@@ -195,6 +195,9 @@ actualizaciones" en `metodologia.astro`.
 ## Estructura actual
 
 - `src/config/site.ts`: metadatos del sitio y del autor.
+- `src/config/afiliados.ts` + `src/components/AfiliadoCTA.astro`: enlaces de afiliado. Con `url: null` no se
+  muestra nada; al poner el enlace del programa aparece el botón (rel="sponsored nofollow") y se activa el
+  aviso de `ArticleMeta` vía `hayAfiliado()`. Hoy solo cableado en `/carteras/`; no hay ningún programa aún.
 - `src/config/finance.ts`: cifras fiscales VERIFICAR (tramos del ahorro, retención, compensación,
   regla de recompra, modelo 720, FGD) y lógica de cálculo del IRPF del ahorro. Los artículos
   importan estas constantes en MDX en vez de escribir las cifras a mano.

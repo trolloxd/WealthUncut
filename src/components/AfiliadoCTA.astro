@@ -1,0 +1,29 @@
+---
+import { AFILIADOS, type ClaveAfiliado } from '../config/afiliados';
+
+interface Props {
+  clave: ClaveAfiliado;
+  /** Frase que explica por qué se enlaza, justo encima del botón. */
+  contexto: string;
+}
+
+const { clave, contexto } = Astro.props;
+const afiliado = AFILIADOS[clave];
+---
+
+{afiliado.url && (
+  <aside class="not-prose my-8 flex flex-col gap-3 rounded-xl border border-border bg-cream-elevated p-5 sm:flex-row sm:items-center sm:justify-between">
+    <p class="text-sm text-ink-muted">
+      {contexto}{' '}
+      <span class="text-xs text-ink-faint">Enlace de afiliado: si lo usas, podemos recibir una comisión sin coste para ti.</span>
+    </p>
+    <a
+      href={afiliado.url}
+      rel="sponsored nofollow noopener"
+      target="_blank"
+      class="shrink-0 rounded-full bg-brand px-5 py-2.5 text-center text-sm font-semibold text-white hover:opacity-90"
+    >
+      {afiliado.texto}
+    </a>
+  </aside>
+)}

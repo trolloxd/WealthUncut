@@ -5,7 +5,9 @@ import ArticleMeta from '../components/ArticleMeta.astro';
 import ArticleLink from '../components/ArticleLink.astro';
 import FundPortfolioSimulator from '../components/FundPortfolioSimulator.tsx';
 import { BotonCompartir } from '../components/CalculatorUI';
+import AfiliadoCTA from '../components/AfiliadoCTA.astro';
 import { SITE, AUTHOR } from '../config/site';
+import { hayAfiliado } from '../config/afiliados';
 import datos from '../data/myinvestor-fondos/ultimo.json';
 import catalogo from '../data/myinvestor-fondos/catalogo.json';
 
@@ -51,7 +53,7 @@ const breadcrumbJsonLd = {
       pubDate={pubDate}
       updatedDate={new Date(datos.fecha)}
       sources={[{ label: 'MyInvestor: fondos de inversión (ISIN, TER y rentabilidades)', url: 'https://myinvestor.es/inversion/fondos-inversion/' }]}
-      hasAffiliateLinks={false}
+      hasAffiliateLinks={hayAfiliado('myinvestor')}
     >
       <p>
         Busca un fondo disponible en MyInvestor por nombre, gestora, categoría o ISIN, añádelo a tu
@@ -62,6 +64,7 @@ const breadcrumbJsonLd = {
 
       <FundPortfolioSimulator client:load fondos={datos.fondos} />
       <BotonCompartir client:load />
+      <AfiliadoCTA clave="myinvestor" contexto="¿Quieres invertir en alguno de estos fondos? Puedes abrir cuenta en la plataforma donde están disponibles." />
 
       <h2>De dónde salen los datos de cada fondo</h2>
       <p>
