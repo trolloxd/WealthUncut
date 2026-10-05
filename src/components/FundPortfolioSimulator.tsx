@@ -374,7 +374,7 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
           {fondosEnCartera.map((f) => {
             const ultimo = ultimoAnioCompleto(f.rentabilidadesAnuales);
             return (
-              <div key={f.isin} className="grid grid-cols-[1fr_4.5rem] items-start gap-3 border-b border-border/60 pb-3 last:border-0 sm:grid-cols-[1fr_4.5rem_5.5rem_1.5rem]">
+              <div key={f.isin} className="grid grid-cols-[1fr_auto] items-start gap-3 border-b border-border/60 pb-3 last:border-0 sm:grid-cols-[1fr_4.5rem_5.5rem_1.5rem]">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium text-ink">{f.gestora || f.nombre}</p>
                   <p className="text-xs text-ink-faint">
@@ -384,6 +384,7 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
                     {f.catalogo?.rentabilidad1A != null && ` · Últimos 12 meses: ${formatoPct(f.catalogo.rentabilidad1A)}`}
                   </p>
                 </div>
+                <div className="col-span-2 grid grid-cols-2 gap-3 sm:contents">
                 <label className="grid gap-0.5 text-xs text-ink-muted">
                   Peso %
                   <input
@@ -398,7 +399,7 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
                     aria-label={`Peso en la cartera de ${f.nombre}`}
                   />
                 </label>
-                <label className="hidden gap-0.5 text-xs text-ink-muted sm:grid">
+                <label className="grid gap-0.5 text-xs text-ink-muted">
                   Rent. % anual
                   <input
                     type="number"
@@ -410,10 +411,11 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
                     aria-label={`Rentabilidad bruta anual esperada de ${f.nombre}`}
                   />
                 </label>
+                </div>
                 <button
                   type="button"
                   onClick={() => quitarFondo(f.isin)}
-                  className="mt-4 text-ink-faint hover:text-accent sm:mt-5"
+                  className="col-start-2 row-start-1 text-ink-faint hover:text-accent sm:col-start-auto sm:row-start-auto sm:mt-5"
                   aria-label={`Quitar ${f.nombre} de la cartera`}
                   title="Quitar de la cartera"
                 >
@@ -445,18 +447,7 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
                           />
                         </label>
                       )}
-                      <label className="grid gap-0.5 sm:hidden">
-                        Rent. % anual
-                        <input
-                          type="number"
-                          step={0.5}
-                          inputMode="decimal"
-                          value={rentabilidadDe(f.isin)}
-                          onChange={(e) => setRentabilidades((prev) => ({ ...prev, [f.isin]: Number(e.target.value) }))}
-                          className="campo-input w-24"
-                          aria-label={`Rentabilidad bruta anual esperada de ${f.nombre}`}
-                        />
-                      </label>
+                      
                     </div>
                   </div>
                 )}
