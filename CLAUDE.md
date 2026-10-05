@@ -179,6 +179,10 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   anti-iframe (`public/_headers`). Nueva herramienta incrustable: registrarla en `embeds.ts` y en
   `src/pages/embed/[slug].astro`.
 - Glosario en `src/content/glosario/` (se amplía en cada lote de la rutina de artículos).
+- `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
+  vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
+  **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se
+  omiten solos hasta su fecha (igual que en los `relacionados` del glosario).
 
 ## Correcciones públicas (decisión de David, 2026-09-25)
 
