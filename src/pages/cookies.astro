@@ -5,11 +5,7 @@ import { SITE } from '../config/site';
 
 <BaseLayout title="Política de cookies" description={`Qué cookies y tecnologías similares usa ${SITE.name}, para qué sirven y cómo puedes gestionarlas o rechazarlas en tu navegador.`}>
   <h1 class="mb-2 font-display text-3xl text-ink">Política de cookies</h1>
-  <p class="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
-    <strong>Borrador pendiente de revisión legal.</strong> Esta política debe reflejar
-    exactamente las cookies que uses en producción, y necesitarás un CMP (banner de
-    consentimiento) real conectado antes de activar analítica no esencial o AdSense en el EEE.
-  </p>
+  <p class="mb-6 text-sm text-ink-faint">Última actualización: 6 de octubre de 2026.</p>
 
   <div class="prose max-w-none">
     <h2>¿Qué son las cookies?</h2>
@@ -21,19 +17,37 @@ import { SITE } from '../config/site';
 
     <h2>Cookies que usamos actualmente</h2>
     <p>
-      Actualmente {SITE.name} no instala ninguna cookie en tu navegador ni carga recursos de
-      terceros que lo hagan. Para saber cuántas personas visitan el sitio usamos Cloudflare Web
-      Analytics, que mide visitas agregadas sin cookies y sin identificarte. [PENDIENTE: revisión
-      profesional de esta página. Si en el futuro se activa publicidad, afiliación con seguimiento
-      u otra analítica, se documentará aquí cada cookie (nombre, finalidad, duración, propia o de
-      terceros) y se añadirá un banner de consentimiento antes de activarlas.]
+      Hoy {SITE.name} <strong>no instala ninguna cookie</strong> en tu navegador ni carga recursos
+      de terceros que lo hagan. Tampoco usamos otras tecnologías de seguimiento (como el
+      almacenamiento local del navegador) para identificarte.
+    </p>
+    <p>
+      Para saber cuántas personas visitan el sitio usamos <strong>Cloudflare Web Analytics</strong>,
+      que mide visitas agregadas sin cookies y sin identificarte de forma individual. Por eso no
+      mostramos un banner de consentimiento: no hay nada que requiera tu aceptación.
+    </p>
+
+    <h2>Si esto cambia</h2>
+    <p>
+      Si en el futuro activamos publicidad, enlaces de afiliación con seguimiento u otra analítica
+      que use cookies, documentaremos aquí cada cookie (nombre, finalidad, duración, propia o de
+      terceros) y mostraremos un banner de consentimiento. No se instalará ninguna cookie no
+      esencial hasta que la aceptes.
     </p>
 
     <h2>Cómo gestionar las cookies</h2>
     <p>
-      Cuando actives cookies no esenciales, aquí se explicará cómo aceptarlas, rechazarlas o
-      cambiar tu decisión en cualquier momento a través de un panel de configuración, conforme
-      a la guía de la Agencia Española de Protección de Datos sobre el uso de cookies.
+      Puedes bloquear o borrar las cookies desde la configuración de tu navegador. Consulta la
+      ayuda de tu navegador (Chrome, Firefox, Safari, Edge) para ver cómo se hace. En cualquier caso,
+      si activamos cookies no esenciales, podrás aceptarlas, rechazarlas o cambiar tu decisión en
+      cualquier momento desde un panel de configuración, conforme a la guía de la Agencia Española
+      de Protección de Datos sobre el uso de cookies.
+    </p>
+
+    <h2>Más información</h2>
+    <p>
+      El tratamiento de datos personales se explica en la <a href="/privacidad/">política de privacidad</a>.
+      Para cualquier duda, escribe a {SITE.email}.
     </p>
   </div>
 </BaseLayout>

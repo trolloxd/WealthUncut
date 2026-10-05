@@ -5,11 +5,7 @@ import { SITE, AUTHOR } from '../config/site';
 
 <BaseLayout title="Política de privacidad" description={`Cómo trata ${SITE.name} los datos personales de sus usuarios: qué datos recoge, para qué, durante cuánto tiempo y cuáles son tus derechos.`}>
   <h1 class="mb-2 font-display text-3xl text-ink">Política de privacidad</h1>
-  <p class="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
-    <strong>Borrador pendiente de revisión legal.</strong> Falta añadir el proveedor de email
-    marketing en cuanto se active la lista de correo, y conviene que un profesional revise el
-    texto antes de activar cualquier formulario que recoja datos personales.
-  </p>
+  <p class="mb-6 text-sm text-ink-faint">Última actualización: 6 de octubre de 2026.</p>
 
   <div class="prose max-w-none">
     <h2>Responsable del tratamiento</h2>
@@ -17,14 +13,34 @@ import { SITE, AUTHOR } from '../config/site';
       <li>Responsable: {AUTHOR.name}</li>
       <li>Contacto: {SITE.email}</li>
     </ul>
+    <p>
+      Esta política se ha redactado conforme al Reglamento (UE) 2016/679 (RGPD) y a la Ley Orgánica
+      3/2018 de Protección de Datos Personales y garantía de los derechos digitales.
+    </p>
 
     <h2>¿Qué datos tratamos?</h2>
+    <ul>
+      <li>
+        <strong>Buzón de sugerencias:</strong> el texto que escribas y, solo si decides dejarlo, tu
+        email.
+      </li>
+      <li>
+        <strong>Boletín:</strong> tu dirección de email y la fecha de alta, si te suscribes.
+      </li>
+      <li>
+        <strong>Dirección IP:</strong> al usar el buzón de sugerencias, la suscripción o la baja del boletín, tu IP se
+        usa de forma temporal para limitar el número de envíos por hora y evitar abusos (ver más
+        abajo).
+      </li>
+      <li>
+        <strong>Visitas:</strong> contamos las visitas de forma agregada con Cloudflare Web
+        Analytics, que no usa cookies ni te identifica de forma individual.
+      </li>
+    </ul>
     <p>
-      Dependiendo de cómo uses el sitio, podemos tratar: el texto que escribas en el{' '}
-      <a href="/sugerencias/">buzón de sugerencias</a> y, solo si decides dejarlo, tu email; y, si
-      te suscribes a la lista de correo, tu dirección de email. Si en el futuro activamos
-      analítica web agregada, lo indicaremos aquí antes de hacerlo. No recogemos datos bancarios
-      ni financieros a través de este sitio.
+      Navegar por el sitio y usar las calculadoras no requiere dejar ningún dato personal: los
+      números que introduces en una calculadora se procesan en tu navegador y no se envían a
+      nuestros servidores. No recogemos datos bancarios ni financieros a través de este sitio.
     </p>
 
     <h2>¿Con qué finalidad?</h2>
@@ -35,57 +51,78 @@ import { SITE, AUTHOR } from '../config/site';
         ninguna lista sin tu consentimiento expreso.
       </li>
       <li>Enviar el boletín por email, si te has suscrito voluntariamente.</li>
+      <li>Proteger el sitio frente a abusos (limitar envíos repetidos de los formularios).</li>
+      <li>Conocer cuántas personas visitan el sitio, sin identificarte.</li>
+    </ul>
+
+    <h2>¿Cuál es la base legal?</h2>
+    <ul>
+      <li>
+        Sugerencias y boletín: tu <strong>consentimiento</strong> (art. 6.1.a RGPD), que das al
+        enviar el formulario y puedes retirar en cualquier momento.
+      </li>
+      <li>
+        Limitación de envíos por IP y analítica agregada: el <strong>interés legítimo</strong> del
+        titular (art. 6.1.f RGPD) en mantener el sitio seguro y entender su uso, con un impacto
+        mínimo sobre ti porque la IP se borra en una hora y la analítica no te identifica.
+      </li>
     </ul>
 
     <h2>Buzón de sugerencias</h2>
     <p>
       Las sugerencias se guardan en el almacenamiento de datos de Cloudflare asociado a este sitio,
-      con la fecha de envío. El email es opcional. Puedes pedir que borremos tu sugerencia y tu
-      email en cualquier momento escribiendo a la dirección de contacto de esta página.
-      [PENDIENTE: fijar un plazo de conservación concreto y confirmar con un profesional la
-      información sobre transferencias internacionales de Cloudflare.]
+      con la fecha de envío. El email es opcional. Se conservan <strong>un máximo de 12 meses</strong>{' '}
+      desde su envío y después se borran automáticamente. Puedes pedir que borremos tu sugerencia y
+      tu email antes escribiendo a {SITE.email}.
     </p>
 
     <h2>Boletín por email</h2>
     <p>
       Si te suscribes, tu email se guarda en el mismo almacenamiento de datos de Cloudflare, con la
-      fecha de alta, solo para poder enviarte el boletín. De momento el envío lo hace el titular
-      del sitio manualmente desde su correo, sin ningún proveedor de email marketing. Puedes darte
-      de baja y borrar tu email en cualquier momento en{' '}
-      <a href="/newsletter/baja/">esta página</a>, o respondiendo "baja" a cualquier número.
-      [PENDIENTE: en cuanto se active el envío con un proveedor de email marketing, añadir aquí su
-      nombre y si transfiere datos fuera del Espacio Económico Europeo.]
+      fecha de alta, solo para poder enviarte el boletín. Se conserva mientras mantengas la
+      suscripción. Puedes darte de baja y borrar tu email en cualquier momento en{' '}
+      <a href="/newsletter/baja/">esta página</a>. Hoy no se envía el boletín por ningún
+      proveedor de email marketing; si en el futuro se activa uno, se actualizará esta política
+      con su nombre y con la información sobre posibles transferencias fuera del Espacio Económico
+      Europeo, antes de empezar a usarlo con tu email.
     </p>
 
-    <h2>¿Cuál es la base legal?</h2>
+    <h2>Dirección IP y protección frente a abusos</h2>
     <p>
-      El tratamiento se basa en tu consentimiento: al escribir en el buzón de sugerencias o al
-      suscribirte al boletín. Si en el futuro activamos analítica web agregada, se basará en el
-      interés legítimo de entender el uso del sitio sin identificarte individualmente, y se
-      indicará aquí antes de activarla.
+      Para evitar que un programa automático sature los formularios, guardamos tu dirección IP
+      junto con un contador de envíos durante <strong>una hora</strong>; pasado ese tiempo se borra
+      sola. Esa IP no se asocia a tu sugerencia ni a tu suscripción y no se usa para ninguna otra
+      finalidad.
     </p>
 
     <h2>¿Con quién compartimos los datos?</h2>
     <p>
-      Usamos Cloudflare como proveedor de alojamiento y DNS de este sitio. [PENDIENTE: añadir
-      aquí el proveedor de email marketing en cuanto se active el envío del boletín, y el
-      proveedor de analítica web si se activa (Cloudflare Web Analytics no usa cookies ni huella
-      digital para identificarte), indicando en ambos casos si transfieren datos fuera del
-      Espacio Económico Europeo.]
+      No vendemos ni cedemos tus datos a terceros. Usamos <strong>Cloudflare, Inc.</strong> como
+      proveedor de alojamiento, red de distribución, almacenamiento de los formularios y analítica
+      agregada, y actúa como encargado del tratamiento. Cloudflare puede tratar datos fuera del
+      Espacio Económico Europeo (incluido Estados Unidos); para esas transferencias se ampara en
+      las cláusulas contractuales tipo de la Comisión Europea y en su certificación en el Marco de
+      Privacidad de Datos UE-EE. UU. Puedes consultar sus condiciones en cloudflare.com.
     </p>
 
     <h2>¿Cuáles son tus derechos?</h2>
     <p>
       Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación y
-      portabilidad escribiendo a {SITE.email}. También puedes reclamar ante
-      la Agencia Española de Protección de Datos (aepd.es) si consideras que no se ha atendido
-      correctamente tu solicitud.
+      portabilidad, y retirar tu consentimiento, escribiendo a {SITE.email}. Responderemos en el
+      plazo máximo de un mes. También puedes reclamar ante la Agencia Española de Protección de
+      Datos (aepd.es) si consideras que no se ha atendido correctamente tu solicitud.
     </p>
 
-    <h2>¿Cuánto tiempo conservamos los datos?</h2>
+    <h2>Menores de edad</h2>
     <p>
-      Mientras mantengas la suscripción activa o exista una finalidad legítima para
-      conservarlos, y en todo caso durante los plazos exigidos por la normativa aplicable.
+      Este sitio no está dirigido a menores de 14 años y no recogemos datos suyos de forma
+      consciente. Si crees que un menor nos ha dejado sus datos, escríbenos y los borraremos.
+    </p>
+
+    <h2>Cambios en esta política</h2>
+    <p>
+      Si cambia algo que afecte a tus datos (por ejemplo, un proveedor de email marketing o
+      publicidad), actualizaremos esta página y su fecha antes de empezar a usarlo.
     </p>
   </div>
 </BaseLayout>

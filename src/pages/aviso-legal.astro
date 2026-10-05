@@ -5,11 +5,7 @@ import { SITE, AUTHOR } from '../config/site';
 
 <BaseLayout title="Aviso legal" description={`Condiciones de uso, datos identificativos del titular y límites de responsabilidad de ${SITE.name}, un sitio de información financiera.`}>
   <h1 class="mb-2 font-display text-3xl text-ink">Aviso legal</h1>
-  <p class="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
-    <strong>Borrador pendiente de revisión legal.</strong> Confirmar con un gestor o abogado si
-    mostrar solo la localidad (en vez de la dirección exacta) cumple el artículo 10 de la
-    LSSI-CE, dado que David prefiere no publicar su domicilio completo.
-  </p>
+  <p class="mb-6 text-sm text-ink-faint">Última actualización: 6 de octubre de 2026.</p>
 
   <div class="prose max-w-none">
     <h2>1. Datos identificativos</h2>
@@ -38,7 +34,9 @@ import { SITE, AUTHOR } from '../config/site';
       constituye asesoramiento financiero, fiscal, legal ni de inversión personalizado, ni una
       recomendación para comprar, vender o mantener ningún producto financiero. Las decisiones
       de inversión son responsabilidad exclusiva del usuario, que debe valorar su propia
-      situación y, si lo considera necesario, consultar con un profesional cualificado.
+      situación y, si lo considera necesario, consultar con un profesional cualificado. Invertir
+      conlleva riesgo, incluida la pérdida del capital, y las rentabilidades pasadas no garantizan
+      las futuras.
     </p>
 
     <h2>4. Calculadoras y simuladores</h2>
@@ -49,21 +47,64 @@ import { SITE, AUTHOR } from '../config/site';
       garantizada ni sustituyen el análisis de un profesional.
     </p>
 
-    <h2>5. Propiedad intelectual</h2>
+    <h2>5. Exactitud de la información y datos de terceros</h2>
+    <p>
+      Nos esforzamos por que las cifras fiscales y los datos de productos financieros (tipos de
+      interés, comisiones, rentabilidades, catálogos de fondos) sean correctos y estén
+      actualizados, y citamos la fuente y la fecha de cada uno. Aun así, la normativa y las
+      condiciones de los productos cambian, y los datos de entidades financieras proceden de sus
+      propias webs o de comparadores de terceros: pueden contener errores o quedar desfasados.
+      Antes de contratar cualquier producto, comprueba las condiciones en la entidad. Si
+      encuentras un error, escríbenos a {SITE.email} y lo corregiremos y lo reflejaremos en
+      la <a href="/correcciones/">página de correcciones</a>.
+    </p>
+
+    <h2>6. Limitación de responsabilidad</h2>
+    <p>
+      El titular no se hace responsable de las decisiones que el usuario tome basándose en el
+      contenido o en los resultados de las herramientas, ni de los daños derivados de la falta de
+      disponibilidad del sitio, de errores u omisiones, o del contenido de sitios web de terceros
+      a los que se enlace, sobre los que no tiene control. Esta limitación se aplica en la medida
+      permitida por la ley y no afecta a los derechos que la normativa de consumidores reconozca al
+      usuario.
+    </p>
+
+    <h2>7. Enlaces a otras webs</h2>
+    <p>
+      Este sitio puede incluir enlaces a webs de terceros (entidades financieras, organismos
+      oficiales, fuentes). Se facilitan a título informativo y no implican respaldo de su contenido.
+    </p>
+
+    <h2>8. Propiedad intelectual</h2>
     <p>
       Los contenidos, textos, diseño y código de {SITE.name} son propiedad de su titular o se
       usan con la correspondiente autorización, salvo que se indique lo contrario. Queda
       prohibida su reproducción total o parcial sin autorización previa, salvo cita con enlace
-      al contenido original.
+      al contenido original. Las calculadoras que ofrecen un código para incrustarlas en otras
+      webs pueden usarse con el enlace de atribución que incluyen.
     </p>
 
-    <h2>6. Enlaces de afiliación</h2>
+    <h2>9. Enlaces de afiliación</h2>
     <p>
-      Este sitio participa en programas de afiliación. Consulta el detalle en la{' '}
+      Este sitio puede incluir enlaces de afiliación: si contratas un producto a través de ellos,
+      podemos recibir una comisión sin coste adicional para ti. Cuando un contenido los incluya,
+      se avisa de forma visible. Consulta el detalle en la{' '}
       <a href="/transparencia/">página de divulgación de afiliados</a>.
     </p>
 
-    <h2>7. Legislación aplicable</h2>
+    <h2>10. Protección de datos y cookies</h2>
+    <p>
+      El tratamiento de datos personales se explica en la <a href="/privacidad/">política de
+      privacidad</a>, y el uso de cookies, en la <a href="/cookies/">política de cookies</a>.
+    </p>
+
+    <h2>11. Modificaciones</h2>
+    <p>
+      El titular puede modificar este aviso legal, el contenido o las funcionalidades del sitio en
+      cualquier momento. La versión vigente es la publicada en esta página.
+    </p>
+
+    <h2>12. Legislación aplicable y jurisdicción</h2>
     <p>
       Este aviso legal se rige por la legislación española. Para cualquier controversia serán
       competentes los juzgados y tribunales que correspondan conforme a la normativa vigente

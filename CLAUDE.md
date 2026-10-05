@@ -36,13 +36,18 @@ piezas pero buenas. Ritmo máximo: 3-4 piezas/semana. Herramientas antes que vol
   legal visible.
 - Enlaces de afiliado: `rel="sponsored nofollow"` + aviso de transparencia visible (página de
   divulgación + aviso en los artículos afectados, campo `hasAffiliateLinks` en el frontmatter).
-- Páginas legales en español (aviso legal, privacidad, cookies): **borradores pendientes de
-  revisión legal profesional antes de considerarlas definitivas**. NIF real ya añadido
-  (36745189Z). El domicilio muestra solo "Barcelona, España" (sin dirección exacta) porque
-  David no quiere su domicilio particular público; confirmar con un gestor si esto satisface el
-  artículo 10 de la LSSI-CE o si hace falta una dirección de notificación (apartado de correos,
-  domicilio virtual). Banner de consentimiento (CMP) real pendiente de conectar antes de activar
-  AdSense o analítica no esencial en el EEE.
+- Páginas legales en español (aviso legal, privacidad, cookies): revisadas y completadas el 2026-10-06
+  por Claude (no por un abogado) y publicadas sin marcas de borrador: RGPD completo (bases legales,
+  conservación de sugerencias 12 meses con `expirationTtl` en `sugerencias.ts`, IP del límite de peticiones
+  1 hora, Cloudflare como encargado con SCC y Marco UE-EE. UU.), cookies (ninguna) y exenciones de
+  responsabilidad. NIF real ya añadido (36745189Z). **Pendiente que solo David puede resolver:** el
+  art. 10.1.a LSSI-CE exige "residencia o domicilio o, en su defecto, la dirección de uno de sus
+  establecimientos permanentes en España" (verificado en el BOE el 2026-10-06), y el aviso legal solo
+  muestra "Barcelona, España" porque David no quiere su domicilio particular público. Para cumplirlo
+  hace falta una dirección (p. ej. domicilio de oficina virtual o coworking). Cuando exista, ponerla en
+  `aviso-legal.astro`. Al activar un proveedor de email marketing, publicidad o analítica con cookies,
+  actualizar `privacidad.astro` y `cookies.astro` ANTES de activarlo; banner de consentimiento (CMP)
+  real obligatorio antes de AdSense o analítica no esencial en el EEE.
 - **Todas las cifras fiscales y de comisiones viven en `src/config/finance.ts`**, con fuente y
   fecha, marcadas `VERIFICAR` hasta que David las confirme. Las actuales se verificaron el
   2026-09-23 contra la AEAT, el BOE y el FGD (confirmación delegada por David en Claude); hay que

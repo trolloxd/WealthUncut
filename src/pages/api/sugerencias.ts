@@ -67,7 +67,8 @@ export const POST: APIRoute = async ({ request }) => {
   const receivedAt = new Date().toISOString();
   const key = `sugerencia:${receivedAt}:${crypto.randomUUID()}`;
 
-  await SUGERENCIAS.put(key, JSON.stringify({ mensaje, email, receivedAt }));
+  // Se borra sola a los 12 meses: es el plazo de conservación que declara la política de privacidad.
+  await SUGERENCIAS.put(key, JSON.stringify({ mensaje, email, receivedAt }), { expirationTtl: 60 * 60 * 24 * 365 });
 
   return new Response(JSON.stringify({ ok: true }), {
     status: 200,
