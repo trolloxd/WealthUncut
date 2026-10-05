@@ -59,3 +59,53 @@ alimentan esas cifras y avisa si hay que revisarlas a mano:
 
 Compara contra las constantes de `finance.ts` (con su fuente y fecha) y envía una notificación con
 qué ha cambiado y dónde, o "sin novedades fiscales". Nunca edites cifras: las confirma David.
+
+## 5. Revisión de artículos y calculadoras ya publicados (mensual)
+
+Los datos que cambian con el tiempo envejecen: este procedimiento los revisa y actualiza. Es la única
+rutina que edita contenido ya publicado, así que las reglas son estrictas.
+
+### Qué se revisa
+
+**Artículos** (`src/content/blog/`, solo los publicados, `pubDate` ya pasada): cada afirmación con una
+cifra o situación que cambia con el tiempo y que no viene de un dato importado de `src/data/` ni de
+`src/config/finance.ts` (esas ya se actualizan solas): inflación, euríbor, tipos del BCE, precios,
+rentabilidades, importes de tarjetas o cuentas, "a día de hoy", fechas de cambios normativos,
+estadísticas de informes (SPIVA, INE...).
+
+**Calculadoras y herramientas** (`src/components/*.tsx`, `src/pages/herramientas/*.astro`,
+`src/pages/carteras.astro`, portada): valores por defecto y textos con cifras o fechas que no salen de
+`finance.ts` ni de `src/data/` (rentabilidades de ejemplo, comisiones típicas, supuestos mostrados,
+frases como "con el euríbor actual"), y que los ejemplos escritos a mano (como el de la portada:
+150 €/mes, 20 años, 7% bruto, TER 0,2%) siguen coincidiendo con lo que calcula la propia herramienta.
+
+### Cómo se revisa
+
+1. Lista las cifras y afirmaciones sujetas a cambio de cada pieza.
+2. Para cada una, busca el dato **oficial más reciente** (INE, BCE, Banco de España, AEAT, BOE, CNMV,
+   Eurostat, la propia gestora o banco) y compáralo.
+3. **Si ha cambiado**: actualiza la cifra y su fecha en el texto ("según el INE, en septiembre de 2026"),
+   ajusta lo que dependa de ella (una conclusión, una comparación) con el cambio mínimo necesario, y en
+   artículos pon `updatedDate` con la fecha de hoy. Cita la fuente nueva en `sources`.
+4. **Si el dato ya viene de `src/data/` o `finance.ts`**, no lo copies a mano: si el texto lo tenía
+   escrito a mano, sustitúyelo por la importación del dato.
+5. **Si no puedes verificarlo con garantías, no lo cambies** y anótalo en el resumen.
+6. Si descubres que algo **estaba mal desde que se publicó** (no que haya cambiado), corrígelo y añade
+   una entrada en `src/content/correcciones/` con el formato de las existentes (`fecha`, `pieza`,
+   `url`, `resumen`). Un dato que simplemente ha cambiado NO es una corrección.
+
+### Límites
+
+- **Nunca edites `src/config/finance.ts`** (las cifras fiscales las confirma David). Si crees que una
+  cifra de ahí está desactualizada, avisa en el resumen y en la notificación.
+- No cambies la estructura, el título, la URL ni el enfoque de ninguna pieza; solo cifras, fechas y
+  las frases que dependan de ellas. Sin guiones largos. Sin recomendaciones personalizadas.
+- No toques nada en `src/content/mercados/` ni `src/content/newsletter/` (son ediciones fechadas).
+
+### Después
+
+`npm ci`, `npm run build` sin errores. Si compila: `git add` solo los archivos editados;
+commit `Revisión mensual: actualiza cifras de AAAA-MM`; `git pull --rebase origin main`;
+`git push origin HEAD:main`. Si no cambias nada, no hagas commit. Termina con un resumen (qué cifras
+cambiaste en qué piezas, qué no pudiste verificar) y envía una notificación (`PushNotification`)
+con una línea.
