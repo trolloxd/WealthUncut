@@ -1,0 +1,103 @@
+---
+title: "Amortizar la hipoteca: ¿reducir la cuota o el plazo?"
+description: "Qué pasa con los intereses y con tu cuota mensual si amortizas parte de la hipoteca y reduces el plazo o la cuota, con un ejemplo calculado y el límite legal de la comisión."
+pubDate: 2026-10-16
+updatedDate: 2026-10-16
+author: "David Pérez Mitjà"
+tags: ["hipoteca", "vivienda", "educación financiera"]
+sources:
+  - label: "BOE: Ley 5/2019, reguladora de los contratos de crédito inmobiliario, artículo 23 (reembolso anticipado)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814"
+  - label: "Banco Central Europeo: euríbor a 12 meses, media mensual"
+    url: "https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR1YD_.HSTA"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { calcularAmortizacion } from '../../components/AmortizacionHipotecaCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import { COMISION_AMORTIZACION_ANTICIPADA as COM } from '../../config/finance';
+import euribor from '../../data/euribor/ultimo.json';
+
+export const ejemplo = calcularAmortizacion({ capital: 150000, tipoAnual: 3, anios: 25, extra: 20000, comisionPct: 0 });
+export const anios = (meses) => `${Math.floor(meses / 12)} años y ${meses % 12} meses`;
+
+Si te sobran 20.000 € y tienes una hipoteca, tienes una pregunta que se parece a una de inversión: ¿es
+mejor devolver parte del préstamo ya o dejar el dinero donde está? Y si decides amortizar, el banco te
+pedirá otra decisión: ¿quieres pagar menos cada mes o terminar antes? Esa segunda decisión cambia más
+de lo que parece, y este artículo la resuelve con un ejemplo calculado.
+
+## Qué significa amortizar parcialmente
+
+Amortizar es devolver al banco capital antes de lo pactado. Cada euro que amortizas deja de generar
+intereses desde ese momento, así que el ahorro es el interés que habrías pagado por ese capital
+durante lo que te quedaba de préstamo. Al amortizar, normalmente puedes elegir:
+
+- **Reducir el plazo:** sigues pagando la misma cuota, pero terminas antes.
+- **Reducir la cuota:** el plazo no cambia, y cada mes pagas menos.
+
+## Un ejemplo con números
+
+Supongamos una hipoteca con **150.000 € pendientes, 25 años por delante y un tipo del 3 %** (un tipo
+inventado para el ejemplo: el tuyo será otro). Tu cuota mensual es de **{formatEuros(ejemplo.cuotaActual)}** y, si
+no haces nada, pagarás **{formatEuros(ejemplo.interesesRestantes)}** de intereses hasta el final. Hoy amortizas **20.000 €**
+(suponemos sin comisión, ahora veremos por qué hay que comprobarlo).
+
+| | Reducir plazo | Reducir cuota |
+|---|---|---|
+| Qué cambia | Terminas {anios(ejemplo.reducirPlazo.mesesAhorrados)} antes | La cuota baja a {formatEuros(ejemplo.reducirCuota.cuotaNueva)} |
+| Intereses que te ahorras | {formatEuros(ejemplo.reducirPlazo.interesesAhorrados)} | {formatEuros(ejemplo.reducirCuota.interesesAhorrados)} |
+| Ahorro mensual | Ninguno | {formatEuros(ejemplo.reducirCuota.ahorroMensual)} al mes |
+
+Con los mismos 20.000 € amortizados, reducir el plazo ahorra más intereses, porque sigues devolviendo
+capital al mismo ritmo y el préstamo deja de generar intereses antes. Reducir la cuota ahorra menos en
+total, pero te da más margen cada mes. Ninguna es mejor en abstracto: depende de qué te preocupa más.
+
+Puedes cambiar estas cifras por las tuyas en la herramienta
+[Amortizar la hipoteca](/herramientas/amortizar-hipoteca-cuanto-ahorras/).
+
+## Cuándo suele convenir cada una
+
+- **Reducir plazo** encaja si tu cuota actual te resulta cómoda y quieres minimizar el coste total de
+  intereses.
+- **Reducir cuota** encaja si prefieres liquidez mensual, por ejemplo porque tu cuota te aprieta o
+  porque sabes que tus ingresos pueden bajar. También da más flexibilidad: puedes usar la diferencia
+  para ahorrar o invertir cada mes.
+
+## Cuánto te pueden cobrar por amortizar
+
+La Ley 5/2019 limita la comisión por reembolso anticipado, que se calcula sobre el capital que amortizas:
+
+- En un **préstamo a tipo variable**, el contrato puede fijar una de dos opciones: hasta el {COM.variable.opcionCincoAnios.limitePct.toLocaleString('es-ES')} %
+  durante los {COM.variable.opcionCincoAnios.anios} primeros años, o hasta el {COM.variable.opcionTresAnios.limitePct.toLocaleString('es-ES')} % durante los {COM.variable.opcionTresAnios.anios} primeros.
+- En un **préstamo a tipo fijo**, hasta el {COM.fijo.limitePrimerosPct} % durante los {COM.fijo.primerosAnios} primeros años y hasta el {COM.fijo.limiteDespuesPct.toLocaleString('es-ES')} % después.
+
+Son máximos, no tarifas: la comisión tampoco puede superar la pérdida financiera real del banco. Mira
+el contrato o pide a tu banco el importe exacto antes de decidir, porque puede cambiar el resultado
+si tu amortización es pequeña.
+
+## ¿Amortizar o invertir ese dinero?
+
+Es la pregunta de fondo. Amortizar te da una rentabilidad conocida: el tipo de interés de tu hipoteca,
+sin riesgo (te ahorras justo ese interés). Invertir puede dar más, pero no está garantizado y tributa.
+Además, si tu hipoteca es variable, influye el euríbor: el último valor mensual publicado por el BCE es
+**{euribor.ultimoValor.toLocaleString('es-ES')} %** ({euribor.ultimoMes}), y tu tipo se mueve con él.
+Para hacer la comparación con tus propios números, usa el
+[simulador de hipoteca con el euríbor real](/herramientas/simulador-hipoteca-euribor/) y el
+[simulador de rentabilidad neta de un fondo](/blog/rentabilidad-neta-fondo-indexado/).
+También conviene tener antes cubierto tu
+[fondo de emergencia](/blog/fondo-de-emergencia-cuanto-necesitas/): amortizar deja ese dinero
+inmovilizado en el inmueble.
+
+## Preguntas frecuentes
+
+**¿Puedo cambiar de opinión y volver a reducir el plazo si antes reduje la cuota?**
+Depende de tu banco y de tu contrato. Pregúntalo antes de firmar la amortización.
+
+**¿Cuánto tengo que amortizar para que merezca la pena?**
+No hay un mínimo universal. Cuanto antes amortizas (al principio del préstamo), más intereses ahorras,
+porque el capital genera intereses durante más años. Cuanto más pequeña es la cantidad, más puede pesar
+la comisión si la hay.
+
+**¿Esto es una recomendación?**
+No. Es información general: tu mejor opción depende de tu tipo de interés, tu liquidez y tu situación.
