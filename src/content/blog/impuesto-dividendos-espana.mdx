@@ -1,0 +1,126 @@
+---
+title: "Cómo tributan los dividendos en España (con ejemplos)"
+description: "Cuánto pagas de IRPF por los dividendos, cómo funciona la retención del 19 % y qué pasa con los de empresas extranjeras, con ejemplos calculados paso a paso."
+pubDate: 2026-10-25
+updatedDate: 2026-10-25
+author: "David Pérez Mitjà"
+tags: ["impuestos", "fondos indexados", "etf"]
+sources:
+  - label: "AEAT, Manual práctico de Renta 2025: rendimientos obtenidos por la participación en fondos propios de cualquier entidad"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c05-rendimientos-capital-mobiliario/rendimientos-integrar-base-imponible-ahorro/rendimientos-obtenidos-participacion-fondos-propios-entidad/ejemplo.html"
+  - label: "AEAT, Manual práctico de Renta 2025: deducción por doble imposición internacional (ejemplo)"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c18-cuota-liquida-resultante-autoliquidacion/deducciones-cuota-liquida-total/deduccion-doble-imposicion-internacional/ejemplo-deduccion-doble-imposicion-internacional.html"
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
+hasAffiliateLinks: false
+draft: false
+---
+
+import TramosAhorroTabla from '../../components/TramosAhorroTabla.astro';
+import { calcularDividendos } from '../../components/DividendTaxCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import { DIVIDENDOS } from '../../config/finance';
+
+export const soloEs = calcularDividendos({ dividendosEspana: 1000, dividendosExtranjero: 0, retencionOrigenPct: 0, otrasRentasAhorro: 0 });
+export const altas = calcularDividendos({ dividendosEspana: 1000, dividendosExtranjero: 0, retencionOrigenPct: 0, otrasRentasAhorro: 20000 });
+export const ext = calcularDividendos({ dividendosEspana: 0, dividendosExtranjero: 1000, retencionOrigenPct: 15, otrasRentasAhorro: 0 });
+export const extAlta = calcularDividendos({ dividendosEspana: 0, dividendosExtranjero: 1000, retencionOrigenPct: 30, otrasRentasAhorro: 0 });
+export const pct = (n) => `${Math.round(n * 100)} %`;
+
+Un dividendo es la parte de los beneficios que una empresa reparte entre sus accionistas, y se cobra
+como dinero. Parece un regalo, pero Hacienda lo trata como una renta más: hay que declararlo y pagar
+impuestos por él. Lo que casi nadie tiene claro es **cuánto pagas realmente**, qué es esa retención que
+te quitan antes de cobrar y qué ocurre si el dividendo viene de una empresa de otro país.
+
+## La regla básica
+
+El dividendo bruto se suma a la **base del ahorro** del IRPF, la misma en la que van los intereses y
+las ganancias por vender fondos o acciones. Esa base tributa con tramos progresivos, de modo que el
+tipo depende de cuántas rentas del ahorro tengas en total ese año:
+
+<TramosAhorroTabla />
+
+Quien paga el dividendo (la empresa, o tu bróker en su nombre) te retiene un **{DIVIDENDOS.retencionEspana * 100} %** a cuenta
+(tipo vigente en 2025, según la AEAT). La retención es un pago adelantado, no el impuesto final: en la
+declaración de la renta se compara con lo que realmente te toca.
+
+## Ejemplo 1: dividendos pequeños
+
+Cobras **1.000 € brutos** de empresas españolas y no tienes más rentas del ahorro. Todo cae en el primer
+tramo:
+
+- Impuesto por los dividendos: **{formatEuros(soloEs.impuestoDividendos)}**
+- Retención ya practicada: **{formatEuros(soloEs.retencionEspana)}**
+- A pagar o devolver en la renta: **{formatEuros(Math.abs(soloEs.aPagarOaDevolver))}**
+- Te quedan netos: **{formatEuros(soloEs.netoFinal)}**
+
+En este caso la retención cubre justo el impuesto, así que no tienes nada más que pagar.
+
+## Ejemplo 2: ya tienes otras rentas del ahorro
+
+Los mismos 1.000 € de dividendos, pero ese año ya acumulas **20.000 €** en intereses y ganancias de fondos.
+Los dividendos se apilan encima y tributan en tramos más altos:
+
+- Impuesto por los dividendos: **{formatEuros(altas.impuestoDividendos)}**
+- Retención ya practicada: **{formatEuros(altas.retencionEspana)}**
+- A pagar en la renta: **{formatEuros(altas.aPagarOaDevolver)}**
+- Te quedan netos: **{formatEuros(altas.netoFinal)}**
+
+Por eso la retención del 19 % a veces se queda corta: no es tu tipo real, es una referencia.
+
+## Dividendos de empresas extranjeras
+
+Aquí hay dos impuestos: el del país de origen, que retiene según su ley o el convenio con España, y el
+de España, que grava el dividendo igualmente. Para evitar pagar dos veces por lo mismo, España te deja
+**deducir lo pagado fuera** con un límite: la deducción es la **menor** de dos cantidades, lo que
+realmente se retuvo en el extranjero y lo que en España correspondería pagar por esa renta.
+
+Ejemplo: 1.000 € de dividendo extranjero sin otras rentas del ahorro.
+
+| País de origen retiene… | Deducción por doble imposición | A pagar en la renta | Te quedan netos |
+|---|---|---|---|
+| 15 % | {formatEuros(ext.deduccionDobleImposicion)} | {formatEuros(ext.aPagarOaDevolver)} | {formatEuros(ext.netoFinal)} |
+| 30 % | {formatEuros(extAlta.deduccionDobleImposicion)} | {formatEuros(extAlta.aPagarOaDevolver)} | {formatEuros(extAlta.netoFinal)} |
+
+Si el otro país retiene más de lo que tributarías en España (segunda fila), el exceso no se recupera por
+esta vía. La retención de origen depende de cada país y del convenio, así que mira el extracto de tu
+bróker para saber la tuya.
+
+## Fondos de acumulación frente a distribución
+
+Esta es la diferencia que más importa para un inversor a largo plazo:
+
+- En un **fondo de acumulación**, los dividendos de las empresas se reinvierten dentro del fondo. A ti no
+  te llega nada, así que no tributas por ellos hasta que vendes (y entonces tributa la ganancia total).
+- En un **producto de distribución** (por ejemplo, muchos ETF o fondos de dividendos) cobras los
+  dividendos y tributas por ellos cada año, aunque los reinviertas.
+
+Los fondos de inversión españoles, además, permiten traspasar a otro fondo sin tributar en ese momento.
+Lo desarrollamos en [cómo tributan los fondos de inversión](/blog/como-tributan-los-fondos-de-inversion-en-espana/)
+y en [fondo indexado frente a ETF](/blog/fondo-indexado-vs-etf-diferencias/).
+
+## Calcula tu caso
+
+Pon tus cifras en la herramienta [Impuesto de los dividendos](/herramientas/calculadora-impuesto-dividendos/):
+dividendos españoles y extranjeros, la retención del país de origen y tus otras rentas del ahorro. Para
+ver el efecto al vender, usa la
+[calculadora de impuestos al vender un fondo](/herramientas/calculadora-impuestos-venta-fondos/).
+
+## Lo que no cubre este artículo
+
+Los ejemplos suponen que no tienes pérdidas que compensar ni deducciones autonómicas, y que los
+tramos son los de 2025. Hay casos especiales (régimen foral, cuentas en el extranjero sin retención, no
+residentes) que cambian el cálculo. Es información general, no asesoramiento fiscal: para tu caso,
+confirma con la AEAT o con un asesor.
+
+## Preguntas frecuentes
+
+**¿Tengo que declarar los dividendos aunque me hayan retenido?**
+Sí. La retención es un pago a cuenta, no sustituye a la declaración.
+
+**¿Hay algún mínimo exento?**
+No hay una exención general en el dividendo que describe el manual de la AEAT que usamos: se integra todo
+el importe bruto. Si tienes dudas sobre un caso concreto, consúltalo con la AEAT.
+
+**¿Por qué me retienen el 19 % si mi tipo es otro?**
+Porque la retención es un tipo fijo adelantado, no tu tipo final. En la renta se ajusta.

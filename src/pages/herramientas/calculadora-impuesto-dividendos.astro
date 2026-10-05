@@ -1,0 +1,101 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import DividendTaxCalculator from '../../components/DividendTaxCalculator';
+import TramosAhorroTabla from '../../components/TramosAhorroTabla.astro';
+import { DIVIDENDOS, IRPF_AHORRO_FUENTE } from '../../config/finance';
+---
+
+<ToolLayout
+  title="Calculadora del impuesto de los dividendos en España"
+  name="Impuesto de los dividendos"
+  description="Calcula cuánto pagas de IRPF por tus dividendos, la retención, la deducción por doble imposición si son extranjeros y cuánto te queda neto."
+  pubDate={new Date('2026-10-06')}
+  sources={[
+    { label: DIVIDENDOS.fuente, url: DIVIDENDOS.url },
+    { label: DIVIDENDOS.fuenteDobleImposicion, url: DIVIDENDOS.urlDobleImposicion },
+    { label: IRPF_AHORRO_FUENTE.fuente, url: IRPF_AHORRO_FUENTE.url },
+  ]}
+  faqs={[
+    {
+      pregunta: '¿Cómo tributan los dividendos en España?',
+      respuesta: `El dividendo bruto se suma a la base del ahorro del IRPF, que tributa con tramos progresivos. Quien paga el dividendo retiene un ${DIVIDENDOS.retencionEspana * 100}% a cuenta, y en la declaración de la renta se ajusta lo que realmente corresponde pagar o recuperar según tus rentas del ahorro del año.`,
+    },
+    {
+      pregunta: '¿Un fondo de acumulación paga dividendos?',
+      respuesta: 'No te los paga a ti: los reinvierte dentro del fondo, así que no tributas por ellos hasta que vendes. Los ETF y fondos de distribución sí te los pagan, y tributan cuando los cobras.',
+    },
+    {
+      pregunta: '¿Qué pasa con los dividendos de empresas extranjeras?',
+      respuesta: 'El país de origen suele retener un porcentaje según su ley o el convenio con España. En la renta puedes deducir ese impuesto, con el límite de lo que en España correspondería pagar por esa renta (la menor de las dos cantidades).',
+    },
+  ]}
+>
+  <p>
+    Cobrar un dividendo parece dinero extra, pero una parte se la queda Hacienda. Esta calculadora te dice
+    cuánto IRPF te corresponde por tus dividendos, cuánto ya te han retenido y cuánto te queda neto,
+    incluyendo la deducción por doble imposición si cobras dividendos de empresas extranjeras.
+  </p>
+
+  <DividendTaxCalculator client:load />
+
+  <BotonCompartir client:load />
+
+  <h2>Cómo tributan los dividendos</h2>
+  <p>
+    El dividendo bruto se integra en la base del ahorro, la misma que reúne los intereses y las ganancias
+    por vender fondos o acciones. Esa base tributa con tramos progresivos, así que cuantas más rentas del
+    ahorro tengas en el año, más alto es el tipo que se aplica a los dividendos:
+  </p>
+  <TramosAhorroTabla />
+  <p>
+    Quien paga el dividendo retiene a cuenta un {DIVIDENDOS.retencionEspana * 100}% (para 2025). Es un pago adelantado,
+    no el impuesto final: en la declaración de la renta se compara con lo que realmente te corresponde.
+    Si tus rentas del ahorro son bajas, puedes salir a devolver; si son altas, puedes tener que pagar más.
+  </p>
+
+  <h2>Dividendos de empresas extranjeras</h2>
+  <p>
+    El país donde está la empresa retiene primero un porcentaje que depende de su ley y del convenio con
+    España. Luego, al declarar en España, puedes deducir ese impuesto pagado fuera, pero con un límite: la
+    deducción es la <strong>menor</strong> de dos cantidades, lo que realmente pagaste fuera o lo que en
+    España correspondería pagar por esa misma renta. Si el país de origen retiene más de lo que
+    tributarías en España, el exceso no se recupera por esta vía.
+  </p>
+
+  <h2>Fondos de acumulación y de distribución</h2>
+  <p>
+    Si inviertes en un fondo de acumulación, los dividendos de las empresas se reinvierten dentro del
+    fondo y no tributas por ellos hasta que vendes (la ganancia final sí tributa, como explicamos en{' '}
+    <ArticleLink href="/blog/como-tributan-los-fondos-de-inversion-en-espana/">cómo tributan los fondos de inversión</ArticleLink>).
+    En cambio, con un producto de distribución cobras los dividendos y tributas por ellos cada año. Esta
+    diferencia es una de las razones por las que muchos prefieren acumulación, lo mismo que se compara en
+    el <ArticleLink href="/blog/fondo-indexado-vs-etf-diferencias/">artículo de fondo indexado frente a ETF</ArticleLink>.
+  </p>
+
+  <h2>Qué no incluye esta calculadora</h2>
+  <ul>
+    <li>Pérdidas de otros años o del mismo año que puedan compensarse con la base del ahorro.</li>
+    <li>Deducciones autonómicas o situaciones especiales (régimen foral, cuentas en el extranjero sin retención).</li>
+    <li>El resto de tu renta: los dividendos se calculan solo dentro de la base del ahorro.</li>
+  </ul>
+  <p>
+    Es una estimación para entender el orden de magnitud; la cifra definitiva sale de tu declaración de la
+    renta. Para el efecto sobre ganancias al vender, usa la{' '}
+    <a href="/herramientas/calculadora-impuestos-venta-fondos/">calculadora de impuestos al vender un fondo</a>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Cómo tributan los dividendos en España?</strong><br />
+    El dividendo bruto se suma a la base del ahorro del IRPF, que tributa con tramos progresivos. Quien
+    paga el dividendo retiene un {DIVIDENDOS.retencionEspana * 100}% a cuenta, y en la declaración de la renta se ajusta lo que realmente
+    corresponde pagar o recuperar según tus rentas del ahorro del año.</p>
+  <p><strong>¿Un fondo de acumulación paga dividendos?</strong><br />
+    No te los paga a ti: los reinvierte dentro del fondo, así que no tributas por ellos hasta que vendes.
+    Los ETF y fondos de distribución sí te los pagan, y tributan cuando los cobras.</p>
+  <p><strong>¿Qué pasa con los dividendos de empresas extranjeras?</strong><br />
+    El país de origen suele retener un porcentaje según su ley o el convenio con España. En la renta puedes
+    deducir ese impuesto, con el límite de lo que en España correspondería pagar por esa renta (la menor de
+    las dos cantidades).</p>
+</ToolLayout>

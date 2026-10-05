@@ -203,3 +203,5 @@ Herramientas añadidas el 2026-10-05 (clúster 8, vivienda): amortizar la hipote
  cuanto ahorro", "reducir cuota o plazo", "comision amortizacion anticipada") y alquilar o comprar (cubre "alquilar o
 comprar", "comprar vs alquilar"). Pendientes de artículo en MDX propio; el límite legal de la comisión de
 amortización vive en `finance.ts` (`COMISION_AMORTIZACION_ANTICIPADA`, verificado en el BOE el 2026-10-05).
+
+Herramienta y artículo añadidos el 2026-10-06 (clúster 4, impuestos): calculadora del impuesto de los dividendos y guía "Cómo tributan los dividendos en España" (cubre "impuesto por dividendos españa"). Cifras en `finance.ts` (`DIVIDENDOS`, verificadas el 2026-10-06 en el Manual práctico de Renta 2025). Sigue sin artículo "cómo declarar ganancias de bolsa".

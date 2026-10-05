@@ -95,6 +95,12 @@ export const TOOLS = [
     tags: ['impuestos', 'nómina'],
   },
   {
+    href: '/herramientas/calculadora-impuesto-dividendos/',
+    name: 'Impuesto de los dividendos',
+    description: 'IRPF, retención y doble imposición si cobras dividendos, y lo que te queda neto.',
+    tags: ['impuestos', 'fondos indexados', 'etf'],
+  },
+  {
     href: '/carteras/',
     name: 'Carteras de fondos',
     description: 'Busca entre más de 1.600 fondos, reparte pesos y simula tu cartera bruta y neta de impuestos.',

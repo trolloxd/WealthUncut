@@ -35,6 +35,25 @@ export const IRPF_AHORRO_FUENTE = {
 // ("retención o ingreso a cuenta del 19 por 100 en el ejercicio 2025").
 export const RETENCION_REEMBOLSO_FONDOS = 0.19;
 
+// Dividendos: el dividendo bruto se integra en la base del ahorro (mismos tramos que arriba) y quien
+// lo paga retiene un 19 % a cuenta. Verificado el 2026-10-06: AEAT, Manual práctico de Renta 2025,
+// rendimientos de capital mobiliario por participación en fondos propios de entidades ("el tipo de
+// retención ... para el ejercicio 2025 es el 19 por 100").
+// Dividendos extranjeros: el país de origen retiene según su ley o el convenio con España, y en
+// España se deduce el impuesto pagado fuera con el límite de la MENOR de dos cantidades: lo
+// efectivamente pagado fuera y lo que en España correspondería pagar por esa renta (art. 80 Ley
+// 35/2006). Verificado el 2026-10-06 en el ejemplo del Manual práctico de Renta 2025 (deducción por
+// doble imposición internacional, "la menor de A o B").
+export const DIVIDENDOS = {
+  retencionEspana: 0.19,
+  fuente: 'AEAT, Manual práctico de Renta 2025: rendimientos obtenidos por la participación en fondos propios de cualquier entidad',
+  url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c05-rendimientos-capital-mobiliario/rendimientos-integrar-base-imponible-ahorro/rendimientos-obtenidos-participacion-fondos-propios-entidad/ejemplo.html',
+  fuenteDobleImposicion: 'AEAT, Manual práctico de Renta 2025: deducción por doble imposición internacional (ejemplo)',
+  urlDobleImposicion: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c18-cuota-liquida-resultante-autoliquidacion/deducciones-cuota-liquida-total/deduccion-doble-imposicion-internacional/ejemplo-deduccion-doble-imposicion-internacional.html',
+  fechaRegistro: '2026-10-06',
+  verificado: true,
+} as const;
+
 // Reglas de compensación dentro de la base del ahorro (art. 49 Ley 35/2006).
 // Las pérdidas patrimoniales pueden compensar hasta este porcentaje del saldo
 // positivo de rendimientos del capital mobiliario (y viceversa), y lo que no se
