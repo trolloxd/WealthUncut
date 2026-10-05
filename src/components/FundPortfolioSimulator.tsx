@@ -82,6 +82,7 @@ function simularFondo(params: {
 
 export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Props) {
   const [busqueda, setBusqueda] = useState('');
+  const [soloIndexados, setSoloIndexados] = useState(false);
   const [catalogo, setCatalogo] = useState<Fondo[]>([]);
   const [estadoCatalogo, setEstadoCatalogo] = useState<'sin-cargar' | 'cargando' | 'listo' | 'error'>('sin-cargar');
   const fondos = useMemo(() => {
@@ -136,6 +137,7 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
     if (palabras.length === 0) return [];
     const coincidentes = fondos
       .filter((f) => !isinsEnCartera.includes(f.isin))
+      .filter((f) => !soloIndexados || !f.catalogo || f.catalogo.indexado)
       .filter((f) => {
         const texto = `${f.nombre} ${f.gestora} ${f.indice} ${f.isin}`.toLowerCase();
         return palabras.every((p) => texto.includes(p));
@@ -143,7 +145,7 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
     // Primero los destacados (con TER e histórico), luego los indexados y al final el resto.
     const prioridad = (f: Fondo) => (!f.catalogo ? 0 : f.catalogo.indexado ? 1 : 2);
     return coincidentes.sort((a, b) => prioridad(a) - prioridad(b)).slice(0, 10);
-  }, [busqueda, fondos, isinsEnCartera]);
+  }, [busqueda, fondos, isinsEnCartera, soloIndexados]);
 
   function anadirFondo(isin: string) {
     setIsinsEnCartera((prev) => (prev.includes(isin) ? prev : [...prev, isin]));
@@ -272,6 +274,10 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
               className="campo-input"
               aria-label="Buscar fondo para añadir a la cartera"
             />
+          </label>
+          <label className="flex items-center gap-2 text-xs text-ink-muted">
+            <input type="checkbox" checked={soloIndexados} onChange={(e) => setSoloIndexados(e.target.checked)} />
+            Solo fondos indexados
           </label>
           {estadoCatalogo === 'cargando' && <p className="text-xs text-ink-faint">Cargando el catálogo de fondos...</p>}
           {estadoCatalogo === 'error' && (
@@ -405,6 +411,16 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
             );
           })}
         </div>
+
+        {fondosEnCartera.length > 1 && Object.keys(pesos).length > 0 && (
+          <button
+            type="button"
+            onClick={() => setPesos({})}
+            className="justify-self-start text-xs font-semibold text-brand hover:underline"
+          >
+            Repartir el peso a partes iguales
+          </button>
+        )}
 
         {fondosEnCartera.length > 0 && (
           <p className={`text-xs ${pesoTotal === 100 ? 'text-ink-faint' : 'text-accent'}`} aria-live="polite">
