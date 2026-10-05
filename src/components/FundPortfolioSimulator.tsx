@@ -149,7 +149,7 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
 
   const resultadosBusqueda = useMemo(() => {
     const palabras = busqueda.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    if (palabras.length === 0 && !filtroBloque) return [];
+    if (palabras.length === 0 && !filtroBloque) return { lista: [] as Fondo[], total: 0 };
     const coincidentes = fondos
       .filter((f) => !isinsEnCartera.includes(f.isin))
       .filter((f) => !soloIndexados || !f.catalogo || f.catalogo.indexado)
@@ -160,7 +160,8 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
       });
     // Primero los destacados (con TER e histórico), luego los indexados y al final el resto.
     const prioridad = (f: Fondo) => (!f.catalogo ? 0 : f.catalogo.indexado ? 1 : 2);
-    return coincidentes.sort((a, b) => prioridad(a) - prioridad(b)).slice(0, 10);
+    const ordenados = coincidentes.sort((a, b) => prioridad(a) - prioridad(b));
+    return { lista: ordenados.slice(0, 10), total: ordenados.length };
   }, [busqueda, fondos, isinsEnCartera, soloIndexados, filtroBloque]);
 
   function anadirFondo(isin: string) {
@@ -332,9 +333,9 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
               No se ha podido cargar el catálogo completo; solo se pueden buscar los fondos destacados. Recarga la página para reintentarlo.
             </p>
           )}
-          {resultadosBusqueda.length > 0 && (
+          {resultadosBusqueda.lista.length > 0 && (
             <ul className="grid grid-cols-1 gap-1 rounded-xl border border-border bg-cream p-2">
-              {resultadosBusqueda.map((f) => (
+              {resultadosBusqueda.lista.map((f) => (
                 <li key={f.isin}>
                   <button
                     type="button"
@@ -354,7 +355,12 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
               ))}
             </ul>
           )}
-          {(busqueda.trim() !== '' || filtroBloque !== '') && resultadosBusqueda.length === 0 && estadoCatalogo !== 'cargando' && (
+          {resultadosBusqueda.total > resultadosBusqueda.lista.length && (
+            <p className="text-xs text-ink-faint">
+              Mostrando {resultadosBusqueda.lista.length} de {resultadosBusqueda.total} fondos: escribe más palabras o añade filtros para afinar.
+            </p>
+          )}
+          {(busqueda.trim() !== '' || filtroBloque !== '') && resultadosBusqueda.total === 0 && estadoCatalogo !== 'cargando' && (
             <p className="text-xs text-ink-faint">Ningún fondo de la lista coincide con la búsqueda y los filtros elegidos.</p>
           )}
         </div>
