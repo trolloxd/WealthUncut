@@ -1,14 +1,10 @@
 {
- "generado": "2026-09-24T17:17:31.301Z",
+ "generado": "2026-10-05T14:02:57.441Z",
  "fuente": "Banco Central Europeo, ECB Data Portal (media mensual de cierres, Refinitiv)",
  "fuenteUrl": "https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR1YD_.HSTA",
- "ultimoMes": "2026-08",
- "ultimoValor": 2.9536667,
+ "ultimoMes": "2026-09",
+ "ultimoValor": 3.247,
  "historico": [
-  {
-   "mes": "2023-08",
-   "valor": 4.0729565
-  },
   {
    "mes": "2023-09",
    "valor": 4.1491905
@@ -152,6 +148,10 @@
   {
    "mes": "2026-08",
    "valor": 2.9536667
+  },
+  {
+   "mes": "2026-09",
+   "valor": 3.247
   }
  ]
 }
