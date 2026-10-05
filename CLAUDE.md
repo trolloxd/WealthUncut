@@ -114,6 +114,16 @@ lote de 4 y los deja programados. Procedimiento, reglas de calidad y verificaci�
 `ARTICULOS-PROCEDIMIENTO.md`; mismas reglas de este documento (cifras fiscales solo de
 `finance.ts`, sin guiones largos, sin recomendaciones personalizadas).
 
+## Cookies y banner de consentimiento (revisado el 2026-10-05)
+
+Hoy la web no pone ninguna cookie ni carga recursos de terceros (comprobado en cabeceras y HTML de
+producción), y Cloudflare Web Analytics es sin cookies, así que **no hace falta banner todavía**.
+Cuando llegue AdSense (o afiliación/analítica con seguimiento): usar el CMP gratuito de Google
+("Funding Choices", dentro de la cuenta de AdSense, certificado para el EEE) en vez de contratar uno
+aparte, añadir los dominios de Google a `scriptDirective`/`connect-src`/`frame-src` en
+`astro.config.mjs` (la CSP los bloquea por defecto), actualizar `cookies.astro` y `privacidad.astro`, y
+no activar nada antes de que el banner funcione.
+
 ## Rutinas de mantenimiento (decisión de David, 2026-10-05)
 
 David pidió automatizar todo lo automatizable. Además de mercados, cuentas, fondos, newsletter y
