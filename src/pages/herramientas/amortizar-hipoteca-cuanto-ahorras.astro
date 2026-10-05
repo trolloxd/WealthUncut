@@ -1,0 +1,71 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import AmortizacionHipotecaCalculator from '../../components/AmortizacionHipotecaCalculator';
+import euriborData from '../../data/euribor/ultimo.json';
+import { COMISION_AMORTIZACION_ANTICIPADA as COM } from '../../config/finance';
+
+const euriborInicial: number = euriborData.ultimoValor;
+---
+
+<ToolLayout
+  title="Amortizar la hipoteca: cuánto te ahorras"
+  name="Amortizar la hipoteca"
+  description="Calcula cuántos intereses te ahorras al amortizar parte de tu hipoteca, si reduces plazo o cuota, y qué te costaría la comisión por amortizar."
+  pubDate={new Date('2026-10-05')}
+  sources={[
+    { label: 'BOE: Ley 5/2019 reguladora de los contratos de crédito inmobiliario, artículo 23 (reembolso anticipado)', url: COM.url },
+    { label: 'Banco Central Europeo: euríbor a 12 meses, media mensual', url: euriborData.fuenteUrl },
+  ]}
+  faqs={[
+    {
+      pregunta: '¿Es mejor reducir el plazo o reducir la cuota?',
+      respuesta: 'Reducir el plazo suele ahorrar más intereses porque pagas el capital antes. Reducir la cuota te da más holgura cada mes pero ahorra menos intereses en total. Cuál conviene depende de tu situación, y esta calculadora te enseña las dos con tus números.',
+    },
+    {
+      pregunta: '¿Cuánto me puede cobrar el banco por amortizar?',
+      respuesta: 'La ley fija máximos: en préstamos variables, el 0,15% del capital amortizado durante los 5 primeros años o el 0,25% durante los 3 primeros (según lo que diga el contrato), y en préstamos fijos, el 2% durante los 10 primeros años y el 1,5% después. Además nunca puede superar la pérdida financiera real del banco, así que muchas veces es menos o nada. Revisa tu contrato.',
+    },
+    {
+      pregunta: '¿Por qué no coincide exactamente con lo que me dice mi banco?',
+      respuesta: 'Porque esta calculadora supone un tipo de interés constante para lo que queda de préstamo y no incluye seguros vinculados, bonificaciones ni el calendario exacto de revisiones de tu hipoteca. Úsala como estimación y pide a tu banco la simulación oficial, que está obligado a darte.',
+    },
+  ]}
+>
+  <p>
+    Amortizar parte de la hipoteca antes de tiempo reduce los intereses que te quedan por pagar. Esta
+    herramienta calcula cuánto te ahorrarías con una amortización parcial o total y te enseña las dos
+    opciones habituales: reducir el plazo (misma cuota, menos años) o reducir la cuota (mismo plazo,
+    menos cada mes). Si tu hipoteca es variable, mira antes cómo está el euríbor en el{' '}
+    <ArticleLink href="/herramientas/simulador-hipoteca-euribor/">simulador de hipoteca con el euríbor real</ArticleLink>.
+  </p>
+
+  <AmortizacionHipotecaCalculator client:load euriborInicial={euriborInicial} />
+
+  <BotonCompartir client:load />
+
+  <h2>Qué comisión te pueden cobrar por amortizar</h2>
+  <p>
+    La Ley 5/2019 de crédito inmobiliario pone un tope a la comisión por reembolso anticipado, que
+    se calcula sobre el capital que amortizas. En un préstamo a tipo variable, el contrato puede fijar
+    una de estas dos opciones, excluyentes entre sí: hasta el {COM.variable.opcionCincoAnios.limitePct}% durante los{' '}
+    {COM.variable.opcionCincoAnios.anios} primeros años, o hasta el {COM.variable.opcionTresAnios.limitePct}% durante los{' '}
+    {COM.variable.opcionTresAnios.anios} primeros. En un préstamo a tipo fijo, hasta el {COM.fijo.limitePrimerosPct}% durante los{' '}
+    {COM.fijo.primerosAnios} primeros años y hasta el {COM.fijo.limiteDespuesPct}% a partir de entonces. Son
+    máximos: además la comisión no puede superar la pérdida financiera real que sufra el banco, así que
+    puede ser menor o incluso cero. Para saber lo que te cobrarían a ti, mira el contrato o pide a
+    tu banco la información que está obligado a darte en un plazo máximo de tres días hábiles desde
+    que le comunicas que quieres amortizar.
+  </p>
+
+  <h2>Qué más tener en cuenta antes de amortizar</h2>
+  <p>
+    El ahorro de intereses es seguro, pero el dinero que usas para amortizar deja de estar disponible.
+    Antes de decidir conviene comprobar que sigues teniendo un colchón de emergencia (puedes calcularlo
+    en la{' '}
+    <ArticleLink href="/herramientas/calculadora-fondo-de-emergencia/">calculadora de fondo de emergencia</ArticleLink>)
+    y comparar el ahorro de intereses con lo que ese dinero podría rendir en otro sitio. Esta
+    herramienta no te dice qué hacer: te da los números para que decidas tú.
+  </p>
+</ToolLayout>

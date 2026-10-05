@@ -198,3 +198,8 @@ Este documento ya tiene validación real (autocompletado) para 8 términos clave
 cifras de volumen ni competencia. Si en algún momento decides sí crear la cuenta de Google Ads
 (sabiendo que implica pasar por su asistente de campaña), retoma la validación por volumen desde
 ahí. Mientras tanto, prioriza los clústeres 3, 4 y 5 con la evidencia que ya hay.
+
+Herramientas añadidas el 2026-10-05 (clúster 8, vivienda): amortizar la hipoteca (cubre "amortizar hipoteca
+ cuanto ahorro", "reducir cuota o plazo", "comision amortizacion anticipada") y alquilar o comprar (cubre "alquilar o
+comprar", "comprar vs alquilar"). Pendientes de artículo en MDX propio; el límite legal de la comisión de
+amortización vive en `finance.ts` (`COMISION_AMORTIZACION_ANTICIPADA`, verificado en el BOE el 2026-10-05).

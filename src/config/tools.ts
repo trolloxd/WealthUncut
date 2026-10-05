@@ -59,6 +59,18 @@ export const TOOLS = [
     tags: ['nómina', 'impuestos', 'educación financiera'],
   },
   {
+    href: '/herramientas/amortizar-hipoteca-cuanto-ahorras/',
+    name: 'Amortizar la hipoteca',
+    description: 'Cuántos intereses te ahorras al amortizar parte de tu hipoteca, reduciendo plazo o cuota, y qué te costaría la comisión.',
+    tags: ['vivienda', 'hipoteca', 'ahorro'],
+  },
+  {
+    href: '/herramientas/alquilar-o-comprar-vivienda/',
+    name: '¿Alquilar o comprar?',
+    description: 'Compara tu patrimonio dentro de unos años comprando con hipoteca o alquilando e invirtiendo la diferencia.',
+    tags: ['vivienda', 'hipoteca', 'ahorro'],
+  },
+  {
     href: '/herramientas/ahorro-entrada-piso/',
     name: '¿Cuánto ahorrar para la entrada de un piso?',
     description: 'Entrada, impuesto de compra (ITP) de tu comunidad y gastos, y cuánto tardarás en ahorrarlo.',

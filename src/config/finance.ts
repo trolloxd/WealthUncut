@@ -571,3 +571,22 @@ export const GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT = 0.01;
 export function calcularITP(precio: number, comunidad: keyof typeof ITP_VIVIENDA_USADA): number {
   return calcularProgresivo(precio, ITP_VIVIENDA_USADA[comunidad].brackets);
 }
+
+// Límites legales a la compensación o comisión por reembolso anticipado de un préstamo
+// hipotecario (Ley 5/2019, de 15 de marzo, reguladora de los contratos de crédito inmobiliario,
+// artículo 23, apartados 5 y 7). Son MÁXIMOS, además acotados por la pérdida financiera real del
+// banco (art. 23.8), así que lo que cobre un banco puede ser menor o cero. En préstamos variables
+// las dos opciones son excluyentes entre sí y la elige el contrato; porcentajes sobre el capital
+// reembolsado. Verificado el 2026-10-05 en el texto consolidado del BOE (última actualización
+// publicada el 02/10/2026): https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814
+export const COMISION_AMORTIZACION_ANTICIPADA = {
+  variable: {
+    opcionCincoAnios: { anios: 5, limitePct: 0.15 },
+    opcionTresAnios: { anios: 3, limitePct: 0.25 },
+  },
+  fijo: { primerosAnios: 10, limitePrimerosPct: 2, limiteDespuesPct: 1.5 },
+  fuente: 'BOE, Ley 5/2019, de 15 de marzo, reguladora de los contratos de crédito inmobiliario, artículo 23',
+  url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814',
+  fechaRegistro: '2026-10-05',
+  verificado: true,
+} as const;

@@ -56,6 +56,8 @@ alimentan esas cifras y avisa si hay que revisarlas a mano:
   ¿Cambian los tramos del ahorro, la retención o las reglas de compensación de `finance.ts`?
 - BOE: ¿hay una nueva orden de cotización a la Seguridad Social, y cambian las bases o los tipos?
 - Límite de aportación a planes de pensiones y garantía del FGD: ¿han cambiado?
+- Comisión máxima por reembolso anticipado de hipotecas (Ley 5/2019, artículo 23, constante
+  `COMISION_AMORTIZACION_ANTICIPADA`): ¿ha cambiado el texto consolidado del BOE?
 
 Compara contra las constantes de `finance.ts` (con su fuente y fecha) y envía una notificación con
 qué ha cambiado y dónde, o "sin novedades fiscales". Nunca edites cifras: las confirma David.
