@@ -1,0 +1,121 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { isPublished } from '../lib/posts';
+import { TOOLS } from '../config/tools';
+
+const title = 'Buscar en WealthUncut';
+const description = 'Busca entre las guías, herramientas y términos del glosario de WealthUncut.';
+
+interface Entrada {
+  tipo: 'Guía' | 'Herramienta' | 'Glosario';
+  titulo: string;
+  texto: string;
+  href: string;
+}
+
+const guias = (await getCollection('blog', ({ data }) => isPublished(data))).map<Entrada>((p) => ({
+  tipo: 'Guía',
+  titulo: p.data.title,
+  texto: `${p.data.description} ${p.data.tags.join(' ')}`,
+  href: `/blog/${p.id}/`,
+}));
+const herramientas = TOOLS.map<Entrada>((t) => ({
+  tipo: 'Herramienta',
+  titulo: t.name,
+  texto: `${t.description} ${t.tags.join(' ')}`,
+  href: t.href,
+}));
+const glosario = (await getCollection('glosario')).map<Entrada>((t) => ({
+  tipo: 'Glosario',
+  titulo: t.data.titulo,
+  texto: `${t.data.termino} ${t.data.description}`,
+  href: `/glosario/${t.id}/`,
+}));
+const indice = [...herramientas, ...guias, ...glosario];
+---
+
+<BaseLayout title={title} description={description} noindex>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Buscar' }]} />
+  <h1 class="mb-4 font-display text-3xl text-ink">Buscar</h1>
+  <p class="mb-6 max-w-2xl text-ink-muted">
+    Escribe lo que buscas (por ejemplo "TER", "hipoteca" o "fondo de emergencia") y te enseñamos las
+    guías, herramientas y términos del glosario que coinciden.
+  </p>
+
+  <div id="buscador" data-indice={JSON.stringify(indice)}>
+    <label class="grid gap-1 text-sm font-medium text-ink-muted">
+      Buscar
+      <input id="q" type="search" autocomplete="off" class="campo-input" placeholder="Ej. hipoteca, TER, modelo 720..." />
+    </label>
+    <p id="estado" class="mt-3 text-sm text-ink-faint" aria-live="polite"></p>
+    <ul id="resultados" class="mt-4 grid gap-3"></ul>
+  </div>
+  <noscript>
+    <p class="mt-4 text-sm text-ink-muted">
+      El buscador necesita JavaScript. Mientras tanto, mira <a href="/empieza-aqui/" class="underline">Empieza aquí</a>
+      o el <a href="/glosario/" class="underline">glosario</a>.
+    </p>
+  </noscript>
+</BaseLayout>
+
+<script>
+  interface Entrada {
+    tipo: string;
+    titulo: string;
+    texto: string;
+    href: string;
+  }
+  const normaliza = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+  const raiz = document.getElementById('buscador');
+  const entrada = document.getElementById('q') as HTMLInputElement | null;
+  const lista = document.getElementById('resultados');
+  const estado = document.getElementById('estado');
+
+  if (raiz && entrada && lista && estado) {
+    const indice: (Entrada & { _t: string; _x: string })[] = (JSON.parse(raiz.dataset.indice ?? '[]') as Entrada[]).map((e) => ({
+      ...e,
+      _t: normaliza(e.titulo),
+      _x: normaliza(e.texto),
+    }));
+
+    const pintar = () => {
+      const palabras = normaliza(entrada.value).split(/\s+/).filter(Boolean);
+      lista.textContent = '';
+      if (palabras.length === 0) {
+        estado.textContent = '';
+        return;
+      }
+      const puntuados = indice
+        .filter((e) => palabras.every((p) => e._t.includes(p) || e._x.includes(p)))
+        .map((e) => ({ e, puntos: palabras.reduce((a, p) => a + (e._t.includes(p) ? 2 : 1), 0) }))
+        .sort((a, b) => b.puntos - a.puntos)
+        .slice(0, 20);
+      estado.textContent = puntuados.length === 0 ? 'No hay resultados. Prueba con otra palabra.' : `${puntuados.length} resultado${puntuados.length === 1 ? '' : 's'}`;
+      for (const { e } of puntuados) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = e.href;
+        a.className = 'block rounded-xl border border-border bg-cream-elevated p-4 hover:border-brand/40';
+        const etiqueta = document.createElement('span');
+        etiqueta.className = 'text-xs font-semibold uppercase tracking-wide text-brand';
+        etiqueta.textContent = e.tipo;
+        const t = document.createElement('span');
+        t.className = 'mt-0.5 block font-medium text-ink';
+        t.textContent = e.titulo;
+        a.append(etiqueta, t);
+        li.append(a);
+        lista.append(li);
+      }
+    };
+
+    entrada.addEventListener('input', pintar);
+    const q = new URLSearchParams(window.location.search).get('q');
+    if (q) {
+      entrada.value = q.slice(0, 80);
+      pintar();
+    }
+  }
+</script>
