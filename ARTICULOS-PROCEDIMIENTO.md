@@ -137,3 +137,23 @@ draft: false
 4. Si el build falla y no puedes arreglarlo, no hagas commit.
 5. Termina con un resumen breve: cuántos programados había, qué artículos has escrito, con qué
    fechas, y qué datos descartaste por no poder verificarlos.
+
+## 7. Glosario: ampliarlo en cada lote
+
+Cada vez que se escribe un lote de artículos (apartado 1), añade también **hasta 4 términos nuevos** al
+glosario (`src/content/glosario/<slug>.md`, páginas en `/glosario/`). Son páginas cortas que captan
+búsquedas de "qué es X" y enlazan a las herramientas y guías del sitio.
+
+- **Qué términos**: conceptos de finanzas personales e inversión en España que aparezcan en los
+  artículos, herramientas o noticias del sitio y que aún no tengan entrada (por ejemplo: dividendo,
+  PER, rentabilidad anualizada, plan de pensiones, IPC, prima de riesgo, amortización, hipoteca
+  mixta, tipo marginal, rendimiento del capital mobiliario). No dupliques ninguno existente.
+- **Formato**: copia una entrada existente. Frontmatter: `termino` (como aparece en el índice),
+  `titulo` (H1 y title, máx. ~65 caracteres, del estilo "Qué es X"), `description` (la definición en
+  una frase, máx. 170 caracteres) y `relacionados` (2-3 enlaces a herramientas o artículos que ya
+  existan). Cuerpo: 2-3 párrafos cortos.
+- **Reglas**: definiciones divulgativas y exactas. Ninguna cifra que cambie con el tiempo ni ninguna
+  cifra fiscal (si hace falta, enlaza a la guía o herramienta donde sí está, con su fuente). Sin
+  guiones largos, sin recomendaciones. Si no estás seguro de que una definición es exacta, no la
+  escribas.
+- Se añaden en el mismo commit que los artículos del lote (`git add src/content/glosario/`).

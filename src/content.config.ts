@@ -73,4 +73,17 @@ const correcciones = defineCollection({
   }),
 });
 
-export const collections = { blog, mercados, newsletter, correcciones };
+// Glosario de finanzas: una entrada por término (src/content/glosario/<slug>.md). Definiciones
+// cortas y sin cifras que cambian con el tiempo; las herramientas y guías relacionadas se enlazan en
+// "relacionados". Procedimiento para ampliarlo en ARTICULOS-PROCEDIMIENTO.md.
+const glosario = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/glosario' }),
+  schema: z.object({
+    termino: z.string(), // cómo aparece en el índice, p. ej. "TER"
+    titulo: z.string(), // H1 y title de la página, p. ej. "Qué es el TER de un fondo"
+    description: z.string().max(170), // definición en una frase (meta description)
+    relacionados: z.array(z.object({ label: z.string(), href: z.string() })).default([]),
+  }),
+});
+
+export const collections = { blog, mercados, newsletter, correcciones, glosario };

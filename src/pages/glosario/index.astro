@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { SITE } from '../../config/site';
+
+const terminos = (await getCollection('glosario')).sort((a, b) => a.data.termino.localeCompare(b.data.termino, 'es'));
+
+const letraDe = (t: string) => t.normalize('NFD').replace(/[̀-ͯ]/g, '').charAt(0).toUpperCase();
+const porLetra = new Map<string, typeof terminos>();
+for (const t of terminos) {
+  const l = letraDe(t.data.termino);
+  porLetra.set(l, [...(porLetra.get(l) ?? []), t]);
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  '@id': `${SITE.url}/glosario/#set`,
+  name: `Glosario de finanzas de ${SITE.name}`,
+  url: `${SITE.url}/glosario/`,
+  inLanguage: SITE.locale,
+  hasDefinedTerm: terminos.map((t) => ({
+    '@type': 'DefinedTerm',
+    name: t.data.termino,
+    description: t.data.description,
+    url: `${SITE.url}/glosario/${t.id}/`,
+  })),
+};
+---
+
+<BaseLayout
+  title="Glosario de finanzas personales"
+  description="Qué significan TER, ISIN, FIFO, TAE, euríbor, traspaso, modelo 720 y otros términos de finanzas e inversión en España, explicados en dos minutos y sin jerga."
+  extraJsonLd={[jsonLd]}
+>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Glosario' }]} />
+  <h1 class="mb-4 font-display text-3xl text-ink">Glosario de finanzas personales</h1>
+  <p class="mb-10 max-w-2xl text-ink-muted">
+    Los términos que más se repiten al invertir y ahorrar en España, explicados en pocas líneas y
+    enlazados con las herramientas y guías donde los usamos.
+  </p>
+
+  <div class="grid gap-10">
+    {[...porLetra.entries()].map(([letra, items]) => (
+      <section aria-labelledby={`letra-${letra}`}>
+        <h2 id={`letra-${letra}`} class="mb-3 border-b border-border pb-1 font-display text-xl text-brand">{letra}</h2>
+        <ul class="grid gap-4">
+          {items.map((t) => (
+            <li>
+              <a href={`/glosario/${t.id}/`} class="group block">
+                <span class="font-display text-lg text-ink group-hover:text-brand">{t.data.termino}</span>
+                <span class="mt-1 block text-sm text-ink-muted">{t.data.description}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</BaseLayout>

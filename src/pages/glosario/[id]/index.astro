@@ -1,0 +1,78 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { SITE } from '../../../config/site';
+
+export async function getStaticPaths() {
+  const terminos = (await getCollection('glosario')).sort((a, b) => a.data.termino.localeCompare(b.data.termino, 'es'));
+  return terminos.map((t, i) => ({
+    params: { id: t.id },
+    props: {
+      termino: t,
+      vecinos: [terminos[i - 1], terminos[i + 1]].filter(Boolean),
+    },
+  }));
+}
+
+const { termino, vecinos } = Astro.props;
+const { Content } = await render(termino);
+const { titulo, description, relacionados } = termino.data;
+const url = `${SITE.url}/glosario/${termino.id}/`;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTerm',
+    '@id': `${url}#term`,
+    name: termino.data.termino,
+    description,
+    url,
+    inDefinedTermSet: { '@id': `${SITE.url}/glosario/#set` },
+    inLanguage: SITE.locale,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Glosario', item: `${SITE.url}/glosario/` },
+      { '@type': 'ListItem', position: 3, name: termino.data.termino, item: url },
+    ],
+  },
+];
+---
+
+<BaseLayout title={titulo} description={description} extraJsonLd={jsonLd}>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Glosario', href: '/glosario/' }, { label: termino.data.termino }]} />
+  <article class="prose max-w-none">
+    <h1>{titulo}</h1>
+    <p class="lead text-lg text-ink">{description}</p>
+    <Content />
+  </article>
+
+  {relacionados.length > 0 && (
+    <aside aria-labelledby="para-saber-mas" class="mt-10 border-t border-border pt-8">
+      <h2 id="para-saber-mas" class="mb-4 font-display text-xl text-ink">Para saber más</h2>
+      <ul class="grid gap-2">
+        {relacionados.map((r) => (
+          <li><a href={r.href} class="font-medium text-brand underline decoration-brand/30 hover:decoration-brand">{r.label}</a></li>
+        ))}
+      </ul>
+    </aside>
+  )}
+
+  <nav aria-label="Otros términos" class="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6 text-sm">
+    <a href="/glosario/" class="font-medium text-ink-muted underline hover:text-ink">Todo el glosario</a>
+    <span class="flex flex-wrap gap-4">
+      {vecinos.map((v) => (
+        <a href={`/glosario/${v.id}/`} class="text-brand underline decoration-brand/30 hover:decoration-brand">{v.data.termino}</a>
+      ))}
+    </span>
+  </nav>
+
+  <p class="mt-8 rounded-xl border border-border bg-cream-elevated p-4 text-sm text-ink-muted">
+    <strong class="text-ink">Aviso:</strong> definiciones divulgativas, no asesoramiento financiero ni
+    fiscal personalizado. Así trabajamos: <a href="/metodologia/" class="underline decoration-ink-muted/40 hover:text-ink">metodología</a>.
+  </p>
+</BaseLayout>
