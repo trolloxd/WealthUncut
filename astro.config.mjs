@@ -61,7 +61,7 @@ export default defineConfig({
     react(),
     mdx(),
     sitemap({
-      filter: (page) => !page.includes('/404'),
+      filter: (page) => !page.includes('/404') && !page.includes('/embed/') && !page.includes('/newsletter/baja'),
       serialize(item) {
         const clave = item.url.match(/\/((?:blog|mercados)\/[^/]+)\/$/)?.[1];
         const fecha = clave ? fechasArticulos.get(clave) : undefined;

@@ -29,7 +29,8 @@ veces por semana, pero casi siempre termina sin hacer nada.
 
 - Elige temas de `KEYWORDS.md` que **no tengan artículo todavía** (tabla "Qué artículo cubre cada
   keyword" y "Huecos sin artículo"). Prioridad: las herramientas que aún no tienen pieza de blog
-  que las desarrolle (simulador de hipoteca y euríbor, plan de pensiones vs fondo indexado,
+  que las desarrolle (simulador de hipoteca y euríbor, amortizar la hipoteca, alquilar o comprar,
+  plan de pensiones vs fondo indexado,
   sueldo neto y retención de IRPF, ahorro para la entrada de un piso, ITP por comunidad, ranking
   de IRPF por comunidad), después fiscalidad (dividendos, declarar ganancias de bolsa) y educación
   financiera (cuánto ahorrar cada mes según el sueldo).

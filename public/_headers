@@ -7,3 +7,12 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
+
+# Versiones incrustables de las herramientas (/embed/<slug>/): se pueden mostrar en un iframe de
+# cualquier web, así que se quitan las cabeceras anti-iframe que sí llevan el resto de páginas.
+# Son solo calculadoras sin ninguna acción sensible (no hay formularios ni sesiones).
+/embed/*
+  ! X-Frame-Options
+  ! Content-Security-Policy
+  ! Cross-Origin-Resource-Policy
+  X-Robots-Tag: noindex

@@ -12,6 +12,8 @@ import { getCollection } from 'astro:content';
 import { isPublished } from '../lib/posts';
 import { TOOLS, herramientasRelacionadas } from '../config/tools';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
+import CodigoIncrustar from '../components/CodigoIncrustar';
+import { EMBED_POR_SLUG } from '../config/embeds';
 
 interface Props {
   title: string;
@@ -77,6 +79,7 @@ const extraJsonLd = [appJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJsonLd] : 
 // Enlaces internos: otras herramientas y guías del blog afines por etiquetas.
 const rutaActual = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const etiquetas: string[] = [...(TOOLS.find((t) => t.href === rutaActual)?.tags ?? [])];
+const embed = EMBED_POR_SLUG.get(rutaActual.split('/').filter(Boolean).pop() ?? '');
 const otrasHerramientas = herramientasRelacionadas(etiquetas, rutaActual, 4);
 const guias = (await getCollection('blog', ({ data }) => isPublished(data)))
   .map((p) => ({ p, shared: p.data.tags.filter((t) => etiquetas.includes(t)).length }))
@@ -99,6 +102,12 @@ const guias = (await getCollection('blog', ({ data }) => isPublished(data)))
       <slot />
     </ArticleMeta>
   </article>
+
+  {embed && (
+    <div class="mx-auto mt-10 max-w-3xl">
+      <CodigoIncrustar client:visible slug={embed.slug} nombre={embed.nombre} href={embed.href} altura={embed.altura} origen={SITE.url} />
+    </div>
+  )}
 
   <div class="mx-auto mt-12 max-w-md">
     <NewsletterSignup compacta />

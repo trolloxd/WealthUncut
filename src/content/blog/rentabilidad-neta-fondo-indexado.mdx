@@ -14,6 +14,7 @@ draft: false
 
 import IndexFundCalculator from '../../components/IndexFundCalculator';
 import { BotonCompartir } from '../../components/CalculatorUI';
+import CodigoIncrustar from '../../components/CodigoIncrustar';
 
 Cuando alguien te dice "los fondos indexados dan un 7% anual", esa cifra casi nunca es lo que
 tú te llevas. Entre medio están la comisión del fondo (TER), la comisión del broker si la
@@ -28,6 +29,8 @@ aplicados sobre la ganancia final, no sobre el capital total.
 <IndexFundCalculator client:load />
 
 <BotonCompartir client:visible />
+
+<CodigoIncrustar client:visible slug="rentabilidad-neta-fondo-indexado" nombre="Rentabilidad neta de un fondo indexado" href="/blog/rentabilidad-neta-fondo-indexado/" altura={760} origen="https://wealthuncut.com" />
 
 ## Cómo lo calculamos
 

@@ -1,0 +1,76 @@
+---
+/**
+ * Versión incrustable de cada herramienta (/embed/<slug>/): solo la calculadora y un enlace de
+ * atribución, sin cabecera ni pie, pensada para mostrarse en un iframe de otra web. No se indexa
+ * (la versión completa es la canónica) y no está en el sitemap. Las cabeceras que permiten
+ * mostrarla en otras webs están en public/_headers.
+ */
+import { EMBEDS, EMBED_POR_SLUG } from '../../config/embeds';
+import { SITE } from '../../config/site';
+import euriborData from '../../data/euribor/ultimo.json';
+import '../../styles/global.css';
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-500.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/inter/latin-700.css';
+import IndexFundCalculator from '../../components/IndexFundCalculator';
+import FundSaleTaxCalculator from '../../components/FundSaleTaxCalculator';
+import FundVsEtfCalculator from '../../components/FundVsEtfCalculator';
+import EmergencyFundCalculator from '../../components/EmergencyFundCalculator';
+import InflationCalculator from '../../components/InflationCalculator';
+import Modelo720Checker from '../../components/Modelo720Checker';
+import MortgageCalculator from '../../components/MortgageCalculator';
+import AmortizacionHipotecaCalculator from '../../components/AmortizacionHipotecaCalculator';
+import AlquilerVsCompraCalculator from '../../components/AlquilerVsCompraCalculator';
+import PensionVsFundCalculator from '../../components/PensionVsFundCalculator';
+import SalaryCalculator from '../../components/SalaryCalculator';
+import HomeDepositCalculator from '../../components/HomeDepositCalculator';
+import IrpfRankingCalculator from '../../components/IrpfRankingCalculator';
+
+export function getStaticPaths() {
+  return EMBEDS.map((e) => ({ params: { slug: e.slug } }));
+}
+
+const { slug } = Astro.params;
+const embed = EMBED_POR_SLUG.get(slug!)!;
+const euriborInicial: number = euriborData.ultimoValor;
+const euriborMes = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' }).format(
+  new Date(`${euriborData.ultimoMes}-01T00:00:00Z`)
+);
+const canonica = new URL(embed.href, SITE.url).href;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{embed.nombre} · {SITE.name}</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={canonica} />
+  </head>
+  <body class="bg-cream font-sans text-ink antialiased">
+    <main class="mx-auto max-w-3xl p-3">
+      {slug === 'rentabilidad-neta-fondo-indexado' && <IndexFundCalculator client:load />}
+      {slug === 'calculadora-impuestos-venta-fondos' && <FundSaleTaxCalculator client:load />}
+      {slug === 'comparador-fondo-indexado-vs-etf' && <FundVsEtfCalculator client:load />}
+      {slug === 'calculadora-fondo-de-emergencia' && <EmergencyFundCalculator client:load />}
+      {slug === 'calculadora-inflacion' && <InflationCalculator client:load />}
+      {slug === 'calculadora-modelo-720' && <Modelo720Checker client:load />}
+      {slug === 'simulador-hipoteca-euribor' && <MortgageCalculator client:load euriborInicial={euriborInicial} euriborMes={euriborMes} />}
+      {slug === 'amortizar-hipoteca-cuanto-ahorras' && <AmortizacionHipotecaCalculator client:load euriborInicial={euriborInicial} />}
+      {slug === 'alquilar-o-comprar-vivienda' && <AlquilerVsCompraCalculator client:load euriborInicial={euriborInicial} />}
+      {slug === 'plan-pensiones-vs-fondo-indexado' && <PensionVsFundCalculator client:load />}
+      {slug === 'calculadora-sueldo-neto' && <SalaryCalculator client:load />}
+      {slug === 'ahorro-entrada-piso' && <HomeDepositCalculator client:load />}
+      {slug === 'ranking-irpf-comunidades' && <IrpfRankingCalculator client:load />}
+
+      <p class="mt-3 text-center text-xs text-ink-faint">
+        Herramienta de <a href={SITE.url} target="_blank" rel="noopener" class="underline hover:text-ink">{SITE.name}</a>.
+        <a href={canonica} target="_blank" rel="noopener" class="underline hover:text-ink">Ver la versión completa</a>.
+        Información orientativa, no es una recomendación de inversión.
+      </p>
+    </main>
+  </body>
+</html>
