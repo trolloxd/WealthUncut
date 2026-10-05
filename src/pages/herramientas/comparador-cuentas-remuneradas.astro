@@ -2,6 +2,8 @@
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import ArticleLink from '../../components/ArticleLink.astro';
 import CuentasRemuneradasTabla from '../../components/CuentasRemuneradasTabla.astro';
+import HistoricoTAE from '../../components/HistoricoTAE.astro';
+import historico from '../../data/cuentas-remuneradas/historico.json';
 import datos from '../../data/cuentas-remuneradas/ultimo.json';
 import { FGD_COBERTURA } from '../../config/finance';
 ---
@@ -41,6 +43,8 @@ import { FGD_COBERTURA } from '../../config/finance';
   </p>
 
   <CuentasRemuneradasTabla datos={datos} />
+
+  <HistoricoTAE snapshots={historico.snapshots} />
 
   <h2>Cuenta remunerada vs. depósito: la diferencia que importa</h2>
   <p>

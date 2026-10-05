@@ -97,3 +97,19 @@ son números sin formatear (el componente los formatea). Las TAE son números en
    src/data/cuentas-remuneradas/ultimo.json`) y explica el problema en el resumen.
 4. Termina con un resumen breve: qué ha cambiado (o que no había cambios), cuántas entidades se han
    verificado y en qué fuentes, y cualquier oferta que se haya descartado por no poder verificarla.
+
+## 6. Histórico de TAE (cada ejecución, cambie algo o no)
+
+Cada semana, **aunque no haya cambiado ninguna TAE**, se guarda una instantánea en
+`src/data/cuentas-remuneradas/historico.json`: es lo que alimenta la gráfica "Cómo han evolucionado
+las TAE" del comparador y la base de datos propia del sitio. No se escribe a mano:
+
+1. Después de decidir si `ultimo.json` cambia (y, si cambia, de actualizarlo), ejecuta
+   `node scripts/historico-cuentas.mjs`. Añade una instantánea con la `fecha` de `ultimo.json` (si ya
+   existe una con esa fecha, no hace nada).
+2. Si `ultimo.json` no ha cambiado, su `fecha` sigue siendo la antigua y el script dirá que ya existe:
+   en ese caso actualiza solo el campo `fecha` y `generado` de `ultimo.json` a hoy (los datos se han
+   revisado y siguen vigentes) y vuelve a ejecutar el script, para que haya un punto nuevo en la serie.
+3. Haz commit de `ultimo.json` y `historico.json` juntos (mensaje `Cuentas y depósitos: actualización
+   del AAAA-MM-DD`). Esto sustituye la regla de "si no hay cambios, no hagas commit" del apartado 1:
+   la instantánea semanal siempre se publica.

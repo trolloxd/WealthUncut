@@ -1,0 +1,404 @@
+{
+ "nota": "Una instantánea por fecha de actualización de las TAE de cuentas y depósitos publicadas en el comparador. Los datos de cada instantánea son los de ultimo.json en ese momento.",
+ "snapshots": [
+  {
+   "fecha": "2026-09-24",
+   "cuentas": [
+    {
+     "banco": "Revolut",
+     "producto": "Cuenta Remunerada (Estándar)",
+     "tae": 3.51,
+     "vinculacion": false
+    },
+    {
+     "banco": "Raisin (vía Raisin)",
+     "producto": "Cuenta Bienvenida",
+     "tae": 3.1,
+     "vinculacion": false
+    },
+    {
+     "banco": "Trade Republic",
+     "producto": "Cuenta Trade Republic",
+     "tae": 3.04,
+     "vinculacion": false
+    },
+    {
+     "banco": "bunq",
+     "producto": "Cuenta de Ahorro",
+     "tae": 3.01,
+     "vinculacion": false
+    },
+    {
+     "banco": "Bankinter",
+     "producto": "Cuenta Digital",
+     "tae": 3,
+     "vinculacion": false
+    },
+    {
+     "banco": "B100",
+     "producto": "Cuenta Save",
+     "tae": 2.75,
+     "vinculacion": false
+    },
+    {
+     "banco": "Openbank",
+     "producto": "Cuenta Remunerada",
+     "tae": 2.75,
+     "vinculacion": false
+    },
+    {
+     "banco": "Banco Sabadell",
+     "producto": "Cuenta Online",
+     "tae": 2.02,
+     "vinculacion": false
+    },
+    {
+     "banco": "Indexa Capital",
+     "producto": "Cuenta Remunerada Indexada",
+     "tae": 1.76,
+     "vinculacion": false
+    },
+    {
+     "banco": "Bankinter",
+     "producto": "Cuenta Nómina",
+     "tae": 5,
+     "vinculacion": true
+    },
+    {
+     "banco": "ABANCA",
+     "producto": "Cuenta Remunerada",
+     "tae": 2,
+     "vinculacion": true
+    }
+   ],
+   "depositos": [
+    {
+     "banco": "MyInvestor",
+     "producto": "Depósito Premium",
+     "plazoMeses": 12,
+     "tae": 3.5
+    },
+    {
+     "banco": "Deutsche Bank",
+     "producto": "Confianza Más DB",
+     "plazoMeses": 12,
+     "tae": 3.5
+    },
+    {
+     "banco": "MyInvestor",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 3.1
+    },
+    {
+     "banco": "Banca March",
+     "producto": "Depósito Avantio 12 meses",
+     "plazoMeses": 12,
+     "tae": 2.8
+    },
+    {
+     "banco": "Self Bank",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 2.75
+    },
+    {
+     "banco": "Banco Mediolanum",
+     "producto": "Depósito MIX",
+     "plazoMeses": 12,
+     "tae": 3
+    },
+    {
+     "banco": "Openbank",
+     "producto": "Depósito a plazo fijo",
+     "plazoMeses": 6,
+     "tae": 2.75
+    },
+    {
+     "banco": "Mano Bank (vía Raisin)",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 3.46
+    },
+    {
+     "banco": "BluOr Bank (vía Raisin)",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 3.35
+    },
+    {
+     "banco": "BankB (vía Raisin)",
+     "producto": "Depósito a 7-8 años",
+     "plazoMeses": 90,
+     "tae": 3.75
+    }
+   ]
+  },
+  {
+   "fecha": "2026-09-28",
+   "cuentas": [
+    {
+     "banco": "Revolut",
+     "producto": "Cuenta Remunerada (Estándar)",
+     "tae": 3.51,
+     "vinculacion": false
+    },
+    {
+     "banco": "Raisin (vía Raisin)",
+     "producto": "Cuenta Bienvenida",
+     "tae": 3.1,
+     "vinculacion": false
+    },
+    {
+     "banco": "Trade Republic",
+     "producto": "Cuenta Trade Republic",
+     "tae": 3.04,
+     "vinculacion": false
+    },
+    {
+     "banco": "bunq",
+     "producto": "Cuenta de Ahorro",
+     "tae": 3.01,
+     "vinculacion": false
+    },
+    {
+     "banco": "Bankinter",
+     "producto": "Cuenta Digital",
+     "tae": 3,
+     "vinculacion": false
+    },
+    {
+     "banco": "B100",
+     "producto": "Cuenta Save",
+     "tae": 2.75,
+     "vinculacion": false
+    },
+    {
+     "banco": "Openbank",
+     "producto": "Cuenta Remunerada",
+     "tae": 2.75,
+     "vinculacion": false
+    },
+    {
+     "banco": "Banco Sabadell",
+     "producto": "Cuenta Online",
+     "tae": 2.02,
+     "vinculacion": false
+    },
+    {
+     "banco": "Indexa Capital",
+     "producto": "Cuenta Remunerada Indexada",
+     "tae": 1.76,
+     "vinculacion": false
+    },
+    {
+     "banco": "Bankinter",
+     "producto": "Cuenta Nómina",
+     "tae": 5,
+     "vinculacion": true
+    },
+    {
+     "banco": "ABANCA",
+     "producto": "Cuenta Remunerada",
+     "tae": 2,
+     "vinculacion": true
+    }
+   ],
+   "depositos": [
+    {
+     "banco": "MyInvestor",
+     "producto": "Depósito Premium",
+     "plazoMeses": 12,
+     "tae": 3.5
+    },
+    {
+     "banco": "Deutsche Bank",
+     "producto": "Confianza Más DB",
+     "plazoMeses": 12,
+     "tae": 3.5
+    },
+    {
+     "banco": "MyInvestor",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 3
+    },
+    {
+     "banco": "Banca March",
+     "producto": "Depósito Avantio 12 meses",
+     "plazoMeses": 12,
+     "tae": 2.8
+    },
+    {
+     "banco": "Self Bank",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 2.75
+    },
+    {
+     "banco": "Banco Mediolanum",
+     "producto": "Depósito MIX",
+     "plazoMeses": 12,
+     "tae": 3
+    },
+    {
+     "banco": "Openbank",
+     "producto": "Depósito a plazo fijo",
+     "plazoMeses": 6,
+     "tae": 2.75
+    },
+    {
+     "banco": "Mano Bank (vía Raisin)",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 3.46
+    },
+    {
+     "banco": "BluOr Bank (vía Raisin)",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 3.35
+    },
+    {
+     "banco": "BankB (vía Raisin)",
+     "producto": "Depósito a 7-8 años",
+     "plazoMeses": 90,
+     "tae": 3.75
+    }
+   ]
+  },
+  {
+   "fecha": "2026-10-05",
+   "cuentas": [
+    {
+     "banco": "Revolut",
+     "producto": "Cuenta Remunerada (Estándar)",
+     "tae": 3.51,
+     "vinculacion": false
+    },
+    {
+     "banco": "Raisin (vía Raisin)",
+     "producto": "Cuenta Bienvenida",
+     "tae": 3.1,
+     "vinculacion": false
+    },
+    {
+     "banco": "Trade Republic",
+     "producto": "Cuenta Trade Republic",
+     "tae": 3.04,
+     "vinculacion": false
+    },
+    {
+     "banco": "bunq",
+     "producto": "Cuenta de Ahorro",
+     "tae": 3.01,
+     "vinculacion": false
+    },
+    {
+     "banco": "Bankinter",
+     "producto": "Cuenta Digital",
+     "tae": 3,
+     "vinculacion": false
+    },
+    {
+     "banco": "B100",
+     "producto": "Cuenta Save",
+     "tae": 2.75,
+     "vinculacion": false
+    },
+    {
+     "banco": "Openbank",
+     "producto": "Cuenta Remunerada",
+     "tae": 2.75,
+     "vinculacion": false
+    },
+    {
+     "banco": "Banco Sabadell",
+     "producto": "Cuenta Online",
+     "tae": 2.02,
+     "vinculacion": false
+    },
+    {
+     "banco": "Indexa Capital",
+     "producto": "Cuenta Remunerada Indexada",
+     "tae": 1.76,
+     "vinculacion": false
+    },
+    {
+     "banco": "Bankinter",
+     "producto": "Cuenta Nómina",
+     "tae": 5,
+     "vinculacion": true
+    },
+    {
+     "banco": "ABANCA",
+     "producto": "Cuenta Remunerada",
+     "tae": 2,
+     "vinculacion": true
+    }
+   ],
+   "depositos": [
+    {
+     "banco": "MyInvestor",
+     "producto": "Depósito Premium",
+     "plazoMeses": 12,
+     "tae": 3.5
+    },
+    {
+     "banco": "Deutsche Bank",
+     "producto": "Confianza Más DB",
+     "plazoMeses": 12,
+     "tae": 3.5
+    },
+    {
+     "banco": "MyInvestor",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 3
+    },
+    {
+     "banco": "Banca March",
+     "producto": "Depósito Avantio 12 meses",
+     "plazoMeses": 12,
+     "tae": 2.8
+    },
+    {
+     "banco": "Self Bank",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 2.75
+    },
+    {
+     "banco": "Banco Mediolanum",
+     "producto": "Depósito MIX",
+     "plazoMeses": 12,
+     "tae": 3
+    },
+    {
+     "banco": "Openbank",
+     "producto": "Depósito a plazo fijo",
+     "plazoMeses": 6,
+     "tae": 2.75
+    },
+    {
+     "banco": "Mano Bank (vía Raisin)",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 3.46
+    },
+    {
+     "banco": "BluOr Bank (vía Raisin)",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 3.45
+    },
+    {
+     "banco": "BankB (vía Raisin)",
+     "producto": "Depósito a 7-8 años",
+     "plazoMeses": 90,
+     "tae": 3.75
+    }
+   ]
+  }
+ ]
+}
