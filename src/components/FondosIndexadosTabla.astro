@@ -14,7 +14,12 @@ interface Props {
   datos: { fecha: string; nota: string; fondos: Fondo[] };
 }
 
+import catalogo from '../data/myinvestor-fondos/catalogo.json';
+import destacados from '../data/myinvestor-fondos/ultimo.json';
+
 const { datos } = Astro.props;
+// Solo se enlaza al simulador si Carteras conoce ese ISIN (si no, abriría una cartera vacía).
+const isinsCarteras = new Set([...destacados.fondos.map((f) => f.isin), ...catalogo.fondos.map((r) => r[0] as string)]);
 const fondos = [...datos.fondos].sort((a, b) => a.ter - b.ter);
 const fecha = new Date(`${datos.fecha}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
@@ -28,7 +33,8 @@ const fecha = new Date(`${datos.fecha}T12:00:00Z`).toLocaleDateString('es-ES', {
         <th scope="col" class="py-2 pr-3 font-medium">Índice</th>
         <th scope="col" class="py-2 pr-3 text-right font-medium">TER</th>
         <th scope="col" class="py-2 pr-3 font-medium">ISIN</th>
-        <th scope="col" class="py-2 font-medium">Dónde está</th>
+        <th scope="col" class="py-2 pr-3 font-medium">Dónde está</th>
+        <th scope="col" class="py-2 font-medium">Simular</th>
       </tr>
     </thead>
     <tbody>
@@ -41,7 +47,14 @@ const fecha = new Date(`${datos.fecha}T12:00:00Z`).toLocaleDateString('es-ES', {
           <td class="py-2 pr-3 text-ink-muted">{f.indice}</td>
           <td class="py-2 pr-3 text-right font-semibold text-brand">{f.ter.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
           <td class="py-2 pr-3 font-mono text-xs text-ink-muted">{f.isin}</td>
-          <td class="py-2 text-xs text-ink-muted">{f.plataformas}</td>
+          <td class="py-2 pr-3 text-xs text-ink-muted">{f.plataformas}</td>
+          <td class="py-2 text-xs">
+            {isinsCarteras.has(f.isin) ? (
+              <a href={`/carteras/?c=${f.isin}%3A%3A`} class="font-semibold text-brand underline decoration-brand/40">En Carteras</a>
+            ) : (
+              <span class="text-ink-faint">sin simulación</span>
+            )}
+          </td>
         </tr>
       ))}
     </tbody>

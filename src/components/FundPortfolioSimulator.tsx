@@ -97,6 +97,7 @@ function simularFondo(params: {
 export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Props) {
   const [busqueda, setBusqueda] = useState('');
   const [soloIndexados, setSoloIndexados] = useState(false);
+  const [filtroBloque, setFiltroBloque] = useState<Bloque | ''>('');
   const [catalogo, setCatalogo] = useState<Fondo[]>([]);
   const [estadoCatalogo, setEstadoCatalogo] = useState<'sin-cargar' | 'cargando' | 'listo' | 'error'>('sin-cargar');
   const fondos = useMemo(() => {
@@ -148,10 +149,11 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
 
   const resultadosBusqueda = useMemo(() => {
     const palabras = busqueda.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    if (palabras.length === 0) return [];
+    if (palabras.length === 0 && !filtroBloque) return [];
     const coincidentes = fondos
       .filter((f) => !isinsEnCartera.includes(f.isin))
       .filter((f) => !soloIndexados || !f.catalogo || f.catalogo.indexado)
+      .filter((f) => !filtroBloque || bloqueDe(f) === filtroBloque)
       .filter((f) => {
         const texto = `${f.nombre} ${f.gestora} ${f.indice} ${f.isin}`.toLowerCase();
         return palabras.every((p) => texto.includes(p));
@@ -159,7 +161,7 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
     // Primero los destacados (con TER e histórico), luego los indexados y al final el resto.
     const prioridad = (f: Fondo) => (!f.catalogo ? 0 : f.catalogo.indexado ? 1 : 2);
     return coincidentes.sort((a, b) => prioridad(a) - prioridad(b)).slice(0, 10);
-  }, [busqueda, fondos, isinsEnCartera, soloIndexados]);
+  }, [busqueda, fondos, isinsEnCartera, soloIndexados, filtroBloque]);
 
   function anadirFondo(isin: string) {
     setIsinsEnCartera((prev) => (prev.includes(isin) ? prev : [...prev, isin]));
@@ -301,10 +303,29 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
               aria-label="Buscar fondo para añadir a la cartera"
             />
           </label>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <label className="flex items-center gap-2 text-xs text-ink-muted">
+            Tipo de activo
+            <select
+              value={filtroBloque}
+              onChange={(e) => {
+                setFiltroBloque(e.target.value as Bloque | '');
+                if (estadoCatalogo === 'sin-cargar') void cargarCatalogo();
+              }}
+              className="campo-input w-auto py-1 text-xs"
+              aria-label="Filtrar por tipo de activo"
+            >
+              <option value="">Todos</option>
+              {BLOQUES.map((b) => (
+                <option key={b} value={b}>{b}</option>
+              ))}
+            </select>
+          </label>
           <label className="flex items-center gap-2 text-xs text-ink-muted">
             <input type="checkbox" checked={soloIndexados} onChange={(e) => setSoloIndexados(e.target.checked)} />
             Solo fondos indexados
           </label>
+          </div>
           {estadoCatalogo === 'cargando' && <p className="text-xs text-ink-faint">Cargando el catálogo de fondos...</p>}
           {estadoCatalogo === 'error' && (
             <p className="text-xs text-accent">
@@ -333,8 +354,8 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
               ))}
             </ul>
           )}
-          {busqueda.trim() !== '' && resultadosBusqueda.length === 0 && estadoCatalogo !== 'cargando' && (
-            <p className="text-xs text-ink-faint">Ningún fondo de la lista coincide con "{busqueda}".</p>
+          {(busqueda.trim() !== '' || filtroBloque !== '') && resultadosBusqueda.length === 0 && estadoCatalogo !== 'cargando' && (
+            <p className="text-xs text-ink-faint">Ningún fondo de la lista coincide con la búsqueda y los filtros elegidos.</p>
           )}
         </div>
 

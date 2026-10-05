@@ -94,6 +94,12 @@ export const TOOLS = [
     description: 'Ranking de las 17 comunidades autónomas con tu mismo sueldo, de la que más neto deja a la que menos.',
     tags: ['impuestos', 'nómina'],
   },
+  {
+    href: '/carteras/',
+    name: 'Carteras de fondos',
+    description: 'Busca entre más de 1.600 fondos, reparte pesos y simula tu cartera bruta y neta de impuestos.',
+    tags: ['fondos indexados', 'carteras', 'calculadoras'],
+  },
 ] as const;
 
 /** Herramientas más afines a un conjunto de etiquetas (las que comparten más), con relleno por orden. */

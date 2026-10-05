@@ -1,0 +1,144 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../config/site';
+import { isPublished } from '../lib/posts';
+
+const title = 'Empieza aquí: por dónde empezar con tus finanzas';
+const description = 'Un recorrido por objetivos (ahorrar, invertir, impuestos, vivienda) con las guías y calculadoras de WealthUncut en el orden en que conviene verlas.';
+
+// Los artículos programados o en borrador no existen todavía: se omiten hasta su fecha.
+const noPublicados = new Set((await getCollection('blog', ({ data }) => !isPublished(data))).map((p) => p.id));
+
+interface Paso {
+  href: string;
+  titulo: string;
+  texto: string;
+}
+interface Bloque {
+  id: string;
+  titulo: string;
+  intro: string;
+  pasos: Paso[];
+}
+
+const bloques: Bloque[] = [
+  {
+    id: 'ahorrar',
+    titulo: 'Quiero ordenar mi dinero y ahorrar',
+    intro: 'Antes de invertir en nada con riesgo, conviene tener una base: saber cuánto te queda y tener un colchón.',
+    pasos: [
+      { href: '/herramientas/calculadora-sueldo-neto/', titulo: 'Calcula tu sueldo neto', texto: 'Del bruto al neto con la retención y las cotizaciones reales de tu comunidad.' },
+      { href: '/blog/fondo-de-emergencia-cuanto-necesitas/', titulo: 'Cuánto necesitas en tu fondo de emergencia', texto: 'La guía para entender el colchón antes de invertir.' },
+      { href: '/herramientas/calculadora-fondo-de-emergencia/', titulo: 'Calculadora de fondo de emergencia', texto: 'Tu cifra según tus gastos y tu situación, y cuándo la tendrás.' },
+      { href: '/herramientas/comparador-cuentas-remuneradas/', titulo: 'Dónde dejar ese colchón', texto: 'Cuentas remuneradas y depósitos comparados con su TAE.' },
+      { href: '/herramientas/calculadora-inflacion/', titulo: 'Cuánto pierde tu dinero parado', texto: 'Inflación y poder de compra con tus números.' },
+    ],
+  },
+  {
+    id: 'invertir',
+    titulo: 'Quiero empezar a invertir',
+    intro: 'De los conceptos básicos a probar tu propia cartera, sin recomendaciones personalizadas.',
+    pasos: [
+      { href: '/blog/diferencia-entre-ahorrar-e-invertir/', titulo: 'Diferencia entre ahorrar e invertir', texto: 'Cuándo toca cada cosa y qué riesgo asumes.' },
+      { href: '/blog/primeros-pasos-para-invertir-en-espana/', titulo: 'Primeros pasos para invertir en España', texto: 'El mapa general antes de elegir nada.' },
+      { href: '/blog/que-es-un-fondo-indexado/', titulo: 'Qué es un fondo indexado', texto: 'Cómo funciona y por qué cuesta menos que uno activo.' },
+      { href: '/blog/ter-fondo-que-es/', titulo: 'Qué es el TER', texto: 'La comisión silenciosa que más pesa a largo plazo.' },
+      { href: '/blog/interes-compuesto-explicado-con-ejemplos/', titulo: 'Interés compuesto', texto: 'Por qué el tiempo importa más que la cantidad.' },
+      { href: '/blog/rentabilidad-neta-fondo-indexado/', titulo: 'Rentabilidad neta de un fondo', texto: 'Cuánto te queda de verdad tras TER, comisiones e IRPF.' },
+      { href: '/blog/como-montar-cartera-fondos-indexados/', titulo: 'Cómo montar una cartera', texto: 'Las decisiones que importan, en orden.' },
+      { href: '/carteras/', titulo: 'Carteras', texto: 'Busca fondos, reparte pesos y simula el resultado.' },
+      { href: '/herramientas/comparador-fondos-indexados/', titulo: 'Comparador de fondos indexados', texto: 'TER e ISIN de fondos indexados disponibles en España.' },
+      { href: '/blog/fondo-indexado-vs-etf-diferencias/', titulo: 'Fondo indexado vs ETF', texto: 'Diferencias de coste e impuestos.' },
+      { href: '/herramientas/plan-pensiones-vs-fondo-indexado/', titulo: 'Plan de pensiones vs fondo indexado', texto: 'Qué sale mejor con tus números.' },
+    ],
+  },
+  {
+    id: 'impuestos',
+    titulo: 'Quiero entender los impuestos de mis inversiones',
+    intro: 'Lo que Hacienda se queda y cómo planificar para que no te sorprenda.',
+    pasos: [
+      { href: '/blog/como-tributan-los-fondos-de-inversion-en-espana/', titulo: 'Cómo tributan los fondos', texto: 'Tramos del ahorro, traspasos y compensaciones.' },
+      { href: '/herramientas/calculadora-impuestos-venta-fondos/', titulo: 'Impuestos al vender un fondo', texto: 'FIFO, retención y lo que recibes.' },
+      { href: '/herramientas/ranking-irpf-comunidades/', titulo: 'Dónde pagas menos IRPF', texto: 'Tu mismo sueldo en las 17 comunidades.' },
+      { href: '/blog/modelo-720-quien-tiene-que-presentarlo/', titulo: 'Modelo 720: quién debe presentarlo', texto: 'Si tienes activos en el extranjero.' },
+      { href: '/herramientas/calculadora-modelo-720/', titulo: 'Comprobador del modelo 720', texto: 'Bloque a bloque, con tus datos.' },
+    ],
+  },
+  {
+    id: 'vivienda',
+    titulo: 'Estoy pensando en la vivienda',
+    intro: 'Comprar, alquilar o amortizar: las cuentas de cada decisión con el euríbor de hoy.',
+    pasos: [
+      { href: '/herramientas/ahorro-entrada-piso/', titulo: 'Cuánto ahorrar para la entrada', texto: 'Entrada, impuestos y gastos según tu comunidad.' },
+      { href: '/herramientas/simulador-hipoteca-euribor/', titulo: 'Simulador de hipoteca con euríbor real', texto: 'Cuota y coste total con el euríbor actual.' },
+      { href: '/herramientas/alquilar-o-comprar-vivienda/', titulo: '¿Alquilar o comprar?', texto: 'La comparación con costes y oportunidad.' },
+      { href: '/herramientas/amortizar-hipoteca-cuanto-ahorras/', titulo: 'Amortizar la hipoteca', texto: 'Reducir cuota o plazo, y cuánto ahorras.' },
+    ],
+  },
+];
+
+const bloquesVisibles = bloques.map((b) => ({
+  ...b,
+  pasos: b.pasos.filter((p) => {
+    const slug = p.href.match(/^\/blog\/([^/]+)\/$/)?.[1];
+    return !slug || !noPublicados.has(slug);
+  }),
+}));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: title,
+  itemListElement: bloquesVisibles.flatMap((b) => b.pasos).map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: p.titulo,
+    url: `${SITE.url}${p.href}`,
+  })),
+};
+---
+
+<BaseLayout title={title} description={description} extraJsonLd={[jsonLd]}>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Empieza aquí' }]} />
+  <h1 class="mb-4 font-display text-3xl text-ink">Empieza aquí</h1>
+  <p class="mb-8 max-w-2xl text-ink-muted">
+    No hace falta leerlo todo. Elige lo que te preocupa ahora y sigue el orden de cada bloque: están
+    ordenados para que cada paso te sirva para el siguiente. Todo es información y educación, no
+    asesoramiento financiero personalizado.
+  </p>
+
+  <nav aria-label="Objetivos" class="mb-10 flex flex-wrap gap-2">
+    {bloquesVisibles.map((b) => (
+      <a href={`#${b.id}`} class="rounded-full border border-border bg-cream-elevated px-4 py-1.5 text-sm text-ink-muted hover:text-ink">
+        {b.titulo}
+      </a>
+    ))}
+  </nav>
+
+  {bloquesVisibles.map((b) => (
+    <section id={b.id} class="mb-12 scroll-mt-6">
+      <h2 class="font-display text-2xl text-ink">{b.titulo}</h2>
+      <p class="mt-1 max-w-2xl text-sm text-ink-muted">{b.intro}</p>
+      <ol class="mt-5 grid gap-3">
+        {b.pasos.map((p, i) => (
+          <li>
+            <a href={p.href} class="flex gap-4 rounded-xl border border-border bg-cream-elevated p-4 hover:border-brand/40">
+              <span class="font-display text-xl text-brand" aria-hidden="true">{i + 1}</span>
+              <span>
+                <span class="block font-medium text-ink">{p.titulo}</span>
+                <span class="block text-sm text-ink-muted">{p.texto}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
+  ))}
+
+  <p class="text-sm text-ink-faint">
+    ¿Un término que no entiendes? Mira el <a href="/glosario/" class="underline hover:text-ink">glosario</a>.
+    ¿Prefieres recibir lo mejor de cada semana? El <a href="/newsletter/" class="underline hover:text-ink">boletín</a>.
+  </p>
+</BaseLayout>
