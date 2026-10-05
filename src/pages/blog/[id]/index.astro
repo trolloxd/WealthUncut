@@ -7,6 +7,7 @@ import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import ArticleLink from '../../../components/ArticleLink.astro';
 import { SITE } from '../../../config/site';
 import { herramientasRelacionadas } from '../../../config/tools';
+import NewsletterSignup from '../../../components/NewsletterSignup.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => isPublished(data));
@@ -74,6 +75,10 @@ const breadcrumbJsonLd = {
       <Content components={{ a: ArticleLink }} />
     </ArticleMeta>
   </article>
+
+  <div class="mx-auto mt-12 max-w-md">
+    <NewsletterSignup compacta />
+  </div>
 
   <aside aria-labelledby="herramientas-relacionadas" class="mt-12 border-t border-border pt-8">
     <h2 id="herramientas-relacionadas" class="mb-5 font-display text-xl text-ink">Pruébalo con tus números</h2>

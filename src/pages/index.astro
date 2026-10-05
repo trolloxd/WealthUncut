@@ -5,6 +5,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE, AUTHOR } from '../config/site';
 import { TOOLS } from '../config/tools';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
+import DatosDeHoy from '../components/DatosDeHoy.astro';
 
 const ultimaEdicion = (await getCollection('mercados', ({ data }) => isPublished(data))).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -55,6 +56,8 @@ const posts = (await getCollection('blog', ({ data }) => isPublished(data)))
       Por <a href="/autor/" class="underline hover:text-ink">{AUTHOR.name}</a> · sin recomendaciones de inversión personalizadas.
     </p>
   </section>
+
+  <DatosDeHoy />
 
   {ultimaEdicion && (
     <section class="mx-auto mt-4 max-w-3xl border-t border-border pt-10">

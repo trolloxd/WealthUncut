@@ -11,6 +11,7 @@ import { SITE, AUTHOR } from '../config/site';
 import { getCollection } from 'astro:content';
 import { isPublished } from '../lib/posts';
 import { TOOLS, herramientasRelacionadas } from '../config/tools';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
 
 interface Props {
   title: string;
@@ -98,6 +99,10 @@ const guias = (await getCollection('blog', ({ data }) => isPublished(data)))
       <slot />
     </ArticleMeta>
   </article>
+
+  <div class="mx-auto mt-12 max-w-md">
+    <NewsletterSignup compacta />
+  </div>
 
   <aside aria-labelledby="mas-herramientas" class="mt-12 grid gap-10 border-t border-border pt-8 sm:grid-cols-2">
     <div>

@@ -1,0 +1,74 @@
+---
+/**
+ * Franja de portada con los datos vivos del sitio: euríbor, tipo del BCE, euro/dólar y la mejor TAE
+ * de cuenta. Todo sale de ficheros que ya mantienen las rutinas automáticas (src/data/), así que
+ * se actualiza solo en cada build. Si un dato falta, esa tarjeta no se muestra.
+ */
+import euribor from '../data/euribor/ultimo.json';
+import cuentas from '../data/cuentas-remuneradas/ultimo.json';
+
+const ficheros = import.meta.glob('../data/mercados/*.json', { eager: true }) as Record<string, { default: any }>;
+const ultimaSerie = (id: string): [string, number] | null => {
+  const dias = Object.keys(ficheros).sort().reverse();
+  for (const ruta of dias) {
+    const obs = ficheros[ruta].default?.series?.[id]?.obs;
+    if (Array.isArray(obs) && obs.length > 0) return obs[obs.length - 1] as [string, number];
+  }
+  return null;
+};
+
+const num = (v: number, d: number) => v.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fechaCorta = (f: string) => new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+const mesLargo = (m: string) => new Date(`${m}-15T12:00:00Z`).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+
+const dfr = ultimaSerie('dfr');
+const eurusd = ultimaSerie('eurusd');
+const mejorCuenta = cuentas.cuentas
+  .filter((c) => !c.vinculacion)
+  .sort((a, b) => b.tae - a.tae)[0];
+
+const tarjetas = [
+  {
+    etiqueta: 'Euríbor a 12 meses',
+    valor: `${num(euribor.ultimoValor, 3)}%`,
+    detalle: `Media de ${mesLargo(euribor.ultimoMes)}`,
+    href: '/herramientas/simulador-hipoteca-euribor/',
+  },
+  dfr && {
+    etiqueta: 'Tipo de depósito del BCE',
+    valor: `${num(dfr[1], 2)}%`,
+    detalle: `Dato del ${fechaCorta(dfr[0])}`,
+    href: '/mercados/',
+  },
+  mejorCuenta && {
+    etiqueta: 'Mejor cuenta remunerada',
+    valor: `${num(mejorCuenta.tae, 2)}% TAE`,
+    detalle: `${mejorCuenta.banco}, sin vinculación`,
+    href: '/herramientas/comparador-cuentas-remuneradas/',
+  },
+  eurusd && {
+    etiqueta: 'Euro / dólar',
+    valor: num(eurusd[1], 4),
+    detalle: `Cambio del BCE, ${fechaCorta(eurusd[0])}`,
+    href: '/mercados/',
+  },
+].filter(Boolean) as { etiqueta: string; valor: string; detalle: string; href: string }[];
+---
+
+<section aria-labelledby="datos-de-hoy" class="mx-auto mt-2 max-w-3xl border-t border-border pt-10">
+  <div class="mb-5 flex flex-wrap items-baseline justify-between gap-2">
+    <h2 id="datos-de-hoy" class="font-display text-2xl text-ink">Los datos de hoy</h2>
+    <p class="text-xs text-ink-faint">Fuentes: BCE y comparador de cuentas de este sitio, actualizados automáticamente.</p>
+  </div>
+  <ul class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+    {tarjetas.map((t) => (
+      <li>
+        <a href={t.href} class="card group block h-full p-4 transition-colors hover:border-brand/40">
+          <span class="block text-xs text-ink-faint">{t.etiqueta}</span>
+          <span class="mt-1 block font-display text-xl text-brand">{t.valor}</span>
+          <span class="mt-1 block text-xs text-ink-muted">{t.detalle}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
