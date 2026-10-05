@@ -14,7 +14,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
 ---
 
 <header class="border-b border-border">
-  <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-5 sm:px-6">
+  <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-5 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:px-8">
     <a href="/" class="font-display text-xl font-semibold tracking-tight text-brand">
       {SITE.name}
     </a>
@@ -29,5 +29,6 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
         </a>
       ))}
     </nav>
+    <div class="hidden sm:block" aria-hidden="true"></div>
   </div>
 </header>
