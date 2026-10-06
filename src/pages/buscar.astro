@@ -1,39 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { isPublished } from '../lib/posts';
-import { TOOLS } from '../config/tools';
 
 const title = 'Buscar en WealthUncut';
 const description = 'Busca entre las guías, herramientas y términos del glosario de WealthUncut.';
 
-interface Entrada {
-  tipo: 'Guía' | 'Herramienta' | 'Glosario';
-  titulo: string;
-  texto: string;
-  href: string;
-}
-
-const guias = (await getCollection('blog', ({ data }) => isPublished(data))).map<Entrada>((p) => ({
-  tipo: 'Guía',
-  titulo: p.data.title,
-  texto: `${p.data.description} ${p.data.tags.join(' ')}`,
-  href: `/blog/${p.id}/`,
-}));
-const herramientas = TOOLS.map<Entrada>((t) => ({
-  tipo: 'Herramienta',
-  titulo: t.name,
-  texto: `${t.description} ${t.tags.join(' ')}`,
-  href: t.href,
-}));
-const glosario = (await getCollection('glosario')).map<Entrada>((t) => ({
-  tipo: 'Glosario',
-  titulo: t.data.titulo,
-  texto: `${t.data.termino} ${t.data.description}`,
-  href: `/glosario/${t.id}/`,
-}));
-const indice = [...herramientas, ...guias, ...glosario];
 ---
 
 <BaseLayout title={title} description={description} noindex>
@@ -44,7 +15,7 @@ const indice = [...herramientas, ...guias, ...glosario];
     guías, herramientas y términos del glosario que coinciden.
   </p>
 
-  <div id="buscador" data-indice={JSON.stringify(indice)}>
+  <div id="buscador">
     <label class="grid gap-1 text-sm font-medium text-ink-muted">
       Buscar
       <input id="q" type="search" autocomplete="off" class="campo-input" placeholder="Ej. hipoteca, TER, modelo 720..." />
@@ -61,62 +32,44 @@ const indice = [...herramientas, ...guias, ...glosario];
 </BaseLayout>
 
 <script>
-  interface Entrada {
-    tipo: string;
-    titulo: string;
-    texto: string;
-    href: string;
-  }
-  const normaliza = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  import { buscar, cargarIndice } from '../lib/buscador-cliente';
 
-  const raiz = document.getElementById('buscador');
   const entrada = document.getElementById('q') as HTMLInputElement | null;
   const lista = document.getElementById('resultados');
   const estado = document.getElementById('estado');
 
-  if (raiz && entrada && lista && estado) {
-    const indice: (Entrada & { _t: string; _x: string })[] = (JSON.parse(raiz.dataset.indice ?? '[]') as Entrada[]).map((e) => ({
-      ...e,
-      _t: normaliza(e.titulo),
-      _x: normaliza(e.texto),
-    }));
-
-    const pintar = () => {
-      const palabras = normaliza(entrada.value).split(/\s+/).filter(Boolean);
+  if (entrada && lista && estado) {
+    const pintar = async () => {
+      const q = entrada.value.trim();
       lista.textContent = '';
-      if (palabras.length === 0) {
+      if (!q) {
         estado.textContent = '';
         return;
       }
-      const puntuados = indice
-        .filter((e) => palabras.every((p) => e._t.includes(p) || e._x.includes(p)))
-        .map((e) => ({ e, puntos: palabras.reduce((a, p) => a + (e._t.includes(p) ? 2 : 1), 0) }))
-        .sort((a, b) => b.puntos - a.puntos)
-        .slice(0, 20);
-      estado.textContent = puntuados.length === 0 ? 'No hay resultados. Prueba con otra palabra.' : `${puntuados.length} resultado${puntuados.length === 1 ? '' : 's'}`;
-      for (const { e } of puntuados) {
+      const resultados = buscar(await cargarIndice(), q, 30);
+      estado.textContent = resultados.length === 0 ? 'No hay resultados. Prueba con otra palabra.' : `${resultados.length} resultado${resultados.length === 1 ? '' : 's'}`;
+      for (const e of resultados) {
         const li = document.createElement('li');
         const a = document.createElement('a');
-        a.href = e.href;
+        a.href = e.u;
         a.className = 'block rounded-xl border border-border bg-cream-elevated p-4 hover:border-brand/40';
         const etiqueta = document.createElement('span');
         etiqueta.className = 'text-xs font-semibold uppercase tracking-wide text-brand';
-        etiqueta.textContent = e.tipo;
+        etiqueta.textContent = e.k;
         const t = document.createElement('span');
         t.className = 'mt-0.5 block font-medium text-ink';
-        t.textContent = e.titulo;
-        a.appendChild(etiqueta);
-        a.appendChild(t);
+        t.textContent = e.t;
+        a.append(etiqueta, t);
         li.appendChild(a);
         lista.appendChild(li);
       }
     };
 
-    entrada.addEventListener('input', pintar);
+    entrada.addEventListener('input', () => void pintar());
     const q = new URLSearchParams(window.location.search).get('q');
     if (q) {
       entrada.value = q.slice(0, 80);
-      pintar();
+      void pintar();
     }
   }
 </script>

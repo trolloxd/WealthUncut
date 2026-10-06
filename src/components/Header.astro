@@ -31,6 +31,109 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
         </a>
       ))}
     </nav>
-    <div class="hidden sm:block" aria-hidden="true"></div>
+    <div class="relative ml-auto w-48 sm:w-56 sm:justify-self-end md:w-64" id="buscador-cabecera">
+      <form action="/buscar/" method="get" role="search" class="relative">
+        <label for="q-cabecera" class="sr-only">Buscar en el sitio</label>
+        <input
+          id="q-cabecera"
+          name="q"
+          type="search"
+          autocomplete="off"
+          placeholder="Buscar (IRPF, hipoteca...)"
+          aria-controls="res-cabecera"
+          aria-expanded="false"
+          class="campo-input !py-1.5 !pl-3 !pr-3 text-sm"
+        />
+      </form>
+      <ul
+        id="res-cabecera"
+        role="listbox"
+        hidden
+        class="absolute right-0 z-50 mt-2 max-h-96 w-[min(22rem,calc(100vw-2rem))] overflow-y-auto rounded-xl border border-border bg-cream-elevated p-1 shadow-lg"
+      >
+      </ul>
+    </div>
   </div>
 </header>
+
+<script>
+  import { buscar, cargarIndice } from '../lib/buscador-cliente';
+
+  const caja = document.getElementById('q-cabecera') as HTMLInputElement | null;
+  const lista = document.getElementById('res-cabecera');
+  const contenedor = document.getElementById('buscador-cabecera');
+
+  if (caja && lista && contenedor) {
+    let activo = -1;
+    const cerrar = () => {
+      lista.hidden = true;
+      lista.textContent = '';
+      caja.setAttribute('aria-expanded', 'false');
+      activo = -1;
+    };
+    const marcar = (i: number) => {
+      const items = Array.from(lista.querySelectorAll('a'));
+      items.forEach((a, j) => a.classList.toggle('bg-cream', j === i));
+      activo = i;
+    };
+    const pintar = async () => {
+      const q = caja.value.trim();
+      if (q.length < 2) return cerrar();
+      const resultados = buscar(await cargarIndice(), q, 7);
+      lista.textContent = '';
+      activo = -1;
+      if (resultados.length === 0) {
+        const li = document.createElement('li');
+        li.className = 'px-3 py-2 text-sm text-ink-muted';
+        li.textContent = 'Sin resultados. Prueba con otra palabra.';
+        lista.appendChild(li);
+      }
+      for (const e of resultados) {
+        const li = document.createElement('li');
+        li.setAttribute('role', 'option');
+        const a = document.createElement('a');
+        a.href = e.u;
+        a.className = 'block rounded-lg px-3 py-2 hover:bg-cream';
+        const tipo = document.createElement('span');
+        tipo.className = 'block text-[0.65rem] font-semibold uppercase tracking-wide text-brand';
+        tipo.textContent = e.k;
+        const titulo = document.createElement('span');
+        titulo.className = 'block text-sm text-ink';
+        titulo.textContent = e.t;
+        a.append(tipo, titulo);
+        li.appendChild(a);
+        lista.appendChild(li);
+      }
+      const todos = document.createElement('li');
+      const verTodos = document.createElement('a');
+      verTodos.href = '/buscar/?q=' + encodeURIComponent(q.slice(0, 80));
+      verTodos.className = 'block rounded-lg px-3 py-2 text-xs font-medium text-brand hover:bg-cream';
+      verTodos.textContent = 'Ver todos los resultados';
+      todos.appendChild(verTodos);
+      lista.appendChild(todos);
+      lista.hidden = false;
+      caja.setAttribute('aria-expanded', 'true');
+    };
+
+    caja.addEventListener('focus', () => void cargarIndice());
+    caja.addEventListener('input', () => void pintar());
+    caja.addEventListener('keydown', (ev) => {
+      const items = Array.from(lista.querySelectorAll('a'));
+      if (ev.key === 'Escape') {
+        cerrar();
+      } else if (ev.key === 'ArrowDown' && items.length) {
+        ev.preventDefault();
+        marcar((activo + 1) % items.length);
+      } else if (ev.key === 'ArrowUp' && items.length) {
+        ev.preventDefault();
+        marcar((activo - 1 + items.length) % items.length);
+      } else if (ev.key === 'Enter' && activo >= 0 && items[activo]) {
+        ev.preventDefault();
+        window.location.href = items[activo].href;
+      }
+    });
+    document.addEventListener('click', (ev) => {
+      if (!contenedor.contains(ev.target as Node)) cerrar();
+    });
+  }
+</script>
