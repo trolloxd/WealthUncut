@@ -1,0 +1,292 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE, AUTHOR } from '../config/site';
+
+const title = 'Plantilla de seguimiento de inversiones en Excel (fondos indexados)';
+const description = 'Descarga gratis una plantilla de Excel para seguir tus fondos indexados: aportaciones, rentabilidad, TIR, costes, reequilibrio, impuestos estimados y proyección, con vídeos.';
+const pubDate = new Date('2026-10-06');
+const url = `${SITE.url}/plantilla-seguimiento-inversiones/`;
+const archivo = '/descargas/Plantilla-seguimiento-inversiones-WealthUncut.xlsx';
+const fechaLarga = pubDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const img = (nombre: string) => `/plantilla/img/${nombre}.webp`;
+const vid = (nombre: string) => `/plantilla/video/${nombre}.mp4`;
+
+const videos = {
+  recorrido: { archivo: 'plantilla-inv-recorrido', nombre: 'Recorrido por la plantilla de seguimiento de inversiones', desc: 'Un recorrido de 22 segundos por las hojas de la plantilla de seguimiento de fondos indexados.', duracion: 'PT22S' },
+  compra: { archivo: 'plantilla-inv-apuntar-compra', nombre: 'Cómo apuntar una compra de fondos', desc: 'Cómo apuntar una compra y ver cómo cambian tus fondos y tu resumen.', duracion: 'PT17S' },
+  reequilibrar: { archivo: 'plantilla-inv-reequilibrar', nombre: 'Cómo reequilibrar tu cartera', desc: 'Cómo cambiar tus pesos objetivo y ver cuánto comprar o vender en cada fondo.', duracion: 'PT14S' },
+  actualizar: { archivo: 'plantilla-inv-actualizar-valores', nombre: 'Cómo actualizar el valor liquidativo', desc: 'Cómo poner el valor liquidativo de hoy y ver el valor de tu cartera.', duracion: 'PT13S' },
+};
+
+const faqs = [
+  {
+    pregunta: '¿La plantilla es gratis? ¿Tengo que dejar mi email?',
+    respuesta: 'Es gratis y no te pedimos el email: el botón descarga el archivo directamente. Puedes usarla y modificarla para ti; solo te pedimos que no la vendas ni la presentes como tuya.',
+  },
+  {
+    pregunta: '¿Los fondos y los números que trae son reales?',
+    respuesta: 'No. Los fondos (con ISIN "EJEMPLO") y las operaciones son ficticios, solo sirven para que veas cómo funciona. Bórralos y pon los tuyos: no son una recomendación de ningún producto ni de ningún reparto.',
+  },
+  {
+    pregunta: '¿Cómo calcula la rentabilidad?',
+    respuesta: 'Muestra la ganancia sobre lo que has aportado y la TIR (tasa interna de retorno, calculada con XIRR), que tiene en cuenta cuándo has puesto cada euro. La TIR es la medida más justa si aportas todos los meses.',
+  },
+  {
+    pregunta: '¿El impuesto que calcula es el que pagaré?',
+    respuesta: 'Es una estimación orientativa: aplica los tramos del ahorro al beneficio calculado con el precio medio de compra. Hacienda aplica el método FIFO (las participaciones más antiguas se venden primero), así que el dato real puede cambiar. Para el cálculo exacto usa la calculadora de impuestos por venta de fondos de esta web.',
+  },
+  {
+    pregunta: '¿Funciona en Google Sheets, LibreOffice o Numbers?',
+    respuesta: 'Está pensada para Excel (versiones modernas). Se abre en Google Sheets y LibreOffice, pero los gráficos y algunos formatos pueden verse distintos y la función XIRR de la TIR puede comportarse de otra manera. En Numbers puede perder formato.',
+  },
+  {
+    pregunta: '¿Mis datos se envían a algún sitio?',
+    respuesta: 'No. Es un archivo que se descarga y se usa en tu ordenador: lo que escribas se queda en él. Nosotros no vemos tu cartera.',
+  },
+  {
+    pregunta: '¿Cuántos fondos y operaciones admite?',
+    respuesta: 'Hasta ocho fondos y 500 operaciones, y 60 valoraciones mensuales (cinco años).',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: title,
+    description,
+    inLanguage: SITE.locale,
+    datePublished: pubDate.toISOString(),
+    dateModified: pubDate.toISOString(),
+    author: { '@id': `${SITE.url}/autor/#person`, '@type': 'Person', name: AUTHOR.name },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    primaryImageOfPage: `${SITE.url}${img('plantilla-inv-resumen')}`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'DigitalDocument',
+    '@id': `${url}#plantilla`,
+    name: 'Plantilla de seguimiento de inversiones en fondos indexados (Excel)',
+    description: 'Plantilla de Excel para seguir aportaciones, valor, rentabilidad, TIR, costes, reequilibrio e impuestos estimados de una cartera de fondos.',
+    encodingFormat: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    contentUrl: `${SITE.url}${archivo}`,
+    inLanguage: SITE.locale,
+    isAccessibleForFree: true,
+    author: { '@id': `${SITE.url}/autor/#person`, '@type': 'Person', name: AUTHOR.name },
+    datePublished: pubDate.toISOString(),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Plantilla de seguimiento de inversiones', item: url },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.pregunta, acceptedAnswer: { '@type': 'Answer', text: f.respuesta } })),
+  },
+  ...Object.values(videos).map((v) => ({
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: v.nombre,
+    description: v.desc,
+    thumbnailUrl: `${SITE.url}${img(v.archivo + '-poster')}`,
+    contentUrl: `${SITE.url}${vid(v.archivo)}`,
+    uploadDate: pubDate.toISOString(),
+    duration: v.duracion,
+    inLanguage: SITE.locale,
+  })),
+];
+
+const hojas = [
+  { nombre: 'Instrucciones', texto: 'Cómo usarla en cinco pasos y qué significan los colores.' },
+  { nombre: 'Resumen', texto: 'Tu cartera de un vistazo: valor, aportado, ganancia, rentabilidad, TIR, costes y un impuesto estimado, con gráficos.' },
+  { nombre: 'Fondos', texto: 'Una fila por fondo: tu peso objetivo, el peso real, la desviación y cuánto comprar o vender para reequilibrar.' },
+  { nombre: 'Operaciones', texto: 'El cuaderno donde apuntas compras, ventas y traspasos. Hasta 500 filas.' },
+  { nombre: 'Valoraciones', texto: 'El valor de tu cartera mes a mes, para ver la evolución frente a lo aportado.' },
+  { nombre: 'Proyección', texto: 'Cuánto podría crecer tu cartera con tu aportación mensual y una rentabilidad que eliges tú.' },
+];
+
+const v = (k: keyof typeof videos) => videos[k];
+---
+
+<BaseLayout title={title} description={description} publishedDate={pubDate} extraJsonLd={jsonLd}>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Plantilla de seguimiento de inversiones' }]} />
+
+  <article class="prose max-w-none">
+    <h1>Plantilla de seguimiento de inversiones en Excel (fondos indexados)</h1>
+    <p class="not-prose -mt-2 mb-6 text-sm text-ink-muted">
+      Por <a href="/autor/" rel="author" class="font-medium text-ink underline decoration-ink-muted/40">{AUTHOR.name}</a> · Actualizada el{' '}
+      <time datetime="2026-10-06">{fechaLarga}</time> · <a href="#descargar" class="font-medium text-brand underline decoration-brand/30">Ir a la descarga ↓</a>
+    </p>
+
+    <p>
+      Esta plantilla de Excel te deja seguir tu cartera de fondos indexados: apuntas cada compra, venta o traspaso, y ella calcula cuánto vale tu cartera,
+      cuánto has aportado, cuánto has ganado, tu rentabilidad (TIR incluida), lo que pagas en costes, cuánto te desvías de los pesos que quieres y
+      un impuesto estimado si vendieras hoy. Más abajo tienes un recorrido con imágenes y vídeos, y <strong>al final, el archivo para descargar</strong>.
+    </p>
+    <p class="text-sm">
+      Los fondos y las cifras que trae son ficticios, solo para que veas cómo funciona: no son una recomendación de ningún producto ni de ningún reparto.
+      Es información educativa, no asesoramiento financiero.
+    </p>
+
+    <h2>Qué incluye la plantilla</h2>
+    <ul>
+      {hojas.map((h) => (
+        <li><strong>{h.nombre}:</strong> {h.texto}</li>
+      ))}
+    </ul>
+
+    <h2>Míralo en 22 segundos</h2>
+    <figure class="not-prose">
+      <video controls preload="none" playsinline poster={img('plantilla-inv-recorrido-poster')} width="1280" height="720" class="w-full rounded-xl border border-border" aria-label={v('recorrido').nombre}>
+        <source src={vid('plantilla-inv-recorrido')} type="video/mp4" />
+        Tu navegador no reproduce vídeo. Mira las imágenes de más abajo.
+      </video>
+      <figcaption class="mt-2 text-xs text-ink-faint">Recorrido por las hojas. Sin sonido: los pasos van escritos en pantalla.</figcaption>
+    </figure>
+
+    <h2>Paso 1: da de alta tus fondos</h2>
+    <p>
+      Empieza por la hoja <strong>Fondos</strong>. Pon una fila por fondo: nombre, ISIN, tipo de activo, comisión anual (TER), el peso que quieres que tenga en tu cartera
+      y el valor liquidativo de hoy. Con tus operaciones, la hoja calcula el resto.
+    </p>
+    <figure class="not-prose my-6">
+      <img src={img('plantilla-inv-fondos')} alt="Hoja Fondos con nombre, tipo, TER, peso objetivo, valor actual, ganancia, peso actual, desviación y ajuste para reequilibrar" width="1774" height="500" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+      <figcaption class="mt-2 text-sm text-ink-muted">
+        Las celdas en <strong>azul sobre fondo amarillo</strong> son las que rellenas tú; las demás se calculan solas. La desviación se pone en rojo si un fondo se aleja
+        más de cinco puntos de su peso objetivo.
+      </figcaption>
+    </figure>
+
+    <h2>Paso 2: apunta cada operación</h2>
+    <p>
+      En <strong>Operaciones</strong> apuntas cada compra, venta o traspaso: fecha, fondo (desplegable), tipo, participaciones y valor liquidativo de esa orden.
+      El importe sale solo. Si el fondo vino de un traspaso, puedes indicar su coste heredado.
+    </p>
+    <figure class="not-prose my-6">
+      <img src={img('plantilla-inv-operaciones')} alt="Hoja Operaciones con fecha, fondo, tipo, participaciones, valor liquidativo, comisión e importe automático" width="1473" height="1176" loading="lazy" decoding="async" class="mx-auto w-full max-w-3xl rounded-xl border border-border" />
+      <figcaption class="mt-2 text-sm text-ink-muted">Tu broker o tu banco te dan el número de participaciones y el valor liquidativo en la confirmación de cada orden.</figcaption>
+    </figure>
+
+    <h3>Vídeo: apunta una compra y mira cómo cambia tu cartera</h3>
+    <figure class="not-prose my-6">
+      <video controls preload="none" playsinline poster={img('plantilla-inv-apuntar-compra-poster')} width="1280" height="720" class="w-full rounded-xl border border-border" aria-label={v('compra').nombre}>
+        <source src={vid('plantilla-inv-apuntar-compra')} type="video/mp4" />
+        Tu navegador no reproduce vídeo.
+      </video>
+      <figcaption class="mt-2 text-xs text-ink-faint">Ejemplo: una aportación extra de 80 €. Sube el valor del fondo y el total aportado.</figcaption>
+    </figure>
+    <div class="not-prose my-6 grid gap-4 sm:grid-cols-2">
+      <figure>
+        <img src={img('plantilla-inv-compra-3')} alt="Hoja Fondos tras apuntar la compra, con el fondo actualizado" width="1774" height="500" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+        <figcaption class="mt-2 text-xs text-ink-muted">En Fondos, el fondo ya refleja las nuevas participaciones…</figcaption>
+      </figure>
+      <figure>
+        <img src={img('plantilla-inv-compra-4')} alt="Resumen de la cartera tras la compra" width="1523" height="1171" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+        <figcaption class="mt-2 text-xs text-ink-muted">…y el Resumen recalcula el aportado y el valor.</figcaption>
+      </figure>
+    </div>
+
+    <h2>Paso 3: lee tu Resumen</h2>
+    <figure class="not-prose my-6">
+      <img src={img('plantilla-inv-resumen')} alt="Hoja Resumen con valor de la cartera, aportado, ganancia, rentabilidad, TIR, costes, impuesto estimado y gráficos" width="1523" height="1171" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+      <figcaption class="mt-2 text-sm text-ink-muted">
+        Arriba, tus cifras clave. Debajo, el impuesto estimado si vendieras hoy y "Tu cartera de un vistazo", con tres gráficos: reparto por fondo, reparto por tipo de activo y
+        valor frente a lo aportado.
+      </figcaption>
+    </figure>
+    <ul>
+      <li><strong>Ganancia y rentabilidad:</strong> lo que has ganado sobre lo que has puesto.</li>
+      <li><strong>TIR:</strong> la rentabilidad anualizada que tiene en cuenta cuándo has aportado cada cantidad. Si aportas todos los meses, es la cifra más justa.</li>
+      <li><strong>Costes:</strong> lo que te cuestan al año las comisiones (TER) de tus fondos, en euros y como porcentaje de tu cartera. Entender su peso es clave: mira
+        <a href="/blog/rentabilidad-neta-fondo-indexado/">cuánto te quitan realmente las comisiones</a>.</li>
+      <li><strong>Impuesto estimado:</strong> los tramos del ahorro aplicados a tu ganancia. Es orientativo, ver más abajo.</li>
+    </ul>
+
+    <h2>Paso 4: reequilibra cuando te desvíes</h2>
+    <p>
+      Con el tiempo, unos fondos suben más que otros y tu reparto cambia. La columna <strong>Ajuste para reequilibrar</strong> te dice cuánto comprar (positivo) o vender (negativo) en
+      cada fondo para volver a tus pesos objetivo. Una forma habitual de hacerlo es aportar más a lo que está por debajo, sin necesidad de vender.
+    </p>
+    <figure class="not-prose my-6">
+      <video controls preload="none" playsinline poster={img('plantilla-inv-reequilibrar-poster')} width="1280" height="720" class="w-full rounded-xl border border-border" aria-label={v('reequilibrar').nombre}>
+        <source src={vid('plantilla-inv-reequilibrar')} type="video/mp4" />
+        Tu navegador no reproduce vídeo.
+      </video>
+      <figcaption class="mt-2 text-xs text-ink-faint">Ejemplo: al cambiar los pesos objetivo, cambia al instante cuánto comprar o vender en cada fondo.</figcaption>
+    </figure>
+
+    <h2>Paso 5: actualiza el valor y mira la evolución</h2>
+    <p>
+      Cada cierto tiempo, pon en <strong>Fondos</strong> el valor liquidativo de hoy y cambia la fecha de valoración en el Resumen. Una vez al mes, apunta en
+      <strong>Valoraciones</strong> el valor total de la cartera: así la plantilla dibuja cómo evoluciona frente a lo que has aportado.
+    </p>
+    <figure class="not-prose my-6">
+      <video controls preload="none" playsinline poster={img('plantilla-inv-actualizar-valores-poster')} width="1280" height="720" class="w-full rounded-xl border border-border" aria-label={v('actualizar').nombre}>
+        <source src={vid('plantilla-inv-actualizar-valores')} type="video/mp4" />
+        Tu navegador no reproduce vídeo.
+      </video>
+      <figcaption class="mt-2 text-xs text-ink-faint">Ejemplo: cambia el valor liquidativo de un fondo y se actualizan su valor, su ganancia y el Resumen.</figcaption>
+    </figure>
+    <div class="not-prose my-6 grid gap-6">
+      <figure>
+        <img src={img('plantilla-inv-valoraciones')} alt="Hoja Valoraciones con el valor de la cartera mes a mes y un gráfico frente a lo aportado" width="1165" height="1178" loading="lazy" decoding="async" class="mx-auto w-full max-w-3xl rounded-xl border border-border" />
+        <figcaption class="mt-2 text-sm text-ink-muted"><strong>Valoraciones:</strong> una fila por mes con el valor total. Solo dibuja los meses con datos.</figcaption>
+      </figure>
+      <figure>
+        <img src={img('plantilla-inv-proyeccion')} alt="Hoja Proyección con aportación mensual, rentabilidad estimada y gráfico de crecimiento" width="1075" height="1154" loading="lazy" decoding="async" class="mx-auto w-full max-w-3xl rounded-xl border border-border" />
+        <figcaption class="mt-2 text-sm text-ink-muted">
+          <strong>Proyección:</strong> elige tu aportación mensual y una rentabilidad anual hipotética. No es una predicción, es un ejercicio; para jugar con más variables usa la calculadora de
+          <a href="/herramientas/calculadora-interes-compuesto/">interés compuesto</a>.
+        </figcaption>
+      </figure>
+    </div>
+
+    <h2>Sobre el impuesto estimado</h2>
+    <p>
+      La plantilla aplica los <a href="/blog/como-tributan-los-fondos-de-inversion-en-espana/">tramos del ahorro</a> a la ganancia calculada con el <strong>precio medio de compra</strong>. Hacienda, en cambio, aplica el
+      método <strong>FIFO</strong>: se venden primero las participaciones más antiguas. Por eso es una referencia, no tu cifra definitiva. Para calcularlo bien, usa la
+      <a href="/herramientas/calculadora-impuestos-venta-fondos/">calculadora de impuestos por venta de fondos</a>, que sí aplica FIFO.
+    </p>
+
+    <h2>Cómo sacarle partido</h2>
+    <ul>
+      <li><strong>Apunta cada aportación el mismo día</strong> que la hagas: es lo que hace que la TIR sea exacta.</li>
+      <li><strong>No mires la cartera cada día.</strong> Actualizar los valores una vez al mes es suficiente para una inversión a largo plazo.</li>
+      <li><strong>Pocos fondos.</strong> Con tres o cuatro cubres un reparto razonable. Más no suele aportar.</li>
+      <li><strong>Antes de invertir</strong>, comprueba que tienes un <a href="/herramientas/calculadora-fondo-de-emergencia/">fondo de emergencia</a> y que tus gastos están controlados con la
+        <a href="/plantilla-presupuesto/">plantilla de presupuesto mensual</a>.</li>
+      <li><strong>Para elegir y simular fondos</strong>, usa la herramienta de <a href="/carteras/">carteras de fondos</a>.</li>
+    </ul>
+
+    <h2>Preguntas frecuentes</h2>
+    {faqs.map((f) => (
+      <p>
+        <strong>{f.pregunta}</strong><br />
+        {f.respuesta}
+      </p>
+    ))}
+  </article>
+
+  <section id="descargar" aria-labelledby="h-descargar" class="mx-auto mt-14 max-w-3xl rounded-2xl border-2 border-brand/30 bg-cream-elevated p-8 text-center">
+    <p class="text-xs font-semibold uppercase tracking-widest text-brand">Descarga gratuita</p>
+    <h2 id="h-descargar" class="mt-2 font-display text-2xl text-ink">Plantilla de seguimiento de inversiones (Excel)</h2>
+    <p class="mx-auto mt-3 max-w-xl text-sm text-ink-muted">
+      Archivo de Excel (.xlsx) con seis hojas, gráficos y fórmulas. Sin registros ni email. Los fondos y las cifras que trae son un ejemplo: bórralos y empieza con los tuyos.
+    </p>
+    <a href={archivo} download="Plantilla-seguimiento-inversiones-WealthUncut.xlsx" class="btn-primary mt-6 inline-block">Descargar la plantilla (.xlsx, 87 KB)</a>
+    <p class="mt-4 text-xs text-ink-faint">
+      Versión 1.0 · {fechaLarga} · Hecha por {AUTHOR.name}. Úsala y modifícala para ti; no la vendas ni la presentes como tuya.
+      Es información educativa, no asesoramiento financiero.
+    </p>
+  </section>
+</BaseLayout>

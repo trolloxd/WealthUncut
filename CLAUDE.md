@@ -197,6 +197,9 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   calculados por Excel). Las imágenes y los vídeos (`public/plantilla/`) son capturas reales de la plantilla renderizadas
   por Excel; si cambias la plantilla hay que rehacerlos. Origen: plantilla personal de David (en inglés, una sola hoja),
   rehecha en español con movimientos, presupuesto por categorías, regla 50/30/20, vista anual, objetivos y deudas.
+- `/plantilla-seguimiento-inversiones/` (`src/pages/plantilla-seguimiento-inversiones.astro`): igual que la de presupuesto, con
+  `public/descargas/Plantilla-seguimiento-inversiones-WealthUncut.xlsx`, generada por `scripts/plantilla-inversiones/crear_plantilla.py`.
+  Fondos y operaciones de ejemplo ficticios; el impuesto estimado usa precio medio (no FIFO) y remite a la calculadora FIFO.
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se

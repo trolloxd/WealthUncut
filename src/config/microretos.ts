@@ -46,4 +46,5 @@ export const MICRORETOS: Microreto[] = [
   { texto: 'Convierte el TIN que anuncia un banco en TAE y mira cuánto rinde de verdad.', href: '/herramientas/calculadora-prestamo-tae/', enlace: 'TAE' },
   { texto: 'Simula tu ahorro con interés compuesto y mira qué parte del resultado son intereses.', href: '/herramientas/calculadora-interes-compuesto/', enlace: 'Interés compuesto' },
   { texto: 'Descarga la plantilla de presupuesto y apunta tus gastos de esta semana.', href: '/plantilla-presupuesto/', enlace: 'Plantilla de presupuesto' },
+  { texto: 'Descarga la plantilla de seguimiento y apunta tus fondos para saber cuánto llevas ganado de verdad.', href: '/plantilla-seguimiento-inversiones/', enlace: 'Plantilla de inversiones' },
 ];

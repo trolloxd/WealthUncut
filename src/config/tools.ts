@@ -137,6 +137,12 @@ export const TOOLS = [
     tags: ['ahorro', 'educación financiera', 'calculadoras'],
   },
   {
+    href: '/plantilla-seguimiento-inversiones/',
+    name: 'Plantilla de seguimiento de inversiones (Excel)',
+    description: 'Descarga gratis una plantilla para seguir tus fondos indexados: rentabilidad, TIR, costes, reequilibrio e impuesto estimado.',
+    tags: ['fondos indexados', 'carteras', 'calculadoras'],
+  },
+  {
     href: '/carteras/',
     name: 'Carteras de fondos',
     description: 'Busca entre más de 1.600 fondos, reparte pesos y simula tu cartera bruta y neta de impuestos.',

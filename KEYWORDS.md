@@ -260,4 +260,4 @@ que sí necesitan cifras legales verificadas en BOE/SEPE.
 **Página de recurso descargable (2026-10-06)**: `/plantilla-presupuesto/` ("plantilla presupuesto mensual excel gratis",
 "plantilla control de gastos excel", "excel gastos mensuales", "presupuesto mensual personal excel"; todas con demanda
 confirmada en el autocompletado). Siguientes plantillas posibles con la misma fórmula: "plantilla ahorro excel",
-"plantilla seguimiento de inversiones excel" y "plantilla hipoteca excel".
+"plantilla seguimiento de inversiones excel" (hecha el 2026-10-06, `/plantilla-seguimiento-inversiones/`) y "plantilla hipoteca excel".
