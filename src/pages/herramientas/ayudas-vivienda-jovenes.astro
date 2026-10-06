@@ -1,0 +1,77 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import YouthHousingAidChecker from '../../components/YouthHousingAidChecker';
+import { AYUDAS_VIVIENDA_JOVENES as A } from '../../config/finance';
+---
+
+<ToolLayout
+  title="Ayudas a la vivienda para jóvenes 2026: ¿a cuáles tienes derecho?"
+  name="Ayudas a la vivienda para jóvenes"
+  description="Comprueba si cumples los requisitos de las ayudas estatales de 2026 para jóvenes: alquiler (hasta 300 €/mes), compra en municipios pequeños (hasta 15.000 €) y alquiler con opción a compra."
+  pubDate={new Date('2026-10-06')}
+  sources={[
+    { label: 'BOE: Real Decreto 326/2026, Plan Estatal de Vivienda 2026-2030', url: A.url },
+    { label: 'Ministerio de Vivienda y Agenda Urbana: Plan Estatal de Vivienda', url: 'https://www.mivau.gob.es/vivienda/info-plan-estatal-de-vivienda-2026-2030' },
+  ]}
+  faqs={[
+    {
+      pregunta: '¿Cuánto es la ayuda al alquiler para jóvenes en 2026?',
+      respuesta: 'El Plan Estatal de Vivienda 2026-2030 fija una ayuda máxima de 300 euros al mes para una vivienda y 200 euros para una habitación, con el límite del 60 % del alquiler. Se concede por dos años, prorrogable otros dos si la comunidad lo acuerda.',
+    },
+    {
+      pregunta: '¿Qué requisitos hay para la ayuda al alquiler joven?',
+      respuesta: 'Tener 35 años o menos al solicitarla, ingresos anuales de hasta 5 veces el IPREM (42.000 euros con el IPREM de 14 pagas), no ser propietario de una vivienda en España y que el alquiler no supere 1.000 euros al mes (600 si es una habitación; 500 y 250 en municipios de hasta 10.000 habitantes).',
+    },
+    {
+      pregunta: '¿Se puede pedir ya?',
+      respuesta: 'Las ayudas las convocan las comunidades autónomas a través de convenios con el Ministerio, así que depende de que tu comunidad tenga la convocatoria abierta. Consulta la web de vivienda de tu comunidad.',
+    },
+    {
+      pregunta: '¿Y para comprar?',
+      respuesta: 'Hay una ayuda de hasta 15.000 euros, con el límite del 20 % del coste, para jóvenes que compren o autopromuevan una vivienda en un municipio de 10.000 habitantes o menos, que será su residencia habitual durante al menos cinco años.',
+    },
+  ]}
+>
+  <p>
+    El acceso a la vivienda es el mayor obstáculo de los jóvenes para ahorrar e independizarse. El Plan Estatal de Vivienda 2026-2030
+    (<a href={A.url}>Real Decreto 326/2026</a>) trae ayudas directas para alquilar y para comprar. Esta herramienta te dice si cumples los
+    requisitos básicos y cuánto podrías recibir. Es orientativa: la decisión final la toma tu comunidad autónoma.
+  </p>
+
+  <YouthHousingAidChecker client:load />
+
+  <BotonCompartir client:load />
+
+  <h2>Las tres ayudas para jóvenes del plan</h2>
+  <ul>
+    <li><strong>Alquiler para la emancipación:</strong> hasta {A.alquiler.ayudaMaxViviendaMes} € al mes ({A.alquiler.ayudaMaxHabitacionMes} € si es una habitación), con el límite del 60 % de tu renta, durante {A.alquiler.duracionAnios} años prorrogables otros {A.alquiler.prorrogaAnios}.</li>
+    <li><strong>Compra o autopromoción en municipios pequeños:</strong> hasta {A.compraMunicipioPequeno.ayudaMax.toLocaleString('es-ES')} €, sin pasar del 20 % del coste, en municipios de hasta 10.000 habitantes (hasta 20.000 si tu comunidad lo justifica). Tienes que vivir allí al menos {A.compraMunicipioPequeno.anosResidenciaMinima} años.</li>
+    <li><strong>Alquiler con opción a compra en vivienda protegida permanente:</strong> el plan abona al vendedor las rentas pagadas (hasta {A.opcionCompra.ayudaMaxRentasEImporte.toLocaleString('es-ES')} €) más un 80 % adicional, y esas rentas se descuentan del precio si compras. La opción se ejerce entre uno y cuatro años después.</li>
+  </ul>
+
+  <h2>Cosas que conviene saber antes de contar con la ayuda</h2>
+  <ul>
+    <li><strong>No es automática.</strong> Cada comunidad abre su convocatoria y puede tardar, agotarse o fijar condiciones propias dentro del marco del plan.</li>
+    <li><strong>No se acumula</strong> con otras ayudas al alquiler del plan, de tu comunidad o de tu ayuntamiento.</li>
+    <li><strong>El contrato debe ser a tu nombre</strong> y no puede ser con un familiar de primer o segundo grado ni con una sociedad de la que seas socio.</li>
+  </ul>
+
+  <h2>Y si quieres comprar sin ayuda</h2>
+  <p>
+    Si tu situación no encaja, estas herramientas te ayudan a decidir con números: <a href="/herramientas/alquilar-o-comprar-vivienda/">¿alquilar o comprar?</a>,{' '}
+    <a href="/herramientas/ahorro-entrada-piso/">cuánto ahorrar para la entrada</a>, el <a href="/herramientas/itp-por-comunidades/">ITP de tu comunidad</a> y el{' '}
+    <a href="/herramientas/simulador-hipoteca-euribor/">simulador de hipoteca con el euríbor</a>. Para la hipoteca de un joven existe además la línea de avales del ICO,
+    que avala una parte del préstamo y permite financiar más del 80 %: consulta sus requisitos actualizados en la <a href="https://www.ico.es/">web del ICO</a>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Cuánto es la ayuda al alquiler para jóvenes en 2026?</strong><br />
+    Hasta 300 euros al mes para una vivienda y 200 para una habitación, con el límite del 60 % del alquiler, durante dos años prorrogables otros dos.</p>
+  <p><strong>¿Qué requisitos hay para la ayuda al alquiler joven?</strong><br />
+    35 años o menos, ingresos de hasta 5 veces el IPREM (42.000 euros), no ser propietario de vivienda en España y un alquiler de hasta 1.000 euros al mes (600 en habitación; 500 y 250 en municipios de hasta 10.000 habitantes).</p>
+  <p><strong>¿Se puede pedir ya?</strong><br />
+    Depende de que tu comunidad autónoma tenga la convocatoria abierta. Consulta la web de vivienda de tu comunidad.</p>
+  <p><strong>¿Y para comprar?</strong><br />
+    Hasta 15.000 euros, con el límite del 20 % del coste, en municipios de 10.000 habitantes o menos, para vivir allí al menos cinco años.</p>
+</ToolLayout>

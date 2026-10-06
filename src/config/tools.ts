@@ -131,6 +131,12 @@ export const TOOLS = [
     tags: ['educación financiera', 'ahorro', 'interés compuesto'],
   },
   {
+    href: '/herramientas/ayudas-vivienda-jovenes/',
+    name: 'Ayudas a la vivienda para jóvenes',
+    description: 'Comprueba si cumples los requisitos de las ayudas de 2026 para alquilar o comprar y cuánto podrías recibir.',
+    tags: ['vivienda', 'alquiler', 'ahorro'],
+  },
+  {
     href: '/herramientas/calculadora-cuota-autonomos/',
     name: 'Cuota de autónomos 2026',
     description: 'Tu tramo, tu base de cotización y la cuota mensual según tus ingresos reales, con los tipos del BOE.',

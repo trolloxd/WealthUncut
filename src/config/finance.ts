@@ -678,3 +678,35 @@ export function tramoRETA(rendimientoNetoMensual: number) {
     RETA_2026.tramos[RETA_2026.tramos.length - 1]
   );
 }
+
+/**
+ * Ayudas estatales a la vivienda para jóvenes, Plan Estatal de Vivienda 2026-2030. Verificado el 2026-10-06
+ * contra el BOE: Real Decreto 326/2026, de 22 de abril (BOE-A-2026-8872), arts. 133 y 137 (ayuda al alquiler
+ * para la emancipación), 141 y 143 (compra en municipios pequeños) y 148 (alquiler con opción a compra).
+ * IPREM 2026: 600 €/mes, 8.400 €/año en 14 pagas (prorrogado desde 2023). Las ayudas las convocan y pagan las
+ * comunidades autónomas, así que que existan en el plan no significa que haya convocatoria abierta.
+ */
+export const AYUDAS_VIVIENDA_JOVENES = {
+  iprem14PagasAnual: 8400,
+  edadMaxima: 35,
+  limiteIngresosVecesIprem: 5,
+  alquiler: {
+    ayudaMaxViviendaMes: 300,
+    ayudaMaxHabitacionMes: 200,
+    porcentajeMaxRenta: 0.6,
+    rentaMaxViviendaMes: 1000,
+    rentaMaxHabitacionMes: 600,
+    rentaMaxViviendaMesMunicipioPequeno: 500,
+    rentaMaxHabitacionMesMunicipioPequeno: 250,
+    duracionAnios: 2,
+    prorrogaAnios: 2,
+  },
+  compraMunicipioPequeno: {
+    ayudaMax: 15000,
+    porcentajeMaxCoste: 0.2,
+    habitantesMax: 10000,
+    anosResidenciaMinima: 5,
+  },
+  opcionCompra: { ayudaMaxRentasEImporte: 33600, extra80: 26880, anosMax: 4 },
+  url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-8872',
+} as const;

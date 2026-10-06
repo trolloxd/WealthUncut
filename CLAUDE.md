@@ -202,6 +202,9 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   Fondos y operaciones de ejemplo ficticios; el impuesto estimado usa precio medio (no FIFO) y remite a la calculadora FIFO.
 - `/herramientas/calculadora-cuota-autonomos/`: cuota de autónomos por ingresos reales. Tablas y tipos en `RETA_2026`
   (`finance.ts`, verificados contra el BOE el 2026-10-06); revisar cada enero con la nueva orden de cotización.
+- `/herramientas/ayudas-vivienda-jovenes/`: comprobador de ayudas estatales para jóvenes (alquiler, compra en pueblos, opción a
+  compra). Cifras en `AYUDAS_VIVIENDA_JOVENES` (`finance.ts`, BOE RD 326/2026, verificadas el 2026-10-06); las convocatorias
+  son autonómicas, revisar cuando salgan. El aval ICO solo se enlaza, sin cifras (sin fuente oficial verificada).
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se
