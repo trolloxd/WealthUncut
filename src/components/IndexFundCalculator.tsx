@@ -10,7 +10,7 @@ interface Resultado {
   valorFinalNeto: number;
 }
 
-function simular(params: {
+export function simular(params: {
   aportacionInicial: number;
   aportacionMensual: number;
   anios: number;

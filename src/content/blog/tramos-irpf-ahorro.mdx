@@ -1,0 +1,86 @@
+---
+title: "Tramos del IRPF del ahorro: tabla actual y ejemplos"
+description: "Los tramos del IRPF de la base del ahorro (19 % a 30 %), qué rentas incluye, cómo se aplican por tramos y cuánto pagarías en distintos ejemplos, con la fuente de la AEAT."
+pubDate: 2026-10-30
+updatedDate: 2026-10-30
+author: "David Pérez Mitjà"
+tags: ["impuestos", "fondos indexados", "etf"]
+sources:
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
+  - label: "AEAT, Manual práctico de Renta 2025: reglas de integración y compensación de rentas"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c12-integracion-compensacion-rentas/reglas-integracion-compensacion-rentas.html"
+hasAffiliateLinks: false
+draft: false
+---
+
+import TramosAhorroTabla from '../../components/TramosAhorroTabla.astro';
+import { formatEuros } from '../../components/CalculatorUI';
+import { calcularImpuestoAhorro, COMPENSACION_AHORRO } from '../../config/finance';
+
+export const caso = (g) => ({ g, imp: calcularImpuestoAhorro(g), medio: calcularImpuestoAhorro(g) / g });
+export const casos = [3000, 10000, 30000, 60000, 250000].map(caso);
+export const pct = (n) => `${(n * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 })} %`;
+
+La base del ahorro es la parte de tu declaración de la renta donde van los intereses de las cuentas, los dividendos y las
+ganancias por vender fondos, ETF o acciones. Tributa con **tramos progresivos propios**, distintos de los del sueldo.
+Esta es la tabla vigente, qué rentas entran y cómo se aplica realmente, con ejemplos.
+
+## Los tramos del IRPF del ahorro
+
+<TramosAhorroTabla />
+
+La palabra clave es **marginal**: cada tipo se aplica solo a la parte de la renta que cae dentro de ese tramo, no
+a toda la renta. Quien tiene 60.000 € de ganancia no paga el 23 % sobre los 60.000, sino el 19 % sobre los primeros
+6.000 €, el 21 % sobre los siguientes y el 23 % solo sobre el exceso.
+
+## Qué rentas van a la base del ahorro
+
+- **Intereses** de cuentas remuneradas, depósitos y otros activos de renta fija.
+- **Dividendos** de acciones (con la retención a cuenta que explicamos en
+  [cómo tributan los dividendos](/blog/impuesto-dividendos-espana/)).
+- **Ganancias y pérdidas patrimoniales** por vender o reembolsar fondos de inversión, ETF o acciones.
+
+El sueldo, en cambio, va a la base general con otra escala: puedes ver la diferencia en la
+[calculadora de sueldo neto](/herramientas/calculadora-sueldo-neto/).
+
+## Ejemplos: cuánto pagas según la renta del ahorro
+
+| Renta del ahorro en el año | Impuesto | Tipo medio efectivo |
+|---|---|---|
+| {formatEuros(casos[0].g)} | {formatEuros(casos[0].imp)} | {pct(casos[0].medio)} |
+| {formatEuros(casos[1].g)} | {formatEuros(casos[1].imp)} | {pct(casos[1].medio)} |
+| {formatEuros(casos[2].g)} | {formatEuros(casos[2].imp)} | {pct(casos[2].medio)} |
+| {formatEuros(casos[3].g)} | {formatEuros(casos[3].imp)} | {pct(casos[3].medio)} |
+| {formatEuros(casos[4].g)} | {formatEuros(casos[4].imp)} | {pct(casos[4].medio)} |
+
+Verás que el **tipo medio** es siempre menor que el del último tramo que tocas. Es el efecto de la progresividad:
+las rentas pequeñas pagan casi todo al 19 %.
+
+## Cómo se compensan ganancias y pérdidas
+
+Dentro de la base del ahorro, las pérdidas pueden compensar ganancias. Hay una regla cruzada: las pérdidas
+patrimoniales pueden compensar hasta el {pct(COMPENSACION_AHORRO.limiteCruzado)} de los rendimientos del capital mobiliario
+(intereses y dividendos) del año, y lo que no se compense puede arrastrarse durante {COMPENSACION_AHORRO.aniosArrastre} años. Entre
+ganancias y pérdidas patrimoniales, la compensación es directa. Lo desarrollamos con ejemplos en
+[cómo tributan los fondos de inversión](/blog/como-tributan-los-fondos-de-inversion-en-espana/).
+
+## Retención frente a impuesto
+
+Cuando vendes un fondo o cobras un dividendo, te retienen un porcentaje a cuenta. **No es el impuesto final**: en la
+declaración de la renta se calcula lo que realmente te corresponde con la tabla de arriba y se compara. Por eso puedes
+salir a pagar o a devolver. Calcula tu caso al vender con la
+[calculadora de impuestos al vender un fondo](/herramientas/calculadora-impuestos-venta-fondos/).
+
+## Preguntas frecuentes
+
+**¿Los tramos son los mismos en todas las comunidades?**
+Para las rentas del ahorro, la tabla que usamos es la misma en el territorio de régimen común (estatal más
+autonómica). Navarra y el País Vasco tienen régimen foral y pueden aplicar otra escala: comprueba la tuya.
+
+**¿Se paga más por ganar más?**
+Sí, pero solo por la parte que supera cada tramo. Ganar más nunca hace que cobres menos neto.
+
+**¿Esto es una recomendación?**
+No. Es información fiscal general basada en el Manual práctico de la AEAT; para tu caso concreto, consulta con la
+AEAT o con un asesor.

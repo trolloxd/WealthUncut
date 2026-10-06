@@ -1,0 +1,108 @@
+---
+title: "Gastos de comprar una vivienda de segunda mano: lista completa"
+description: "Todos los gastos de comprar una vivienda de segunda mano en España: ITP según la comunidad, notaría, registro, gestoría, tasación y quién paga cada uno, con ejemplos calculados."
+pubDate: 2026-11-01
+updatedDate: 2026-11-01
+author: "David Pérez Mitjà"
+tags: ["vivienda", "hipoteca", "impuestos"]
+sources:
+  - label: "BOE: Ley 5/2019, reguladora de los contratos de crédito inmobiliario, artículo 14 (gastos de formalización del préstamo)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814"
+  - label: "Hipotips: tabla de ITP por comunidades autónomas para vivienda usada"
+    url: "https://hipotips.com/itp-por-comunidades-2025-conoce-los-tipos-reducidos/"
+  - label: "Rankia: el ITP en cada comunidad autónoma"
+    url: "https://www.rankia.com/blog/mejores-hipotecas/3233016-impuesto-transmisiones-patrimoniales-itp-cada-comunidad-autonoma"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { calcularEntradaPiso } from '../../components/HomeDepositCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import { GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT } from '../../config/finance';
+
+export const caso = (comunidad) => calcularEntradaPiso({ precioVivienda: 200000, porcentajeEntrada: 20, comunidad, ahorroActual: 0, ahorroMensual: 500 });
+export const pctGastos = (GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT * 100).toLocaleString('es-ES');
+
+Cuando se habla del coste de comprar una casa, casi todo el mundo piensa en el precio y la entrada. Pero comprar una
+vivienda de segunda mano suma **impuestos y gastos que se pagan el día de la firma**, además de la entrada. Esta guía
+los ordena, explica quién paga cada uno y te enseña un ejemplo con números.
+
+## Lo que se paga sí o sí
+
+### 1. El Impuesto de Transmisiones Patrimoniales (ITP)
+
+Es el impuesto que se paga al comprar a un particular, y es el gasto más grande y más variable. Lo fija cada comunidad
+autónoma. Sobre un piso de **200.000 €**:
+
+| Comunidad | ITP |
+|---|---|
+| Madrid | {formatEuros(caso('madrid').itp)} |
+| Andalucía | {formatEuros(caso('andalucia').itp)} |
+| Cataluña | {formatEuros(caso('cataluna').itp)} |
+
+Tienes la tabla completa en [ITP por comunidades autónomas](/herramientas/itp-por-comunidades/). Muchas comunidades
+tienen tipos reducidos para determinados casos (jóvenes, familia numerosa, vivienda habitual de valor limitado...):
+comprueba los de tu comunidad antes de contar con el tipo general.
+
+### 2. Notaría, registro y gestoría de la compraventa
+
+La compraventa se firma ante notario, se inscribe en el Registro de la Propiedad y normalmente se tramita con una
+gestoría. Los aranceles dependen del precio y de la escritura, así que no hay un porcentaje único. Como estimación para
+planificar usamos un **{pctGastos} % del precio** (en el ejemplo de 200.000 €, {formatEuros(caso('madrid').gastos)}). Pide siempre
+presupuesto antes de firmar.
+
+## Si pides una hipoteca
+
+La Ley 5/2019 reparte los gastos de formalizar el préstamo entre el banco y tú:
+
+| Gasto | Quién lo paga |
+|---|---|
+| Tasación del inmueble | El prestatario (tú) |
+| Gestoría de la hipoteca | El prestamista (el banco) |
+| Notaría de la escritura hipotecaria | El prestamista (el banco) |
+| Inscripción de la hipoteca en el registro | El prestamista (el banco) |
+
+Si quieres una copia de la escritura, esa copia sí corre de tu cuenta. El impuesto de actos jurídicos documentados de la
+hipoteca se rige por la normativa tributaria. Para planificar, cuenta con la tasación y revisa en la oferta del banco
+(la ficha de información personalizada) qué gastos asume cada parte.
+
+## Otros gastos que se olvidan
+
+- **Comisión de la inmobiliaria**, si la hay: depende del acuerdo y de quién la contrate.
+- **Gastos de la comunidad y recibos pendientes**: conviene pedir al vendedor el certificado de estar al corriente de
+  pago de la comunidad.
+- **IBI y otros impuestos locales** del año de la compra: se suelen prorratear con el vendedor.
+- **Reformas y mudanza**: casi nunca entran en el presupuesto inicial.
+- **Seguros**: el seguro de hogar, y los que te pida el banco si bonifican tu hipoteca.
+
+## Un ejemplo: cuánto necesitas en total
+
+Piso de 200.000 €, entrada del 20 % (40.000 €), en tres comunidades:
+
+| | Madrid | Andalucía | Cataluña |
+|---|---|---|---|
+| Entrada | {formatEuros(caso('madrid').entrada)} | {formatEuros(caso('andalucia').entrada)} | {formatEuros(caso('cataluna').entrada)} |
+| ITP | {formatEuros(caso('madrid').itp)} | {formatEuros(caso('andalucia').itp)} | {formatEuros(caso('cataluna').itp)} |
+| Notaría, registro y gestoría (estimado) | {formatEuros(caso('madrid').gastos)} | {formatEuros(caso('andalucia').gastos)} | {formatEuros(caso('cataluna').gastos)} |
+| **Total necesario** | **{formatEuros(caso('madrid').totalNecesario)}** | **{formatEuros(caso('andalucia').totalNecesario)}** | **{formatEuros(caso('cataluna').totalNecesario)}** |
+
+A esto hay que añadir la tasación y los gastos pequeños de la lista anterior. Calcula tu caso con la
+[calculadora de ahorro para la entrada de un piso](/herramientas/ahorro-entrada-piso/) y lee la guía completa
+[cuánto dinero necesitas para comprar un piso](/blog/cuanto-ahorrar-entrada-piso/).
+
+## Y si la vivienda es nueva
+
+Cambian los impuestos: en vez de ITP se paga IVA más el Impuesto de Actos Jurídicos Documentados, que también fija cada
+comunidad. Esta guía y nuestras herramientas se refieren a vivienda **de segunda mano**.
+
+## Preguntas frecuentes
+
+**¿Se pueden meter los gastos en la hipoteca?**
+Lo habitual es pagarlos con ahorros propios. Algunos bancos conceden financiación adicional, pero es poco frecuente y
+depende de tu perfil.
+
+**¿Quién paga la notaría de la compraventa?**
+Se pacta entre comprador y vendedor, y conviene dejarlo claro por escrito. Confírmalo con la notaría antes de firmar.
+
+**¿Esto es asesoramiento?**
+No. Es información general: las cifras exactas dependen de tu caso, tu comunidad y tu banco.

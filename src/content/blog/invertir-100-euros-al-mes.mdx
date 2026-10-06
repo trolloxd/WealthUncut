@@ -1,0 +1,104 @@
+---
+title: "Invertir 100 euros al mes: cuánto tendrías en 20 años"
+description: "Cuánto podrías tener invirtiendo 100 euros al mes en un fondo indexado a 10, 20, 30 y 40 años, ya descontados TER e impuestos, con tablas calculadas y sus límites."
+pubDate: 2026-10-27
+updatedDate: 2026-10-27
+author: "David Pérez Mitjà"
+tags: ["fondos indexados", "educación financiera", "calculadoras"]
+sources:
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { simular } from '../../components/IndexFundCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const base = { aportacionInicial: 0, rentabilidadBrutaAnual: 7, terAnual: 0.2, comisionBrokerAnual: 0 };
+export const por = (mensual, anios, rent = 7) => simular({ ...base, aportacionMensual: mensual, anios, rentabilidadBrutaAnual: rent });
+export const horizontes = [10, 20, 30, 40];
+
+Invertir 100 euros al mes parece poco, y a la vez es una de las cantidades más buscadas por quien empieza.
+La pregunta tiene respuesta, pero **depende de dos cosas que nadie sabe de antemano**: cuánto rendirá la
+inversión y cuántos años aguantarás. Aquí tienes las cuentas con supuestos explícitos para que veas el orden de
+magnitud, no una promesa.
+
+## Los supuestos
+
+- Aportas **100 € al mes** desde cero, sin aportación inicial.
+- El fondo indexado rinde un **7 % bruto anual constante** (un supuesto del sitio, no una previsión) y cobra un **TER del
+  0,2 %**. Sin comisión de broker.
+- Se vende todo al final y se tributa con los tramos del IRPF del ahorro sobre la ganancia.
+
+## Cuánto tendrías con 100 euros al mes
+
+| Años | Aportado | Valor bruto | Impuesto | Te quedan netos |
+|---|---|---|---|---|
+| 10 | {formatEuros(por(100, 10).totalAportado)} | {formatEuros(por(100, 10).valorFinalBruto)} | {formatEuros(por(100, 10).impuesto)} | **{formatEuros(por(100, 10).valorFinalNeto)}** |
+| 20 | {formatEuros(por(100, 20).totalAportado)} | {formatEuros(por(100, 20).valorFinalBruto)} | {formatEuros(por(100, 20).impuesto)} | **{formatEuros(por(100, 20).valorFinalNeto)}** |
+| 30 | {formatEuros(por(100, 30).totalAportado)} | {formatEuros(por(100, 30).valorFinalBruto)} | {formatEuros(por(100, 30).impuesto)} | **{formatEuros(por(100, 30).valorFinalNeto)}** |
+| 40 | {formatEuros(por(100, 40).totalAportado)} | {formatEuros(por(100, 40).valorFinalBruto)} | {formatEuros(por(100, 40).impuesto)} | **{formatEuros(por(100, 40).valorFinalNeto)}** |
+
+Fíjate en cómo cambia la relación entre lo que pones y lo que sale. A 10 años, gran parte del resultado es lo que
+aportaste. A 40 años, **la mayor parte es ganancia**: el interés compuesto trabaja sobre los intereses de los años
+anteriores. Lo explicamos con más ejemplos en
+[interés compuesto: qué es, fórmula y ejemplos reales](/blog/interes-compuesto-explicado-con-ejemplos/).
+
+## ¿Y si aportas 50, 100 o 200 euros?
+
+A **20 años** y con los mismos supuestos:
+
+| Aportación mensual | Aportado | Te quedan netos |
+|---|---|---|
+| 50 € | {formatEuros(por(50, 20).totalAportado)} | {formatEuros(por(50, 20).valorFinalNeto)} |
+| 100 € | {formatEuros(por(100, 20).totalAportado)} | {formatEuros(por(100, 20).valorFinalNeto)} |
+| 200 € | {formatEuros(por(200, 20).totalAportado)} | {formatEuros(por(200, 20).valorFinalNeto)} |
+
+El resultado crece casi en proporción a lo que aportas: duplicar la aportación duplica, más o menos, el resultado.
+Lo que **no** se duplica es el esfuerzo de empezar: lo más difícil es el hábito.
+
+## Y si la rentabilidad es otra
+
+Los 7 % son un supuesto. Con el mismo plan (100 € al mes durante 20 años), mira cuánto cambia el resultado neto:
+
+| Rentabilidad bruta anual | Te quedan netos |
+|---|---|
+| 3 % | {formatEuros(por(100, 20, 3).valorFinalNeto)} |
+| 5 % | {formatEuros(por(100, 20, 5).valorFinalNeto)} |
+| 7 % | {formatEuros(por(100, 20, 7).valorFinalNeto)} |
+| 9 % | {formatEuros(por(100, 20, 9).valorFinalNeto)} |
+
+La renta variable no rinde lo mismo todos los años ni sigue una línea recta: puede haber años de pérdidas
+fuertes. Un plan a 20 años con aportaciones mensuales, además, no obtiene exactamente la media: depende del orden en
+que lleguen las subidas y las caídas.
+
+## Antes de invertir tus 100 euros
+
+1. **Ten un colchón.** Si no tienes un fondo de emergencia, empieza por ahí:
+   [cuánto debe ser tu fondo de emergencia y dónde guardarlo](/blog/fondo-de-emergencia-cuanto-necesitas/).
+2. **No metas dinero que necesites pronto.** Invertir es para plazos largos:
+   [diferencia entre ahorrar e invertir](/blog/diferencia-entre-ahorrar-e-invertir/).
+3. **Mira el coste.** El TER y el broker pesan más cuanto mayor es el plazo:
+   [qué es el TER de un fondo](/blog/ter-fondo-que-es/).
+4. **Automatiza.** Las aportaciones periódicas evitan decidir bajo presión.
+
+## Haz el cálculo con tus números
+
+Cambia la aportación, los años, la rentabilidad y el TER en el
+[simulador de rentabilidad neta de un fondo indexado](/blog/rentabilidad-neta-fondo-indexado/), o monta una cartera con
+varios fondos en [Carteras](/carteras/). Si aún no sabes cuánto puedes destinar cada mes, prueba la calculadora de
+[cuánto ahorrar al mes](/herramientas/cuanto-ahorrar-al-mes/).
+
+## Preguntas frecuentes
+
+**¿Se puede empezar con 50 euros al mes?**
+Sí. La cantidad mínima depende del fondo y de la plataforma, y muchos permiten aportaciones pequeñas. Cuanto antes
+empieces, más tiempo trabaja el dinero.
+
+**¿Es seguro invertir 100 euros al mes?**
+No es seguro en el sentido de garantizado: el valor puede bajar, sobre todo a corto plazo. Lo que se reduce con el
+tiempo y la diversificación es la probabilidad de que una mala racha concreta decida tu resultado final.
+
+**¿Esto es una recomendación?**
+No. Es una simulación con supuestos que puedes cambiar; tu situación y tu tolerancia al riesgo son otras.

@@ -1,0 +1,89 @@
+---
+title: "Plan de pensiones: cuánto desgrava y cuándo compensa"
+description: "Cuánto se puede desgravar con un plan de pensiones, cómo calcular tu ahorro fiscal según tu tipo marginal, cómo tributa el rescate y cuándo compensa frente a un fondo indexado."
+pubDate: 2026-11-08
+updatedDate: 2026-11-08
+author: "David Pérez Mitjà"
+tags: ["pensiones", "fondos indexados", "impuestos"]
+sources:
+  - label: "AEAT, Manual práctico de Renta 2025: reducciones por aportaciones y contribuciones a sistemas de previsión social"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c13-determinacion-renta-contribuyente-sujeta-gravamen/reducciones-base-imponible-general/reducciones-aportaciones-contribuciones-sistemas-prevision-social/normas-comunes-aplicables-aportaciones-sistemas-social/cuadro-reducciones-aportaciones-contribuciones-sps.html"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { formatEuros } from '../../components/CalculatorUI';
+import { PLAN_PENSIONES as PP } from '../../config/finance';
+
+export const ahorro = (aportacion, tipo) => aportacion * tipo;
+export const tipos = [0.24, 0.3, 0.37];
+export const aportaciones = [500, 1000, PP.limiteIndividual];
+
+Un plan de pensiones se vende casi siempre con una frase: "te devuelve dinero en la declaración de la renta". Es verdad, pero
+solo es **la mitad de la historia**: el dinero que ahorras en impuestos hoy lo pagas después, al rescatarlo. La pregunta
+útil no es cuánto desgrava, sino **si el plan te sale mejor que invertir ese mismo dinero por tu cuenta**. Esta guía
+explica la desgravación, el límite, el rescate y cuándo compensa, con números.
+
+## Cuánto se puede desgravar
+
+Las aportaciones a un plan de pensiones **reducen la base imponible general** de tu IRPF, dentro de un límite anual. En el
+sistema individual (sin aportación de empresa) el límite es de **{formatEuros(PP.limiteIndividual)} al año**. Si tu empresa aporta a
+un plan de empleo, el límite conjunto puede subir hasta {formatEuros(PP.limiteAdicionalEmpleo)} adicionales, y para autónomos que aportan a su
+propio plan de empleo simplificado, hasta {formatEuros(PP.limiteAdicionalAutonomos)} adicionales (límites del Manual práctico de Renta de la AEAT).
+
+## Cuánto te ahorras: depende de tu tipo marginal
+
+Lo que ahorras en impuestos es la aportación multiplicada por tu **tipo marginal**, es decir, el tipo de la última parte
+de tu sueldo. Con tres tipos de ejemplo:
+
+| Aportación | Si tu tipo marginal es 24 % | 30 % | 37 % |
+|---|---|---|---|
+| {formatEuros(aportaciones[0])} | {formatEuros(ahorro(aportaciones[0], tipos[0]))} | {formatEuros(ahorro(aportaciones[0], tipos[1]))} | {formatEuros(ahorro(aportaciones[0], tipos[2]))} |
+| {formatEuros(aportaciones[1])} | {formatEuros(ahorro(aportaciones[1], tipos[0]))} | {formatEuros(ahorro(aportaciones[1], tipos[1]))} | {formatEuros(ahorro(aportaciones[1], tipos[2]))} |
+| {formatEuros(aportaciones[2])} | {formatEuros(ahorro(aportaciones[2], tipos[0]))} | {formatEuros(ahorro(aportaciones[2], tipos[1]))} | {formatEuros(ahorro(aportaciones[2], tipos[2]))} |
+
+Los tipos de la tabla son ejemplos, no tu tipo: depende de tu sueldo y de tu comunidad autónoma. Para saberlo, mira la
+[calculadora de sueldo neto](/herramientas/calculadora-sueldo-neto/) y compara comunidades en el
+[ranking de IRPF](/herramientas/ranking-irpf-comunidades/). Cuanto mayor es tu tipo marginal, más compensa desgravar.
+
+## Lo que pagas al rescatarlo
+
+Cuando cobras el plan, **todo lo que sacas** (lo aportado y lo ganado) tributa como {PP.tributaComo}. Es decir, se suma a
+tus otros ingresos de ese año y paga al tipo marginal de entonces. Un fondo indexado, en cambio, solo paga impuestos por
+la **ganancia**, con los tramos más bajos del ahorro: los puedes ver en
+[tramos del IRPF del ahorro](/blog/tramos-irpf-ahorro/).
+
+## El dinero está más bloqueado
+
+El plan de pensiones no es un producto líquido: solo puedes retirar el dinero en supuestos que fija la ley (jubilación,
+y algunos casos excepcionales como incapacidad o desempleo de larga duración, entre otros). Un fondo de inversión se
+puede reembolsar cuando quieras. Esa falta de liquidez es un coste real aunque no salga en ninguna tabla. Si aún no tienes
+colchón, empieza por ahí: [fondo de emergencia, cuánto debe ser](/blog/fondo-de-emergencia-cuanto-necesitas/).
+
+## Cuándo compensa el plan de pensiones
+
+La regla general: **compensa más cuanto mayor es tu tipo marginal hoy frente al que tendrás al rescatarlo**. Si hoy
+estás en un tipo alto y esperas un tipo más bajo en la jubilación, ganas con la diferencia. Si tu tipo hoy es bajo, la
+desgravación vale poco y la ventaja del plan se reduce. A eso hay que sumar el coste del producto: muchos planes cobran
+más comisión que un fondo indexado, y esa diferencia, año tras año, se come parte de la ventaja fiscal.
+
+Para ver el resultado con tus cifras (aportación, años, rentabilidad, comisiones y tipos marginales), usa la herramienta
+[plan de pensiones vs fondo indexado](/herramientas/plan-pensiones-vs-fondo-indexado/). Si todavía dudas sobre qué
+hacer con tu dinero a largo plazo, la guía [primeros pasos para invertir](/blog/primeros-pasos-para-invertir-en-espana/)
+ordena las decisiones.
+
+## Preguntas frecuentes
+
+**¿Cuánto puedo aportar a un plan de pensiones al año?**
+En el sistema individual, el límite de reducción es de {formatEuros(PP.limiteIndividual)} al año; con aportación de empresa a un plan de
+empleo o siendo autónomo con un plan de empleo simplificado, el límite conjunto puede ser mayor.
+
+**¿Se desgrava siempre?**
+La reducción se aplica en la base imponible del año en que aportas, con los límites de la normativa. Comprueba tu caso en la
+declaración o con la AEAT.
+
+**¿Es mejor un plan de pensiones o un fondo indexado?**
+Depende de tu tipo marginal hoy y al rescatar, de las comisiones y de cuánto valores la liquidez. Ninguno es mejor en abstracto.
+
+**¿Esto es una recomendación?**
+No. Es información general: la mejor opción depende de tu situación fiscal y tus objetivos.

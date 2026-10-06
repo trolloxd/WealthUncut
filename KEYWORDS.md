@@ -241,3 +241,11 @@ invertir con poco dinero`, `gastos de comprar una vivienda de segunda mano`, `am
 invertir`, `tramos irpf ahorro` (artículo propio con la tabla), `retencion fondos de inversion`,
 `plan de pensiones desgravar` y `cuanto ahorrar al mes segun sueldo` (artículo que acompañe la
 calculadora). Evitar siempre titulares tipo "mejor X" que obliguen a recomendar un producto.
+
+**Artículos escritos el 2026-10-06 a partir de esa investigación (programados)**: `invertir-100-euros-al-mes`
+(27/10), `tramos-irpf-ahorro` (30/10), `gastos-comprar-vivienda-segunda-mano` (1/11),
+`amortizar-hipoteca-o-invertir` (3/11), `sp500-vs-msci-world` (6/11) y `plan-de-pensiones-cuanto-desgrava`
+(8/11). Siguen sin artículo: "cómo empezar a invertir con poco dinero" (solapa con
+`primeros-pasos-para-invertir-en-espana` y `invertir-100-euros-al-mes`), "retención en fondos de inversión"
+(solapa con `como-tributan-los-fondos-de-inversion-en-espana`) y "cuánto ahorrar al mes según el sueldo"
+(la calculadora ya lo cubre).

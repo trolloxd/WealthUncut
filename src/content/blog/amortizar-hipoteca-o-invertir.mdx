@@ -1,0 +1,105 @@
+---
+title: "Amortizar la hipoteca o invertir: qué rentabilidad necesitas"
+description: "Amortizar la hipoteca o invertir ese dinero: qué rentabilidad bruta necesitarías en un fondo para compensar el interés de tu hipoteca, con una tabla calculada y los riesgos de cada opción."
+pubDate: 2026-11-03
+updatedDate: 2026-11-03
+author: "David Pérez Mitjà"
+tags: ["hipoteca", "vivienda", "fondos indexados"]
+sources:
+  - label: "BOE: Ley 5/2019, reguladora de los contratos de crédito inmobiliario, artículo 23 (reembolso anticipado)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814"
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { simular } from '../../components/IndexFundCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import { COMISION_AMORTIZACION_ANTICIPADA as COM } from '../../config/finance';
+
+export const IMPORTE = 20000;
+export const ANIOS = 20;
+export const TER = 0.2;
+// Rentabilidad bruta anual que necesita un fondo (con TER y el IRPF del ahorro al final) para igualar lo que dejas
+// de pagar si amortizas, que equivale a crecer al tipo de la hipoteca durante el mismo plazo.
+export const necesaria = (tipoHipoteca) => {
+  const objetivo = IMPORTE * Math.pow(1 + tipoHipoteca / 100, ANIOS);
+  let lo = 0, hi = 30;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    const neto = simular({ aportacionInicial: IMPORTE, aportacionMensual: 0, anios: ANIOS, rentabilidadBrutaAnual: mid, terAnual: TER, comisionBrokerAnual: 0 }).valorFinalNeto;
+    if (neto < objetivo) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2;
+};
+export const tipos = [2, 3, 4, 5];
+export const fmt = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+Si te sobran 20.000 €, tienes una hipoteca y no sabes si devolver parte del préstamo o invertirlo, estás ante una de las
+dudas más comunes (y más buscadas) de quien tiene vivienda en propiedad. La respuesta honesta es que **depende de tres
+cosas**: el tipo de interés de tu hipoteca, la rentabilidad que esperes de la inversión y cuánto riesgo y falta de
+liquidez estés dispuesto a aceptar. Esta guía te da el método para compararlas con números.
+
+## Qué rendimiento te da amortizar
+
+Cada euro que amortizas deja de generar intereses hasta el final del préstamo. Por eso amortizar equivale a **invertir
+a una rentabilidad igual al tipo de interés de tu hipoteca**, sin riesgo de mercado y sin pagar impuestos por esa
+"ganancia" (lo que ganas es pagar menos intereses). Si tu hipoteca está al 3 %, amortizar es como una inversión segura
+al 3 %.
+
+## Qué tiene que rendir un fondo para igualarlo
+
+Invertir los mismos {formatEuros(IMPORTE)} en un fondo indexado durante {ANIOS} años, con un TER del {fmt(TER)} %, y tributando al final con el
+IRPF del ahorro, tiene que rendir **más que el tipo de tu hipoteca**, porque parte de la rentabilidad se va en el TER
+y en impuestos. Esta es la rentabilidad bruta anual que necesitarías, calculada con la misma lógica que nuestro
+[simulador de rentabilidad neta](/blog/rentabilidad-neta-fondo-indexado/):
+
+| Tipo de tu hipoteca | Rentabilidad bruta anual que necesita el fondo |
+|---|---|
+| 2 % | {fmt(necesaria(2))} % |
+| 3 % | {fmt(necesaria(3))} % |
+| 4 % | {fmt(necesaria(4))} % |
+| 5 % | {fmt(necesaria(5))} % |
+
+Lee la tabla así: si tu hipoteca está al 3 %, el fondo tiene que rendir de media alrededor de un {fmt(necesaria(3))} % bruto al año
+durante {ANIOS} años solo para empatar con amortizar. La renta variable ha superado esos niveles en muchos periodos largos,
+pero **no lo garantiza**, y en plazos cortos puede perder.
+
+## Lo que la tabla no dice
+
+- **Riesgo.** Amortizar es una rentabilidad cierta; invertir no. Si el mercado cae justo cuando necesitas el dinero,
+  la inversión puede quedarse por debajo.
+- **Liquidez.** El dinero amortizado no vuelve: para recuperarlo tendrías que pedir otro préstamo. El invertido, en un
+  fondo, se puede reembolsar. Por eso conviene tener antes un [fondo de emergencia](/blog/fondo-de-emergencia-cuanto-necesitas/).
+- **Tipo variable.** Si tu hipoteca es variable, "lo que ahorras" cambia con el euríbor. Mira cómo en
+  [hipoteca fija, variable o mixta](/blog/hipoteca-fija-variable-o-mixta/).
+- **Comisión por amortizar.** La ley fija máximos: {COM.variable.opcionCincoAnios.limitePct.toLocaleString('es-ES')} % en los primeros {COM.variable.opcionCincoAnios.anios} años o {COM.variable.opcionTresAnios.limitePct.toLocaleString('es-ES')} % en los
+  primeros {COM.variable.opcionTresAnios.anios} (según contrato) en préstamos variables, y {COM.fijo.limitePrimerosPct.toLocaleString('es-ES')} % en los primeros {COM.fijo.primerosAnios} años en los fijos. Pueden ser menos.
+- **Psicología.** Muchas personas valoran dormir sin deuda más que unas décimas de rentabilidad esperada, y es una
+  razón legítima.
+
+## Cómo decidir en cuatro pasos
+
+1. Mira el **tipo real** de tu hipoteca y si es fija o variable.
+2. Comprueba que ya tienes **fondo de emergencia** y que no vas a necesitar este dinero pronto.
+3. Compara tu tipo con la tabla de arriba y con lo que **tú** crees razonable esperar de una inversión (sin fiarte de un
+   solo número).
+4. Si dudas, puedes **repartir**: amortizar una parte e invertir otra.
+
+Con el tipo de tu hipoteca y tus cifras, calcula cuánto ahorrarías con la herramienta
+[amortizar la hipoteca](/herramientas/amortizar-hipoteca-cuanto-ahorras/) y qué dirección toman los tipos con el
+[simulador con euríbor real](/herramientas/simulador-hipoteca-euribor/). Si decides amortizar, aquí explicamos si te
+conviene [reducir cuota o plazo](/blog/amortizar-hipoteca-reducir-cuota-o-plazo/).
+
+## Preguntas frecuentes
+
+**¿Qué es mejor, amortizar o invertir?**
+No hay una respuesta única. Amortizar da una rentabilidad cierta igual al tipo de tu hipoteca; invertir puede dar más,
+pero con riesgo y con impuestos. Depende de tu tipo, tu horizonte y tu tolerancia al riesgo.
+
+**¿Hay impuestos al amortizar?**
+No pagas impuestos por ahorrarte intereses. Sí puede haber una comisión por amortizar, con los máximos legales de arriba.
+
+**¿Esto es una recomendación?**
+No. Es un método de comparación con supuestos que puedes cambiar; tu decisión depende de tu situación.
