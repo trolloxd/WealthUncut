@@ -16,3 +16,8 @@
   ! Content-Security-Policy
   ! Cross-Origin-Resource-Policy
   X-Robots-Tag: noindex
+
+# Descargas (plantillas de Excel): se bajan como archivo, nunca se abren dentro del navegador.
+/descargas/*
+  Content-Disposition: attachment
+  Cache-Control: public, max-age=3600

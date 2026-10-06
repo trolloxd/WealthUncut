@@ -131,6 +131,12 @@ export const TOOLS = [
     tags: ['educación financiera', 'ahorro', 'interés compuesto'],
   },
   {
+    href: '/plantilla-presupuesto/',
+    name: 'Plantilla de presupuesto mensual (Excel)',
+    description: 'Descarga gratis una plantilla para controlar gastos, ahorro y deudas, con gráficos y vídeos.',
+    tags: ['ahorro', 'educación financiera', 'calculadoras'],
+  },
+  {
     href: '/carteras/',
     name: 'Carteras de fondos',
     description: 'Busca entre más de 1.600 fondos, reparte pesos y simula tu cartera bruta y neta de impuestos.',

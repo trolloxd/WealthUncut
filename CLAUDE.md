@@ -191,6 +191,12 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   de los títulos de sección fijados en `MERCADOS-PROCEDIMIENTO.md`), datos vivos, reto de 2 minutos
   (`src/config/microretos.ts`, rota por día del año) y término del glosario del día. `public/manifest.webmanifest`
   permite instalarla como app (inicio en `/hoy/`).
+- `/plantilla-presupuesto/` (`src/pages/plantilla-presupuesto.astro`): guía con imágenes y vídeos y, al final, la descarga
+  de `public/descargas/Plantilla-presupuesto-mensual-WealthUncut.xlsx`. El Excel se genera con
+  `scripts/plantilla-presupuesto/crear_plantilla.py` (xlsxwriter; ver su cabecera para regenerarlo con los valores
+  calculados por Excel). Las imágenes y los vídeos (`public/plantilla/`) son capturas reales de la plantilla renderizadas
+  por Excel; si cambias la plantilla hay que rehacerlos. Origen: plantilla personal de David (en inglés, una sola hoja),
+  rehecha en español con movimientos, presupuesto por categorías, regla 50/30/20, vista anual, objetivos y deudas.
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se

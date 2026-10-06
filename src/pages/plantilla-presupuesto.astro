@@ -1,0 +1,309 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE, AUTHOR } from '../config/site';
+
+const title = 'Plantilla de presupuesto mensual en Excel gratis (con gráficos)';
+const description = 'Descarga gratis una plantilla de presupuesto mensual en Excel: apunta gastos, controla cada categoría, la regla 50/30/20, el ahorro y las deudas, con vídeos.';
+const pubDate = new Date('2026-10-06');
+const url = `${SITE.url}/plantilla-presupuesto/`;
+const archivo = '/descargas/Plantilla-presupuesto-mensual-WealthUncut.xlsx';
+const fechaLarga = pubDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const img = (nombre: string) => `/plantilla/img/${nombre}.webp`;
+const vid = (nombre: string) => `/plantilla/video/${nombre}.mp4`;
+
+const videos = {
+  recorrido: { nombre: 'Recorrido por la plantilla', desc: 'Un recorrido de 25 segundos por las siete hojas de la plantilla de presupuesto mensual.', duracion: 'PT25S' },
+  gasto: { nombre: 'Cómo apuntar un gasto', desc: 'Cómo apuntar un gasto en la plantilla y ver cómo cambian el presupuesto y el resumen del mes.', duracion: 'PT17S' },
+  mes: { nombre: 'Cómo cambiar de mes', desc: 'Cómo cambiar de mes en el Resumen de la plantilla de presupuesto.', duracion: 'PT12S' },
+  categoria: { nombre: 'Cómo crear tu propia categoría', desc: 'Cómo crear una categoría propia y usarla en los movimientos.', duracion: 'PT13S' },
+};
+
+const faqs = [
+  {
+    pregunta: '¿La plantilla es gratis? ¿Tengo que dejar mi email?',
+    respuesta: 'Es gratis y no te pedimos el email: el botón descarga el archivo directamente. Puedes usarla y modificarla para ti; solo te pedimos que no la vendas ni la presentes como tuya.',
+  },
+  {
+    pregunta: '¿Funciona en Google Sheets, LibreOffice o Numbers?',
+    respuesta: 'Está pensada para Excel (versiones modernas, en Windows y Mac). Usa solo funciones habituales (SUMIFS, INDEX, MATCH), así que también se abre en Google Sheets y LibreOffice, aunque los gráficos y algún formato pueden verse distintos. En Numbers de Mac puede perder parte del formato.',
+  },
+  {
+    pregunta: '¿Mis datos se envían a algún sitio?',
+    respuesta: 'No. Es un archivo que se descarga y se usa en tu ordenador: lo que escribas se queda en él. Nosotros no vemos tus gastos.',
+  },
+  {
+    pregunta: '¿Cómo empiezo desde cero y borro los ejemplos?',
+    respuesta: 'En la hoja Movimientos, selecciona las filas de ejemplo (columnas Fecha a Concepto) y bórralas. En Presupuesto, cambia los nombres de las categorías y los importes por los tuyos. En Objetivos y Deudas, sustituye los ejemplos por los tuyos.',
+  },
+  {
+    pregunta: '¿Puedo añadir mis propias categorías?',
+    respuesta: 'Sí, hasta 40. Escribe el nombre, el tipo (ingreso, factura, gasto, deuda o ahorro) y el presupuesto en una fila vacía de la hoja Presupuesto, y aparece al instante en el desplegable de Movimientos.',
+  },
+  {
+    pregunta: '¿Qué es la regla 50/30/20 y por qué sale en el Resumen?',
+    respuesta: 'Es una referencia popular para repartir el sueldo neto: un 50 % para necesidades, un 30 % para deseos y un 20 % para ahorro. La plantilla te enseña cómo te comparas con ella, pero es una guía, no una obligación.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: title,
+    description,
+    inLanguage: SITE.locale,
+    datePublished: pubDate.toISOString(),
+    dateModified: pubDate.toISOString(),
+    author: { '@id': `${SITE.url}/autor/#person`, '@type': 'Person', name: AUTHOR.name },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    primaryImageOfPage: `${SITE.url}${img('plantilla-resumen')}`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'DigitalDocument',
+    '@id': `${url}#plantilla`,
+    name: 'Plantilla de presupuesto mensual (Excel)',
+    description: 'Plantilla de Excel para controlar ingresos, gastos, deudas y ahorro mes a mes, con gráficos y regla 50/30/20.',
+    encodingFormat: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    contentUrl: `${SITE.url}${archivo}`,
+    inLanguage: SITE.locale,
+    isAccessibleForFree: true,
+    author: { '@id': `${SITE.url}/autor/#person`, '@type': 'Person', name: AUTHOR.name },
+    datePublished: pubDate.toISOString(),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Plantilla de presupuesto mensual', item: url },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.pregunta, acceptedAnswer: { '@type': 'Answer', text: f.respuesta } })),
+  },
+  ...Object.entries({
+    recorrido: 'plantilla-recorrido',
+    gasto: 'plantilla-apuntar-gasto',
+    mes: 'plantilla-cambiar-mes',
+    categoria: 'plantilla-categoria-propia',
+  }).map(([clave, archivoVideo]) => ({
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: videos[clave as keyof typeof videos].nombre,
+    description: videos[clave as keyof typeof videos].desc,
+    thumbnailUrl: `${SITE.url}${img(archivoVideo + '-poster')}`,
+    contentUrl: `${SITE.url}${vid(archivoVideo)}`,
+    uploadDate: pubDate.toISOString(),
+    duration: videos[clave as keyof typeof videos].duracion,
+    inLanguage: SITE.locale,
+  })),
+];
+
+const hojas = [
+  { nombre: 'Instrucciones', texto: 'Cómo usarla en cinco pasos y qué significan los colores.' },
+  { nombre: 'Resumen', texto: 'Tu panel del mes: ingresos, facturas, gastos, deuda y ahorro, con gráficos y la regla 50/30/20.' },
+  { nombre: 'Movimientos', texto: 'El cuaderno donde apuntas cada gasto o ingreso. Hasta 500 filas.' },
+  { nombre: 'Presupuesto', texto: 'Tus categorías, cuánto quieres gastar en cada una y un semáforo que te avisa si te pasas.' },
+  { nombre: 'Anual', texto: 'Los doce meses en una tabla y dos gráficos: ingresos frente a gasto y ahorro acumulado.' },
+  { nombre: 'Objetivos', texto: 'Tus metas de ahorro, con el progreso y cuánto apartar cada mes para llegar a tiempo.' },
+  { nombre: 'Deudas', texto: 'Cuánto debes, cuántos meses te faltan para terminar de pagar y cuántos intereses te quedan.' },
+];
+---
+
+<BaseLayout title={title} description={description} publishedDate={pubDate} extraJsonLd={jsonLd}>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Plantilla de presupuesto mensual' }]} />
+
+  <article class="prose max-w-none">
+    <h1>Plantilla de presupuesto mensual en Excel (gratis)</h1>
+    <p class="not-prose -mt-2 mb-6 text-sm text-ink-muted">
+      Por <a href="/autor/" rel="author" class="font-medium text-ink underline decoration-ink-muted/40">{AUTHOR.name}</a> · Actualizada el{' '}
+      <time datetime="2026-10-06">{fechaLarga}</time> · <a href="#descargar" class="font-medium text-brand underline decoration-brand/30">Ir a la descarga ↓</a>
+    </p>
+
+    <p>
+      Esta plantilla de presupuesto mensual en Excel te deja apuntar lo que ganas, lo que gastas, lo que debes y lo que ahorras, y te
+      enseña en un panel si vas bien o te estás pasando. Se rellena en dos minutos a la semana, calcula todo sola y trae gráficos,
+      la regla 50/30/20, una vista del año completo, objetivos de ahorro y un control de deudas. Más abajo tienes un recorrido con
+      imágenes y vídeos para aprender a usarla, y <strong>al final, el archivo para descargar</strong>.
+    </p>
+    <p class="text-sm">
+      Los números que trae son un ejemplo para que veas cómo funciona: no son una recomendación de cuánto gastar ni ahorrar. Es
+      información educativa, no asesoramiento financiero.
+    </p>
+
+    <h2>Qué incluye la plantilla</h2>
+    <ul>
+      {hojas.map((h) => (
+        <li><strong>{h.nombre}:</strong> {h.texto}</li>
+      ))}
+    </ul>
+
+    <h2>Míralo en 25 segundos</h2>
+    <figure class="not-prose">
+      <video controls preload="none" playsinline poster={img('plantilla-recorrido-poster')} width="1280" height="720" class="w-full rounded-xl border border-border" aria-label="Recorrido por la plantilla de presupuesto mensual">
+        <source src={vid('plantilla-recorrido')} type="video/mp4" />
+        Tu navegador no reproduce vídeo. Mira las imágenes de más abajo.
+      </video>
+      <figcaption class="mt-2 text-xs text-ink-faint">Recorrido por las siete hojas. Sin sonido: los pasos van escritos en pantalla.</figcaption>
+    </figure>
+
+    <h2>Paso 1: define tus categorías y cuánto quieres gastar</h2>
+    <p>
+      Empieza por la hoja <strong>Presupuesto</strong>. Cada fila es una categoría (alquiler, supermercado, ocio, inversión...) con su tipo y el
+      importe que quieres gastar o ahorrar al mes. Cambia los nombres por los tuyos y usa las filas vacías para añadir más.
+    </p>
+    <figure class="not-prose my-6">
+      <img src={img('plantilla-presupuesto')} alt="Hoja Presupuesto de la plantilla, con categorías, tipo, presupuesto, gasto real y estado" width="1554" height="1180" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+      <figcaption class="mt-2 text-sm text-ink-muted">
+        <strong>1</strong> Tu categoría. <strong>2</strong> Lo que quieres gastar o ahorrar al mes. <strong>3</strong> Lo que llevas de verdad (se calcula solo).
+        <strong>4</strong> El semáforo: "Bien", "En el límite" o "Te has pasado".
+      </figcaption>
+    </figure>
+    <p>
+      Las celdas en <strong>azul sobre fondo amarillo</strong> son las que rellenas tú; el resto se calcula solo. Elige el tipo entre
+      <em>Ingreso, Factura, Gasto, Deuda o Ahorro</em>: así la plantilla sabe si el importe suma o resta. En "Grupo 50/30/20" marca cada gasto
+      como Necesidad o Deseo, para que el Resumen pueda comparar tu reparto con esa regla.
+    </p>
+
+    <h2>Paso 2: apunta cada movimiento</h2>
+    <p>
+      En la hoja <strong>Movimientos</strong> apuntas cada gasto o ingreso en una fila: fecha, categoría (se elige en un desplegable) e importe.
+      <strong>Escribe siempre el importe en positivo</strong>: el tipo de la categoría decide si suma o resta, y el mes y el tipo se rellenan solos.
+    </p>
+    <figure class="not-prose my-6">
+      <img src={img('plantilla-movimientos')} alt="Hoja Movimientos con fecha, categoría, importe, concepto, mes y tipo automáticos" width="1072" height="1177" loading="lazy" decoding="async" class="mx-auto w-full max-w-2xl rounded-xl border border-border" />
+      <figcaption class="mt-2 text-sm text-ink-muted">
+        <strong>1</strong> La fecha. <strong>2</strong> La categoría, con desplegable. <strong>3</strong> El importe, siempre en positivo. <strong>4</strong> El tipo, que se pone solo.
+      </figcaption>
+    </figure>
+
+    <h3>Vídeo: apunta un gasto y mira cómo cambia tu mes</h3>
+    <figure class="not-prose my-6">
+      <video controls preload="none" playsinline poster={img('plantilla-apuntar-gasto-poster')} width="1280" height="720" class="w-full rounded-xl border border-border" aria-label="Cómo apuntar un gasto en la plantilla">
+        <source src={vid('plantilla-apuntar-gasto')} type="video/mp4" />
+        Tu navegador no reproduce vídeo.
+      </video>
+      <figcaption class="mt-2 text-xs text-ink-faint">
+        Ejemplo: una cena de 32,50 € en "Restaurantes". La categoría pasa a "Te has pasado" y el "Te queda" del mes baja.
+      </figcaption>
+    </figure>
+    <div class="not-prose my-6 grid gap-4 sm:grid-cols-2">
+      <figure>
+        <img src={img('plantilla-nuevo-gasto-2')} alt="Una nueva fila en Movimientos: 28/09/2026, Restaurantes, 32,50 euros" width="1623" height="1060" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+        <figcaption class="mt-2 text-xs text-ink-muted">Apuntas la fila en Movimientos…</figcaption>
+      </figure>
+      <figure>
+        <img src={img('plantilla-nuevo-gasto-3')} alt="Presupuesto con la categoría Restaurantes marcada como Te has pasado" width="1554" height="1180" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+        <figcaption class="mt-2 text-xs text-ink-muted">…y en Presupuesto, Restaurantes ya marca "Te has pasado".</figcaption>
+      </figure>
+    </div>
+
+    <h2>Paso 3: lee tu Resumen</h2>
+    <p>
+      La hoja <strong>Resumen</strong> es tu panel. Elige el mes y el año arriba, escribe tu saldo en cuenta el día 1 y la plantilla hace el resto.
+    </p>
+    <figure class="not-prose my-6">
+      <img src={img('plantilla-resumen')} alt="Hoja Resumen con tarjetas de ingresos, facturas, gastos, deuda, ahorro y lo que te queda, flujo de caja, regla 50/30/20 y tres gráficos" width="1479" height="1167" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+      <figcaption class="mt-2 text-sm text-ink-muted">
+        <strong>1</strong> Elige el mes y el año. <strong>2</strong> Tu mes de un vistazo: lo que has ingresado, gastado, pagado de deuda y ahorrado, y lo que te queda.
+        <strong>3</strong> El flujo de caja, con tu presupuesto al lado. <strong>4</strong> La regla 50/30/20. <strong>5</strong> Tres gráficos: a dónde va tu dinero,
+        presupuesto frente a real y tu reparto frente al 50/30/20.
+      </figcaption>
+    </figure>
+    <p>
+      <strong>"Te queda"</strong> es lo que has ingresado menos todo lo que has pagado, deuda y ahorro incluidos: si es negativo, sale en rojo. El apartado
+      <strong>"Tu mayor gasto del mes"</strong> te dice en qué categoría de gasto (sin contar facturas, deuda ni ahorro) se te ha ido más dinero.
+    </p>
+
+    <h3>Vídeo: cambia de mes en un clic</h3>
+    <figure class="not-prose my-6">
+      <video controls preload="none" playsinline poster={img('plantilla-cambiar-mes-poster')} width="1280" height="720" class="w-full rounded-xl border border-border" aria-label="Cómo cambiar de mes en el Resumen">
+        <source src={vid('plantilla-cambiar-mes')} type="video/mp4" />
+        Tu navegador no reproduce vídeo.
+      </video>
+      <figcaption class="mt-2 text-xs text-ink-faint">No hace falta duplicar la hoja cada mes: sigues apuntando movimientos y cambias el mes en el Resumen.</figcaption>
+    </figure>
+
+    <h2>Paso 4: entiende el semáforo y la regla 50/30/20</h2>
+    <ul>
+      <li><strong>Bien:</strong> vas por debajo de lo previsto.</li>
+      <li><strong>En el límite:</strong> has gastado más del 90 % de lo previsto en un gasto.</li>
+      <li><strong>Te has pasado:</strong> has superado el presupuesto de esa categoría.</li>
+      <li><strong>Objetivo cumplido / Te falta ahorrar:</strong> para ingresos y ahorro, lo contrario: aquí te interesa llegar o pasar el objetivo.</li>
+    </ul>
+    <p>
+      La <strong>regla 50/30/20</strong> es una referencia popular: un 50 % del sueldo neto para necesidades, un 30 % para deseos y un 20 % para ahorro.
+      La plantilla te dice si estás dentro o fuera, pero no es una norma: con alquileres altos puede ser imposible cumplirla. Si quieres ver tus
+      cifras sin la plantilla, prueba la calculadora de <a href="/herramientas/cuanto-ahorrar-al-mes/">cuánto ahorrar al mes</a>.
+    </p>
+
+    <h2>Paso 5: el año, tus metas y tus deudas</h2>
+    <p>Tres hojas más te dan la perspectiva a largo plazo:</p>
+    <div class="not-prose my-6 grid gap-6">
+      <figure>
+        <img src={img('plantilla-anual')} alt="Hoja Anual con una tabla de doce meses y gráficos de ingresos frente a gasto y ahorro acumulado" width="1370" height="1029" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+        <figcaption class="mt-2 text-sm text-ink-muted"><strong>Anual:</strong> <strong>1</strong> la tabla mes a mes y <strong>2</strong> los gráficos de ingresos y destino del dinero, y del ahorro acumulado. Solo dibuja los meses con datos.</figcaption>
+      </figure>
+      <figure>
+        <img src={img('plantilla-objetivos')} alt="Hoja Objetivos con metas de ahorro, progreso y ahorro mensual necesario" width="1778" height="808" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+        <figcaption class="mt-2 text-sm text-ink-muted"><strong>Objetivos:</strong> pones la meta, la fecha y lo ahorrado, y calcula cuánto apartar al mes. El fondo de emergencia es un buen primer objetivo: mira
+          <a href="/herramientas/calculadora-fondo-de-emergencia/">cuánto necesitas</a>.</figcaption>
+      </figure>
+      <figure>
+        <img src={img('plantilla-deudas')} alt="Hoja Deudas con saldo pendiente, interés, cuota, meses que faltan y fecha en la que quedas libre de deuda" width="1765" height="807" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+        <figcaption class="mt-2 text-sm text-ink-muted"><strong>Deudas:</strong> con el saldo, el interés y la cuota, calcula los meses que faltan y los intereses que te quedan.</figcaption>
+      </figure>
+    </div>
+
+    <h2>Cómo crear tu propia categoría</h2>
+    <p>
+      ¿Una categoría que no está en la lista, como "Mascota"? Escríbela en una fila vacía de <strong>Presupuesto</strong> con su tipo y su límite, y ya sale en el
+      desplegable de Movimientos.
+    </p>
+    <figure class="not-prose my-6">
+      <video controls preload="none" playsinline poster={img('plantilla-categoria-propia-poster')} width="1280" height="720" class="w-full rounded-xl border border-border" aria-label="Cómo crear una categoría propia">
+        <source src={vid('plantilla-categoria-propia')} type="video/mp4" />
+        Tu navegador no reproduce vídeo.
+      </video>
+      <figcaption class="mt-2 text-xs text-ink-faint">Ejemplo: se crea "Mascota" con 25 € al mes y se apunta un gasto de 18,90 €.</figcaption>
+    </figure>
+
+    <h2>Cómo sacarle partido sin abandonar a las dos semanas</h2>
+    <ul>
+      <li><strong>Apunta una vez por semana</strong> (domingo, con el móvil y la app del banco): cinco minutos bastan. Lo que no se apunta no se puede revisar.</li>
+      <li><strong>Pocas categorías.</strong> Con 15 o 20 sobra. Si quieres más detalle, ponlo en "Concepto".</li>
+      <li><strong>Mira el Resumen al empezar el mes</strong> con un presupuesto realista, no con el que te gustaría tener. Ajústalo cada mes.</li>
+      <li><strong>Primero el colchón.</strong> Antes de invertir, comprueba que tienes un <a href="/herramientas/calculadora-fondo-de-emergencia/">fondo de emergencia</a>.</li>
+      <li><strong>Revisa tu nómina.</strong> Si no sabes cuánto te queda neto, usa la <a href="/herramientas/calculadora-sueldo-neto/">calculadora de sueldo neto</a>.</li>
+    </ul>
+
+    <h2>Preguntas frecuentes</h2>
+    {faqs.map((f) => (
+      <p>
+        <strong>{f.pregunta}</strong><br />
+        {f.respuesta}
+      </p>
+    ))}
+  </article>
+
+  <section id="descargar" aria-labelledby="h-descargar" class="mx-auto mt-14 max-w-3xl rounded-2xl border-2 border-brand/30 bg-cream-elevated p-8 text-center">
+    <p class="text-xs font-semibold uppercase tracking-widest text-brand">Descarga gratuita</p>
+    <h2 id="h-descargar" class="mt-2 font-display text-2xl text-ink">Plantilla de presupuesto mensual (Excel)</h2>
+    <p class="mx-auto mt-3 max-w-xl text-sm text-ink-muted">
+      Archivo de Excel (.xlsx) con siete hojas, gráficos y fórmulas. Sin registros ni email. Los números que trae son un ejemplo: bórralos y empieza con los tuyos.
+    </p>
+    <a href={archivo} download="Plantilla-presupuesto-mensual-WealthUncut.xlsx" class="btn-primary mt-6 inline-block">Descargar la plantilla (.xlsx, 55 KB)</a>
+    <p class="mt-4 text-xs text-ink-faint">
+      Versión 1.0 · {fechaLarga} · Hecha por {AUTHOR.name}. Úsala y modifícala para ti; no la vendas ni la presentes como tuya.
+      Es información educativa, no asesoramiento financiero.
+    </p>
+  </section>
+</BaseLayout>

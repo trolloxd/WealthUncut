@@ -45,4 +45,5 @@ export const MICRORETOS: Microreto[] = [
   { texto: 'Calcula cuántos años te faltan para vivir de tus inversiones con tu ahorro actual.', href: '/herramientas/calculadora-independencia-financiera/', enlace: 'Independencia financiera' },
   { texto: 'Convierte el TIN que anuncia un banco en TAE y mira cuánto rinde de verdad.', href: '/herramientas/calculadora-prestamo-tae/', enlace: 'TAE' },
   { texto: 'Simula tu ahorro con interés compuesto y mira qué parte del resultado son intereses.', href: '/herramientas/calculadora-interes-compuesto/', enlace: 'Interés compuesto' },
+  { texto: 'Descarga la plantilla de presupuesto y apunta tus gastos de esta semana.', href: '/plantilla-presupuesto/', enlace: 'Plantilla de presupuesto' },
 ];
