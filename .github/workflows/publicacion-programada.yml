@@ -50,6 +50,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit --allow-empty -m "Publicación programada: ${{ steps.buscar.outputs.lista }}"
+          # Las rutinas en la nube también empujan a main: sin esto el push falla si hay commits nuevos.
+          git pull --rebase origin main
           git push
 
       # Avisa a Bing y al resto de buscadores de IndexNow en cuanto el artículo está en la web.

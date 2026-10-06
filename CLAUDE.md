@@ -164,6 +164,8 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   de cuerpos de más de 10 KB antes de parsear el JSON, honeypot invisible, y validación de longitud
   del mensaje y del email. No hay ningún endpoint que lea el KV públicamente: las sugerencias solo
   se pueden escribir, nunca listar ni leer desde fuera.
+- Las tres rutas de `/api/` pasan primero por `src/lib/api-seguridad.ts` (Content-Type JSON obligatorio y
+  rechazo de `Origin` ajeno, antes de gastar escrituras de KV). Una ruta nueva de escritura debe hacer lo mismo.
 - El resto del sitio es HTML estático servido por la red de Cloudflare, lo que ya da una protección
   fuerte contra ataques volumétricos (DDoS de capa 3/4) sin configuración adicional.
 - David ya activó a mano en el panel de Cloudflare (2026-09-24): Bot Fight Mode y SSL/TLS en modo

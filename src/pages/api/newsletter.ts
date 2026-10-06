@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { env } from 'cloudflare:workers';
+import { rechazarPeticionAjena } from '../../lib/api-seguridad';
 
 export const prerender = false;
 
@@ -24,6 +25,8 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const POST: APIRoute = async ({ request }) => {
   const { SUGERENCIAS } = env as unknown as Env;
+  const rechazo = rechazarPeticionAjena(request);
+  if (rechazo) return rechazo;
   const ip = request.headers.get('CF-Connecting-IP') ?? 'sin-ip';
 
   if (!(await dentroDelLimite(SUGERENCIAS, ip))) {
