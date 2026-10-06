@@ -5,6 +5,7 @@ import ArticleMeta from '../../../components/ArticleMeta.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import ArticleLink from '../../../components/ArticleLink.astro';
 import { isPublished } from '../../../lib/posts';
+import { minutosDeLectura } from '../../../lib/briefing';
 import { SITE } from '../../../config/site';
 
 export async function getStaticPaths() {
@@ -21,6 +22,7 @@ const { dia, anterior, siguiente } = Astro.props;
 const { Content } = await render(dia);
 const { title, description, pubDate, updatedDate, author, sources, tags } = dia.data;
 const url = `${SITE.url}/mercados/${dia.id}/`;
+const minutos = minutosDeLectura(dia.body ?? '');
 
 const articleJsonLd = {
   '@context': 'https://schema.org',
@@ -61,6 +63,7 @@ const breadcrumbJsonLd = {
   <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Noticias', href: '/mercados/' }, { label: title }]} />
   <article class="prose max-w-none">
     <h1>{title}</h1>
+    <p class="not-prose -mt-2 mb-4 text-sm text-ink-faint">Lectura de {minutos} min · resumen en 30 segundos al principio</p>
     <ArticleMeta author={author} pubDate={pubDate} updatedDate={updatedDate} sources={sources} hasAffiliateLinks={false}>
       <Content components={{ a: ArticleLink }} />
     </ArticleMeta>

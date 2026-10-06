@@ -1,0 +1,20 @@
+{
+  "name": "WealthUncut",
+  "short_name": "WealthUncut",
+  "description": "Finanzas prácticas para jóvenes en España: tu briefing de cada mañana, calculadoras y guías.",
+  "lang": "es",
+  "start_url": "/hoy/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#faf6ed",
+  "theme_color": "#1e4a3a",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ],
+  "shortcuts": [
+    { "name": "Hoy", "url": "/hoy/" },
+    { "name": "Sueldo neto", "url": "/herramientas/calculadora-sueldo-neto/" },
+    { "name": "Carteras", "url": "/carteras/" }
+  ]
+}

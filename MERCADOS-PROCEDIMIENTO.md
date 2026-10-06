@@ -62,6 +62,10 @@ como hechos ("el IBEX subirá"); como mucho, qué están esperando los analistas
 - Los datos del JSON del BCE son la referencia para tipos de cambio, tipo de depósito, €STR y
   rentabilidades de la deuda: si el texto da uno de esos datos, tiene que coincidir con el JSON.
 
+**La página `/hoy/` lee la edición**: extrae del cuerpo la sección `## Lo más importante en 30 segundos` (lista con
+guiones, 3-6 elementos) y la sección cuyo título empieza por `## Qué vigilar` (lista con guiones o un párrafo).
+**No cambies esos dos títulos ni su formato de lista**, o la página del briefing diario se quedará sin resumen.
+
 **Enlaces que se pudren**: en `sources` no enlaces blogs en directo ("la Bolsa en directo") ni las páginas
 diarias de "euríbor hoy" de Rankia: el 2026-10-06 ya devolvían 404/410 a los pocos días. Enlaza la fuente
 permanente (BCE, INE, Reserva Federal, nota de prensa de la empresa) o un artículo con fecha fija de un

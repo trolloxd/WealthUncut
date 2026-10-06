@@ -186,6 +186,11 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   anti-iframe (`public/_headers`). Nueva herramienta incrustable: registrarla en `embeds.ts` y en
   `src/pages/embed/[slug].astro`.
 - Glosario en `src/content/glosario/` (se amplía en cada lote de la rutina de artículos).
+- `/hoy/` (`src/pages/hoy.astro`): briefing de cada mañana. Se reconstruye con cada edición de `/mercados/`:
+  resumen de 30 segundos y "Qué vigilar" sacados del cuerpo de la última edición (`src/lib/briefing.ts`; dependen
+  de los títulos de sección fijados en `MERCADOS-PROCEDIMIENTO.md`), datos vivos, reto de 2 minutos
+  (`src/config/microretos.ts`, rota por día del año) y término del glosario del día. `public/manifest.webmanifest`
+  permite instalarla como app (inicio en `/hoy/`).
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se

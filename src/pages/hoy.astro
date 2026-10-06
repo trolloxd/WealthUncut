@@ -1,0 +1,165 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import DatosDeHoy from '../components/DatosDeHoy.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+import { isPublished } from '../lib/posts';
+import { SITE } from '../config/site';
+import { MICRORETOS } from '../config/microretos';
+import { diaDelAnio, elementosDeSeccion, inlineAHtml, minutosDeLectura, parrafoDeSeccion } from '../lib/briefing';
+
+const title = 'Hoy: la economía del día en 3 minutos';
+const description = 'Tu briefing de cada mañana: qué ha pasado en la bolsa y la economía, euríbor y tipos de hoy, qué vigilar, un reto de 2 minutos y un término para aprender.';
+
+const hoy = new Date();
+
+// Última edición publicada de /mercados/ y los trozos que se muestran aquí.
+const ediciones = (await getCollection('mercados', ({ data }) => isPublished(data))).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const edicion = ediciones[0];
+const cuerpo = edicion?.body ?? '';
+const resumen = edicion ? elementosDeSeccion(cuerpo, /30 segundos/i, 6) : [];
+const vigilarItems = edicion ? elementosDeSeccion(cuerpo, /^##\s+Qué vigilar/i, 5) : [];
+const vigilarParrafo = edicion && vigilarItems.length === 0 ? parrafoDeSeccion(cuerpo, /^##\s+Qué vigilar/i) : null;
+const minutos = edicion ? minutosDeLectura(cuerpo) : 0;
+const fechaEdicion = edicion
+  ? edicion.data.pubDate.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' })
+  : '';
+
+// Reto de 2 minutos: solo los que apuntan a algo ya publicado.
+const noPublicados = new Set((await getCollection('blog', ({ data }) => !isPublished(data))).map((p) => p.id));
+const retosValidos = MICRORETOS.filter((r) => {
+  const slug = r.href.match(/^\/blog\/([^/]+)\/$/)?.[1];
+  return !slug || !noPublicados.has(slug);
+});
+const reto = retosValidos[diaDelAnio(hoy) % retosValidos.length];
+
+// Término del día, rotando por el glosario.
+const terminos = (await getCollection('glosario')).sort((a, b) => a.id.localeCompare(b.id));
+const termino = terminos[(diaDelAnio(hoy) * 7) % terminos.length];
+
+// Próximas guías programadas: una razón para volver.
+const proximas = (await getCollection('blog', ({ data }) => !data.draft && data.pubDate.valueOf() > hoy.valueOf()))
+  .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf())
+  .slice(0, 3);
+const diaLargo = (d: Date) => d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE.url}/hoy/#webpage`,
+  url: `${SITE.url}/hoy/`,
+  name: title,
+  description,
+  inLanguage: SITE.locale,
+  isPartOf: { '@id': `${SITE.url}/#website` },
+};
+---
+
+<BaseLayout title={title} description={description} extraJsonLd={[jsonLd]}>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Hoy' }]} />
+
+  <header class="mb-8">
+    <p class="text-xs font-semibold uppercase tracking-widest text-brand">Tu briefing de cada mañana</p>
+    <h1 class="mt-2 font-display text-3xl leading-tight text-ink sm:text-4xl">
+      <span id="saludo">Hola</span>: esto es lo que importa hoy
+    </h1>
+    {edicion && (
+      <p class="mt-3 text-sm text-ink-muted">
+        Basado en la edición del <strong class="text-ink">{fechaEdicion}</strong>. Lectura completa: {minutos} min.
+      </p>
+    )}
+  </header>
+
+  {edicion && (
+    <section aria-labelledby="h-resumen" class="card mb-8 p-6">
+      <h2 id="h-resumen" class="font-display text-xl text-ink">Lo más importante en 30 segundos</h2>
+      <p class="mt-1 text-sm text-ink-faint">{edicion.data.title}</p>
+      <ul class="mt-4 grid gap-3 text-ink-muted">
+        {resumen.map((item) => (
+          <li class="flex gap-3">
+            <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" aria-hidden="true"></span>
+            <span set:html={inlineAHtml(item)} />
+          </li>
+        ))}
+      </ul>
+      <a href={`/mercados/${edicion.id}/`} class="btn-primary mt-6 inline-block">Leer la edición completa</a>
+    </section>
+  )}
+
+  <DatosDeHoy />
+
+  {(vigilarItems.length > 0 || vigilarParrafo) && (
+    <section aria-labelledby="h-vigilar" class="mx-auto mt-10 max-w-3xl">
+      <h2 id="h-vigilar" class="font-display text-2xl text-ink">Qué vigilar hoy</h2>
+      {vigilarItems.length > 0 ? (
+        <ul class="mt-4 grid gap-3 text-ink-muted">
+          {vigilarItems.map((item) => (
+            <li class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true"></span>
+              <span set:html={inlineAHtml(item)} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="mt-4 text-ink-muted" set:html={inlineAHtml(vigilarParrafo ?? '')} />
+      )}
+    </section>
+  )}
+
+  <section aria-labelledby="h-reto" class="mx-auto mt-12 grid max-w-3xl gap-6 sm:grid-cols-2">
+    {reto && (
+      <div class="card p-6">
+        <p class="text-xs font-semibold uppercase tracking-wide text-brand">Reto de 2 minutos</p>
+        <h2 id="h-reto" class="mt-2 font-display text-lg text-ink">{reto.texto}</h2>
+        <a href={reto.href} class="mt-4 inline-block text-sm font-semibold text-brand underline decoration-brand/30 hover:decoration-brand">
+          {reto.enlace} →
+        </a>
+      </div>
+    )}
+    {termino && (
+      <div class="card p-6">
+        <p class="text-xs font-semibold uppercase tracking-wide text-brand">Término del día</p>
+        <h2 class="mt-2 font-display text-lg text-ink">{termino.data.termino}</h2>
+        <p class="mt-1 text-sm text-ink-muted">{termino.data.description}</p>
+        <a href={`/glosario/${termino.id}/`} class="mt-4 inline-block text-sm font-semibold text-brand underline decoration-brand/30 hover:decoration-brand">
+          Leer la definición →
+        </a>
+      </div>
+    )}
+  </section>
+
+  {proximas.length > 0 && (
+    <section aria-labelledby="h-proximas" class="mx-auto mt-12 max-w-3xl border-t border-border pt-10">
+      <h2 id="h-proximas" class="font-display text-2xl text-ink">Próximamente</h2>
+      <ul class="mt-4 grid gap-3">
+        {proximas.map((p) => (
+          <li class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            <span class="font-medium text-ink">{p.data.title}</span>
+            <span class="text-sm text-ink-faint">{diaLargo(p.data.pubDate)}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section class="mx-auto mt-12 max-w-md border-t border-border pt-12">
+    <NewsletterSignup />
+  </section>
+
+  <p class="mx-auto mt-10 max-w-3xl text-center text-sm text-ink-faint">
+    Información y educación, no asesoramiento. Cada cifra de las ediciones cita su fuente. ¿Algo no cuadra? Escríbenos desde
+    <a href="/sugerencias/" class="underline hover:text-ink">sugerencias</a> y lo corregimos en <a href="/correcciones/" class="underline hover:text-ink">correcciones</a>.
+  </p>
+</BaseLayout>
+
+<script>
+  // Saludo según la hora del visitante (el resto de la página es estático).
+  const saludo = document.getElementById('saludo');
+  if (saludo) {
+    const h = new Date().getHours();
+    saludo.textContent = h < 6 ? 'Buenas noches' : h < 14 ? 'Buenos días' : h < 21 ? 'Buenas tardes' : 'Buenas noches';
+  }
+</script>
