@@ -257,6 +257,8 @@ compuesto"), `/herramientas/calculadora-prestamo-tae/` ("calculadora tae", "calc
 Siguientes del backlog (`INFORME-COMPETENCIA-Y-AUDITORIA.md`, sección 4.1): finiquito, cuota de autónomos y despido,
 que sí necesitan cifras legales verificadas en BOE/SEPE.
 
+**Cuota de autónomos (2026-10-06)**: `/herramientas/calculadora-cuota-autonomos/` ("cuota autónomos 2026", "calculadora cuota autónomos", "tramos autónomos 2026", "tarifa plana autónomos"). Sin validar aún en autocompletado.
+
 **Página de recurso descargable (2026-10-06)**: `/plantilla-presupuesto/` ("plantilla presupuesto mensual excel gratis",
 "plantilla control de gastos excel", "excel gastos mensuales", "presupuesto mensual personal excel"; todas con demanda
 confirmada en el autocompletado). Siguientes plantillas posibles con la misma fórmula: "plantilla ahorro excel",

@@ -200,6 +200,8 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
 - `/plantilla-seguimiento-inversiones/` (`src/pages/plantilla-seguimiento-inversiones.astro`): igual que la de presupuesto, con
   `public/descargas/Plantilla-seguimiento-inversiones-WealthUncut.xlsx`, generada por `scripts/plantilla-inversiones/crear_plantilla.py`.
   Fondos y operaciones de ejemplo ficticios; el impuesto estimado usa precio medio (no FIFO) y remite a la calculadora FIFO.
+- `/herramientas/calculadora-cuota-autonomos/`: cuota de autónomos por ingresos reales. Tablas y tipos en `RETA_2026`
+  (`finance.ts`, verificados contra el BOE el 2026-10-06); revisar cada enero con la nueva orden de cotización.
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se

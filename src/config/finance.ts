@@ -626,3 +626,55 @@ export const COMISION_AMORTIZACION_ANTICIPADA = {
   fechaRegistro: '2026-10-05',
   verificado: true,
 } as const;
+
+/**
+ * Cotización de autónomos (RETA) 2026, por rendimientos netos mensuales. Verificado el 2026-10-06 contra el
+ * BOE: Orden PJC/297/2026, art. 18 (tablas reducida y general, base máxima 5.101,20 €, contingencias
+ * comunes 28,30 %, profesionales 1,30 %, MEI 0,90 %) y art. de cese de actividad (0,90 %). Formación
+ * profesional 0,10 % y total 31,5 % contrastados con comparadores (Billin, Declarando): las cuotas
+ * mínimas calculadas (base × 31,5 %) coinciden con ambas tablas. Cada tramo: `hasta` es el límite
+ * superior de rendimientos netos mensuales (inclusivo salvo `exclusivo`). La deducción del 7 % por gastos
+ * genéricos se aplica a los rendimientos antes de buscar el tramo (art. 308 LGSS, 3 % si es societario).
+ * Revisar cada enero con la nueva orden de cotización.
+ */
+export const RETA_2026 = {
+  tipoTotal: 0.315,
+  desglose: [
+    { concepto: 'Contingencias comunes', tipo: 0.283 },
+    { concepto: 'Contingencias profesionales', tipo: 0.013 },
+    { concepto: 'Cese de actividad', tipo: 0.009 },
+    { concepto: 'Formación profesional', tipo: 0.001 },
+    { concepto: 'MEI (equidad intergeneracional)', tipo: 0.009 },
+  ],
+  deduccionGastosGenericos: 0.07,
+  tarifaPlanaMensual: 80,
+  tramos: [
+    { tabla: 'Reducida', n: 1, hasta: 670, baseMin: 653.59, baseMax: 718.94 },
+    { tabla: 'Reducida', n: 2, hasta: 900, baseMin: 718.95, baseMax: 900 },
+    { tabla: 'Reducida', n: 3, hasta: 1166.7, exclusivo: true, baseMin: 849.67, baseMax: 1166.7 },
+    { tabla: 'General', n: 1, hasta: 1300, baseMin: 950.98, baseMax: 1300 },
+    { tabla: 'General', n: 2, hasta: 1500, baseMin: 960.78, baseMax: 1500 },
+    { tabla: 'General', n: 3, hasta: 1700, baseMin: 960.78, baseMax: 1700 },
+    { tabla: 'General', n: 4, hasta: 1850, baseMin: 1143.79, baseMax: 1850 },
+    { tabla: 'General', n: 5, hasta: 2030, baseMin: 1209.15, baseMax: 2030 },
+    { tabla: 'General', n: 6, hasta: 2330, baseMin: 1274.51, baseMax: 2330 },
+    { tabla: 'General', n: 7, hasta: 2760, baseMin: 1356.21, baseMax: 2760 },
+    { tabla: 'General', n: 8, hasta: 3190, baseMin: 1437.91, baseMax: 3190 },
+    { tabla: 'General', n: 9, hasta: 3620, baseMin: 1519.61, baseMax: 3620 },
+    { tabla: 'General', n: 10, hasta: 4050, baseMin: 1601.31, baseMax: 4050 },
+    { tabla: 'General', n: 11, hasta: 6000, baseMin: 1732.03, baseMax: 5101.2 },
+    { tabla: 'General', n: 12, hasta: Infinity, baseMin: 1928.1, baseMax: 5101.2 },
+  ] as { tabla: string; n: number; hasta: number; exclusivo?: boolean; baseMin: number; baseMax: number }[],
+  fuentes: [
+    { label: 'BOE: Orden PJC/297/2026 de cotización 2026 (art. 18, autónomos)', url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296' },
+    { label: 'Seguridad Social: cotización de autónomos por ingresos reales', url: 'https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/CotizacionRecaudacionTrabajadores/36537' },
+  ],
+} as const;
+
+/** Tramo de cotización de autónomos para unos rendimientos netos mensuales (ya con la deducción aplicada). */
+export function tramoRETA(rendimientoNetoMensual: number) {
+  return (
+    RETA_2026.tramos.find((t) => (t.exclusivo ? rendimientoNetoMensual < t.hasta : rendimientoNetoMensual <= t.hasta)) ??
+    RETA_2026.tramos[RETA_2026.tramos.length - 1]
+  );
+}

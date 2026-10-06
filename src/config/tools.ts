@@ -131,6 +131,12 @@ export const TOOLS = [
     tags: ['educación financiera', 'ahorro', 'interés compuesto'],
   },
   {
+    href: '/herramientas/calculadora-cuota-autonomos/',
+    name: 'Cuota de autónomos 2026',
+    description: 'Tu tramo, tu base de cotización y la cuota mensual según tus ingresos reales, con los tipos del BOE.',
+    tags: ['autónomos', 'impuestos', 'calculadoras'],
+  },
+  {
     href: '/plantilla-presupuesto/',
     name: 'Plantilla de presupuesto mensual (Excel)',
     description: 'Descarga gratis una plantilla para controlar gastos, ahorro y deudas, con gráficos y vídeos.',

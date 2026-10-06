@@ -1,0 +1,81 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import SelfEmployedFeeCalculator from '../../components/SelfEmployedFeeCalculator';
+import { RETA_2026 } from '../../config/finance';
+---
+
+<ToolLayout
+  title="Calculadora de cuota de autónomos 2026 por ingresos reales"
+  name="Cuota de autónomos 2026"
+  description="Calcula tu cuota de autónomos 2026 según tus ingresos reales: tu tramo de rendimientos netos, la base de cotización y la cuota mínima y máxima, con los tipos del BOE."
+  pubDate={new Date('2026-10-06')}
+  sources={RETA_2026.fuentes.map((f) => ({ ...f }))}
+  faqs={[
+    {
+      pregunta: '¿Cómo se calcula la cuota de autónomos en 2026?',
+      respuesta: 'Se calcula sobre tus rendimientos netos mensuales: ingresos menos gastos deducibles y menos una deducción del 7 % por gastos genéricos (3 % si eres societario). Con ese importe se busca tu tramo, que fija una base de cotización mínima y máxima. La cuota es la base que elijas multiplicada por el 31,5 %.',
+    },
+    {
+      pregunta: '¿Cuál es la cuota mínima de autónomos en 2026?',
+      respuesta: 'La cuota más baja corresponde al primer tramo de la tabla reducida (rendimientos netos de hasta 670 euros al mes): base mínima de 653,59 euros por el 31,5 %, unos 205,88 euros al mes. Los nuevos autónomos pueden acogerse a la tarifa plana de 80 euros.',
+    },
+    {
+      pregunta: '¿Puedo elegir una base mayor que la de mi tramo?',
+      respuesta: 'Sí. Dentro de tu tramo puedes elegir cualquier base entre la mínima y la máxima del tramo, y puedes cambiarla hasta seis veces al año. Una base mayor da más cuota pero también más prestación futura (paro por cese de actividad, baja, jubilación).',
+    },
+    {
+      pregunta: '¿Qué pasa si mis ingresos reales son distintos a los previstos?',
+      respuesta: 'La Seguridad Social regulariza al año siguiente con los datos de tu declaración de la renta: si cotizaste de menos, te reclama la diferencia; si cotizaste de más, te la devuelve.',
+    },
+  ]}
+>
+  <p>
+    Desde 2023 los autónomos cotizan según lo que ganan de verdad, no por una cuota fija. Esta calculadora te dice en qué
+    tramo estás en 2026, entre qué bases puedes cotizar y cuánto pagarías al mes, con los tipos y las tablas del{' '}
+    <a href="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296">BOE</a>. Es una estimación para planificar, no un trámite.
+  </p>
+
+  <SelfEmployedFeeCalculator client:load />
+
+  <BotonCompartir client:load />
+
+  <h2>Cómo funciona la cuota por ingresos reales</h2>
+  <p>
+    El punto de partida son tus <strong>rendimientos netos mensuales</strong>: lo que facturas menos los gastos de tu actividad y
+    menos una deducción por gastos genéricos del 7 % (3 % para autónomos societarios). Con esa cifra se busca tu tramo en una de
+    las dos tablas, la reducida (para rendimientos bajos) o la general. Cada tramo tiene una base mínima y una máxima, y tú eliges
+    dentro de ese rango. La cuota es esa base por el <strong>{(RETA_2026.tipoTotal * 100).toLocaleString('es-ES')} %</strong>.
+  </p>
+
+  <h2>En qué se reparte el 31,5 %</h2>
+  <ul>
+    {RETA_2026.desglose.map((d) => (
+      <li><strong>{d.concepto}:</strong> {(d.tipo * 100).toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} %</li>
+    ))}
+  </ul>
+
+  <h2>Tarifa plana y otros casos</h2>
+  <p>
+    Si te das de alta por primera vez (o llevas dos años sin ser autónomo), puedes pedir la tarifa plana: {RETA_2026.tarifaPlanaMensual} euros al
+    mes los primeros 12 meses, a los que se suma el MEI. Se puede prorrogar otros 12 meses si tus rendimientos netos quedan por debajo del salario mínimo.
+    Esta herramienta no calcula la tarifa plana por sí misma, solo la menciona: confirma las condiciones al darte de alta.
+  </p>
+
+  <h2>Qué hacer con el resultado</h2>
+  <p>
+    La cuota no es tu único coste: te falta el IRPF y el IVA que no es tuyo. Si estás valorando pasar de asalariado a autónomo, compara tu
+    neto actual con la <a href="/herramientas/calculadora-sueldo-neto/">calculadora de sueldo neto</a>, y calcula cuánto necesitas guardar con la
+    <a href="/herramientas/calculadora-fondo-de-emergencia/">calculadora de fondo de emergencia</a>, porque los ingresos de un autónomo fluctúan más.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Cómo se calcula la cuota de autónomos en 2026?</strong><br />
+    Sobre tus rendimientos netos mensuales: ingresos menos gastos deducibles y menos una deducción del 7 % (3 % si eres societario). Con eso se busca tu tramo, que fija una base mínima y máxima, y la cuota es la base elegida por el 31,5 %.</p>
+  <p><strong>¿Cuál es la cuota mínima de autónomos en 2026?</strong><br />
+    Unos 205,88 euros al mes (base de 653,59 euros por el 31,5 %) en el primer tramo. Los nuevos autónomos pueden acogerse a la tarifa plana de 80 euros.</p>
+  <p><strong>¿Puedo elegir una base mayor que la de mi tramo?</strong><br />
+    Sí, entre la mínima y la máxima de tu tramo, y puedes cambiarla hasta seis veces al año. Una base mayor da más cuota pero también más prestación futura.</p>
+  <p><strong>¿Qué pasa si mis ingresos reales son distintos a los previstos?</strong><br />
+    La Seguridad Social regulariza al año siguiente con tu declaración de la renta: si cotizaste de menos te reclama la diferencia, y si cotizaste de más te la devuelve.</p>
+</ToolLayout>
