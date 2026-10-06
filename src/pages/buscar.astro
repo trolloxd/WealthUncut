@@ -105,9 +105,10 @@ const indice = [...herramientas, ...guias, ...glosario];
         const t = document.createElement('span');
         t.className = 'mt-0.5 block font-medium text-ink';
         t.textContent = e.titulo;
-        a.append(etiqueta, t);
-        li.append(a);
-        lista.append(li);
+        a.appendChild(etiqueta);
+        a.appendChild(t);
+        li.appendChild(a);
+        lista.appendChild(li);
       }
     };
 

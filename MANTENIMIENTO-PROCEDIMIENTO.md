@@ -44,6 +44,11 @@ desde el repositorio:
 - Enlaces internos rotos: recorre las páginas del sitemap y comprueba que cada enlace interno
   (`href` que empieza por `/`) responde 200.
 
+- Enlaces externos rotos: `npm run build` y después `node scripts/comprobar-enlaces.mjs`. Solo 404, 410
+  o dominio inexistente cuentan como rotos (exit 1); los 403/5xx son medios que bloquean robots. Si hay
+  rotos, inclúyelos en el aviso con la página donde están (el contenido de `/mercados/` y de las fuentes
+  de artículos se corrige a mano o en la siguiente revisión, esta rutina no edita).
+
 Resultado: envía una notificación (`PushNotification`) con el resumen. Si todo está bien, una línea
 ("Salud del sitio: todo correcto"); si no, la lista de problemas encontrados.
 
@@ -56,6 +61,9 @@ alimentan esas cifras y avisa si hay que revisarlas a mano:
   ¿Cambian los tramos del ahorro, la retención o las reglas de compensación de `finance.ts`?
 - BOE: ¿hay una nueva orden de cotización a la Seguridad Social, y cambian las bases o los tipos?
 - Límite de aportación a planes de pensiones y garantía del FGD: ¿han cambiado?
+- ITP de vivienda usada (`ITP_VIVIENDA_USADA`): contrasta cada comunidad con Guía Fiscal ("Datos 2026") y la
+  norma autonómica; el 2026-10-06 se encontraron cuatro comunidades mal (Cataluña, Castilla y León, Murcia, País
+  Vasco) y un agregador que publicaba cifras erróneas. Avisa de cualquier diferencia.
 - Comisión máxima por reembolso anticipado de hipotecas (Ley 5/2019, artículo 23, constante
   `COMISION_AMORTIZACION_ANTICIPADA`): ¿ha cambiado el texto consolidado del BOE?
 

@@ -53,7 +53,7 @@ const comunidadesMax = lista.format(filas.filter((f) => f.itp === itpMax).map((f
     El ITP (Impuesto de Transmisiones Patrimoniales) es el impuesto que pagas al comprar una vivienda de
     segunda mano, y cambia mucho según la comunidad autónoma: sobre un piso de {euros(PRECIO_EJEMPLO)}, pagas
     desde {euros(itpMin)} ({comunidadesMin}) hasta {euros(itpMax)} ({comunidadesMax}), una diferencia
-    de {euros(itpMax - itpMin)}. Los tipos son los vigentes en 2026, verificados el 24 de septiembre de 2026.
+    de {euros(itpMax - itpMin)}. Los tipos son los vigentes en 2026, contrastados comunidad por comunidad el 6 de octubre de 2026.
   </p>
 
   <h2>Tabla de ITP por comunidades autónomas</h2>
@@ -81,7 +81,9 @@ const comunidadesMax = lista.format(filas.filter((f) => f.itp === itpMax).map((f
     </table>
     <p class="mt-2 text-xs text-ink-faint">
       Tipos generales para vivienda usada, sin reducciones. Las comunidades con tramos aplican cada tipo
-      solo a la parte del precio que cae en ese tramo, igual que el IRPF.
+      solo a la parte del precio que cae en ese tramo, igual que el IRPF. País Vasco y Navarra tienen régimen foral propio. En
+      Cantabria, la vivienda habitual tributa al 7 % hasta 300.000 € (y al 9 % el exceso); la tabla recoge el 9 % general
+      para el resto de inmuebles.
     </p>
   </div>
 

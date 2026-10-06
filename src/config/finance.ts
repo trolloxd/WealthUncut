@@ -504,7 +504,16 @@ export function calcularImpuestoAhorro(ganancia: number): number {
  * AEAT: cada comunidad publica su propia normativa y las agencias inmobiliarias resumen), así que
  * se ha verificado cruzando dos fuentes especializadas independientes entre sí, con especial
  * atención a cambios recientes (la Comunitat Valenciana bajó del 10% al 9% el 1 de junio de 2026).
- * Verificado el 2026-09-24; revisar cada año, varias comunidades cambian el ITP en sus presupuestos.
+ * Verificado el 2026-09-24 y CORREGIDO el 2026-10-06 tras contrastar cada comunidad con Guía Fiscal
+ * ("Datos 2026", por comunidad) y con Taxdown. Correcciones del 2026-10-06: Cataluña pasó a 10% hasta
+ * 600.000 €, 11% hasta 900.000 €, 12% hasta 1,5 millones y 13% a partir de ahí (Decreto-ley 5/2025, desde el
+ * 27-06-2025); Castilla y León, 8% hasta 250.000 € y 10% por encima; Murcia, 7,75% (Ley 3/2025, desde el
+ * 25-07-2025); País Vasco, 4% en vivienda usada (régimen foral, los tres territorios). Cantabria: se
+ * mantiene el 9% general; ojo, desde la Ley 5/2026 la vivienda HABITUAL tributa al 7% hasta 300.000 € (y 9%
+ * el exceso), que aquí no se modela por ser un tipo condicionado a la residencia. Ceuta y Melilla (6%):
+ * AEAT, "Base imponible y tipos en Ceuta y Melilla". Revisar cada año, varias comunidades cambian el ITP
+ * en sus presupuestos. Nota: varios comparadores web publican cifras distintas (p. ej. Galicia o Valencia
+ * al 10%): no fiarse de un solo agregador.
  */
 export const ITP_VIVIENDA_USADA = {
   andalucia: { nombre: 'Andalucía', brackets: [{ hasta: Infinity, tipo: 0.07 }] },
@@ -539,12 +548,20 @@ export const ITP_VIVIENDA_USADA = {
   canarias: { nombre: 'Canarias', brackets: [{ hasta: Infinity, tipo: 0.065 }] },
   cantabria: { nombre: 'Cantabria', brackets: [{ hasta: Infinity, tipo: 0.09 }] },
   castillaLaMancha: { nombre: 'Castilla-La Mancha', brackets: [{ hasta: Infinity, tipo: 0.09 }] },
-  castillaYLeon: { nombre: 'Castilla y León', brackets: [{ hasta: Infinity, tipo: 0.08 }] },
+  castillaYLeon: {
+    nombre: 'Castilla y León',
+    brackets: [
+      { hasta: 250000, tipo: 0.08 },
+      { hasta: Infinity, tipo: 0.1 },
+    ],
+  },
   cataluna: {
     nombre: 'Cataluña',
     brackets: [
-      { hasta: 1000000, tipo: 0.1 },
-      { hasta: Infinity, tipo: 0.11 },
+      { hasta: 600000, tipo: 0.1 },
+      { hasta: 900000, tipo: 0.11 },
+      { hasta: 1500000, tipo: 0.12 },
+      { hasta: Infinity, tipo: 0.13 },
     ],
   },
   extremadura: {
@@ -557,7 +574,7 @@ export const ITP_VIVIENDA_USADA = {
   },
   galicia: { nombre: 'Galicia', brackets: [{ hasta: Infinity, tipo: 0.08 }] },
   madrid: { nombre: 'Madrid', brackets: [{ hasta: Infinity, tipo: 0.06 }] },
-  murcia: { nombre: 'Murcia', brackets: [{ hasta: Infinity, tipo: 0.08 }] },
+  murcia: { nombre: 'Murcia', brackets: [{ hasta: Infinity, tipo: 0.0775 }] },
   laRioja: { nombre: 'La Rioja', brackets: [{ hasta: Infinity, tipo: 0.07 }] },
   valencia: {
     nombre: 'Comunitat Valenciana',
@@ -567,14 +584,14 @@ export const ITP_VIVIENDA_USADA = {
     ],
   },
   navarra: { nombre: 'Navarra', brackets: [{ hasta: Infinity, tipo: 0.06 }] },
-  paisVasco: { nombre: 'País Vasco', brackets: [{ hasta: Infinity, tipo: 0.07 }] },
+  paisVasco: { nombre: 'País Vasco', brackets: [{ hasta: Infinity, tipo: 0.04 }] },
   ceuta: { nombre: 'Ceuta', brackets: [{ hasta: Infinity, tipo: 0.06 }] },
   melilla: { nombre: 'Melilla', brackets: [{ hasta: Infinity, tipo: 0.06 }] },
 } as const;
 
 export const ITP_VIVIENDA_USADA_FUENTES: { label: string; url: string }[] = [
-  { label: 'Hipotips: tabla de ITP por comunidades autónomas para vivienda usada', url: 'https://hipotips.com/itp-por-comunidades-2025-conoce-los-tipos-reducidos/' },
-  { label: 'Rankia: el ITP en cada comunidad autónoma', url: 'https://www.rankia.com/blog/mejores-hipotecas/3233016-impuesto-transmisiones-patrimoniales-itp-cada-comunidad-autonoma' },
+  { label: 'Guía Fiscal: ITP por comunidades autónomas, datos 2026', url: 'https://guiafiscal.es/patrimonio/itp/' },
+  { label: 'AEAT: ITP en Ceuta y Melilla, base imponible y tipos', url: 'https://sede.agenciatributaria.gob.es/Sede/declaraciones-informativas-otros-impuestos-tasas/impuesto-sobre-transmisiones-patrimoniales-actos-juridicos/itp-ajd-transmisiones-derechos-reales-fianzas/base-imponible-tipos-ceuta-melilla.html' },
 ];
 
 // Estimación (no una cifra oficial única) de notaría, registro de la propiedad y gestoría al

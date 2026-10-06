@@ -3,7 +3,15 @@ import { BotonCompartir } from '../../components/CalculatorUI';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import ArticleLink from '../../components/ArticleLink.astro';
 import HomeDepositCalculator from '../../components/HomeDepositCalculator';
-import { ITP_VIVIENDA_USADA_FUENTES } from '../../config/finance';
+import { ITP_VIVIENDA_USADA, ITP_VIVIENDA_USADA_FUENTES, calcularITP } from '../../config/finance';
+
+const euros = (n: number) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'always', maximumFractionDigits: 0 }).format(n)} €`;
+const lista = new Intl.ListFormat('es', { style: 'long', type: 'conjunction' });
+const itps = Object.entries(ITP_VIVIENDA_USADA).map(([id, c]) => ({ nombre: c.nombre, itp: calcularITP(180000, id as keyof typeof ITP_VIVIENDA_USADA) }));
+const itpMin = Math.min(...itps.map((x) => x.itp));
+const itpMax = Math.max(...itps.map((x) => x.itp));
+const comunidadesMin = lista.format(itps.filter((x) => x.itp === itpMin).map((x) => x.nombre));
+const comunidadesMax = lista.format(itps.filter((x) => x.itp === itpMax).map((x) => x.nombre));
 ---
 
 <ToolLayout
@@ -49,7 +57,7 @@ import { ITP_VIVIENDA_USADA_FUENTES } from '../../config/finance';
     <li>
       <strong>El ITP (Impuesto de Transmisiones Patrimoniales).</strong> Se paga al comprar una
       vivienda de segunda mano (la nueva lleva IVA más AJD en su lugar) y lo fija cada comunidad
-      autónoma: va del 6% en Madrid al 9-10% en la Comunitat Valenciana o Cataluña. Casi todas las
+      autónoma: va desde el 4% del País Vasco o el 6% de Madrid hasta el 10% o más de Cataluña. Casi todas las
       comunidades tienen tipos reducidos para vivienda habitual, jóvenes, familias numerosas o
       personas con discapacidad, que esta calculadora no aplica automáticamente porque dependen de
       requisitos concretos (edad, precio máximo, que sea tu primera vivienda); revisa si los cumples
@@ -64,9 +72,9 @@ import { ITP_VIVIENDA_USADA_FUENTES } from '../../config/finance';
 
   <h2>Por qué la comunidad autónoma cambia tanto el resultado</h2>
   <p>
-    Con el mismo piso de 180.000 €, el ITP puede ir desde 10.800 € en Madrid (6%) hasta 16.200 € en
-    la Comunitat Valenciana (9%, hasta 1 millón de euros): una diferencia de 5.400 € solo por el
-    impuesto, sin contar la entrada. Prueba a cambiar de comunidad en la calculadora dejando el
+    Con el mismo piso de {euros(180000)}, el ITP puede ir desde {euros(itpMin)} ({comunidadesMin}) hasta {euros(itpMax)} en{' '}
+    {comunidadesMax}: una diferencia de {euros(itpMax - itpMin)} solo por el impuesto, sin contar la entrada. Prueba a cambiar de
+    comunidad en la calculadora dejando el
     resto igual para ver cuánto pesa.
   </p>
 

@@ -62,6 +62,11 @@ como hechos ("el IBEX subirá"); como mucho, qué están esperando los analistas
 - Los datos del JSON del BCE son la referencia para tipos de cambio, tipo de depósito, €STR y
   rentabilidades de la deuda: si el texto da uno de esos datos, tiene que coincidir con el JSON.
 
+**Enlaces que se pudren**: en `sources` no enlaces blogs en directo ("la Bolsa en directo") ni las páginas
+diarias de "euríbor hoy" de Rankia: el 2026-10-06 ya devolvían 404/410 a los pocos días. Enlaza la fuente
+permanente (BCE, INE, Reserva Federal, nota de prensa de la empresa) o un artículo con fecha fija de un
+medio. Si la única fuente de una cifra es efímera, no la publiques.
+
 Fuentes válidas para contrastar: Reuters, Bloomberg, Financial Times, The Wall Street Journal, CNBC,
 Associated Press, Expansión, Cinco Días, El Economista, El Confidencial (sección de mercados), la
 web de BME (Bolsa de Madrid), STOXX, S&P Dow Jones Indices, Nasdaq, Rankia (sección de mercados), y

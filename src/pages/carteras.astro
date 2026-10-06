@@ -15,6 +15,13 @@ const title = 'Simulador de cartera de fondos indexados';
 const description = 'Simula tu cartera de fondos indexados con fondos de MyInvestor: busca por nombre o ISIN, reparte pesos y calcula cuánto tendrías, bruto y neto de impuestos.';
 const pubDate = new Date('2026-09-28');
 const url = new URL(Astro.url.pathname, SITE.url).href;
+// El JSON mezcla fondos con distinto número de años: se normaliza para que todos tengan solo valores numéricos.
+const fondosDestacados = datos.fondos.map((f) => ({
+  ...f,
+  rentabilidadesAnuales: Object.fromEntries(
+    Object.entries(f.rentabilidadesAnuales).filter((e): e is [string, number] => typeof e[1] === 'number')
+  ),
+}));
 const fechaCatalogo = new Date(catalogo.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 
 const appJsonLd = {
@@ -62,7 +69,7 @@ const breadcrumbJsonLd = {
         del periodo.
       </p>
 
-      <FundPortfolioSimulator client:load fondos={datos.fondos} />
+      <FundPortfolioSimulator client:load fondos={fondosDestacados} />
       <BotonCompartir client:load />
       <AfiliadoCTA clave="myinvestor" contexto="¿Quieres invertir en alguno de estos fondos? Puedes abrir cuenta en la plataforma donde están disponibles." />
 
