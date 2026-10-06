@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+const plantillas = [
+  {
+    href: '/plantilla-presupuesto/',
+    nombre: 'Plantilla de presupuesto mensual',
+    texto: 'Apunta gastos, controla cada categoría y la regla 50/30/20, con objetivos de ahorro y deudas.',
+  },
+  {
+    href: '/plantilla-seguimiento-inversiones/',
+    nombre: 'Plantilla de seguimiento de inversiones',
+    texto: 'Sigue tus fondos indexados: rentabilidad, TIR, costes, reequilibrio e impuesto estimado.',
+  },
+];
+---
+
+<BaseLayout
+  title="Plantillas de Excel gratis de finanzas personales"
+  description="Plantillas de Excel gratuitas para controlar tu presupuesto mensual y seguir tus inversiones en fondos indexados, con guía en imágenes y vídeos."
+>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Plantillas' }]} />
+  <h1 class="mb-4 font-display text-3xl text-ink">Plantillas de Excel</h1>
+  <p class="mb-10 max-w-2xl text-ink-muted">
+    Archivos de Excel gratuitos, sin registro ni email, con fórmulas y gráficos. Cada una trae una guía con imágenes y vídeos y la descarga al final.
+  </p>
+  <ul class="grid gap-4 sm:grid-cols-2">
+    {plantillas.map((p) => (
+      <li>
+        <a href={p.href} class="card group block h-full p-5 transition-colors hover:border-brand/40">
+          <span class="font-display text-lg text-ink group-hover:text-brand">{p.nombre}</span>
+          <span class="mt-2 block text-sm text-ink-muted">{p.texto}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
