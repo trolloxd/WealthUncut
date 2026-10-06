@@ -42,4 +42,7 @@ export const MICRORETOS: Microreto[] = [
   { texto: 'Compara cuánto cambia la cuota entre una hipoteca fija, variable y mixta.', href: '/blog/hipoteca-fija-variable-o-mixta/', enlace: 'Fija, variable o mixta' },
   { texto: 'Lee qué es un fondo indexado sin jerga y qué hay detrás de un índice.', href: '/blog/que-es-un-fondo-indexado/', enlace: 'Qué es un fondo indexado' },
   { texto: 'Compara plan de pensiones y fondo indexado con tus datos.', href: '/herramientas/plan-pensiones-vs-fondo-indexado/', enlace: 'Plan de pensiones vs fondo' },
+  { texto: 'Calcula cuántos años te faltan para vivir de tus inversiones con tu ahorro actual.', href: '/herramientas/calculadora-independencia-financiera/', enlace: 'Independencia financiera' },
+  { texto: 'Convierte el TIN que anuncia un banco en TAE y mira cuánto rinde de verdad.', href: '/herramientas/calculadora-prestamo-tae/', enlace: 'TAE' },
+  { texto: 'Simula tu ahorro con interés compuesto y mira qué parte del resultado son intereses.', href: '/herramientas/calculadora-interes-compuesto/', enlace: 'Interés compuesto' },
 ];

@@ -1,0 +1,80 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import CompoundInterestCalculator from '../../components/CompoundInterestCalculator';
+---
+
+<ToolLayout
+  title="Calculadora de interés compuesto con aportaciones mensuales"
+  name="Calculadora de interés compuesto"
+  description="Calculadora de interés compuesto: cuánto tendrías con un capital inicial y aportaciones mensuales, cuánto son intereses, cuánto vale en euros de hoy y qué te queda tras impuestos."
+  pubDate={new Date('2026-10-06')}
+  faqs={[
+    {
+      pregunta: '¿Cómo se calcula el interés compuesto?',
+      respuesta: 'Cada periodo, el interés se calcula sobre el capital más los intereses ya acumulados. Con aportaciones mensuales, cada mes se multiplica el saldo por (1 + tasa mensual) y se suma la aportación. La calculadora hace esto mes a mes con la rentabilidad anual que indiques.',
+    },
+    {
+      pregunta: '¿Qué diferencia hay entre interés simple y compuesto?',
+      respuesta: 'En el simple solo cobras interés sobre el capital inicial; en el compuesto, también sobre los intereses acumulados. Por eso, con el tiempo, el compuesto se separa cada vez más del simple.',
+    },
+    {
+      pregunta: '¿Qué rentabilidad debo poner?',
+      respuesta: 'No hay un valor correcto: nadie sabe cuánto rendirá una inversión. Prueba varios escenarios, por ejemplo un 3%, un 5% y un 7%, y fíjate en el rango, no en un único número.',
+    },
+  ]}
+>
+  <p>
+    El interés compuesto es el motor del ahorro a largo plazo: tus intereses también generan intereses. Esta calculadora
+    de interés compuesto te dice cuánto tendrías con un capital inicial y aportaciones mensuales, qué parte del resultado
+    son intereses, cuánto valdría en euros de hoy descontando la inflación y, si quieres, cuánto te queda después de impuestos.
+  </p>
+
+  <CompoundInterestCalculator client:load />
+
+  <BotonCompartir client:load />
+
+  <h2>Cómo funciona el interés compuesto</h2>
+  <p>
+    Cada mes, el saldo crece por la rentabilidad y se le suma tu aportación. El mes siguiente, el interés se calcula sobre un
+    saldo mayor. La fórmula del valor futuro con aportaciones periódicas es:{' '}
+    <strong>VF = C × (1 + r)<sup>n</sup> + A × [((1 + r)<sup>n</sup> − 1) / r]</strong>, donde C es el capital inicial, A la aportación
+    mensual, r el tipo mensual y n el número de meses. La calculadora aplica esa fórmula mes a mes y te enseña el año a año.
+  </p>
+
+  <h2>Lo que más pesa: el tiempo, no la cantidad</h2>
+  <p>
+    Mueve el control de años y verás que alargar el plazo cambia más el resultado que subir la aportación. Con una rentabilidad
+    del 7 %, un capital se duplica aproximadamente cada 10 años (la calculadora te dice el número exacto). Esa es la idea
+    que explicamos con ejemplos en{' '}
+    <ArticleLink href="/blog/interes-compuesto-explicado-con-ejemplos/">interés compuesto: qué es, fórmula y ejemplos reales</ArticleLink>.
+  </p>
+
+  <h2>Interés compuesto con inflación e impuestos</h2>
+  <p>
+    El número que sale es "nominal": no descuenta que los precios suban ni que Hacienda se quede una parte de la ganancia. Por eso
+    la calculadora te enseña también el valor en euros de hoy y, si marcas la casilla, el resultado tras el IRPF del ahorro. Para
+    afinar con comisiones de fondo y de broker usa el{' '}
+    <ArticleLink href="/blog/rentabilidad-neta-fondo-indexado/">simulador de rentabilidad neta de un fondo indexado</ArticleLink>, y para
+    ver cuánto pierde tu dinero parado, la <a href="/herramientas/calculadora-inflacion/">calculadora de inflación</a>.
+  </p>
+
+  <h2>Qué hacer con el resultado</h2>
+  <p>
+    Si te sale una cifra que te gusta, el siguiente paso no es invertir ya: es tener tu{' '}
+    <a href="/herramientas/calculadora-fondo-de-emergencia/">fondo de emergencia</a> cubierto y saber{' '}
+    <a href="/herramientas/cuanto-ahorrar-al-mes/">cuánto puedes ahorrar al mes</a> sin ahogarte. Y si quieres ver cuántos años te
+    faltan para vivir de tu patrimonio, prueba la <a href="/herramientas/calculadora-independencia-financiera/">calculadora de
+    independencia financiera</a>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Cómo se calcula el interés compuesto?</strong><br />
+    Cada periodo, el interés se calcula sobre el capital más los intereses ya acumulados. Con aportaciones mensuales, cada mes se
+    multiplica el saldo por (1 + tasa mensual) y se suma la aportación.</p>
+  <p><strong>¿Qué diferencia hay entre interés simple y compuesto?</strong><br />
+    En el simple solo cobras interés sobre el capital inicial; en el compuesto, también sobre los intereses acumulados.</p>
+  <p><strong>¿Qué rentabilidad debo poner?</strong><br />
+    No hay un valor correcto. Prueba varios escenarios (un 3 %, un 5 % y un 7 %) y fíjate en el rango, no en un único número.</p>
+</ToolLayout>

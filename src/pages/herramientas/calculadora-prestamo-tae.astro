@@ -1,0 +1,78 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import LoanTaeCalculator from '../../components/LoanTaeCalculator';
+---
+
+<ToolLayout
+  title="Calculadora de préstamo y TAE: cuota, intereses y coste real"
+  name="Calculadora de préstamo y TAE"
+  description="Calcula la cuota, los intereses y la TAE real de un préstamo personal con comisión y seguro, o convierte el TIN de un depósito o cuenta remunerada en TAE y en intereses netos."
+  pubDate={new Date('2026-10-06')}
+  faqs={[
+    {
+      pregunta: '¿Qué diferencia hay entre TIN y TAE?',
+      respuesta: 'El TIN es el tipo de interés nominal anual, sin contar comisiones ni la frecuencia con que se pagan los intereses. La TAE añade esos efectos y permite comparar productos. En un préstamo, la TAE suele ser mayor que el TIN porque incluye comisiones y seguros; en un depósito, porque cuenta el interés sobre interés.',
+    },
+    {
+      pregunta: '¿Cómo se calcula la TAE de un préstamo?',
+      respuesta: 'Es el tipo anual que iguala lo que recibes (el importe menos las comisiones al inicio) con el valor de todas las cuotas que pagas. Se resuelve por tanteo, y esta calculadora lo hace por ti incluyendo la comisión de apertura y el cobro mensual que indiques.',
+    },
+    {
+      pregunta: '¿Por qué mi banco me da otra TAE?',
+      respuesta: 'Porque puede incluir gastos que no conoces, como seguros obligatorios o comisiones distintas. La TAE oficial figura en la ficha de información precontractual, que el banco está obligado a entregarte: compárala con esta estimación.',
+    },
+  ]}
+>
+  <p>
+    Una calculadora de TAE sirve para dos cosas: saber cuánto te cuesta de verdad un préstamo y saber cuánto te rinde de verdad un
+    depósito o una cuenta remunerada. Elige arriba qué quieres calcular. En un préstamo verás la cuota, los intereses totales, el
+    coste total y la TAE incluyendo comisión de apertura y seguro; en un depósito, la TAE y los intereses netos tras impuestos.
+  </p>
+
+  <LoanTaeCalculator client:load />
+
+  <BotonCompartir client:load />
+
+  <h2>Qué es la TAE y por qué es mejor que el TIN</h2>
+  <p>
+    El TIN dice cuánto interés anuncia el banco; la TAE dice cuánto cuesta (o rinde) realmente, porque suma lo que el TIN no
+    cuenta: las comisiones que pagas al principio, los seguros ligados al préstamo y la frecuencia de pago de intereses. Por eso, para
+    comparar dos ofertas hay que mirar la TAE, no el TIN. Es la misma idea que explicamos en el{' '}
+    <a href="/glosario/tae/">glosario de la TAE</a> y en el <a href="/glosario/tin/">del TIN</a>.
+  </p>
+
+  <h2>Préstamo: cómo leer el resultado</h2>
+  <ul>
+    <li><strong>Cuota mensual:</strong> sistema francés, cuota constante. Incluye el cobro mensual que hayas puesto.</li>
+    <li><strong>Intereses totales:</strong> lo que pagas por encima del dinero que te prestan.</li>
+    <li><strong>Coste total:</strong> intereses más comisión de apertura. Es lo que de verdad te cuesta pedir ese dinero.</li>
+    <li><strong>TAE real:</strong> compárala con la TAE que te dé el banco; si difieren mucho, pregunta qué falta.</li>
+  </ul>
+
+  <h2>Depósito o cuenta remunerada: de TIN a TAE</h2>
+  <p>
+    Si un depósito paga los intereses cada mes y los reinviertes, el TIN se convierte en una TAE un poco mayor: es el interés
+    compuesto en pequeño. La calculadora te da la TAE y los intereses del plazo, con el IRPF del ahorro descontado. Para ver qué
+    ofertas hay hoy, consulta el <a href="/herramientas/comparador-cuentas-remuneradas/">comparador de cuentas remuneradas y depósitos</a>,
+    y para ver el efecto a largo plazo, la <a href="/herramientas/calculadora-interes-compuesto/">calculadora de interés compuesto</a>.
+  </p>
+
+  <h2>Antes de pedir un préstamo</h2>
+  <ul>
+    <li>Compara por TAE y por coste total, no solo por la cuota.</li>
+    <li>Pregunta si el seguro es obligatorio y si puedes contratarlo por tu cuenta.</li>
+    <li>Mira si hay comisión por amortizar anticipadamente (en hipotecas la ley fija máximos: lo explicamos en
+      <a href="/herramientas/amortizar-hipoteca-cuanto-ahorras/">amortizar la hipoteca</a>).</li>
+    <li>Si es una hipoteca, usa el <a href="/herramientas/simulador-hipoteca-euribor/">simulador de hipoteca con euríbor</a>, que calcula
+      fija, variable y mixta.</li>
+  </ul>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Qué diferencia hay entre TIN y TAE?</strong><br />
+    El TIN es el tipo nominal anual, sin comisiones ni frecuencia de pago. La TAE añade esos efectos y permite comparar productos.</p>
+  <p><strong>¿Cómo se calcula la TAE de un préstamo?</strong><br />
+    Es el tipo anual que iguala lo que recibes (el importe menos las comisiones iniciales) con el valor de todas las cuotas que pagas.</p>
+  <p><strong>¿Por qué mi banco me da otra TAE?</strong><br />
+    Porque puede incluir gastos que no conoces, como seguros obligatorios. La TAE oficial figura en la ficha de información precontractual.</p>
+</ToolLayout>

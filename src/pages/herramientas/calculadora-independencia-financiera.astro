@@ -1,0 +1,84 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import FireCalculator from '../../components/FireCalculator';
+---
+
+<ToolLayout
+  title="Calculadora de independencia financiera (FIRE) en euros"
+  name="Calculadora de independencia financiera"
+  description="Calculadora FIRE: cuánto patrimonio necesitas para vivir de tus inversiones según tus gastos y la regla del 4 %, cuántos años te faltan y cómo cambia el plazo si ahorras más."
+  pubDate={new Date('2026-10-06')}
+  faqs={[
+    {
+      pregunta: '¿Qué es la independencia financiera (FIRE)?',
+      respuesta: 'Es tener un patrimonio invertido suficiente para cubrir tus gastos con lo que retiras de él cada año, sin depender de un sueldo. FIRE son las siglas en inglés de independencia financiera y jubilación anticipada.',
+    },
+    {
+      pregunta: '¿Qué es la regla del 4%?',
+      respuesta: 'Es una referencia popular, basada en estudios históricos del mercado estadounidense, según la cual podrías retirar cada año el 4% de tu patrimonio inicial, ajustado a la inflación, durante décadas. No es una garantía, y en otros mercados o épocas puede ser distinta.',
+    },
+    {
+      pregunta: '¿Cómo calculo mi número FIRE?',
+      respuesta: 'Divide tus gastos anuales entre la tasa de retirada. Con 20.000 € de gastos y un 4%, necesitas 500.000 €. La calculadora lo hace y te dice cuánto tardarías en llegar con tu ahorro actual.',
+    },
+  ]}
+>
+  <p>
+    La independencia financiera es el momento en que tus inversiones pagan tus gastos y trabajar pasa a ser opcional. Esta calculadora
+    FIRE te dice cuál es tu número (el patrimonio que necesitas), cuánto progreso llevas y en cuánto tiempo lo alcanzarías con tu
+    ahorro actual, además de cuánto cambia ese plazo si ahorras más o menos.
+  </p>
+
+  <FireCalculator client:load />
+
+  <BotonCompartir client:load />
+
+  <h2>Cómo se calcula tu número FIRE</h2>
+  <p>
+    Se divide lo que gastas al año entre la tasa de retirada. Con una tasa del 4 %, multiplicas tus gastos anuales por 25. Es una
+    referencia, no una promesa: la tasa "segura" depende del mercado, de cuánto dure tu jubilación y de que no haya una mala racha al
+    principio (el riesgo de secuencia, que explicamos en el <a href="/glosario/riesgo-de-secuencia/">glosario</a>). Por eso la tasa es
+    editable: prueba un 3 % para ser más prudente.
+  </p>
+
+  <h2>Rentabilidad real: por qué la inflación ya va dentro</h2>
+  <p>
+    Para que todo quede en euros de hoy, la calculadora usa una rentabilidad <strong>real</strong>: la rentabilidad menos la inflación.
+    Si crees que tus inversiones rendirán un 6 % y la inflación será del 2 %, pon aproximadamente un 4 %. Así tus gastos y tu número FIRE
+    siguen siendo comparables dentro de veinte años. Puedes ver el efecto de la inflación en la
+    <a href="/herramientas/calculadora-inflacion/">calculadora de inflación</a>.
+  </p>
+
+  <h2>Lo que más mueve el plazo: cuánto ahorras</h2>
+  <p>
+    La tabla de sensibilidad lo enseña: subir tu ahorro mensual acorta mucho el camino, porque a la vez aumenta el dinero que invertir y
+    reduce (si recortas gastos) el patrimonio que necesitas. Si no sabes cuánto puedes ahorrar, empieza por la calculadora de
+    <a href="/herramientas/cuanto-ahorrar-al-mes/">cuánto ahorrar al mes</a> y por el
+    <a href="/herramientas/calculadora-sueldo-neto/">sueldo neto</a>.
+  </p>
+
+  <h2>Lo que esta calculadora no tiene en cuenta</h2>
+  <ul>
+    <li>Impuestos al retirar dinero (en España, el IRPF del ahorro sobre la ganancia; mira los
+      <ArticleLink href="/blog/tramos-irpf-ahorro/">tramos del ahorro</ArticleLink>).</li>
+    <li>Que la rentabilidad real cambia cada año y puede ser negativa durante años.</li>
+    <li>Una pensión pública futura u otros ingresos, que reducirían el patrimonio necesario.</li>
+    <li>Que tus gastos cambien (hijos, vivienda, salud).</li>
+  </ul>
+  <p>
+    Para ver cómo crece un patrimonio con aportaciones, usa la{' '}
+    <a href="/herramientas/calculadora-interes-compuesto/">calculadora de interés compuesto</a>. Es una referencia para pensar, no
+    asesoramiento: tu plan real depende de tu situación.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Qué es la independencia financiera (FIRE)?</strong><br />
+    Es tener un patrimonio invertido suficiente para cubrir tus gastos con lo que retiras de él cada año, sin depender de un sueldo.</p>
+  <p><strong>¿Qué es la regla del 4%?</strong><br />
+    Una referencia popular, basada en estudios históricos del mercado estadounidense, según la cual podrías retirar cada año el 4 % del
+    patrimonio inicial, ajustado a la inflación. No es una garantía.</p>
+  <p><strong>¿Cómo calculo mi número FIRE?</strong><br />
+    Divide tus gastos anuales entre la tasa de retirada: con 20.000 € de gastos y un 4 %, necesitas 500.000 €.</p>
+</ToolLayout>

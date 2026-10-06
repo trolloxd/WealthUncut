@@ -113,6 +113,24 @@ export const TOOLS = [
     tags: ['vivienda', 'ahorro', 'impuestos'],
   },
   {
+    href: '/herramientas/calculadora-interes-compuesto/',
+    name: 'Calculadora de interés compuesto',
+    description: 'Cuánto tendrías con aportaciones mensuales, en euros de hoy y tras impuestos.',
+    tags: ['interés compuesto', 'educación financiera', 'calculadoras', 'ahorro'],
+  },
+  {
+    href: '/herramientas/calculadora-prestamo-tae/',
+    name: 'Calculadora de préstamo y TAE',
+    description: 'Cuota, intereses y TAE real de un préstamo, o del TIN de un depósito a su TAE.',
+    tags: ['ahorro', 'cuentas', 'educación financiera'],
+  },
+  {
+    href: '/herramientas/calculadora-independencia-financiera/',
+    name: 'Independencia financiera (FIRE)',
+    description: 'Tu número para vivir de tus inversiones y cuántos años te faltan.',
+    tags: ['educación financiera', 'ahorro', 'interés compuesto'],
+  },
+  {
     href: '/carteras/',
     name: 'Carteras de fondos',
     description: 'Busca entre más de 1.600 fondos, reparte pesos y simula tu cartera bruta y neta de impuestos.',

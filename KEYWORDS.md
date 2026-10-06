@@ -249,3 +249,10 @@ calculadora). Evitar siempre titulares tipo "mejor X" que obliguen a recomendar 
 `primeros-pasos-para-invertir-en-espana` y `invertir-100-euros-al-mes`), "retención en fondos de inversión"
 (solapa con `como-tributan-los-fondos-de-inversion-en-espana`) y "cuánto ahorrar al mes según el sueldo"
 (la calculadora ya lo cubre).
+
+**Herramientas creadas el 2026-10-06 a partir del informe de competencia** (sin datos externos que caduquen):
+`/herramientas/calculadora-interes-compuesto/` ("interés compuesto calculadora", 2ª sugerencia de "interes
+compuesto"), `/herramientas/calculadora-prestamo-tae/` ("calculadora tae", "calculadora préstamo") y
+`/herramientas/calculadora-independencia-financiera/` ("calculadora independencia financiera", "calculadora fire").
+Siguientes del backlog (`INFORME-COMPETENCIA-Y-AUDITORIA.md`, sección 4.1): finiquito, cuota de autónomos y despido,
+que sí necesitan cifras legales verificadas en BOE/SEPE.
