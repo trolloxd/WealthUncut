@@ -34,11 +34,14 @@ const retosValidos = MICRORETOS.filter((r) => {
   const slug = r.href.match(/^\/blog\/([^/]+)\/$/)?.[1];
   return !slug || !noPublicados.has(slug);
 });
-const reto = retosValidos[diaDelAnio(hoy) % retosValidos.length];
+// El reto y el término rotan según la fecha de la edición que se muestra (no la hora del build), así que
+// siempre van a juego con ella aunque la web se reconstruya de madrugada o a mediodía.
+const diaBase = diaDelAnio(edicion?.data.pubDate ?? hoy);
+const reto = retosValidos[diaBase % retosValidos.length];
 
 // Término del día, rotando por el glosario.
 const terminos = (await getCollection('glosario')).sort((a, b) => a.id.localeCompare(b.id));
-const termino = terminos[(diaDelAnio(hoy) * 7) % terminos.length];
+const termino = terminos[(diaBase * 7) % terminos.length];
 
 // Próximas guías programadas: una razón para volver.
 const proximas = (await getCollection('blog', ({ data }) => !data.draft && data.pubDate.valueOf() > hoy.valueOf()))
