@@ -22,6 +22,18 @@ function leerFechasArticulos() {
       if (fecha) fechas.set(`${seccion}/${file.replace(/\.mdx?$/, '')}`, fecha.trim());
     }
   }
+  // Herramientas: las fechas van como literal en la propia página (updatedDate primero, si no pubDate).
+  const dirHerramientas = './src/pages/herramientas';
+  if (fs.existsSync(dirHerramientas)) {
+    for (const file of fs.readdirSync(dirHerramientas)) {
+      if (!file.endsWith('.astro') || file === 'index.astro') continue;
+      const texto = fs.readFileSync(path.join(dirHerramientas, file), 'utf8');
+      const fecha =
+        texto.match(/updatedDate=\{new Date\('(\d{4}-\d{2}-\d{2})'\)\}/)?.[1] ??
+        texto.match(/pubDate=\{new Date\('(\d{4}-\d{2}-\d{2})'\)\}/)?.[1];
+      if (fecha) fechas.set(`herramientas/${file.replace(/\.astro$/, '')}`, fecha);
+    }
+  }
   return fechas;
 }
 
@@ -66,7 +78,7 @@ export default defineConfig({
     sitemap({
       filter: (page) => !page.includes('/404') && !page.includes('/embed/') && !page.includes('/buscar/') && !page.includes('/newsletter/baja'),
       serialize(item) {
-        const clave = item.url.match(/\/((?:blog|mercados)\/[^/]+)\/$/)?.[1];
+        const clave = item.url.match(/\/((?:blog|mercados|herramientas)\/[^/]+)\/$/)?.[1];
         const fecha = clave ? fechasArticulos.get(clave) : undefined;
         if (fecha) item.lastmod = new Date(fecha).toISOString();
         return item;
