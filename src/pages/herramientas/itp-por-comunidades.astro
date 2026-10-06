@@ -1,0 +1,129 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import { ITP_VIVIENDA_USADA, ITP_VIVIENDA_USADA_FUENTES, calcularITP, GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT } from '../../config/finance';
+
+const PRECIO_EJEMPLO = 200000;
+const euros = (n: number) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'always', maximumFractionDigits: 0 }).format(n)} €`;
+const pct = (n: number) => `${(n * 100).toLocaleString('es-ES', { maximumFractionDigits: 2 })} %`;
+
+const filas = Object.entries(ITP_VIVIENDA_USADA)
+  .map(([id, c]) => {
+    const tipos = c.brackets
+      .map((b, i) => {
+        const desde = i === 0 ? 0 : c.brackets[i - 1].hasta;
+        if (c.brackets.length === 1) return pct(b.tipo);
+        if (b.hasta === Infinity) return `${pct(b.tipo)} a partir de ${euros(desde)}`;
+        return `${pct(b.tipo)} hasta ${euros(b.hasta)}`;
+      })
+      .join('; ');
+    return { id, nombre: c.nombre, tipos, itp: calcularITP(PRECIO_EJEMPLO, id as keyof typeof ITP_VIVIENDA_USADA), primero: c.brackets[0].tipo };
+  })
+  .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+
+const lista = new Intl.ListFormat('es', { style: 'long', type: 'conjunction' });
+const itpMin = Math.min(...filas.map((f) => f.itp));
+const itpMax = Math.max(...filas.map((f) => f.itp));
+const comunidadesMin = lista.format(filas.filter((f) => f.itp === itpMin).map((f) => f.nombre));
+const comunidadesMax = lista.format(filas.filter((f) => f.itp === itpMax).map((f) => f.nombre));
+---
+
+<ToolLayout
+  title="ITP por comunidades autónomas: tabla de tipos 2026"
+  name="ITP por comunidades autónomas"
+  description="Tabla del ITP al comprar vivienda de segunda mano en cada comunidad autónoma: tipo general, tramos y cuánto pagarías por un piso de 200.000 €."
+  pubDate={new Date('2026-10-06')}
+  sources={ITP_VIVIENDA_USADA_FUENTES}
+  faqs={[
+    {
+      pregunta: '¿Qué es el ITP y cuándo se paga?',
+      respuesta: 'El Impuesto de Transmisiones Patrimoniales (ITP) es el impuesto que se paga al comprar una vivienda de segunda mano a un particular. Cada comunidad autónoma fija su tipo, y se paga en el momento de la compra.',
+    },
+    {
+      pregunta: '¿Y si compro una vivienda nueva?',
+      respuesta: 'Entonces no pagas ITP sino IVA más el Impuesto de Actos Jurídicos Documentados (AJD), que también fija cada comunidad. El cálculo es distinto y esta tabla no lo cubre.',
+    },
+    {
+      pregunta: '¿Los tipos de la tabla incluyen reducciones?',
+      respuesta: 'No. La tabla recoge el tipo general. Muchas comunidades tienen tipos reducidos para jóvenes, familias numerosas, discapacidad o vivienda habitual: consúltalos en la web de tu comunidad antes de comprar.',
+    },
+  ]}
+>
+  <p>
+    El ITP (Impuesto de Transmisiones Patrimoniales) es el impuesto que pagas al comprar una vivienda de
+    segunda mano, y cambia mucho según la comunidad autónoma: sobre un piso de {euros(PRECIO_EJEMPLO)}, pagas
+    desde {euros(itpMin)} ({comunidadesMin}) hasta {euros(itpMax)} ({comunidadesMax}), una diferencia
+    de {euros(itpMax - itpMin)}. Los tipos son los vigentes en 2026, verificados el 24 de septiembre de 2026.
+  </p>
+
+  <h2>Tabla de ITP por comunidades autónomas</h2>
+  <div class="not-prose my-6 overflow-x-auto">
+    <table class="w-full text-sm">
+      <caption class="mb-2 text-left text-sm font-semibold text-ink">
+        Tipo general del ITP en vivienda usada, por comunidad
+      </caption>
+      <thead>
+        <tr class="border-b border-border text-left text-xs text-ink-muted">
+          <th scope="col" class="py-2 pr-3 font-medium">Comunidad</th>
+          <th scope="col" class="py-2 pr-3 font-medium">Tipo</th>
+          <th scope="col" class="py-2 text-right font-medium">ITP en un piso de {euros(PRECIO_EJEMPLO)}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {filas.map((f) => (
+          <tr class="border-b border-border/60">
+            <td class="py-2 pr-3 text-ink">{f.nombre}</td>
+            <td class="py-2 pr-3 text-ink-muted">{f.tipos}</td>
+            <td class="py-2 text-right font-semibold text-brand">{euros(f.itp)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="mt-2 text-xs text-ink-faint">
+      Tipos generales para vivienda usada, sin reducciones. Las comunidades con tramos aplican cada tipo
+      solo a la parte del precio que cae en ese tramo, igual que el IRPF.
+    </p>
+  </div>
+
+  <h2>Cuánto dinero necesitas, además del ITP</h2>
+  <p>
+    El ITP es solo una parte del dinero que necesitas el día de la compra. Hay que sumar la entrada (lo que
+    no financia el banco), y los gastos de notaría, registro y gestoría, que estimamos en torno al{' '}
+    {(GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT * 100).toLocaleString('es-ES')} % del precio. Calcúlalo con tu precio y tu comunidad
+    en la <a href="/herramientas/ahorro-entrada-piso/">calculadora de ahorro para la entrada de un piso</a>
+    o lee la guía <ArticleLink href="/blog/cuanto-ahorrar-entrada-piso/">cuánto dinero necesitas para comprar un piso</ArticleLink>.
+  </p>
+
+  <h2>Vivienda nueva: IVA y AJD en lugar de ITP</h2>
+  <p>
+    Si compras a un promotor, la vivienda es nueva y tributa por IVA (con un tipo reducido en vivienda) más el
+    Impuesto de Actos Jurídicos Documentados, que también varía por comunidad. Para esos casos esta tabla no
+    sirve: consulta la normativa de tu comunidad.
+  </p>
+
+  <h2>Tipos reducidos</h2>
+  <p>
+    Muchas comunidades aplican tipos reducidos en determinados supuestos (menores de cierta edad, familias
+    numerosas, personas con discapacidad, vivienda habitual de valor limitado...). Dependen de cada comunidad y
+    cambian con frecuencia, por eso no los incluimos: compruébalos en la web de tu comunidad antes de contar con
+    ellos.
+  </p>
+
+  <h2>Si quieres comparar con alquilar</h2>
+  <p>
+    Una vez sabes lo que cuesta comprar, la pregunta siguiente es si te compensa. Mira la herramienta{' '}
+    <a href="/herramientas/alquilar-o-comprar-vivienda/">¿Alquilar o comprar vivienda?</a> y simula la cuota con el
+    <a href="/herramientas/simulador-hipoteca-euribor/"> simulador de hipoteca con el euríbor real</a>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Qué es el ITP y cuándo se paga?</strong><br />
+    Es el impuesto que se paga al comprar una vivienda de segunda mano a un particular. Cada comunidad
+    autónoma fija su tipo, y se paga en el momento de la compra.</p>
+  <p><strong>¿Y si compro una vivienda nueva?</strong><br />
+    Entonces no pagas ITP sino IVA más el Impuesto de Actos Jurídicos Documentados (AJD), que también fija cada
+    comunidad. El cálculo es distinto y esta tabla no lo cubre.</p>
+  <p><strong>¿Los tipos de la tabla incluyen reducciones?</strong><br />
+    No. La tabla recoge el tipo general. Muchas comunidades tienen tipos reducidos para jóvenes, familias
+    numerosas, discapacidad o vivienda habitual: consúltalos en la web de tu comunidad antes de comprar.</p>
+</ToolLayout>

@@ -9,7 +9,7 @@ const posts = (await getCollection('blog', ({ data }) => isPublished(data))).sor
 );
 ---
 
-<BaseLayout title="Blog" description={`Artículos de ${SITE.name} sobre fondos indexados, impuestos de la inversión en España y primeros pasos para invertir, con cifras calculadas y fuentes oficiales.`}>
+<BaseLayout title="Blog de finanzas personales e inversión en España" description={`Artículos de ${SITE.name} sobre fondos indexados, impuestos de la inversión en España y primeros pasos para invertir, con cifras calculadas y fuentes oficiales.`}>
   <h1 class="mb-4 font-display text-3xl text-ink">Blog</h1>
   <p class="mb-10 max-w-2xl text-ink-muted">
     Fondos indexados, impuestos de la inversión en España y primeros pasos para empezar, con

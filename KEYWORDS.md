@@ -205,3 +205,39 @@ comprar", "comprar vs alquilar"). Pendientes de artículo en MDX propio; el lím
 amortización vive en `finance.ts` (`COMISION_AMORTIZACION_ANTICIPADA`, verificado en el BOE el 2026-10-05).
 
 Herramienta y artículo añadidos el 2026-10-06 (clúster 4, impuestos): calculadora del impuesto de los dividendos y guía "Cómo tributan los dividendos en España" (cubre "impuesto por dividendos españa"). Cifras en `finance.ts` (`DIVIDENDOS`, verificadas el 2026-10-06 en el Manual práctico de Renta 2025). Sigue sin artículo "cómo declarar ganancias de bolsa".
+
+## Investigación de keywords del 2026-10-06 (autocompletado de Google, España)
+
+Método: ~70 búsquedas semilla más ampliación a-z de 8 núcleos con `suggestqueries.google.com`
+(`hl=es&gl=es`), descartando variantes de Latinoamérica. Sigue sin dar volumen, pero ordena por
+demanda real (el orden de las sugerencias refleja popularidad). Qué se aplicó:
+
+**Patrones de búsqueda dominantes en el sector**
+- "[producto] + índice/plataforma": `fondo indexado sp500`, `fondo indexado msci world`, `fondos
+  indexados myinvestor / trade republic`, `mejor fondo indexado ...`, `cartera de fondos indexados
+  (myinvestor)`.
+- "calculadora/simulador": `interes compuesto calculadora`, `calculadora sueldo neto 2026`, `simulador
+  hipoteca`, `inflacion calculadora`, `regla 50 30 20 calculadora`, `cuanto ahorrar al mes calculadora`.
+- El año como modificador: `2026` en `mejores cuentas remuneradas 2026`, `mejores depositos octubre
+  2026`, `calculadora sueldo neto 2026`, `itp por comunidades autonomas 2026`, `dividendos tributacion
+  irpf 2026`. Solo usar el año si el dato de la página es de ese año.
+- "cuánto/cuál": `cuanto dinero necesito para comprar un piso`, `cuanto ahorrar al mes segun sueldo`,
+  `fondo de emergencia cuanto debe ser`, `hipoteca fija o variable que es mejor`.
+- Comparaciones: `comprar o alquilar vivienda`, `plan de pensiones o fondo de inversion`, `etf vs
+  fondo indexado`, `amortizar hipoteca reducir cuota o plazo`, `amortizar hipoteca o invertir`.
+
+**Aplicado a títulos y descripciones (2026-10-06)**: todas las piezas empiezan por la keyword principal
+(p. ej. "Cartera de fondos indexados: ...", "Interés compuesto: qué es, fórmula y ejemplos",
+"Qué es el TER de un fondo ...", "Cómo empezar a invertir desde cero ...", "Hipoteca fija, variable o
+mixta: cuál elegir ...") y los títulos caben en 60 caracteres.
+
+**Páginas nuevas creadas a partir de esta investigación**: `/herramientas/cuanto-ahorrar-al-mes/`
+(regla 50/30/20 y "cuánto ahorrar al mes según sueldo"), `/herramientas/itp-por-comunidades/` (tabla de
+ITP, "itp por comunidades autonomas") y `/herramientas/calculadora-impuesto-dividendos/`.
+
+**Huecos con demanda confirmada, sin artículo todavía (los toma la rutina de reposición)**:
+`sp500 vs msci world` (qué diferencia hay, sin recomendar), `invertir 100 euros al mes`, `como empezar a
+invertir con poco dinero`, `gastos de comprar una vivienda de segunda mano`, `amortizar hipoteca o
+invertir`, `tramos irpf ahorro` (artículo propio con la tabla), `retencion fondos de inversion`,
+`plan de pensiones desgravar` y `cuanto ahorrar al mes segun sueldo` (artículo que acompañe la
+calculadora). Evitar siempre titulares tipo "mejor X" que obliguen a recomendar un producto.

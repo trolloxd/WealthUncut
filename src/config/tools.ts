@@ -101,6 +101,18 @@ export const TOOLS = [
     tags: ['impuestos', 'fondos indexados', 'etf'],
   },
   {
+    href: '/herramientas/cuanto-ahorrar-al-mes/',
+    name: 'Cuánto ahorrar al mes (regla 50/30/20)',
+    description: 'Cuánto ahorras hoy frente a la regla 50/30/20 y cuánto tendrías en unos años.',
+    tags: ['educación financiera', 'ahorro', 'interés compuesto'],
+  },
+  {
+    href: '/herramientas/itp-por-comunidades/',
+    name: 'ITP por comunidades autónomas',
+    description: 'Tabla del impuesto de compra de vivienda usada en cada comunidad y cuánto pagas por un piso.',
+    tags: ['vivienda', 'ahorro', 'impuestos'],
+  },
+  {
     href: '/carteras/',
     name: 'Carteras de fondos',
     description: 'Busca entre más de 1.600 fondos, reparte pesos y simula tu cartera bruta y neta de impuestos.',

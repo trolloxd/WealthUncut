@@ -1,0 +1,77 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import SavingsRuleCalculator from '../../components/SavingsRuleCalculator';
+---
+
+<ToolLayout
+  title="Cuánto ahorrar al mes según tu sueldo: regla 50/30/20"
+  name="Cuánto ahorrar al mes"
+  description="Calculadora de cuánto ahorrar al mes según tu sueldo con la regla 50/30/20: compara con lo que ahorras hoy y mira cuánto tendrías en unos años."
+  pubDate={new Date('2026-10-06')}
+  faqs={[
+    {
+      pregunta: '¿Qué es la regla 50/30/20?',
+      respuesta: 'Es una referencia popular para repartir el sueldo neto: un 50% para necesidades (vivienda, comida, transporte), un 30% para gustos y un 20% para ahorrar o invertir. No es una norma: sirve como punto de partida que cada persona adapta.',
+    },
+    {
+      pregunta: '¿Cuánto debería ahorrar al mes?',
+      respuesta: 'No hay una cifra única: depende de tus ingresos, tus gastos fijos y tus objetivos. Una referencia habitual es el 20% del sueldo neto, pero con alquileres altos puede ser inalcanzable y con ingresos altos puede quedarse corta.',
+    },
+    {
+      pregunta: '¿Qué hago con el dinero que ahorro?',
+      respuesta: 'Primero un fondo de emergencia, y luego, si no lo vas a necesitar en años, invertirlo según tu horizonte. Cada paso está explicado en las guías relacionadas.',
+    },
+  ]}
+>
+  <p>
+    ¿Cuánto ahorrar al mes según tu sueldo? No hay una respuesta única, pero sí una referencia útil: la
+    regla 50/30/20. Esta calculadora te dice cuánto ahorras hoy, cómo se compara con esa regla y cuánto
+    podrías tener dentro de unos años si mantienes el ahorro.
+  </p>
+
+  <SavingsRuleCalculator client:load />
+
+  <BotonCompartir client:load />
+
+  <h2>Qué es la regla 50/30/20</h2>
+  <p>
+    Reparte tu sueldo neto en tres cubos: el <strong>50 %</strong> para lo que necesitas (alquiler o hipoteca,
+    comida, transporte, suministros), el <strong>30 %</strong> para lo que quieres (ocio, viajes, caprichos)
+    y el <strong>20 %</strong> para ahorrar e invertir. Es una referencia, no una ley: si tu alquiler se come
+    más de la mitad del sueldo, la regla se queda corta, y si ganas más, probablemente puedas ahorrar más del 20 %.
+  </p>
+
+  <h2>Cuánto ahorrar al mes según tu sueldo</h2>
+  <p>
+    Lo importante no es cumplir la regla al céntimo, sino saber dónde estás. Si ahorras menos del 20 %, mira
+    primero los gastos necesarios (sobre todo vivienda) y después los gustos. Si ya ahorras más, el siguiente
+    paso es decidir qué hacer con ese dinero: primero tu{' '}
+    <a href="/herramientas/calculadora-fondo-de-emergencia/">fondo de emergencia</a> y después, si no lo vas a necesitar en años,
+    invertirlo. Para ver tu sueldo neto con impuestos usa la{' '}
+    <a href="/herramientas/calculadora-sueldo-neto/">calculadora de sueldo neto</a>.
+  </p>
+
+  <h2>Qué pasa con el ahorro con el tiempo</h2>
+  <p>
+    Cada euro que ahorras hoy trabaja más años que uno que ahorras dentro de diez. Lo explicamos con ejemplos en{' '}
+    <ArticleLink href="/blog/interes-compuesto-explicado-con-ejemplos/">interés compuesto explicado con ejemplos reales</ArticleLink>,
+    y la diferencia entre guardar y hacer crecer ese dinero, en{' '}
+    <ArticleLink href="/blog/diferencia-entre-ahorrar-e-invertir/">diferencia entre ahorrar e invertir</ArticleLink>.
+    Si tu objetivo es una vivienda, mira{' '}
+    <a href="/herramientas/ahorro-entrada-piso/">cuánto necesitas ahorrar para la entrada de un piso</a>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Qué es la regla 50/30/20?</strong><br />
+    Es una referencia popular para repartir el sueldo neto: un 50% para necesidades, un 30% para gustos y un 20%
+    para ahorrar o invertir. No es una norma: sirve como punto de partida que cada persona adapta.</p>
+  <p><strong>¿Cuánto debería ahorrar al mes?</strong><br />
+    No hay una cifra única: depende de tus ingresos, tus gastos fijos y tus objetivos. Una referencia habitual es
+    el 20% del sueldo neto, pero con alquileres altos puede ser inalcanzable y con ingresos altos puede quedarse
+    corta.</p>
+  <p><strong>¿Qué hago con el dinero que ahorro?</strong><br />
+    Primero un fondo de emergencia, y luego, si no lo vas a necesitar en años, invertirlo según tu horizonte. Cada
+    paso está explicado en las guías relacionadas.</p>
+</ToolLayout>

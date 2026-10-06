@@ -11,8 +11,8 @@ import { hayAfiliado } from '../config/afiliados';
 import datos from '../data/myinvestor-fondos/ultimo.json';
 import catalogo from '../data/myinvestor-fondos/catalogo.json';
 
-const title = 'Carteras: simula tu cartera de fondos indexados';
-const description = 'Busca entre los fondos de MyInvestor, arma tu propia cartera y simula cuánto podrías tener al cabo de los años, con su rentabilidad histórica real.';
+const title = 'Simulador de cartera de fondos indexados';
+const description = 'Simula tu cartera de fondos indexados con fondos de MyInvestor: busca por nombre o ISIN, reparte pesos y calcula cuánto tendrías, bruto y neto de impuestos.';
 const pubDate = new Date('2026-09-28');
 const url = new URL(Astro.url.pathname, SITE.url).href;
 const fechaCatalogo = new Date(catalogo.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -87,7 +87,7 @@ const breadcrumbJsonLd = {
         una previsión: puedes cambiarla por la que tú creas más realista.
       </p>
 
-      <h2>Cómo calcula el resultado</h2>
+      <h2>Cómo se calcula el resultado de tu cartera de fondos indexados</h2>
       <p>
         Cada fondo compone por separado, con la rentabilidad bruta anual que le asignes menos su TER,
         según el peso que le des dentro de la cartera. Al final del periodo se suman todos los fondos y

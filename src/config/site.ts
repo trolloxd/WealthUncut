@@ -6,7 +6,7 @@ export const SITE = {
   // Reenvía al gmail de David mediante Cloudflare Email Routing (configurado el 2026-09-23).
   email: 'contacto@wealthuncut.com',
   description:
-    'Herramientas y artículos sobre cuentas, brokers, fondos indexados e impuestos para gestionar tu dinero con datos propios, no con suposiciones.',
+    'Calculadoras gratuitas y guías de finanzas personales en España: fondos indexados, impuestos de la inversión, sueldo neto, hipoteca y ahorro, con datos y fuentes.',
 } as const;
 
 export const AUTHOR = {

@@ -9,9 +9,9 @@ const euriborInicial: number = euriborData.ultimoValor;
 ---
 
 <ToolLayout
-  title="¿Alquilar o comprar? Compara tu patrimonio"
+  title="¿Alquilar o comprar vivienda? Calculadora y comparación"
   name="¿Alquilar o comprar?"
-  description="Compara cuánto patrimonio tendrías dentro de unos años comprando una vivienda con hipoteca o alquilando e invirtiendo la diferencia, con el ITP de tu comunidad."
+  description="¿Alquilar o comprar? Compara tu patrimonio dentro de unos años comprando con hipoteca o alquilando e invirtiendo la diferencia, con el ITP de tu comunidad."
   pubDate={new Date('2026-10-05')}
   sources={[
     { label: 'Banco Central Europeo: euríbor a 12 meses, media mensual', url: euriborData.fuenteUrl },
@@ -43,7 +43,7 @@ const euriborInicial: number = euriborData.ultimoValor;
 
   <BotonCompartir client:load />
 
-  <h2>Qué hace cambiar el resultado</h2>
+  <h2>Alquilar o comprar: qué hace cambiar el resultado</h2>
   <p>
     Cuatro variables pesan más que el resto: la relación entre el alquiler y el precio (cuanto más
     barato es alquilar respecto a comprar, más favorece al alquiler), el tipo de interés de la

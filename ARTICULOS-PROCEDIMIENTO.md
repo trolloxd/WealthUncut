@@ -34,6 +34,13 @@ veces por semana, pero casi siempre termina sin hacer nada.
   sueldo neto y retención de IRPF, ahorro para la entrada de un piso, ITP por comunidad, ranking
   de IRPF por comunidad), después fiscalidad (dividendos, declarar ganancias de bolsa) y educación
   financiera (cuánto ahorrar cada mes según el sueldo).
+- **Temas con demanda confirmada** (investigación de `KEYWORDS.md` del 2026-10-06; son prioridad si
+  aún no tienen artículo): S&P 500 frente a MSCI World (qué diferencia hay, sin decir cuál comprar),
+  invertir 100 euros al mes, cómo empezar a invertir con poco dinero, gastos de comprar una vivienda de
+  segunda mano, amortizar la hipoteca o invertir, tramos del IRPF del ahorro, retención en fondos de
+  inversión, plan de pensiones y desgravación, y cuánto ahorrar al mes según el sueldo (acompaña a
+  `/herramientas/cuanto-ahorrar-al-mes/`). Título: empieza por la keyword principal, máximo 60
+  caracteres, sin guiones largos.
 - Salvo que `CLAUDE.md` diga lo contrario, no escribir sobre cuentas bancarias por producto ni
   brokers concretos: son los clústeres con intención comercial y esperan a tener afiliación.
 - **Cada artículo aporta algo que otros no tienen**: un cálculo propio con las cifras de
