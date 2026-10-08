@@ -1,0 +1,60 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import InvoiceCalculator from '../../components/InvoiceCalculator';
+---
+
+<ToolLayout
+  title="Calculadora de factura de autónomo: IVA, retención y lo que apartar"
+  name="Factura de autónomo"
+  description="Calcula el total de una factura con IVA y retención de IRPF (7 % o 15 %) y cuánto debes apartar para el IVA y el modelo 130. Sin registro."
+  pubDate={new Date('2026-10-08')}
+  sources={[
+    { label: 'BOE: Reglamento del IRPF, arts. 101 (retención) y 110 (pago fraccionado del 20 %)', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2007-6820' },
+  ]}
+  faqs={[
+    {
+      pregunta: '¿Cómo se calcula el total de una factura de autónomo?',
+      respuesta: 'Total = base imponible + IVA − retención de IRPF. El IVA se calcula sobre la base (21 % en el tipo general) y la retención también (7 % los tres primeros años de una actividad profesional, 15 % después).',
+    },
+    {
+      pregunta: '¿Cuánto debo apartar de cada factura?',
+      respuesta: 'Todo el IVA cobrado (lo ingresas en el modelo 303, descontando el IVA de tus gastos) y el adelanto de IRPF del modelo 130, que es el 20 % del rendimiento menos las retenciones ya practicadas. En esta calculadora se estima por factura, sin descontar gastos.',
+    },
+    {
+      pregunta: '¿Todas las facturas llevan retención?',
+      respuesta: 'No. La retención se aplica a facturas de actividades profesionales emitidas a empresas o profesionales. Si facturas a un particular, normalmente no se aplica.',
+    },
+  ]}
+>
+  <p>
+    Cuando facturas como autónomo, no todo lo que cobras es tuyo: una parte es IVA que ingresas a Hacienda y otra es un adelanto del IRPF. Esta calculadora
+    te dice el total de la factura, qué parte debes apartar y cuánto te queda antes de gastos y cuota de autónomos.
+  </p>
+
+  <InvoiceCalculator client:load />
+
+  <BotonCompartir client:load />
+
+  <h2>Cómo leer el resultado</h2>
+  <ul>
+    <li><strong>Total a cobrar:</strong> lo que paga tu cliente: base + IVA − retención. La retención no la pierdes: es un adelanto de tu IRPF que el cliente ingresa por ti.</li>
+    <li><strong>IVA que debes ingresar:</strong> es dinero de Hacienda. Lo declaras cada trimestre en el modelo 303, restando el IVA que has pagado en tus gastos.</li>
+    <li><strong>Adelanto de IRPF:</strong> el 20 % del rendimiento (modelo 130), restando lo que tus clientes ya retuvieron. Cuanto mayor es la retención de tus clientes, menos queda por ingresar.</li>
+  </ul>
+
+  <h2>Qué hacer a continuación</h2>
+  <p>
+    Entiende todos los pagos trimestrales en la guía de <a href="/blog/impuestos-autonomo-nuevo-irpf-iva-plazos/">impuestos de un autónomo nuevo</a>, calcula tu cuota con la
+    <a href="/herramientas/calculadora-cuota-autonomos/">calculadora de cuota de autónomos</a> y compara con tu neto como asalariado en la
+    <a href="/herramientas/calculadora-sueldo-neto/">calculadora de sueldo neto</a>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Cómo se calcula el total de una factura de autónomo?</strong><br />
+    Base imponible + IVA − retención de IRPF. El IVA y la retención se calculan sobre la base.</p>
+  <p><strong>¿Cuánto debo apartar de cada factura?</strong><br />
+    Todo el IVA cobrado y el adelanto de IRPF del modelo 130, que es el 20 % del rendimiento menos las retenciones ya practicadas.</p>
+  <p><strong>¿Todas las facturas llevan retención?</strong><br />
+    No. Se aplica a facturas de actividades profesionales emitidas a empresas o profesionales; con un cliente particular normalmente no.</p>
+</ToolLayout>

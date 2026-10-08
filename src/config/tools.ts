@@ -143,6 +143,12 @@ export const TOOLS = [
     tags: ['vivienda', 'alquiler', 'ahorro'],
   },
   {
+    href: '/herramientas/calculadora-factura-autonomo/',
+    name: 'Factura de autónomo: IVA y retención',
+    description: 'El total de una factura con IVA y retención y cuánto debes apartar para Hacienda.',
+    tags: ['autónomos', 'impuestos', 'calculadoras'],
+  },
+  {
     href: '/herramientas/calculadora-cuota-autonomos/',
     name: 'Cuota de autónomos 2026',
     description: 'Tu tramo, tu base de cotización y la cuota mensual según tus ingresos reales, con los tipos del BOE.',
