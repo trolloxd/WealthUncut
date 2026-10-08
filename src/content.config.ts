@@ -11,6 +11,8 @@ const blog = defineCollection({
     updatedDate: z.coerce.date().optional(),
     author: z.string().default('David Pérez Mitjà'),
     tags: z.array(z.string()).default([]),
+    // Tema del blog (ver src/config/categorias.ts). Si falta, se deduce de las etiquetas.
+    categoria: z.string().optional(),
     sources: z
       .array(
         z.object({

@@ -3,26 +3,31 @@
 Guía que sigue el agente automático que mantiene la cola de artículos de `/blog/`. Si algo de aquí
 choca con `CLAUDE.md`, manda `CLAUDE.md`.
 
-Decisión de David (2026-10-04): cuando quede **un solo artículo programado o ninguno**, escribir
-unos cuantos más y dejarlos programados para que se publiquen solos. La rutina se ejecuta varias
-veces por semana, pero casi siempre termina sin hacer nada.
+Decisión de David (2026-10-08): **un artículo cada día**. La cola se mantiene con al menos una semana
+de margen: cuando quede menos de una semana programada, escribir un lote y dejarlo programado para
+que se publique solo. La rutina se ejecuta a diario, pero casi siempre termina sin hacer nada.
 
 ## 1. Cuándo actuar
 
 1. Calcula la fecha de hoy en Europe/Madrid (`TZ=Europe/Madrid date +%F`).
 2. Cuenta los archivos de `src/content/blog/` con `draft: false` y `pubDate` **posterior a hoy**
    (son los programados; uno con `pubDate` de hoy ya cuenta como publicado).
-3. Si hay **2 o más**, termina sin tocar nada y dilo en el resumen.
-4. Si hay 0 o 1, escribe un lote de **4 artículos**.
+3. Si hay **7 o más**, termina sin tocar nada y dilo en el resumen.
+4. Si hay menos de 7, escribe un lote de **7 artículos** (los que hagan falta para llegar a 14 como máximo).
+   Mejor 3 buenos que 7 flojos: si no hay temas con valor real, escribe solo los que lo tengan y dilo en el resumen.
 
 ## 2. Calendario
 
-- Los artículos se publican **martes, viernes y domingo** (el workflow
-  `.github/workflows/publicacion-programada.yml` reconstruye el sitio esos días). Ritmo máximo del
-  proyecto: 3-4 piezas por semana, nunca más.
-- La primera fecha del lote es el primer martes, viernes o domingo posterior a la `pubDate` del
-  último artículo ya programado (o posterior a hoy si no hay ninguno). Las siguientes, la
-  siguiente fecha de esos tres días. Nunca dos artículos en la misma fecha.
+- Los artículos se publican **todos los días** (el workflow `.github/workflows/publicacion-programada.yml`
+  reconstruye el sitio cada día). Ritmo del proyecto desde el 2026-10-08: un artículo diario, nunca dos
+  en la misma fecha. Los artículos nuevos van siempre **al final de la cola**.
+- La primera fecha del lote es el día siguiente a la `pubDate` del último artículo ya programado (o
+  mañana si no hay ninguno). Las siguientes, un día más cada una.
+- Para reordenar o recolocar la cola entera: `python scripts/reprogramar-cola.py AAAA-MM-DD [slug-nuevo ...]`.
+- **Frontmatter obligatorio nuevo: `categoria`**, justo después de `tags`. Valores válidos (`src/config/categorias.ts`):
+  `fondos-indexados`, `impuestos`, `vivienda`, `autonomos`, `criptomonedas`, `jubilacion`, `ahorro`. Si un tema
+  nuevo reúne varios artículos (por ejemplo, seguros), añade la categoría en `categorias.ts` y úsala. El blog
+  agrupa los artículos por categoría en `/blog/` y en `/blog/tema/<id>/`.
 - `pubDate` y `updatedDate` iguales a la fecha de publicación, `draft: false`.
 
 ## 3. Qué escribir

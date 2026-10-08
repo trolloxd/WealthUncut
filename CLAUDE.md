@@ -16,7 +16,7 @@ ingresos serio, a tiempo completo, no una web de relleno.
 Google penaliza el contenido masivo sin valor añadido (scaled content abuse, updates de spam
 2026) y los AI Overviews reducen los clics. Estrategia: activo propio con herramientas
 interactivas (calculadoras, comparadores), datos y criterio propios, autoría real, pocas
-piezas pero buenas. Ritmo máximo: 3-4 piezas/semana. Herramientas antes que volumen.
+piezas pero buenas. Ritmo de artículos: uno al día (decisión de David, 2026-10-08, sabiendo que sube el riesgo de "contenido masivo": cada pieza debe seguir aportando cifras verificadas y cálculo propio). Herramientas antes que volumen.
 
 ## Stack
 
@@ -112,10 +112,11 @@ puede crear) para activar el envío real; hasta entonces, `/newsletter/` en sí 
 
 ## Reposición automática de artículos (decisión de David, 2026-10-04)
 
-Los artículos de `/blog/` se publican martes, viernes y domingo con `pubDate` futura (ver
-`publicacion-programada.yml`). Cuando queda **un solo artículo programado o ninguno**, una rutina en
-la nube (lunes, miércoles y sábado, la comprobación casi siempre termina sin hacer nada) escribe un
-lote de 4 y los deja programados. Procedimiento, reglas de calidad y verificación en
+Los artículos de `/blog/` se publican **uno cada día** (decisión de David, 2026-10-08) con `pubDate` futura (ver
+`publicacion-programada.yml`). Cuando quedan **menos de 7 programados**, una rutina en la nube (cada día,
+la comprobación casi siempre termina sin hacer nada) escribe un lote de 7 y los deja al final de la cola. Cada
+artículo lleva `categoria` en el frontmatter (`src/config/categorias.ts`): `/blog/` los agrupa por tema y
+hay una página por tema en `/blog/tema/<id>/`. Procedimiento, reglas de calidad y verificación en
 `ARTICULOS-PROCEDIMIENTO.md`; mismas reglas de este documento (cifras fiscales solo de
 `finance.ts`, sin guiones largos, sin recomendaciones personalizadas).
 
@@ -245,7 +246,7 @@ actualizaciones" en `metodologia.astro`.
   nueva); `MarketSnapshot.astro` y `MarketChart.astro` (gráficas SVG sin librerías) los muestran.
 - `src/lib/posts.ts` (carpeta nueva): `isPublished()`, única regla de qué artículo está publicado
   (no borrador y `pubDate` ya alcanzada). Un artículo con `pubDate` futura queda programado.
-- `.github/workflows/publicacion-programada.yml`: martes, viernes y domingo a las 05:00 UTC, si
+- `.github/workflows/publicacion-programada.yml`: todos los días a las 05:00 UTC, si
   algún artículo tiene `pubDate` de ese día, hace un commit vacío para que Cloudflare reconstruya
   y lo publique.
 - `src/layouts/BaseLayout.astro`: head, SEO, OG image, JSON-LD enlazado por `@id` (Organization,

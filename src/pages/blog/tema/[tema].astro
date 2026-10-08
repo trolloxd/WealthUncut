@@ -1,0 +1,80 @@
+---
+import { getCollection } from 'astro:content';
+import { isPublished } from '../../../lib/posts';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { SITE } from '../../../config/site';
+import { CATEGORIAS, categoriaDe } from '../../../config/categorias';
+import { TOOLS } from '../../../config/tools';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('blog', ({ data }) => isPublished(data))).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return CATEGORIAS.map((c) => ({ c, posts: posts.filter((p) => categoriaDe(p.data).id === c.id) }))
+    .filter((x) => x.posts.length > 0)
+    .map(({ c, posts: ps }) => ({ params: { tema: c.id }, props: { c, posts: ps } }));
+}
+
+const { c, posts } = Astro.props;
+const url = `${SITE.url}/blog/tema/${c.id}/`;
+const herramientas = TOOLS.filter((t) => (t.tags as readonly string[]).some((tag) => (c.tags as readonly string[]).includes(tag))).slice(0, 4);
+const fecha = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: `${c.nombre}: artículos`,
+    description: c.descripcion,
+    inLanguage: SITE.locale,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    mainEntity: { '@type': 'ItemList', itemListElement: posts.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE.url}/blog/${p.id}/`, name: p.data.title })) },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE.url}/blog/` },
+      { '@type': 'ListItem', position: 3, name: c.nombre, item: url },
+    ],
+  },
+];
+---
+
+<BaseLayout title={`${c.nombre}: guías y artículos`} description={`${c.descripcion} ${posts.length} artículos con cifras verificadas y fuentes oficiales.`} extraJsonLd={jsonLd}>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Blog', href: '/blog/' }, { label: c.nombre }]} />
+  <h1 class="mb-3 font-display text-3xl text-ink">{c.nombre}</h1>
+  <p class="mb-10 max-w-2xl text-ink-muted">{c.descripcion}</p>
+
+  <ul class="grid gap-7">
+    {posts.map((post) => (
+      <li class="border-b border-border pb-7 last:border-none">
+        <a href={`/blog/${post.id}/`} class="group block">
+          <h2 class="font-display text-xl text-ink group-hover:text-brand">{post.data.title}</h2>
+          <p class="mt-2 text-ink-muted">{post.data.description}</p>
+          <p class="mt-2 text-xs text-ink-faint"><time datetime={post.data.pubDate.toISOString().slice(0, 10)}>{fecha(post.data.pubDate)}</time></p>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  {herramientas.length > 0 && (
+    <aside class="mt-12 border-t border-border pt-8">
+      <h2 class="mb-4 font-display text-xl text-ink">Herramientas de este tema</h2>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {herramientas.map((t) => (
+          <li>
+            <a href={t.href} class="card group block h-full p-4 hover:border-brand/40">
+              <span class="font-display text-base text-ink group-hover:text-brand">{t.name}</span>
+              <span class="mt-1 block text-sm text-ink-muted">{t.description}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )}
+
+  <p class="mt-10 text-sm"><a href="/blog/" class="text-brand underline">← Todos los temas del blog</a></p>
+</BaseLayout>
