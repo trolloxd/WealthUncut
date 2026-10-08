@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE, AUTHOR } from '../config/site';
+import { TOOLS } from '../config/tools';
+
+const title = 'Prensa: sobre WealthUncut y cómo citarnos';
+const description = 'Qué es WealthUncut, quién está detrás, qué datos y herramientas ofrecemos a periodistas y creadores, y cómo citarnos o contactar.';
+const destacadas = TOOLS.filter((t) =>
+  ['/herramientas/ranking-irpf-comunidades/', '/herramientas/calculadora-sueldo-neto/', '/herramientas/itp-por-comunidades/', '/herramientas/ayudas-vivienda-jovenes/', '/herramientas/calculadora-cuota-autonomos/', '/herramientas/calculadora-impuestos-venta-fondos/'].includes(t.href)
+);
+---
+
+<BaseLayout title={title} description={description}>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Prensa' }]} />
+  <article class="prose max-w-none">
+    <h1>Prensa y recursos para periodistas</h1>
+    <p>
+      {SITE.name} es un sitio independiente de finanzas personales para jóvenes en España. Publica calculadoras gratuitas y guías con las
+      cifras fiscales oficiales (AEAT, BOE), cada una con su fuente y su fecha de revisión. No vende productos financieros ni da asesoramiento personalizado.
+    </p>
+
+    <h2>Quién está detrás</h2>
+    <p>
+      <strong>{AUTHOR.name}</strong> (Barcelona). {AUTHOR.bio} Más en la <a href="/autor/">página del autor</a> y en la <a href="/metodologia/">metodología</a>,
+      donde explicamos cómo se verifican y se corrigen los datos.
+    </p>
+
+    <h2>Qué puedes usar</h2>
+    <ul>
+      <li><a href="/datos/">Datos abiertos en CSV y JSON</a> (IRPF, ITP por comunidad, cuota de autónomos, euríbor), con licencia CC BY 4.0.</li>
+      <li><a href="/incrustar/">Calculadoras incrustables</a> para tu medio, con atribución.</li>
+      <li>Herramientas con datos propios que suelen interesar a prensa regional y económica:</li>
+    </ul>
+    <ul>
+      {destacadas.map((t) => <li><a href={t.href}>{t.name}</a>: {t.description}</li>)}
+    </ul>
+
+    <h2>Cómo citarnos</h2>
+    <p>
+      Con un enlace a la página que uses (por ejemplo, la herramienta o el conjunto de datos) y el nombre <em>WealthUncut</em>. Si usas una cifra, indica la fecha de la última revisión
+      que figura en la página, porque las cifras fiscales se revisan cada año.
+    </p>
+
+    <h2>Contacto</h2>
+    <p>
+      Para entrevistas, comentarios de expertos o preguntas sobre los datos: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. Respondemos en español, catalán e inglés.
+    </p>
+    <p class="text-sm">Toda la información tiene carácter divulgativo y no constituye asesoramiento financiero, fiscal ni jurídico.</p>
+  </article>
+</BaseLayout>

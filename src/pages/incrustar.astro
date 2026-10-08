@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CodigoIncrustar from '../components/CodigoIncrustar';
+import { SITE } from '../config/site';
+import { EMBEDS } from '../config/embeds';
+
+const title = 'Calculadoras de finanzas para incrustar en tu web';
+const description = 'Incrusta gratis en tu blog o web calculadoras de sueldo neto, hipoteca, impuestos de fondos, ITP o fondo de emergencia. Copia y pega, sin registro.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Incrustar' }]} />
+  <h1 class="mb-4 font-display text-3xl text-ink">Incrusta nuestras calculadoras en tu web</h1>
+  <p class="mb-3 max-w-2xl text-ink-muted">
+    Si tienes un blog, una web de finanzas, una asignatura o una newsletter, puedes ofrecer a tus lectores estas calculadoras sin programar nada. Son
+    gratuitas, no piden registro y se actualizan solas cuando cambian las cifras fiscales. Solo te pedimos que dejes el enlace de atribución que acompaña al código.
+  </p>
+  <p class="mb-10 max-w-2xl text-sm text-ink-faint">
+    Las calculadoras son orientativas y no constituyen asesoramiento financiero. Más herramientas en <a href="/herramientas/" class="underline">herramientas</a> y datos
+    descargables en <a href="/datos/" class="underline">datos abiertos</a>.
+  </p>
+
+  <ul class="grid gap-6">
+    {EMBEDS.map((e) => (
+      <li>
+        <h2 class="mb-2 font-display text-lg text-ink">{e.nombre}</h2>
+        <CodigoIncrustar client:visible slug={e.slug} nombre={e.nombre} href={e.href} altura={e.altura} origen={SITE.url} />
+        <p class="mt-2 text-xs"><a href={`/embed/${e.slug}/`} class="text-brand underline">Ver cómo queda</a> · <a href={e.href} class="text-brand underline">Página completa</a></p>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

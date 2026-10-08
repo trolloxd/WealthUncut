@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { SITE, AUTHOR } from '../../config/site';
+import { DATASETS } from '../../lib/datasets';
+
+const title = 'Datos abiertos de finanzas en España (CSV y JSON)';
+const description = 'Descarga gratis tablas de IRPF, ITP por comunidad, cuota de autónomos y euríbor en CSV y JSON, con fuente y fecha, bajo licencia CC BY 4.0.';
+const url = `${SITE.url}/datos/`;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: title,
+    description,
+    inLanguage: SITE.locale,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+  },
+  ...DATASETS.map((d) => ({
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: d.titulo,
+    description: d.descripcion,
+    url: `${url}#${d.id}`,
+    license: 'https://creativecommons.org/licenses/by/4.0/',
+    isAccessibleForFree: true,
+    inLanguage: SITE.locale,
+    dateModified: d.revisado,
+    creator: { '@id': `${SITE.url}/autor/#person`, '@type': 'Person', name: AUTHOR.name },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    isBasedOn: d.fuenteUrl,
+    spatialCoverage: 'España',
+    distribution: [
+      { '@type': 'DataDownload', encodingFormat: 'text/csv', contentUrl: `${SITE.url}/datos/${d.id}.csv` },
+      { '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: `${SITE.url}/datos/${d.id}.json` },
+    ],
+  })),
+];
+---
+
+<BaseLayout title={title} description={description} extraJsonLd={jsonLd}>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Datos abiertos' }]} />
+  <h1 class="mb-4 font-display text-3xl text-ink">Datos abiertos</h1>
+  <p class="mb-3 max-w-2xl text-ink-muted">
+    Las mismas tablas que usan nuestras calculadoras, en CSV y JSON para que las uses en tu hoja de cálculo, tu web o tu trabajo. Cada
+    conjunto lleva su fuente oficial y la fecha de la última revisión.
+  </p>
+  <p class="mb-10 max-w-2xl text-sm text-ink-muted">
+    Licencia <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a>: puedes copiarlos y adaptarlos, también para uso comercial,
+    citando <strong>WealthUncut (wealthuncut.com/datos/)</strong>. En los tramos, un límite superior vacío significa "sin límite". Son informativos; antes de decidir nada, consulta la fuente oficial enlazada.
+  </p>
+
+  <ul class="grid gap-5">
+    {DATASETS.map((d) => (
+      <li id={d.id} class="card p-5">
+        <h2 class="font-display text-xl text-ink">{d.titulo}</h2>
+        <p class="mt-2 text-sm text-ink-muted">{d.descripcion}</p>
+        <p class="mt-2 text-xs text-ink-faint">
+          Fuente: <a href={d.fuenteUrl} class="underline">{d.fuente.length > 140 ? d.fuente.slice(0, 137) + '...' : d.fuente}</a> · Revisado el{' '}
+          <time datetime={d.revisado}>{new Date(d.revisado).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</time> · {d.filas.length} filas
+        </p>
+        <p class="mt-3 flex flex-wrap gap-3 text-sm">
+          <a href={`/datos/${d.id}.csv`} download class="btn-primary inline-block">Descargar CSV</a>
+          <a href={`/datos/${d.id}.json`} class="rounded-lg border border-border px-4 py-2 font-medium text-ink hover:border-brand/40">Ver JSON</a>
+        </p>
+      </li>
+    ))}
+  </ul>
+
+  <h2 class="mt-12 font-display text-2xl text-ink">Cómo citarlos</h2>
+  <p class="mt-2 max-w-2xl text-sm text-ink-muted">
+    Formato sugerido: <em>WealthUncut (2026). Tipos de ITP de la vivienda usada por comunidad autónoma. https://wealthuncut.com/datos/itp-vivienda-usada.csv</em>.
+    Si publicas un gráfico o un artículo con ellos, un enlace a esta página es suficiente.
+  </p>
+  <p class="mt-6 max-w-2xl text-sm text-ink-muted">
+    ¿Falta algún dato o has visto un error? Escríbenos a <a href={`mailto:${SITE.email}`} class="underline">{SITE.email}</a>: lo corregimos y lo anotamos en las
+    <a href="/correcciones/" class="underline">correcciones</a>.
+  </p>
+</BaseLayout>

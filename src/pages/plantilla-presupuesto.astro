@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { SITE, AUTHOR } from '../config/site';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
 
 const title = 'Plantilla de presupuesto mensual en Excel gratis (con gráficos)';
 const description = 'Descarga gratis una plantilla de presupuesto mensual en Excel: apunta gastos, controla cada categoría, la regla 50/30/20, el ahorro y las deudas, con vídeos.';
@@ -293,6 +294,10 @@ const hojas = [
       </p>
     ))}
   </article>
+
+  <div class="mx-auto mt-12 max-w-md">
+    <NewsletterSignup compacta />
+  </div>
 
   <section id="descargar" aria-labelledby="h-descargar" class="mx-auto mt-14 max-w-3xl rounded-2xl border-2 border-brand/30 bg-cream-elevated p-8 text-center">
     <p class="text-xs font-semibold uppercase tracking-widest text-brand">Descarga gratuita</p>

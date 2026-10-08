@@ -128,3 +128,27 @@ oficiales citadas.
 
 Activa también **Cloudflare Web Analytics** para wealthuncut.com (Analytics > Web analytics) y así
 verás visitas reales y no solo bots.
+
+
+## Estrategia de enlaces y visibilidad (investigación del 2026-10-08)
+
+Lo que dicen las guías de 2026 (casi todas de agencias, así que con prudencia) y lo que ya hemos aplicado:
+
+| Palanca | Qué es | Estado |
+|---|---|---|
+| Activos enlazables | Herramientas gratis, datos propios y páginas de estadísticas atraen enlaces solas | Hecho: 20+ herramientas, `/datos/` (CSV y JSON con CC BY 4.0 y marcado Dataset), `/incrustar/` |
+| Datos citables por IA y periodistas | Cifras con fuente y fecha, respuestas directas, autoría real | Hecho: fuentes en cada herramienta, `/prensa/`, `/llms.txt` |
+| Rastreo rápido | IndexNow para Bing (y por tanto ChatGPT Search), sitemap | Hecho: IndexNow automático al publicar; sitemap enviado a Search Console |
+| Vista previa grande en resultados y Discover | `max-image-preview:large` | Hecho en todas las páginas |
+| Conversión | Captura de email justo donde hay más intención (plantillas, herramientas, `/hoy/`) | Hecho: formulario en plantillas y herramientas |
+
+Lo que solo puedes hacer tú (necesita cuenta o tu nombre), por orden de rentabilidad:
+
+1. **Bing Webmaster Tools** (importa desde Search Console): alimenta a Bing y a ChatGPT Search.
+2. **Responder a periodistas** en plataformas de peticiones de fuentes (Connectively/Qwoted y equivalentes en español): ofrece los datos de `/datos/` y `/prensa/`.
+3. **Enlazar los datos desde donde ya hay conversación:** cuando alguien en Reddit o Rankia cite una cifra de ITP o de IRPF, responde con la tabla y el enlace (reglas arriba).
+4. **Páginas de recursos y enlaces rotos:** busca artículos de finanzas con estadísticas antiguas o enlaces caídos y ofrece `/datos/` como sustituto. Una petición educada por semana basta.
+5. **Menciones sin enlace:** buscar "WealthUncut" cada mes y pedir que añadan el enlace.
+6. **Perfiles de autor** (LinkedIn y X) rellenados en `src/config/site.ts`: refuerzan la autoría que Google y los asistentes de IA miran.
+
+Qué NO hacer: comprar enlaces, redes de blogs, artículos de invitado generados con IA, ni publicar el mismo texto en varias comunidades el mismo día.

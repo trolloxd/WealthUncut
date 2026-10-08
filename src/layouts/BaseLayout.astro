@@ -97,7 +97,7 @@ const allJsonLd = [organizationJsonLd, personJsonLd, websiteJsonLd, ...extraJson
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    {noindex && <meta name="robots" content="noindex, follow" />}
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />}
 
     <meta property="og:type" content={type} />
     <meta property="og:title" content={pageTitle} />

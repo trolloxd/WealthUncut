@@ -207,6 +207,9 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   son autonómicas, revisar cuando salgan. El aval ICO solo se enlaza, sin cifras (sin fuente oficial verificada).
 - `/herramientas/calculadora-irpf-alquiler/`: IRPF del propietario que alquila vivienda. Reducciones y amortización en `ALQUILER_IRPF`
   (`finance.ts`, AEAT Manual Renta 2025, verificadas el 2026-10-08); revisar cada año con el manual nuevo. Estimación sin deducciones autonómicas.
+- Visibilidad (2026-10-08): `/datos/` (CSV y JSON de IRPF, ITP, cuota de autónomos y euríbor, generados desde `finance.ts` por
+  `src/lib/datasets.ts`, nunca editar a mano; marcado `Dataset`; CC BY 4.0), `/incrustar/` (todas las calculadoras incrustables),
+  `/prensa/`, `/llms.txt` y robots `max-image-preview:large`. Al añadir una calculadora incrustable o un dato nuevo, añadirlo ahí.
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se

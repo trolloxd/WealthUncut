@@ -100,7 +100,8 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
         const titulo = document.createElement('span');
         titulo.className = 'block text-sm text-ink';
         titulo.textContent = e.t;
-        a.append(tipo, titulo);
+        a.appendChild(tipo);
+        a.appendChild(titulo);
         li.appendChild(a);
         lista.appendChild(li);
       }
