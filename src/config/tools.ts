@@ -143,6 +143,12 @@ export const TOOLS = [
     tags: ['vivienda', 'alquiler', 'ahorro'],
   },
   {
+    href: '/herramientas/calculadora-indemnizacion-despido/',
+    name: 'Indemnización por despido y finiquito',
+    description: 'Cuánto te corresponde si te despiden o termina tu contrato: 33, 20 o 12 días por año, con los máximos legales.',
+    tags: ['empleo', 'ahorro', 'calculadoras'],
+  },
+  {
     href: '/herramientas/calculadora-factura-autonomo/',
     name: 'Factura de autónomo: IVA y retención',
     description: 'El total de una factura con IVA y retención y cuánto debes apartar para Hacienda.',

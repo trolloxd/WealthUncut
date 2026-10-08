@@ -210,6 +210,9 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
 - Visibilidad (2026-10-08): `/datos/` (CSV y JSON de IRPF, ITP, cuota de autónomos y euríbor, generados desde `finance.ts` por
   `src/lib/datasets.ts`, nunca editar a mano; marcado `Dataset`; CC BY 4.0), `/incrustar/` (todas las calculadoras incrustables),
   `/prensa/`, `/llms.txt` y robots `max-image-preview:large`. Al añadir una calculadora incrustable o un dato nuevo, añadirlo ahí.
+- `/herramientas/calculadora-indemnizacion-despido/` y `calculadora-factura-autonomo/`: reglas del Estatuto de los Trabajadores (arts. 49.1.c,
+  53.1.b, 56.1) y del Reglamento del IRPF (arts. 101 y 110), verificadas en el BOE el 2026-10-08. Las constantes viven en cada componente
+  (no hay cifras revisables cada año); si el Gobierno cambia el despido (hay debate abierto), actualizar `TIPOS_EXTINCION`.
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se

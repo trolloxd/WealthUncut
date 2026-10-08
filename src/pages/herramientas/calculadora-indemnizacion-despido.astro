@@ -1,0 +1,79 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import SeveranceCalculator from '../../components/SeveranceCalculator';
+---
+
+<ToolLayout
+  title="Calculadora de indemnización por despido y finiquito 2026"
+  name="Indemnización por despido y finiquito"
+  description="Calcula tu indemnización por despido improcedente (33 días por año), objetivo (20 días) o fin de contrato temporal (12 días) y tu finiquito, con los máximos legales."
+  pubDate={new Date('2026-10-08')}
+  sources={[
+    { label: 'BOE: Estatuto de los Trabajadores, arts. 49.1.c, 53.1.b y 56.1', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2015-11430' },
+  ]}
+  faqs={[
+    {
+      pregunta: '¿Cuánto me corresponde por un despido improcedente?',
+      respuesta: 'Treinta y tres días de salario por año de servicio, prorrateando por meses los periodos inferiores a un año, con un máximo de veinticuatro mensualidades (Estatuto de los Trabajadores, art. 56.1, para contratos firmados desde febrero de 2012).',
+    },
+    {
+      pregunta: '¿Y por un despido objetivo?',
+      respuesta: 'Veinte días de salario por año de servicio, con un máximo de doce mensualidades, que la empresa debe poner a tu disposición a la vez que te entrega la comunicación escrita (art. 53.1.b).',
+    },
+    {
+      pregunta: '¿Y al terminar un contrato temporal?',
+      respuesta: 'La parte proporcional de doce días de salario por cada año de servicio, salvo en contratos formativos y de sustitución (art. 49.1.c).',
+    },
+    {
+      pregunta: '¿Qué incluye el finiquito?',
+      respuesta: 'Los días trabajados del mes que aún no se han pagado, las vacaciones generadas y no disfrutadas, y las pagas extra prorrateadas que correspondan. No incluye la indemnización, que se calcula aparte.',
+    },
+  ]}
+>
+  <p>
+    Si te despiden o termina tu contrato, hay dos cantidades distintas: la <strong>indemnización</strong>, que depende de por qué acaba el contrato y de cuánto llevas,
+    y el <strong>finiquito</strong>, que es lo que te deben por lo ya trabajado. Esta calculadora estima las dos con las reglas del Estatuto de los Trabajadores.
+  </p>
+
+  <SeveranceCalculator client:load />
+
+  <BotonCompartir client:load />
+
+  <h2>Qué indemnización corresponde en cada caso</h2>
+  <ul>
+    <li><strong>Despido improcedente:</strong> 33 días de salario por año de servicio, hasta un máximo de 24 mensualidades.</li>
+    <li><strong>Despido objetivo</strong> (causas económicas, técnicas, organizativas o de producción): 20 días por año, hasta 12 mensualidades.</li>
+    <li><strong>Fin de contrato temporal:</strong> la parte proporcional de 12 días por año.</li>
+    <li><strong>Despido disciplinario procedente:</strong> ninguna indemnización.</li>
+    <li><strong>Dimisión voluntaria:</strong> ninguna indemnización, solo el finiquito.</li>
+  </ul>
+
+  <h2>Cómo se cuentan los años de servicio</h2>
+  <p>
+    Se cuentan desde el día de alta hasta el último día trabajado. Los periodos inferiores a un año se prorratean por meses, y una fracción de mes se suele contar como mes completo.
+    El salario diario se calcula con el salario anual entre 365, incluyendo pagas extra y conceptos salariales.
+  </p>
+
+  <h2>Qué hacer si te despiden</h2>
+  <ol>
+    <li>Firma el finiquito poniendo "no conforme" si no estás de acuerdo con la cifra, para no renunciar a reclamar.</li>
+    <li>Pide la carta de despido y guarda los documentos.</li>
+    <li>Solicita el paro: tienes un plazo de quince días hábiles.</li>
+    <li>Si no estás de acuerdo con el despido, tienes veinte días hábiles para reclamar (el Estatuto lo establece en el art. 59.3), y pedir la conciliación interrumpe ese plazo.</li>
+    <li>Revisa tu <a href="/herramientas/calculadora-fondo-de-emergencia/">fondo de emergencia</a> y tu <a href="/plantilla-presupuesto/">presupuesto</a> para ajustar gastos mientras buscas trabajo.</li>
+  </ol>
+  <p class="text-sm">
+    Esta herramienta y esta página son informativas y no sustituyen al asesoramiento de un abogado laboral ni al de un sindicato. Si tu convenio o tu contrato mejoran estas cifras, las que valen son esas.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Cuánto me corresponde por un despido improcedente?</strong><br />
+    33 días de salario por año de servicio, con un máximo de 24 mensualidades, para contratos firmados desde febrero de 2012.</p>
+  <p><strong>¿Y por un despido objetivo?</strong><br />
+    20 días por año, con un máximo de 12 mensualidades.</p>
+  <p><strong>¿Y al terminar un contrato temporal?</strong><br />
+    La parte proporcional de 12 días por año, salvo en contratos formativos y de sustitución.</p>
+  <p><strong>¿Qué incluye el finiquito?</strong><br />
+    Los días trabajados sin cobrar, las vacaciones no disfrutadas y las pagas extra prorrateadas. No incluye la indemnización.</p>
+</ToolLayout>
