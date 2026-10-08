@@ -205,6 +205,8 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
 - `/herramientas/ayudas-vivienda-jovenes/`: comprobador de ayudas estatales para jóvenes (alquiler, compra en pueblos, opción a
   compra). Cifras en `AYUDAS_VIVIENDA_JOVENES` (`finance.ts`, BOE RD 326/2026, verificadas el 2026-10-06); las convocatorias
   son autonómicas, revisar cuando salgan. El aval ICO solo se enlaza, sin cifras (sin fuente oficial verificada).
+- `/herramientas/calculadora-irpf-alquiler/`: IRPF del propietario que alquila vivienda. Reducciones y amortización en `ALQUILER_IRPF`
+  (`finance.ts`, AEAT Manual Renta 2025, verificadas el 2026-10-08); revisar cada año con el manual nuevo. Estimación sin deducciones autonómicas.
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se

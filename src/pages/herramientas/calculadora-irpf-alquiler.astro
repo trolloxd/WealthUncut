@@ -1,0 +1,82 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import RentalTaxCalculator from '../../components/RentalTaxCalculator';
+import { ALQUILER_IRPF as A } from '../../config/finance';
+---
+
+<ToolLayout
+  title="Calculadora de IRPF del alquiler: cuánto pagas por tu piso alquilado"
+  name="IRPF del alquiler"
+  description="Calcula cuánto IRPF pagas por alquilar una vivienda: gastos deducibles, amortización del 3 % y reducción del 50, 60, 70 o 90 %, con los tramos de tu comunidad autónoma."
+  pubDate={new Date('2026-10-08')}
+  sources={[
+    { label: 'AEAT: reducciones por arrendamiento de inmuebles destinados a vivienda', url: A.url },
+    { label: 'AEAT: rendimiento neto reducido del capital inmobiliario', url: A.urlCalculo },
+  ]}
+  faqs={[
+    {
+      pregunta: '¿Cómo tributa el alquiler de una vivienda en el IRPF?',
+      respuesta: 'El alquiler es un rendimiento del capital inmobiliario. Se restan los gastos deducibles y la amortización, se aplica la reducción que corresponda (con carácter general, el 50 %) y el resultado se suma a tu base general, donde tributa a los tipos normales del IRPF.',
+    },
+    {
+      pregunta: '¿Qué reducción me corresponde si alquilo una vivienda?',
+      respuesta: 'Para contratos desde el 26 de mayo de 2023, el 50 % con carácter general. Sube al 60 % si la vivienda se rehabilitó en los dos años anteriores, al 70 % si es el primer alquiler en zona tensionada a una persona de 18 a 35 años (o alquiler social) y al 90 % si firmas un nuevo contrato en zona tensionada rebajando la renta más de un 5 %. Los contratos anteriores mantienen el 60 %.',
+    },
+    {
+      pregunta: '¿Qué gastos puedo deducir del alquiler?',
+      respuesta: 'Los necesarios para obtener el ingreso: IBI y otros tributos, gastos de comunidad, seguro, reparación y conservación (con el límite de los ingresos del inmueble), intereses de la hipoteca, servicios de gestión y la amortización del inmueble, que es el 3 % de su valor de construcción.',
+    },
+    {
+      pregunta: '¿Se aplica la reducción en un alquiler turístico o de temporada?',
+      respuesta: 'No. La reducción solo se aplica al arrendamiento de vivienda, no a los alquileres turísticos ni de temporada.',
+    },
+  ]}
+>
+  <p>
+    Si alquilas una vivienda, parte de lo que cobras va a Hacienda. Esta calculadora estima cuánto, con los gastos deducibles, la
+    amortización del 3 % y la reducción que te corresponda. Te enseña también cuánto cambia el resultado entre una reducción y otra,
+    algo que importa mucho con el nuevo régimen de zonas tensionadas.
+  </p>
+
+  <RentalTaxCalculator client:load />
+
+  <BotonCompartir client:load />
+
+  <h2>Cómo se calcula el IRPF del alquiler</h2>
+  <ol>
+    <li><strong>Ingresos íntegros:</strong> lo que cobras de alquiler en el año.</li>
+    <li><strong>Gastos deducibles:</strong> IBI, comunidad, seguro, reparaciones, intereses de la hipoteca de ese piso, gestión.</li>
+    <li><strong>Amortización:</strong> el {(A.amortizacion * 100).toLocaleString('es-ES')} % del valor de la construcción (sin el suelo).</li>
+    <li><strong>Reducción:</strong> se aplica sobre el rendimiento neto si es positivo.</li>
+    <li><strong>Tributación:</strong> el resultado se suma a tu base general y tributa a la escala estatal más la de tu comunidad.</li>
+  </ol>
+
+  <h2>Qué reducción te toca</h2>
+  <ul>
+    {A.reducciones.filter((x) => x.pct > 0).map((x) => <li>{x.etiqueta}</li>)}
+  </ul>
+  <p>
+    Las zonas tensionadas las declara el Ministerio de Vivienda y Agenda Urbana a petición de cada comunidad, y solo tienen efecto en las que
+    lo han pedido. Si el contrato incumple el límite de renta de la Ley de Arrendamientos Urbanos, no se aplica ninguna reducción. Comprueba
+    siempre tu caso en el <a href={A.url}>manual de la AEAT</a>.
+  </p>
+
+  <h2>Qué hacer con el resultado</h2>
+  <p>
+    Antes de alquilar un piso o de comprar uno para alquilarlo, compara la rentabilidad real: el IRPF es solo una parte de los costes. Si estás
+    decidiendo entre comprar y alquilar para vivir tú, usa la <a href="/herramientas/alquilar-o-comprar-vivienda/">comparación alquilar o comprar</a>,
+    y para ver tu tipo marginal real prueba la <a href="/herramientas/calculadora-sueldo-neto/">calculadora de sueldo neto</a> y el
+    <a href="/herramientas/ranking-irpf-comunidades/">ranking de IRPF por comunidades</a>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Cómo tributa el alquiler de una vivienda en el IRPF?</strong><br />
+    Es un rendimiento del capital inmobiliario. Se restan gastos y amortización, se aplica la reducción que corresponda y el resultado se suma a tu base general.</p>
+  <p><strong>¿Qué reducción me corresponde si alquilo una vivienda?</strong><br />
+    El 50 % con carácter general desde mayo de 2023. Sube al 60, 70 o 90 % en casos concretos (rehabilitación reciente, primer alquiler en zona tensionada a un joven, o nuevo contrato en zona tensionada con rebaja de renta). Los contratos anteriores mantienen el 60 %.</p>
+  <p><strong>¿Qué gastos puedo deducir del alquiler?</strong><br />
+    IBI, comunidad, seguro, reparaciones (con límite), intereses de la hipoteca, gestión y la amortización del 3 % del valor de construcción.</p>
+  <p><strong>¿Se aplica la reducción en un alquiler turístico o de temporada?</strong><br />
+    No, solo al arrendamiento de vivienda.</p>
+</ToolLayout>

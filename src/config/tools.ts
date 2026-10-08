@@ -131,6 +131,12 @@ export const TOOLS = [
     tags: ['educación financiera', 'ahorro', 'interés compuesto'],
   },
   {
+    href: '/herramientas/calculadora-irpf-alquiler/',
+    name: 'IRPF del alquiler (si eres propietario)',
+    description: 'Cuánto IRPF pagas por alquilar un piso: gastos, amortización y reducción del 50, 60, 70 o 90 %.',
+    tags: ['vivienda', 'alquiler', 'impuestos', 'calculadoras'],
+  },
+  {
     href: '/herramientas/ayudas-vivienda-jovenes/',
     name: 'Ayudas a la vivienda para jóvenes',
     description: 'Comprueba si cumples los requisitos de las ayudas de 2026 para alquilar o comprar y cuánto podrías recibir.',

@@ -680,6 +680,29 @@ export function tramoRETA(rendimientoNetoMensual: number) {
 }
 
 /**
+ * IRPF de los alquileres de vivienda (propietario que alquila). Verificado el 2026-10-08 contra la AEAT,
+ * Manual práctico de Renta 2025: "Arrendamiento de inmuebles destinados a vivienda" (reducciones del art. 23.2
+ * Ley del IRPF) y "Rendimiento neto reducido" (gastos deducibles, amortización del 3 %, límite de reparaciones).
+ * Contratos desde el 26-05-2023: 50 % general; 60 % si la vivienda se rehabilitó en los 2 años previos; 70 % si es
+ * la primera vez que se alquila en zona tensionada a un inquilino de 18 a 35 años (o alquiler social); 90 % si el
+ * mismo arrendador firma nuevo contrato en zona tensionada bajando la renta más de un 5 %. Contratos anteriores:
+ * 60 %. No aplica a alquiler turístico ni de temporada. El gasto de reparación y conservación no puede superar los
+ * ingresos íntegros del inmueble (el exceso se arrastra 4 años).
+ */
+export const ALQUILER_IRPF = {
+  amortizacion: 0.03,
+  reducciones: [
+    { id: 'ninguna', pct: 0, etiqueta: 'Sin reducción (alquiler turístico o de temporada)' },
+    { id: 'r50', pct: 0.5, etiqueta: '50 % (caso general, contratos desde mayo de 2023)' },
+    { id: 'r60', pct: 0.6, etiqueta: '60 % (rehabilitación reciente, o contrato anterior a mayo de 2023)' },
+    { id: 'r70', pct: 0.7, etiqueta: '70 % (primer alquiler en zona tensionada a joven de 18 a 35 años, o alquiler social)' },
+    { id: 'r90', pct: 0.9, etiqueta: '90 % (nuevo contrato en zona tensionada con rebaja de renta de más del 5 %)' },
+  ],
+  url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c04-rendimientos-capital-inmobiliario/reducciones-rendimiento-neto/arrendamiento-inmuebles-destinados-vivienda.html',
+  urlCalculo: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c04-rendimientos-capital-inmobiliario/rendimiento-neto-reducido.html',
+} as const;
+
+/**
  * Ayudas estatales a la vivienda para jóvenes, Plan Estatal de Vivienda 2026-2030. Verificado el 2026-10-06
  * contra el BOE: Real Decreto 326/2026, de 22 de abril (BOE-A-2026-8872), arts. 133 y 137 (ayuda al alquiler
  * para la emancipación), 141 y 143 (compra en municipios pequeños) y 148 (alquiler con opción a compra).
