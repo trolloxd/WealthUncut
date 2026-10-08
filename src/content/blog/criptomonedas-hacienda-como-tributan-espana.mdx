@@ -1,0 +1,93 @@
+---
+title: "Criptomonedas y Hacienda: cómo tributan en España"
+description: "Cómo declarar criptomonedas en el IRPF: ventas, cambios entre cripto, FIFO, tramos del ahorro y qué avisan los modelos 172, 173 y 721. Con ejemplo y fuentes de la AEAT."
+pubDate: 2026-10-08
+updatedDate: 2026-10-08
+author: "David Pérez Mitjà"
+tags: ["impuestos", "criptomonedas", "educación financiera"]
+sources:
+  - label: "AEAT, Manual práctico de Renta 2025: compra y venta de monedas virtuales, tributación en el IRPF del inversor"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/monedas-virtuales/compra-venta-monedas-virtuales-tributacion-inversor.html"
+  - label: "AEAT, Manual práctico de Renta 2025: concepto de moneda virtual y obligaciones de información"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/monedas-virtuales/concepto.html"
+  - label: "AEAT: plazo de presentación del modelo 721 (monedas virtuales en el extranjero)"
+    url: "https://sede.agenciatributaria.gob.es/Sede/eu_es/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-721-decla-sobre-monedas-extranjero/preguntas-frecuentes-sobre-modelo-721/plazo-presentacion-modelo-721.html"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { formatEuros } from '../../components/CalculatorUI';
+import TramosAhorroTabla from '../../components/TramosAhorroTabla.astro';
+import { calcularImpuestoAhorro } from '../../config/finance';
+
+export const ganancia = 4000;
+export const impuesto = calcularImpuestoAhorro(ganancia);
+export const ganancia2 = 12000;
+export const impuesto2 = calcularImpuestoAhorro(ganancia2);
+
+Las criptomonedas no son dinero a ojos de Hacienda: son un bien que compras y vendes, y lo que ganas al venderlo se declara.
+Esta guía explica cómo tributan en el IRPF, qué operaciones cuentan (más de las que muchos creen), cómo se calcula la ganancia y
+qué información recibe la Agencia Tributaria sin que tengas que decir nada. Es información general sobre la normativa, no una
+recomendación de invertir en criptomonedas, que son activos de alto riesgo.
+
+## Cómo las trata Hacienda
+
+A efectos fiscales, la AEAT considera las monedas virtuales **bienes inmateriales**, contables por unidades o fracciones. Cada tipo
+(bitcoin, ether, etc.) es un bien distinto. Las ganancias y pérdidas de un inversor particular van a la **base del ahorro**, la misma que los
+fondos y las acciones, con los mismos tramos:
+
+<TramosAhorroTabla />
+
+Se declaran en la renta (modelo 100), en el apartado de ganancias y pérdidas por transmisión o permuta de monedas virtuales.
+
+## Qué operaciones tributan
+
+- **Vender criptomonedas por euros.** Generas una ganancia o pérdida: lo que recibes menos lo que pagaste, incluidos los gastos de la operación.
+- **Cambiar una criptomoneda por otra** (por ejemplo, bitcoin por ether). Es una permuta y **también genera ganancia o pérdida en ese momento**,
+  aunque no hayas pasado por euros. Es el punto que más sorprende a quien empieza.
+- **Comprar solo no tributa.** Tener criptomonedas sin venderlas ni cambiarlas no genera ganancia que declarar en el IRPF.
+- **Pasar criptomonedas de un monedero a otro tuyo** no es una venta, pero conviene guardar el registro para demostrar el coste original.
+
+## Cómo se calcula la ganancia: el método FIFO
+
+Si has comprado la misma criptomoneda en momentos y a precios distintos, Hacienda considera que **vendes primero las que compraste antes** (FIFO,
+primera entrada, primera salida). La ganancia es el valor de lo que recibes menos el coste de esas unidades más antiguas.
+Es la misma lógica que en los fondos de inversión, y por eso puedes usar la
+[calculadora de impuestos al vender un fondo](/herramientas/calculadora-impuestos-venta-fondos/) para hacerte una idea con tus compras, cambiando el
+"valor liquidativo" por el precio de la criptomoneda.
+
+## Un ejemplo con números
+
+Imagina que compras criptomonedas por 6.000 € y, al venderlas, recibes 10.000 €: la ganancia es de 4.000 €. Con los tramos del ahorro de este ejercicio,
+el impuesto es de **{formatEuros(impuesto)}**, un {(impuesto / ganancia * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 })} % de la ganancia. Si la ganancia
+fuera de {formatEuros(ganancia2)}, el impuesto sería de **{formatEuros(impuesto2)}**, un {(impuesto2 / ganancia2 * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 })} %.
+Como en cualquier base del ahorro, el tipo sube a medida que sube la ganancia total del año, sumando intereses, dividendos y otras ventas.
+
+Las **pérdidas** también cuentan: se compensan con ganancias del ahorro del mismo año y, con límites, con otras de los cuatro siguientes. Una pérdida
+por cambiar una criptomoneda por otra hay que poder acreditarla si Hacienda lo pide, así que conviene guardar los registros.
+
+## Qué información recibe Hacienda sin que tú la des
+
+- **Modelos 172 y 173:** las entidades obligadas informan a la AEAT de los **saldos** y de las **operaciones** con monedas virtuales de sus clientes.
+- **Modelo 721:** lo presentas tú, entre el 1 de enero y el 31 de marzo del año siguiente, si tienes criptomonedas custodiadas **en el extranjero**
+  (por ejemplo, en un exchange extranjero) por encima de 50.000 € a 31 de diciembre. En los años siguientes solo hay que volver a presentarlo si el saldo sube
+  más de 20.000 € respecto al último declarado.
+
+Para el 721 se cuentan los custodios extranjeros, no las monedas que guardas tú con tus propias claves. Las normas europeas de intercambio de información entre
+Estados sobre criptoactivos (DAC8) se están implantando, así que cada vez hay menos margen para que una operación pase desapercibida.
+
+## Errores frecuentes
+
+1. **No declarar los cambios entre criptomonedas**, pensando que "si no he vendido por euros, no tributo".
+2. **No guardar el historial de compras**, y no poder demostrar el coste de adquisición. Sin él es difícil demostrar cuánta ganancia es real.
+3. **Olvidar el 721** teniendo más de 50.000 € en un exchange extranjero.
+4. **Dar por perdido lo que está en una plataforma quebrada.** La quiebra no genera automáticamente una pérdida deducible: se trata como un crédito.
+
+## Qué hacer ahora
+
+1. Descarga el **historial completo** de cada exchange y monedero que uses, antes de que desaparezca o cambien las condiciones.
+2. Calcula tus ganancias con FIFO por criptomoneda, incluyendo los cambios entre ellas.
+3. Compáralo con tu otra renta del ahorro en la [guía de los tramos del ahorro](/blog/tramos-irpf-ahorro/).
+4. Si tienes saldos en el extranjero, comprueba el umbral del 721 antes de marzo.
+
+Con importes grandes o operaciones complejas (decenas de cambios al año, DeFi, minería), conviene un asesor fiscal que conozca el criterio de la AEAT.
