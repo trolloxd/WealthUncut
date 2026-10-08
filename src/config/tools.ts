@@ -143,6 +143,12 @@ export const TOOLS = [
     tags: ['vivienda', 'alquiler', 'ahorro'],
   },
   {
+    href: '/herramientas/calculadora-baja-laboral/',
+    name: 'Cuánto cobras de baja laboral',
+    description: 'Prestación por incapacidad temporal: 60 % desde el día 4, 75 % desde el 21 y quién paga cada tramo.',
+    tags: ['empleo', 'ahorro', 'calculadoras'],
+  },
+  {
     href: '/herramientas/calculadora-indemnizacion-despido/',
     name: 'Indemnización por despido y finiquito',
     description: 'Cuánto te corresponde si te despiden o termina tu contrato: 33, 20 o 12 días por año, con los máximos legales.',

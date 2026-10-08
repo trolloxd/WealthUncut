@@ -214,6 +214,8 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
 - `/herramientas/calculadora-indemnizacion-despido/` y `calculadora-factura-autonomo/`: reglas del Estatuto de los Trabajadores (arts. 49.1.c,
   53.1.b, 56.1) y del Reglamento del IRPF (arts. 101 y 110), verificadas en el BOE el 2026-10-08. Las constantes viven en cada componente
   (no hay cifras revisables cada año); si el Gobierno cambia el despido (hay debate abierto), actualizar `TIPOS_EXTINCION`.
+- `/herramientas/calculadora-baja-laboral/`: incapacidad temporal (60 % días 4 a 20, 75 % desde el 21, accidente laboral 75 %), reglas en
+  `SickLeaveCalculator.tsx` verificadas el 2026-10-08 (Aula de la Seguridad Social y LGSS arts. 171 y 173). Base reguladora estimada con bruto/12.
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se

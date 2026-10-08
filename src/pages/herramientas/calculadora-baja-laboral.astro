@@ -1,0 +1,79 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import SickLeaveCalculator from '../../components/SickLeaveCalculator';
+---
+
+<ToolLayout
+  title="Calculadora de baja laboral: cuánto cobras de baja por enfermedad"
+  name="Cuánto cobras de baja laboral"
+  description="Calcula cuánto cobras de baja por incapacidad temporal: 60 % desde el cuarto día, 75 % desde el día 21, quién paga cada tramo y cuánto dejas de ingresar."
+  pubDate={new Date('2026-10-08')}
+  sources={[
+    { label: 'Seguridad Social (Aula): cuantía de la incapacidad temporal', url: 'https://www.seg-social.es/wps/portal/wss/internet/PortalEducativo/Profesores/Unidad3/PESS303/PESS305' },
+    { label: 'BOE: Ley General de la Seguridad Social, arts. 169 a 173 (incapacidad temporal)', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2015-11724' },
+  ]}
+  faqs={[
+    {
+      pregunta: '¿Cuánto se cobra de baja por enfermedad común?',
+      respuesta: 'Los tres primeros días no hay prestación. Del cuarto al vigésimo día se cobra el 60 % de la base reguladora, y desde el día 21 el 75 %. Del cuarto al decimoquinto día lo paga la empresa; desde el decimosexto, la Seguridad Social o la mutua.',
+    },
+    {
+      pregunta: '¿Y si la baja es por accidente de trabajo?',
+      respuesta: 'Se cobra el 75 % de la base reguladora desde el día siguiente a la baja. El día de la baja lo paga la empresa íntegro, y no se exige un periodo mínimo de cotización.',
+    },
+    {
+      pregunta: '¿Cuánto tiempo puede durar una baja?',
+      respuesta: 'Hasta 365 días, prorrogables otros 180 si se espera que el trabajador pueda recibir el alta médica por curación.',
+    },
+    {
+      pregunta: '¿Mi empresa tiene que completarme hasta el 100 %?',
+      respuesta: 'No por ley. Solo si lo recoge tu convenio colectivo o tu contrato. Muchos convenios mejoran la prestación, sobre todo en accidentes de trabajo o en las bajas largas: compruébalo en el tuyo.',
+    },
+  ]}
+>
+  <p>
+    Una baja médica no se cobra al 100 %: la prestación depende de los días que lleves de baja y del motivo. Esta calculadora te enseña cuánto cobrarías con las reglas generales
+    de la Seguridad Social, cuánto dejas de ingresar frente a tu sueldo normal y cómo mejora si tu empresa te completa la baja.
+  </p>
+
+  <SickLeaveCalculator client:load />
+
+  <BotonCompartir client:load />
+
+  <h2>Cuánto se cobra según el tipo de baja</h2>
+  <ul>
+    <li><strong>Enfermedad común o accidente no laboral:</strong> días 1 a 3 sin prestación; días 4 a 20, el 60 % de la base reguladora; desde el día 21, el 75 %.</li>
+    <li><strong>Accidente de trabajo o enfermedad profesional:</strong> el 75 % desde el día siguiente a la baja, y el día de la baja lo paga la empresa íntegro.</li>
+  </ul>
+
+  <h2>Quién paga cada tramo</h2>
+  <p>
+    En enfermedad común, del día 4 al 15 paga la <strong>empresa</strong> y desde el día 16, la <strong>Seguridad Social</strong> o la mutua con la que trabaje tu empresa. En un accidente de
+    trabajo o una enfermedad profesional, la prestación corre a cargo de la entidad gestora desde el día siguiente a la baja.
+  </p>
+
+  <h2>Cómo se calcula la base reguladora</h2>
+  <p>
+    La base reguladora diaria sale de tu base de cotización por contingencias comunes del mes anterior a la baja, dividida entre los días de ese mes. Esta herramienta la estima con tu sueldo bruto
+    entre doce, así que el resultado es orientativo: horas extra, pluses variables o un cambio de contrato la modifican.
+  </p>
+
+  <h2>Qué hacer con el resultado</h2>
+  <ul>
+    <li>Si una baja larga te dejaría con problemas, revisa tu <a href="/herramientas/calculadora-fondo-de-emergencia/">fondo de emergencia</a>: es justo el tipo de imprevisto para el que sirve.</li>
+    <li>Si eres autónomo, las reglas y la cuota son otras: mira la <a href="/herramientas/calculadora-cuota-autonomos/">cuota de autónomos</a>.</li>
+    <li>Compara tu sueldo normal con la <a href="/herramientas/calculadora-sueldo-neto/">calculadora de sueldo neto</a> y ajusta tu <a href="/plantilla-presupuesto/">presupuesto</a> a una posible baja.</li>
+  </ul>
+  <p class="text-sm">Información general, no asesoramiento jurídico. Tu convenio, tu contrato y tu mutua pueden mejorar estas cifras.</p>
+
+  <h2>Preguntas frecuentes</h2>
+  <p><strong>¿Cuánto se cobra de baja por enfermedad común?</strong><br />
+    Sin prestación los tres primeros días; 60 % de la base reguladora del día 4 al 20 y 75 % desde el día 21.</p>
+  <p><strong>¿Y si la baja es por accidente de trabajo?</strong><br />
+    75 % desde el día siguiente a la baja, y el día de la baja lo paga la empresa íntegro.</p>
+  <p><strong>¿Cuánto tiempo puede durar una baja?</strong><br />
+    Hasta 365 días, prorrogables otros 180.</p>
+  <p><strong>¿Mi empresa tiene que completarme hasta el 100 %?</strong><br />
+    No por ley, solo si lo recoge tu convenio o tu contrato.</p>
+</ToolLayout>
