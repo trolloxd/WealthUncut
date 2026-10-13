@@ -1,0 +1,136 @@
+---
+title: "El IBEX sube un 1,33%, su mejor sesión desde julio"
+description: "El IBEX tira de la banca y sube un 1,33%, el petróleo se encarece con los ataques a Arabia Saudí y Wall Street espera hoy los resultados de la gran banca."
+pubDate: 2026-10-13
+author: "David Pérez Mitjà"
+tags: ["mercados", "ibex", "banca", "petroleo", "resultados"]
+sources:
+  - label: "Expansión: el IBEX 35 sube el 1,33%, en su mejor sesión desde finales de julio, gracias a la banca (12 de octubre de 2026)"
+    url: "https://www.expansion.com/mercados/cronica-bolsa/2026/10/12/6acc7280468aeb995a8b459f.html"
+  - label: "elEconomista: las bolsas se tiñen de verde y el IBEX firma su mejor sesión desde julio (12 de octubre de 2026)"
+    url: "https://www.eleconomista.es/mercados-cotizaciones/noticias/14020362/10/26/las-bolsas-se-tinen-de-verde-y-el-ibex-lidera-las-subidas-con-la-mirada-fija-en-la-geopolitica-y-el-petroleo.html"
+  - label: "Expansión: la banca es atractiva en Bolsa, pese a la tensión en los bonos (13 de octubre de 2026)"
+    url: "https://www.expansion.com/mercados/2026/10/13/6acd6acb468aeb0c548b4585.html"
+  - label: "CNBC: S&P 500 closes near flat, pressured by higher oil prices and memory chip stock losses (12 de octubre de 2026)"
+    url: "https://www.cnbc.com/2026/10/11/stock-market-today-live-updates.html"
+  - label: "CNBC: Brent tops $106 after deadly Saudi airport attack, Ukraine says Russia violated energy ceasefire (12 de octubre de 2026)"
+    url: "https://www.cnbc.com/2026/10/12/oil-prics-today-iran-us-saudi-arabia-crude-.html"
+  - label: "BCE: calendario semanal de actos y publicaciones"
+    url: "https://www.ecb.europa.eu/press/calendars/weekly/html/index.en.html"
+  - label: "INE: calendario semanal de notas de prensa, 12 a 16 de octubre de 2026"
+    url: "https://www.ine.es/daco/daco41/calen_semanal.pdf"
+  - label: "BCE: tipo de cambio de referencia euro/dólar (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/EXR/EXR.D.USD.EUR.SP00.A"
+  - label: "BCE: rentabilidad a 10 años, curva AAA de la zona euro (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/YC/YC.B.U2.EUR.4F.G_N_A.SV_C_YM.SR_10Y"
+---
+
+import datos from '../../data/mercados/2026-10-13.json';
+import MarketSnapshot from '../../components/MarketSnapshot.astro';
+import MarketChart from '../../components/MarketChart.astro';
+
+La Bolsa española abrió en el día de la Fiesta Nacional y cerró con su mejor sesión desde finales
+de julio, empujada por los bancos. A la vez, el petróleo volvió a encarecerse: la tregua energética
+que Trump anunció el domingo no se cumplió, según Ucrania, y los ataques contra Arabia Saudí
+siguieron. Hoy empieza en EE. UU. la temporada de resultados con la gran banca.
+
+## Lo más importante en 30 segundos
+
+- **IBEX 35**: subió un 1,33%, hasta 19.285 puntos, el mejor de Europa en el día. Santander ganó
+  un 2,03% e Indra, un 3,87%.
+- **Petróleo**: el Brent subió cerca de un 2% y cerró en torno a 106,6 dólares por barril, tras
+  los ataques contra aeropuertos de Arabia Saudí.
+- **Tregua energética**: Zelenski acusó a Rusia de haberla incumplido con nuevos ataques. El
+  Kremlin no la ha confirmado.
+- **Wall Street**: cerró mixto. El Dow Jones subió un 0,4%, el S&P 500 quedó casi plano y el
+  Nasdaq bajó un 0,4%.
+- **Euro**: el tipo de cambio de referencia del BCE fue de 1,1181 dólares el lunes, frente a
+  1,1206 el viernes.
+
+## La banca tira del IBEX: qué ha pasado
+
+El IBEX 35 cerró el lunes en 19.285 puntos, un 1,33% más que el viernes. Fue su mejor sesión desde
+finales de julio y el índice que más subió de las grandes bolsas europeas.
+
+El empujón vino sobre todo de los bancos, con Santander a la cabeza (2,03%). Lo importante es el
+contexto: los bancos llevaban semanas bajo presión por la subida de la rentabilidad de la deuda
+pública. El lunes, los bonos se tranquilizaron y su rentabilidad apenas se movió, y eso dio un
+respiro al sector.
+
+¿Por qué afecta la deuda a los bancos? Porque tienen muchos bonos en balance, y cuando la
+rentabilidad de los bonos sube, su precio baja. Además, a los inversores les preocupa que unos
+tipos de interés más altos hagan que más empresas y familias tengan problemas para pagar sus
+préstamos.
+
+También destacó Indra, del sector de defensa, que subió un 3,87% en un día en el que siguieron los
+ataques entre Rusia y Ucrania pese a la tregua anunciada.
+
+### A qué te afecta
+
+Si tienes un fondo indexado que replica la bolsa española o europea, una parte importante está en
+bancos, así que su evolución se nota en tu fondo. Y la rentabilidad de la deuda marca lo que
+cuestan las hipotecas a tipo fijo. Según los datos del BCE, la rentabilidad a 10 años de la deuda
+de mejor calidad de la zona euro estaba en el 3,51% el 9 de octubre, frente al 3,36% del 1 de
+septiembre. El tipo de depósito del BCE sigue en el 2,5%.
+
+<MarketChart datos={datos} serie="bono10a" titulo="Rentabilidad a 10 años, curva AAA de la zona euro (%)" ultimas={90} />
+
+## Petróleo: la tregua no se cumple y Arabia Saudí, en el punto de mira
+
+El domingo, Trump anunció un "alto el fuego en materia energética" entre Rusia y Ucrania. El lunes,
+Volodímir Zelenski dijo que Rusia ya lo había incumplido con nuevos ataques con drones contra
+instalaciones energéticas ucranianas, y que Ucrania lo respetará si Rusia hace lo mismo. Moscú
+seguía sin confirmar la tregua.
+
+En Oriente Medio, los hutíes de Yemen, aliados de Irán, atacaron durante el fin de semana
+aeropuertos de Arabia Saudí, con víctimas mortales. Arabia Saudí es el mayor exportador de crudo
+del mundo, así que cualquier ataque en su territorio inquieta al mercado. Además, siguen los
+ataques contra petroleros cerca del estrecho de Ormuz.
+
+Con todo ello, el Brent, la referencia del petróleo en Europa, subió cerca de un 2% y cerró en
+torno a 106,6 dólares por barril. En Wall
+Street, la energía fue de los sectores que más subieron.
+
+### A qué te afecta
+
+El petróleo caro se traslada a la gasolina, al diésel y, poco a poco, al precio de casi todo lo
+que compras, porque encarece el transporte. Mañana miércoles el INE publica el IPC definitivo de
+septiembre (el dato adelantado fue del 4,9%), y la evolución del petróleo es una de las claves
+para ver si la inflación se modera o no en los próximos meses.
+
+<MarketSnapshot datos={datos} />
+
+## Wall Street, a la espera de la banca
+
+En EE. UU. era Columbus Day. La bolsa abrió, pero el mercado de bonos no tuvo sesión normal y hubo
+poco volumen. El Dow Jones subió un 0,4%, el S&P 500 cerró con una bajada mínima (alrededor de un
+0,1%) y el Nasdaq cayó un 0,4%, lastrado otra vez por las empresas de semiconductores.
+
+Los inversores esperan hoy el arranque oficioso de la temporada de resultados del tercer
+trimestre, con las cuentas de JPMorgan, Goldman Sachs, Citigroup y Wells Fargo. Los resultados de
+los grandes bancos se miran mucho porque dan pistas sobre cómo están los préstamos, el consumo y
+los impagos en la economía estadounidense.
+
+## Qué vigilar hoy
+
+Todas las horas son hora peninsular española.
+
+- **Resultados en EE. UU.**: JPMorgan, Goldman Sachs, Citigroup y Wells Fargo presentan hoy sus
+  cuentas. Wall Street abre a las 15:30. Mañana es el turno de Bank of America y Morgan
+  Stanley.
+- **INE (9:00)**: estadística de sociedades mercantiles de agosto.
+- **Bangkok**: el FMI y el Banco Mundial celebran su reunión anual, en la que participa Christine
+  Lagarde, presidenta del BCE.
+- **Petróleo**: si Rusia confirma o no la tregua energética, y la respuesta de Arabia Saudí a los
+  ataques.
+- **Resto de la semana**: el miércoles 14, a las 9:00, el INE publica el IPC definitivo de
+  septiembre, y a las 14:30, EE. UU. publica su IPC.
+
+## Para entenderlo mejor
+
+Días como el de ayer, con la banca subiendo con fuerza tras semanas de caídas, muestran lo difícil
+que es acertar con el momento. Si inviertes en un
+[fondo indexado](/blog/que-es-un-fondo-indexado/), lo que más pesa a largo plazo es el tiempo y
+las comisiones. Y si dudas entre fondo y ETF, el
+[comparador de fondo indexado frente a ETF](/herramientas/comparador-fondo-indexado-vs-etf/) te
+ayuda a ver la diferencia en tu caso.
