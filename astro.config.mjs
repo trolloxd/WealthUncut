@@ -8,6 +8,21 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
+import { adsListos } from './src/config/ads.mjs';
+
+// Orígenes de Google que necesita AdSense con su banner de consentimiento. Solo se añaden cuando
+// `adsListos()` es true (src/config/ads.mjs): con la publicidad desactivada la CSP queda como estaba.
+// OJO: AdSense inyecta scripts en línea y usa eval; con una CSP estricta puede fallar. Ver
+// ADSENSE-PROCEDIMIENTO.md, apartado "CSP", antes de activarlo.
+const ads = adsListos();
+/** @param {string} s @returns {any} Las directivas se arman con texto; el tipo de Astro solo acepta literales. */
+const dir = (s) => s.trim();
+const ORIGENES_ADS_SCRIPT = ads
+  ? ['https://pagead2.googlesyndication.com', 'https://fundingchoicesmessages.google.com', 'https://partner.googleadservices.com', 'https://tpc.googlesyndication.com', 'https://www.googletagservices.com']
+  : [];
+const ORIGENES_ADS_CONECTAR = ads ? ['https://pagead2.googlesyndication.com', 'https://fundingchoicesmessages.google.com', 'https://ep1.adtrafficquality.google'] : [];
+const ORIGENES_ADS_IMG = ads ? ['https://pagead2.googlesyndication.com', 'https://tpc.googlesyndication.com', 'https://www.google.com'] : [];
+const ORIGENES_ADS_FRAME = ads ? ['https://googleads.g.doubleclick.net', 'https://tpc.googlesyndication.com', 'https://www.google.com', 'https://fundingchoicesmessages.google.com'] : [];
 
 /** Fecha de última actualización de cada artículo ("seccion/slug" → fecha), para el lastmod del sitemap. */
 function leerFechasArticulos() {
@@ -55,7 +70,7 @@ export default defineConfig({
     csp: {
       // Contador de visitas de Cloudflare Web Analytics (sin cookies): Cloudflare inyecta su script
       // en cada página, y sin este origen la CSP lo bloqueaba y no se medía nada.
-      scriptDirective: { resources: ["'self'", 'https://static.cloudflareinsights.com'] },
+      scriptDirective: { resources: ["'self'", 'https://static.cloudflareinsights.com', ...ORIGENES_ADS_SCRIPT] },
       directives: [
         "default-src 'self'",
         "object-src 'none'",
@@ -63,10 +78,10 @@ export default defineConfig({
         "form-action 'self'",
         // frame-ancestors no se puede entregar por <meta> (solo por cabecera HTTP, spec de CSP):
         // la protección contra clickjacking real la da X-Frame-Options en public/_headers.
-        "frame-src 'none'",
-        "img-src 'self' data:",
+        dir(ads ? `frame-src ${ORIGENES_ADS_FRAME.join(' ')}` : "frame-src 'none'"),
+        dir(`img-src 'self' data: ${ORIGENES_ADS_IMG.join(' ')}`),
         "font-src 'self'",
-        "connect-src 'self' https://cloudflareinsights.com",
+        dir(`connect-src 'self' https://cloudflareinsights.com ${ORIGENES_ADS_CONECTAR.join(' ')}`),
         'upgrade-insecure-requests',
       ],
     },

@@ -216,6 +216,9 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   (no hay cifras revisables cada año); si el Gobierno cambia el despido (hay debate abierto), actualizar `TIPOS_EXTINCION`.
 - `/herramientas/calculadora-baja-laboral/`: incapacidad temporal (60 % días 4 a 20, 75 % desde el 21, accidente laboral 75 %), reglas en
   `SickLeaveCalculator.tsx` verificadas el 2026-10-08 (Aula de la Seguridad Social y LGSS arts. 171 y 173). Base reguladora estimada con bruto/12.
+- Publicidad: AdSense está **preparado y apagado** (`src/config/ads.mjs`, `activo: false`; `AdSlot.astro`, `ads.txt.ts`, CSP condicional).
+  Orden de activación, CSP y textos legales en `ADSENSE-PROCEDIMIENTO.md`. No encender sin banner de consentimiento ni sin actualizar
+  `cookies.astro` y `privacidad.astro` en el mismo commit.
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se

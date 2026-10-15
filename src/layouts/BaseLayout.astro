@@ -1,4 +1,5 @@
 ---
+import { ADS, adsListos } from '../config/ads.mjs';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE, AUTHOR } from '../config/site';
@@ -92,6 +93,9 @@ const allJsonLd = [organizationJsonLd, personJsonLd, websiteJsonLd, ...extraJson
     <link rel="preload" href={interLatin500} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={interLatin600} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={interLatin700} as="font" type="font/woff2" crossorigin />
+    {adsListos() && (
+      <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADS.publisherId}`} crossorigin="anonymous"></script>
+    )}
     <meta name="generator" content={Astro.generator} />
 
     <title>{pageTitle}</title>

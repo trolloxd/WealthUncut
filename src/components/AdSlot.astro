@@ -1,0 +1,22 @@
+---
+import { ADS, adsListos } from '../config/ads.mjs';
+
+interface Props {
+  /** Posición definida en `ADS.slots` (src/config/ads.mjs). */
+  posicion: keyof typeof ADS.slots;
+}
+
+const { posicion } = Astro.props;
+const slot = ADS.slots[posicion];
+const mostrar = adsListos() && Boolean(slot);
+---
+
+{mostrar && (
+  <aside aria-label="Publicidad" class="not-prose my-8">
+    <p class="mb-1 text-center text-[0.65rem] uppercase tracking-widest text-ink-faint">Publicidad</p>
+    <!-- Altura reservada para que el anuncio no mueva la página al cargar (CLS). -->
+    <div class="min-h-[280px]">
+      <ins class="adsbygoogle block" data-ad-client={ADS.publisherId} data-ad-slot={slot} data-ad-format="auto" data-full-width-responsive="true"></ins>
+    </div>
+  </aside>
+)}
