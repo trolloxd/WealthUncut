@@ -6,9 +6,9 @@ import datos from '../../data/fondos-indexados/ultimo.json';
 ---
 
 <ToolLayout
-  title="Fondos indexados en España: comparador de TER y plataformas"
+  title="Comparador de fondos indexados: TER, índice y plataforma"
   name="Comparador de fondos indexados"
-  description="Compara fondos indexados disponibles en España: TER, índice que replica (MSCI World, S&P 500, emergentes) y en qué plataformas está cada uno, sin ranking pagado."
+  description="Comparador de fondos de inversión indexados disponibles en España: TER, índice que replica (MSCI World, S&P 500, emergentes), ISIN y plataforma. Sin ranking pagado."
   pubDate={new Date('2026-09-24')}
   updatedDate={new Date(datos.fecha)}
   sources={[
@@ -26,6 +26,14 @@ import datos from '../../data/fondos-indexados/ultimo.json';
       respuesta: 'Porque no permiten el traspaso sin tributar, la ventaja fiscal más importante de invertir a largo plazo en fondos desde España. Puedes comparar fondo vs. ETF con tus números en el comparador de fondo indexado vs ETF.',
     },
     {
+      pregunta: '¿Cómo comparo dos fondos indexados del mismo índice?',
+      respuesta: 'Comprueba que replican el mismo índice y que son de la misma clase (mira el ISIN), compara el TER, si tienen o no cobertura de divisa, el tamaño del fondo y la plataforma donde puedes contratarlos. Con el mismo índice y la misma clase, el TER más bajo suele ganar a largo plazo.',
+    },
+    {
+      pregunta: '¿Un comparador de fondos de inversión te dice cuál comprar?',
+      respuesta: 'No. Esta tabla ordena por TER y muestra datos objetivos (índice, ISIN, plataforma), pero la elección depende de tu horizonte, tu tolerancia al riesgo y tus circunstancias. Es información, no una recomendación personalizada.',
+    },
+    {
       pregunta: '¿El TER es lo único que pagas?',
       respuesta: 'No siempre: algunos bancos cobran comisión de custodia o de traspaso aparte del TER del fondo, aunque cada vez es menos habitual en las plataformas centradas en fondos indexados. Revisa las condiciones de tu plataforma, no solo el TER del fondo.',
     },
@@ -39,6 +47,27 @@ import datos from '../../data/fondos-indexados/ultimo.json';
   </p>
 
   <FondosIndexadosTabla datos={datos} />
+
+  <h2>Cómo usar este comparador</h2>
+  <ol>
+    <li><strong>Elige el índice.</strong> No compares un fondo del MSCI World con uno del S&amp;P 500: invierten en cosas distintas. Si dudas, mira la guía de <ArticleLink href="/blog/sp500-vs-msci-world/">S&amp;P 500 o MSCI World</ArticleLink>.</li>
+    <li><strong>Dentro del mismo índice, ordena por TER.</strong> La tabla ya viene de menor a mayor coste anual.</li>
+    <li><strong>Mira el ISIN y la clase.</strong> Dos fondos con el mismo nombre pueden ser clases distintas, con TER y mínimos diferentes.</li>
+    <li><strong>Comprueba dónde se puede contratar.</strong> No todos los fondos están en todas las plataformas.</li>
+    <li><strong>Simula tu caso.</strong> Con el botón "Simular" puedes ver cómo evolucionaría una aportación mensual en <a href="/carteras/">Carteras</a>.</li>
+  </ol>
+
+  <h2>Qué comparar además del TER</h2>
+  <ul>
+    <li><strong>Diferencia de seguimiento (tracking difference):</strong> cuánto se aparta el fondo del índice real. Un TER bajo no sirve de mucho si el fondo replica mal.</li>
+    <li><strong>Cobertura de divisa:</strong> algunos fondos protegen el cambio euro-dólar y otros no. Cambia el resultado y a veces el coste.</li>
+    <li><strong>Tamaño del fondo:</strong> un fondo muy pequeño puede acabar cerrando o fusionándose con otro.</li>
+    <li><strong>Política de dividendos:</strong> los fondos de inversión españoles acumulan, lo que facilita el diferimiento fiscal.</li>
+  </ul>
+  <p>
+    Si empiezas desde cero, tienes la guía de <ArticleLink href="/blog/que-es-un-fondo-indexado/">qué es un fondo indexado</ArticleLink> y la de
+    <ArticleLink href="/blog/como-montar-cartera-fondos-indexados/">cómo montar una cartera de fondos indexados</ArticleLink>.
+  </p>
 
   <h2>Por qué fondo y no ETF si el índice es el mismo</h2>
   <p>
@@ -80,6 +109,12 @@ import datos from '../../data/fondos-indexados/ultimo.json';
     Porque no permiten el traspaso sin tributar, la ventaja fiscal más importante de invertir a
     largo plazo en fondos desde España. Puedes comparar fondo vs. ETF con tus números en el{' '}
     <a href="/herramientas/comparador-fondo-indexado-vs-etf/">comparador de fondo indexado vs ETF</a>.</p>
+  <p><strong>¿Cómo comparo dos fondos indexados del mismo índice?</strong><br />
+    Comprueba que replican el mismo índice y que son de la misma clase (mira el ISIN), y compara TER, cobertura de divisa, tamaño del fondo y plataforma. Con el
+    mismo índice y la misma clase, el TER más bajo suele ganar a largo plazo.</p>
+  <p><strong>¿Un comparador de fondos de inversión te dice cuál comprar?</strong><br />
+    No. Esta tabla ordena por TER y muestra datos objetivos, pero la elección depende de tu horizonte, tu tolerancia al riesgo y tus circunstancias. Es información,
+    no una recomendación personalizada.</p>
   <p><strong>¿El TER es lo único que pagas?</strong><br />
     No siempre: algunos bancos cobran comisión de custodia o de traspaso aparte del TER del fondo,
     aunque cada vez es menos habitual en las plataformas centradas en fondos indexados. Revisa las
