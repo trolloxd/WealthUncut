@@ -1,0 +1,230 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ArticleLink from '../components/ArticleLink.astro';
+import { SITE, AUTHOR } from '../config/site';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+
+const title = 'Plantilla de hipoteca en Excel: cuadro de amortización gratis';
+const description = 'Descarga gratis una plantilla de Excel para tu hipoteca: cuadro de amortización mes a mes, revisiones del euríbor, amortizaciones anticipadas y ahorro de intereses, con vídeos.';
+const pubDate = new Date('2026-10-15');
+const url = `${SITE.url}/plantilla-hipoteca/`;
+const archivo = '/descargas/Plantilla-hipoteca-WealthUncut.xlsx';
+const fechaLarga = pubDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const img = (nombre: string) => `/plantilla/img/${nombre}.webp`;
+const vid = (nombre: string) => `/plantilla/video/${nombre}.mp4`;
+
+const videos = {
+  recorrido: { archivo: 'plantilla-hip-recorrido', nombre: 'Recorrido por la plantilla de hipoteca', desc: 'Un recorrido de 16 segundos por las hojas de la plantilla de hipoteca en Excel.', duracion: 'PT16S' },
+  amortizar: { archivo: 'plantilla-hip-amortizar', nombre: 'Cómo ver el efecto de amortizar en la plantilla de hipoteca', desc: 'Cómo apuntar una amortización anticipada y comparar reducir plazo o reducir cuota.', duracion: 'PT13S' },
+};
+
+const faqs = [
+  {
+    pregunta: '¿La plantilla es gratis? ¿Tengo que dejar mi email?',
+    respuesta: 'Es gratis y no te pedimos el email: el botón descarga el archivo directamente. Puedes usarla y modificarla para ti; solo te pedimos que no la vendas ni la presentes como tuya.',
+  },
+  {
+    pregunta: '¿Sirve para hipotecas fijas y variables?',
+    respuesta: 'Sí. En una hipoteca fija solo pones el TIN inicial. En una variable o mixta apuntas cada revisión de tipo (la fecha y el nuevo tipo) y el cuadro recalcula la cuota desde esa fecha.',
+  },
+  {
+    pregunta: '¿Qué diferencia hay entre reducir plazo y reducir cuota?',
+    respuesta: 'Al amortizar, reducir plazo mantiene la cuota y acorta la hipoteca, así que sueles ahorrar más intereses. Reducir cuota mantiene la fecha final y baja lo que pagas cada mes, así que da más respiro mensual. La plantilla te enseña los dos resultados con tus números.',
+  },
+  {
+    pregunta: '¿Incluye seguros, gastos o bonificaciones?',
+    respuesta: 'No. Calcula el préstamo con el tipo de interés nominal (TIN). Los seguros vinculados, las comisiones de apertura y las bonificaciones cambian el coste real, que se mide con la TAE.',
+  },
+  {
+    pregunta: '¿Funciona en Google Sheets o LibreOffice?',
+    respuesta: 'Está pensada para Excel. Se abre en Google Sheets y LibreOffice, aunque los gráficos y algún formato pueden verse distintos.',
+  },
+  {
+    pregunta: '¿Mis datos se envían a algún sitio?',
+    respuesta: 'No. Es un archivo que se descarga y se usa en tu ordenador: lo que escribas se queda en él. Nosotros no vemos tu hipoteca.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: title,
+    description,
+    inLanguage: SITE.locale,
+    datePublished: pubDate.toISOString(),
+    dateModified: pubDate.toISOString(),
+    author: { '@id': `${SITE.url}/autor/#person`, '@type': 'Person', name: AUTHOR.name },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    primaryImageOfPage: `${SITE.url}${img('plantilla-hip-hipoteca')}`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'DigitalDocument',
+    '@id': `${url}#plantilla`,
+    name: 'Plantilla de hipoteca: cuadro de amortización (Excel)',
+    description: 'Plantilla de Excel con cuadro de amortización, revisiones de tipo, amortizaciones anticipadas y comparación reducir plazo o cuota.',
+    encodingFormat: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    contentUrl: `${SITE.url}${archivo}`,
+    inLanguage: SITE.locale,
+    isAccessibleForFree: true,
+    author: { '@id': `${SITE.url}/autor/#person`, '@type': 'Person', name: AUTHOR.name },
+    datePublished: pubDate.toISOString(),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Plantillas', item: `${SITE.url}/plantillas/` },
+      { '@type': 'ListItem', position: 3, name: 'Plantilla de hipoteca', item: url },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.pregunta, acceptedAnswer: { '@type': 'Answer', text: f.respuesta } })),
+  },
+  ...Object.values(videos).map((v) => ({
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: v.nombre,
+    description: v.desc,
+    thumbnailUrl: `${SITE.url}${img(v.archivo + '-poster')}`,
+    contentUrl: `${SITE.url}${vid(v.archivo)}`,
+    uploadDate: pubDate.toISOString(),
+    duration: v.duracion,
+    inLanguage: SITE.locale,
+  })),
+];
+---
+
+<BaseLayout title={title} description={description} publishedDate={pubDate} extraJsonLd={jsonLd}>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Plantillas', href: '/plantillas/' }, { label: 'Plantilla de hipoteca' }]} />
+
+  <article class="prose max-w-none">
+    <h1>Plantilla de hipoteca en Excel: cuadro de amortización gratis</h1>
+    <p class="not-prose -mt-2 mb-6 text-sm text-ink-muted">
+      Por <a href="/autor/" rel="author" class="font-medium text-ink underline decoration-ink-muted/40">{AUTHOR.name}</a> · Actualizada el{' '}
+      <time datetime="2026-10-15">{fechaLarga}</time> · <a href="#descargar" class="font-medium text-brand underline decoration-brand/30">Ir a la descarga ↓</a>
+    </p>
+
+    <p>
+      Esta plantilla de Excel te da el <strong>cuadro de amortización de tu hipoteca</strong> mes a mes: cuánto pagas de cuota, cuánto de intereses y cuánto de
+      capital, y cuánto debes en cada momento. Admite hipotecas variables (apuntas cada revisión del euríbor) y amortizaciones anticipadas, y te dice cuántos
+      intereses te ahorras y cuántos meses menos pagas. Más abajo tienes un recorrido con imágenes y vídeos, y <strong>al final, el archivo para descargar</strong>.
+    </p>
+    <p class="text-sm">
+      Los datos que trae (180.000 €, 30 años, 3 %) son un ejemplo ficticio, no una recomendación. Es información educativa, no asesoramiento financiero.
+    </p>
+
+    <h2>Qué incluye la plantilla</h2>
+    <ul>
+      <li><strong>Hipoteca:</strong> tus datos, las revisiones de tipo, las amortizaciones anticipadas, el resumen y dos gráficos.</li>
+      <li><strong>Cuadro:</strong> el cuadro de amortización de hasta 40 años, mes a mes, con la misma hipoteca sin amortizar al lado para comparar.</li>
+      <li><strong>Anual:</strong> intereses y capital que pagas cada año y lo que debes a 31 de diciembre.</li>
+      <li><strong>Instrucciones:</strong> los cinco pasos en una página.</li>
+    </ul>
+
+    <h2>Míralo en 16 segundos</h2>
+    <figure class="not-prose">
+      <video controls preload="none" playsinline poster={img('plantilla-hip-recorrido-poster')} width="1280" height="720" class="w-full rounded-xl border border-border" aria-label={videos.recorrido.nombre}>
+        <source src={vid('plantilla-hip-recorrido')} type="video/mp4" />
+        Tu navegador no reproduce vídeo. Mira las imágenes de más abajo.
+      </video>
+      <figcaption class="mt-2 text-xs text-ink-faint">Recorrido por las hojas. Sin sonido: los pasos van escritos en pantalla.</figcaption>
+    </figure>
+
+    <h2>Paso 1: tus datos y tu resumen</h2>
+    <p>
+      En la hoja <strong>Hipoteca</strong> pones el capital pendiente, los años que quedan, el TIN, la fecha de la próxima cuota y qué haces cuando amortizas. El resto sale solo.
+    </p>
+    <figure class="not-prose my-6">
+      <img src={img('plantilla-hip-hipoteca')} alt="Hoja Hipoteca con datos del préstamo, revisiones de tipo, amortizaciones anticipadas, resumen y dos gráficos" width="874" height="843" loading="lazy" decoding="async" class="mx-auto w-full max-w-3xl rounded-xl border border-border" />
+      <figcaption class="mt-2 text-sm text-ink-muted">
+        <strong>1</strong> Tus datos. <strong>2</strong> Revisiones de tipo (si es variable). <strong>3</strong> Amortizaciones anticipadas. <strong>4</strong> Resumen: cuota,
+        intereses, última cuota e intereses ahorrados. <strong>5</strong> Cuánto debes con el tiempo y qué pagas cada año.
+      </figcaption>
+    </figure>
+
+    <h2>Paso 2: la variable del euríbor</h2>
+    <p>
+      Si tu hipoteca es variable o mixta, apunta cada revisión: la fecha desde la que rige y el nuevo TIN. Desde esa fecha el cuadro recalcula la cuota sobre el saldo y el plazo que quedan.
+      Para ver cómo está el euríbor hoy y simular escenarios, usa el <a href="/herramientas/simulador-hipoteca-euribor/">simulador de hipoteca con el euríbor real</a>.
+    </p>
+
+    <h2>Paso 3: amortizar y comparar</h2>
+    <p>
+      Apunta cada entrega extra con su fecha y su importe. Después elige si <strong>reduces el plazo</strong> (misma cuota, menos años) o <strong>reduces la cuota</strong> (mismo plazo,
+      menos cuota al mes). La plantilla recalcula todo y te dice los intereses que ahorras. Si quieres entender cuál conviene, lee
+      <ArticleLink href="/blog/amortizar-hipoteca-reducir-cuota-o-plazo/">amortizar la hipoteca: reducir cuota o plazo</ArticleLink> y prueba la
+      <a href="/herramientas/amortizar-hipoteca-cuanto-ahorras/">calculadora de amortización</a>.
+    </p>
+    <figure class="not-prose my-6">
+      <video controls preload="none" playsinline poster={img('plantilla-hip-amortizar-poster')} width="1280" height="720" class="w-full rounded-xl border border-border" aria-label={videos.amortizar.nombre}>
+        <source src={vid('plantilla-hip-amortizar')} type="video/mp4" />
+        Tu navegador no reproduce vídeo.
+      </video>
+      <figcaption class="mt-2 text-xs text-ink-faint">Ejemplo: se añade una entrega de 20.000 € y se compara reducir plazo con reducir cuota.</figcaption>
+    </figure>
+    <div class="not-prose my-6 grid gap-4 sm:grid-cols-2">
+      <figure>
+        <img src={img('plantilla-hip-amortizar-2')} alt="Resumen con una amortización anticipada de 20.000 euros y la opción reducir plazo" width="874" height="843" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+        <figcaption class="mt-2 text-xs text-ink-muted">Reducir plazo: menos cuotas y menos intereses.</figcaption>
+      </figure>
+      <figure>
+        <img src={img('plantilla-hip-amortizar-3')} alt="Resumen de la misma hipoteca con la opción reducir cuota" width="874" height="843" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+        <figcaption class="mt-2 text-xs text-ink-muted">Reducir cuota: mismo final, una cuota más baja.</figcaption>
+      </figure>
+    </div>
+
+    <h2>Paso 4: el cuadro y el año a año</h2>
+    <figure class="not-prose my-6">
+      <img src={img('plantilla-hip-cuadro')} alt="Cuadro de amortización mes a mes con tipo, cuota, intereses, capital y saldo, y la misma hipoteca sin amortizar a la derecha" width="1451" height="974" loading="lazy" decoding="async" class="w-full rounded-xl border border-border" />
+      <figcaption class="mt-2 text-sm text-ink-muted">Cada fila es un mes. En gris, a la derecha, la misma hipoteca sin tus amortizaciones, para ver la diferencia.</figcaption>
+    </figure>
+    <figure class="not-prose my-6">
+      <img src={img('plantilla-hip-anual')} alt="Hoja Anual con intereses, capital, amortizaciones y deuda a 31 de diciembre de cada año" width="868" height="1273" loading="lazy" decoding="async" class="mx-auto w-full max-w-md rounded-xl border border-border" />
+      <figcaption class="mt-2 text-sm text-ink-muted">En los primeros años pagas sobre todo intereses; con el tiempo, sobre todo capital.</figcaption>
+    </figure>
+
+    <h2>Cómo sacarle partido</h2>
+    <ul>
+      <li><strong>Actualiza el tipo en cada revisión.</strong> Es lo que más cambia tu cuota en una hipoteca variable.</li>
+      <li><strong>Prueba antes de amortizar.</strong> Mete la entrega en la plantilla y compara las dos opciones antes de pedírsela al banco.</li>
+      <li><strong>Compara con invertir.</strong> Amortizar es una rentabilidad segura igual al tipo de la hipoteca. Mira las cuentas en
+        <ArticleLink href="/blog/amortizar-hipoteca-o-invertir/">amortizar la hipoteca o invertir</ArticleLink>.</li>
+      <li><strong>Antes de amortizar</strong>, comprueba que tienes un <a href="/herramientas/calculadora-fondo-de-emergencia/">fondo de emergencia</a> y revisa la comisión por amortización de tu contrato.</li>
+    </ul>
+
+    <h2>Preguntas frecuentes</h2>
+    {faqs.map((f) => (
+      <p>
+        <strong>{f.pregunta}</strong><br />
+        {f.respuesta}
+      </p>
+    ))}
+  </article>
+
+  <div class="mx-auto mt-12 max-w-md">
+    <NewsletterSignup compacta />
+  </div>
+
+  <section id="descargar" aria-labelledby="h-descargar" class="mx-auto mt-14 max-w-3xl rounded-2xl border-2 border-brand/30 bg-cream-elevated p-8 text-center">
+    <p class="text-xs font-semibold uppercase tracking-widest text-brand">Descarga gratuita</p>
+    <h2 id="h-descargar" class="mt-2 font-display text-2xl text-ink">Plantilla de hipoteca (Excel)</h2>
+    <p class="mx-auto mt-3 max-w-xl text-sm text-ink-muted">
+      Archivo de Excel (.xlsx) con cuadro de amortización, gráficos y fórmulas. Sin registros ni email. Los datos que trae son un ejemplo: cámbialos por los de tu hipoteca.
+    </p>
+    <a href={archivo} download="Plantilla-hipoteca-WealthUncut.xlsx" class="btn-primary mt-6 inline-block">Descargar la plantilla (.xlsx, 154 KB)</a>
+    <p class="mt-4 text-xs text-ink-faint">
+      Versión 1.0 · {fechaLarga} · Hecha por {AUTHOR.name}. Úsala y modifícala para ti; no la vendas ni la presentes como tuya.
+      Es información educativa, no asesoramiento financiero.
+    </p>
+  </section>
+</BaseLayout>

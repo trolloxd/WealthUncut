@@ -219,6 +219,8 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
 - Publicidad: AdSense está **preparado y apagado** (`src/config/ads.mjs`, `activo: false`; `AdSlot.astro`, `ads.txt.ts`, CSP condicional).
   Orden de activación, CSP y textos legales en `ADSENSE-PROCEDIMIENTO.md`. No encender sin banner de consentimiento ni sin actualizar
   `cookies.astro` y `privacidad.astro` en el mismo commit.
+- `/plantilla-hipoteca/` (`src/pages/plantilla-hipoteca.astro`): cuadro de amortización con revisiones de tipo y entregas extra, generada por
+  `scripts/plantilla-hipoteca/crear_plantilla.py` (misma mecánica de caché que las otras plantillas). Datos de ejemplo ficticios; sin seguros ni TAE.
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se

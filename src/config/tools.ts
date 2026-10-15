@@ -173,6 +173,12 @@ export const TOOLS = [
     tags: ['ahorro', 'educación financiera', 'calculadoras'],
   },
   {
+    href: '/plantilla-hipoteca/',
+    name: 'Plantilla de hipoteca (Excel)',
+    description: 'Descarga gratis un cuadro de amortización con revisiones del euríbor y amortizaciones anticipadas.',
+    tags: ['hipoteca', 'vivienda', 'calculadoras'],
+  },
+  {
     href: '/plantilla-seguimiento-inversiones/',
     name: 'Plantilla de seguimiento de inversiones (Excel)',
     description: 'Descarga gratis una plantilla para seguir tus fondos indexados: rentabilidad, TIR, costes, reequilibrio e impuesto estimado.',
