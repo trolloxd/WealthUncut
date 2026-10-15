@@ -1,0 +1,35 @@
+# Comprueba cada semana que los enlaces EXTERNOS del sitio compilado siguen vivos.
+#
+# Va aquí y no en la rutina de salud del sitio porque el entorno de las rutinas en la nube bloquea la
+# salida a muchos dominios (daba falsos "rotos"). Si hay enlaces rotos (404, 410 o dominio que ya no
+# existe), el trabajo termina en rojo y GitHub avisa por email al propietario del repositorio. Los
+# enlaces "no concluyentes" (medios que rechazan a robots) solo se listan en el registro.
+# También se puede lanzar a mano desde la pestaña Actions.
+name: Enlaces externos
+
+on:
+  schedule:
+    - cron: '30 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  enlaces:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Compilar el sitio
+        run: npm run build
+
+      - name: Revisar enlaces externos
+        run: node scripts/comprobar-enlaces.mjs

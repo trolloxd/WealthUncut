@@ -44,7 +44,10 @@ desde el repositorio:
 - Enlaces internos rotos: recorre las páginas del sitemap y comprueba que cada enlace interno
   (`href` que empieza por `/`) responde 200.
 
-- Enlaces externos rotos: `npm run build` y después `node scripts/comprobar-enlaces.mjs`. Solo 404, 410
+- Enlaces externos rotos: **ya no los revisa esta rutina**: el entorno de las rutinas en la nube bloquea la salida a muchos
+  dominios y daba falsos "rotos" (ENOTFOUND). Los revisa el workflow `.github/workflows/enlaces-externos.yml` cada lunes
+  (falla en rojo y GitHub avisa por email si hay 404, 410 o dominios inexistentes). En el resumen de salud, indica solo que esa
+  comprobación vive en GitHub Actions y no la repitas. (Antes: `npm run build` y después `node scripts/comprobar-enlaces.mjs`. Solo 404, 410
   o dominio inexistente cuentan como rotos (exit 1); los 403/5xx son medios que bloquean robots. Si hay
   rotos, inclúyelos en el aviso con la página donde están (el contenido de `/mercados/` y de las fuentes
   de artículos se corrige a mano o en la siguiente revisión, esta rutina no edita).
@@ -56,7 +59,7 @@ Resultado: envía una notificación (`PushNotification`) con el resumen. Si todo
 
 No modifica `src/config/finance.ts`. Comprueba si hay novedades en las fuentes oficiales que
 alimentan esas cifras y avisa si hay que revisarlas a mano:
-
+)
 - AEAT: ¿hay un Manual práctico de Renta nuevo (ejercicio siguiente al de las cifras actuales)?
   ¿Cambian los tramos del ahorro, la retención o las reglas de compensación de `finance.ts`?
 - BOE: ¿hay una nueva orden de cotización a la Seguridad Social, y cambian las bases o los tipos?
