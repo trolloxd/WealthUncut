@@ -1,0 +1,165 @@
+---
+title: "El IBEX gana un 1,54% en la semana y el Nasdaq cae un 4,5%"
+description: "Resumen semanal: el IBEX sube un 1,54% y supera los 19.300 puntos, el Nasdaq cae un 4,5% por las dudas sobre la IA y la zona euro confirma un 3,8% de IPC."
+pubDate: 2026-10-17
+author: "David Pérez Mitjà"
+tags: ["mercados", "resumen semanal", "ibex", "wall-street", "inteligencia-artificial", "inflacion", "reserva-federal"]
+sources:
+  - label: "Expansión: El Ibex supera los 19.300 puntos y aumenta la ganancia semanal al 1,5% (16 de octubre de 2026)"
+    url: "https://www.expansion.com/mercados/cronica-bolsa/2026/10/16/6ad1bca4e5fdead6768b456d.html"
+  - label: "Cinco Días: las Bolsas europeas esquivan el castigo tecnológico y cierran al alza una semana de sobresaltos (16 de octubre de 2026)"
+    url: "https://cincodias.elpais.com/mercados-financieros/2026-10-16/la-bolsa-y-el-ibex-35.html"
+  - label: "Rankia: índice IBEX 35, cierre y valores del 16 de octubre de 2026"
+    url: "https://www.rankia.com/indices-bursatiles/ibex-35-ibex"
+  - label: "Rankia: índice NASDAQ Composite"
+    url: "https://www.rankia.com/indices-bursatiles/nasdaq-composite-ixic"
+  - label: "Rankia: índice S&P 500"
+    url: "https://www.rankia.com/indices-bursatiles/s-p-500-index-spx"
+  - label: "Rankia: índice Dow Jones Industrial Average"
+    url: "https://www.rankia.com/indices-bursatiles/dow-jones-industrial-average-dji"
+  - label: "Eurostat: Annual inflation up to 3.8% in the euro area, septiembre de 2026 (16 de octubre de 2026)"
+    url: "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-16102026-ap"
+  - label: "INE: Índice de Precios de Consumo (IPC) e IPCA, septiembre de 2026 (datos definitivos)"
+    url: "https://www.ine.es/dyngs/Prensa/IPC0926.htm"
+  - label: "BLS: Consumer Price Index, septiembre de 2026"
+    url: "https://www.bls.gov/news.release/cpi.nr0.htm"
+  - label: "BLS: Producer Price Index, septiembre de 2026 (publicado el 15 de octubre de 2026)"
+    url: "https://www.bls.gov/news.release/archives/ppi_10152026.htm"
+  - label: "INE: calendario semanal de notas de prensa, 19 a 23 de octubre de 2026"
+    url: "https://www.ine.es/daco/daco41/calen_semanal.pdf"
+  - label: "Reserva Federal: calendario de reuniones del FOMC"
+    url: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+  - label: "BCE: calendario de reuniones del Consejo de Gobierno"
+    url: "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html"
+  - label: "BCE: tipo de cambio de referencia euro/dólar (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/EXR/EXR.D.USD.EUR.SP00.A"
+  - label: "BCE: rentabilidad a 10 años, curva AAA de la zona euro (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/YC/YC.B.U2.EUR.4F.G_N_A.SV_C_YM.SR_10Y"
+---
+
+import datos from '../../data/mercados/2026-10-17.json';
+import MarketSnapshot from '../../components/MarketSnapshot.astro';
+import MarketChart from '../../components/MarketChart.astro';
+
+Ha sido una semana de dos velocidades. La bolsa española, con poco peso en tecnología, cerró con
+una subida del 1,54% y volvió a superar los 19.300 puntos. Wall Street, en cambio, sufrió con la
+venta de valores ligados a la inteligencia artificial, y el Nasdaq perdió alrededor de un 4,5%. De
+fondo, más datos de inflación al alza a los dos lados del Atlántico y un mensaje de la Reserva
+Federal que calmó a la deuda al final de la semana.
+
+## Lo más importante en 30 segundos
+
+- **IBEX 35**: el viernes subió un 0,77%, hasta 19.326,30 puntos. En la semana gana un 1,54%,
+  tras dos semanas seguidas de caídas.
+- **Nasdaq**: cayó un 2,14% el viernes, hasta 26.140,03 puntos, y cierra la semana con una pérdida
+  cercana al 4,5%, por las dudas sobre la rentabilidad de las inversiones en IA.
+- **Inflación**: Eurostat confirma un 3,8% en la zona euro en septiembre, desde el 3,2% de agosto.
+  En España, el IPC se quedó en el 4,9%, y en EE. UU., en el 3,7%.
+- **Deuda**: la rentabilidad a 10 años de la deuda de mejor calidad de la zona euro bajó del 3,51%
+  al 3,39% entre el miércoles y el jueves, según el BCE.
+- **Euro**: el tipo de referencia del BCE cerró el viernes en 1,1253 dólares, frente a 1,1206 una
+  semana antes.
+
+## La semana del IBEX: de menos a más
+
+Así fue, día a día, la semana de la bolsa española:
+
+- **Lunes**: subió un 1,33%, hasta 19.285,8 puntos, con la banca al frente.
+- **Martes**: bajó un 0,39%, hasta 19.210,7 puntos, por la caída de los fabricantes de chips.
+- **Miércoles**: subió un 0,10%, hasta 19.230,7 puntos, pese al dato de inflación de EE. UU.
+- **Jueves**: cedió un 0,28%, hasta 19.177,7 puntos, lastrada por los bancos.
+- **Viernes**: ganó un 0,77%, hasta 19.326,30 puntos.
+
+¿Qué cambió el viernes? Según Expansión y Cinco Días, las bolsas europeas se animaron por la tregua
+en la deuda y en las tecnológicas, y por las palabras del presidente de la Reserva Federal, Kevin
+Warsh, que vino a decir que la economía se ha comportado en el último mes más o menos como
+esperaba la Fed. Los inversores lo leyeron como una señal de que una nueva subida de tipos en
+octubre es menos probable. Al bajar los tipos que exige el mercado, respiraron las empresas con
+mucha inversión financiada con deuda, como las de renovables: Acciona subió un 2,97%. También
+avanzaron Telefónica (2,71%) y los bancos, con Sabadell a la cabeza (2,06%).
+
+### A qué te afecta
+
+La bolsa española ha resistido mejor que la de EE. UU. esta semana justo por lo que normalmente se
+le critica: tiene mucha banca, energía y telecos, y muy poca tecnología. Ninguna composición es
+mejor siempre; cada una sufre en momentos distintos. Por eso un fondo indexado global, que mezcla
+países y sectores, suele dar un camino más suave que apostar por un solo mercado. Puedes ver cómo
+repartirlo en la guía para
+[montar una cartera de fondos indexados](/blog/como-montar-cartera-fondos-indexados/).
+
+## Wall Street y la IA: el Nasdaq se lleva el golpe
+
+En EE. UU., la semana ha estado dominada por una pregunta: ¿darán beneficios suficientes los miles
+de millones que las empresas están invirtiendo en centros de datos y chips para inteligencia
+artificial? La duda empezó el martes en Asia, con los avances de fabricantes chinos de memoria, y
+se agravó el jueves, cuando el Kospi de Corea del Sur perdió más de un 7%. Ni siquiera los
+resultados récord de TSMC, el gran fabricante de chips por encargo, frenaron la venta.
+
+El viernes, mientras Europa subía, Wall Street volvió a caer. El Nasdaq, el índice con más peso
+tecnológico, perdió un 2,14%, hasta 26.140,03 puntos. El S&P 500 bajó alrededor de un 1,1%, hasta
+cerca de 7.660 puntos, y el Dow Jones, con menos tecnología, cedió un 0,34%, hasta 52.002,41.
+
+En el conjunto de la semana, el Nasdaq perdió cerca de un 4,5% y el S&P 500 casi un 2%, mientras
+que el Dow Jones ganó un 0,67%. La diferencia lo dice todo: no ha caído toda la bolsa, sino sobre
+todo las empresas ligadas a la IA. Los inversores han movido dinero hacia sectores más tranquilos,
+como la salud o la energía.
+
+### A qué te afecta
+
+Si tienes un fondo indexado del S&P 500 o uno global, una parte importante de tu dinero está en
+unas pocas tecnológicas de EE. UU., y esta semana lo habrás notado. No es motivo para cambiar de
+estrategia, pero sí para saber qué tienes. Un índice muy diversificado sobre el papel puede
+depender mucho de un solo sector.
+
+## Inflación y bancos centrales: el otro hilo de la semana
+
+La semana ha confirmado que la inflación sigue subiendo, empujada por la energía. En España, el INE
+confirmó el miércoles que el IPC subió un 4,9% en septiembre, la tasa más alta desde febrero de 2023.
+Ese mismo día, EE. UU. publicó un IPC del 3,7%, y el jueves sus precios de producción (lo que
+cobran las empresas por lo que venden) subieron un 1,3% en un solo mes, según el BLS.
+
+El viernes, Eurostat confirmó la inflación de la zona euro en el 3,8% en septiembre, desde el 3,2%
+de agosto. La energía aportó 1,71 puntos de ese 3,8% y los servicios, 1,52. El IPC armonizado de
+España, el que se usa para comparar países, fue del 5,0%.
+
+Tras el dato de EE. UU., la rentabilidad de la deuda estadounidense a 10 años llegó a rozar el
+5,3%, y después bajó hasta el entorno del 5,1%, según Expansión y Cinco Días. En Europa se vio el
+mismo alivio: según el BCE, la rentabilidad a 10 años de la deuda de mejor calidad de la zona euro
+pasó del 3,51% del miércoles 14 al 3,39% del jueves 15.
+
+<MarketChart datos={datos} serie="bono10a" titulo="Rentabilidad a 10 años, curva AAA de la zona euro (%)" ultimas={90} />
+
+El petróleo siguió caro toda la semana. El Brent, la referencia en Europa, terminó el viernes en
+torno a los 105 o 106 dólares por barril, con la tensión en Oriente Próximo de fondo.
+
+### A qué te afecta
+
+Con la inflación en el 4,9%, el dinero parado pierde poder de compra cada mes, así que merece la
+pena saber cuánto te pagan por tus ahorros. Y la bajada de la rentabilidad de la deuda al final de
+la semana es un pequeño respiro para las hipotecas a tipo fijo, aunque un día no marca una
+tendencia: lo que decidan el BCE y la Fed a finales de mes pesará más. El tipo de depósito del BCE
+sigue en el 2,50%.
+
+<MarketChart datos={datos} serie="eurusd" titulo="Euro / dólar, tipo de cambio de referencia del BCE" ultimas={90} />
+
+<MarketSnapshot datos={datos} />
+
+## Qué vigilar la semana que viene
+
+Todas las horas son hora peninsular española.
+
+- **Lunes 19, 9:00**: el INE publica la cifra de negocios empresarial de agosto.
+- **Martes 20, 9:00**: producción del sector servicios de agosto e indicadores de confianza
+  empresarial del cuarto trimestre (INE).
+- **Viernes 23, 9:00**: coyuntura turística hotelera de septiembre (INE).
+- **Toda la semana**: si continúa o se frena la venta de tecnológicas en Wall Street.
+- **27 y 28 de octubre**: reunión de la Reserva Federal.
+- **28 y 29 de octubre**: reunión del BCE, con rueda de prensa el día 29.
+
+## Para entenderlo mejor
+
+Si te preocupa qué hace la inflación con tus ahorros, la
+[calculadora de inflación](/herramientas/calculadora-inflacion/) te lo muestra en euros. Y si estás
+pensando en una hipoteca con los tipos así, la guía sobre
+[hipoteca fija, variable o mixta](/blog/hipoteca-fija-variable-o-mixta/) te ayuda a entender las
+diferencias.
