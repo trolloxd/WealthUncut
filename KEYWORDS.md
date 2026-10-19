@@ -268,3 +268,18 @@ que sí necesitan cifras legales verificadas en BOE/SEPE.
 "plantilla control de gastos excel", "excel gastos mensuales", "presupuesto mensual personal excel"; todas con demanda
 confirmada en el autocompletado). Siguientes plantillas posibles con la misma fórmula: "plantilla ahorro excel",
 "plantilla seguimiento de inversiones excel" (hecha el 2026-10-06, `/plantilla-seguimiento-inversiones/`) y "plantilla hipoteca excel" / "cuadro de amortización excel" (hecha el 2026-10-15, `/plantilla-hipoteca/`).
+
+
+## Consultas reales de Search Console (2026-10-15, primeros 3 meses)
+
+Google ya nos enseña en estas búsquedas (pocas impresiones todavía, posición media 51). Son prioridad para reforzar o crear la guía propia:
+
+| Consulta | Impresiones | Página que la atiende | Acción |
+|---|---|---|---|
+| comparador de fondos / buscador fondos / comparador fondos de inversion | 23 / 17 / 11 | `/herramientas/comparador-fondos-indexados/` | Reforzada el 2026-10-15; vigilar posición |
+| plan de pensiones o fondo indexado | 18 | `/herramientas/plan-pensiones-vs-fondo-indexado/` | Falta una guía de blog que la desarrolle (comparación fiscal con ejemplo) |
+| qué es el ter / que es el ter de un etf | 13 / 9 | `/blog/ter-fondo-que-es/` | Añadir una sección sobre el TER de los ETF |
+| cómo tributan los fondos de inversión / tributacion fondos de inversion | 12 / 9 | `/blog/como-tributan-los-fondos-de-inversion-en-espana/` | Cubierta; reforzar con enlaces internos |
+| diferencia entre etf y fondo indexado / etf vs fondos indexados | 12 / 9 | `/blog/fondo-indexado-vs-etf-diferencias/` | Cubierta |
+
+Revisar esta tabla cada mes con los datos nuevos de Search Console.

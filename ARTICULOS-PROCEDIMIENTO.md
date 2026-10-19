@@ -175,3 +175,22 @@ búsquedas de "qué es X" y enlazan a las herramientas y guías del sitio.
 
 La lógica de las calculadoras vive en `src/lib/calculos/*.ts` (con pruebas en `tests/`). Si un artículo calcula con ella, impórtala de ahí
 (`import { calcularBaja } from '../../lib/calculos/baja.ts';`), no del componente React. Antes de cada commit, `npm run build` y `npm test`.
+
+
+## SEO obligatorio por artículo (añadido el 2026-10-19)
+
+Cada artículo debe cumplir esto antes del commit (la web crece por búsqueda orgánica: es lo que más pesa):
+
+1. **`resumen` en el frontmatter** (después de `description`): 1 o 2 frases, máximo 400 caracteres, que respondan directamente a la pregunta
+   del título con datos que no caduquen. Se muestra arriba como "En breve" y va en el JSON-LD como `abstract`, para fragmentos destacados y
+   respuestas de IA. Sin guiones largos y sin cifras que cambien (usa las de `finance.ts` solo si no caducan).
+2. **Título de 60 caracteres como máximo**, con la keyword principal al principio y, si procede, el año ("2026") o "con ejemplo". Descripción de
+   140 a 160 caracteres con un beneficio concreto. No repitas el título de una herramienta o guía que ya existe: busca otro ángulo (evita la
+   canibalización).
+3. **Enlaces internos mínimos:** al menos 3 a herramientas o guías ya publicadas (con `ArticleLink` si podrían estar programadas) y la herramienta
+   del sitio que resuelve la duda. El glosario se enlaza solo: no hace falta a mano.
+4. **Estructura que Google puede citar:** respuesta directa en el primer párrafo, `##` en forma de pregunta o de tarea ("Cómo...", "Cuánto..."),
+   una tabla o lista cuando compare cosas, y una sección "Preguntas frecuentes" con 3 o 4 preguntas reales.
+5. **Partir de consultas reales.** `KEYWORDS.md` recoge las que ya nos muestra Google (Search Console): si una consulta con impresiones no tiene
+   guía propia, tiene prioridad sobre un tema nuevo.
+6. Frescura: al cambiar una cifra de un artículo ya publicado, actualiza `updatedDate`.

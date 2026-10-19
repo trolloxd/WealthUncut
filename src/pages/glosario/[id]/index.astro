@@ -4,6 +4,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { SITE } from '../../../config/site';
 import { isPublished } from '../../../lib/posts';
+import { contarTermino, normaliza, textoPlano } from '../../../lib/glosario-enlaces';
 
 export async function getStaticPaths() {
   const terminos = (await getCollection('glosario')).sort((a, b) => a.data.termino.localeCompare(b.data.termino, 'es'));
@@ -25,6 +26,12 @@ const relacionados = termino.data.relacionados.filter((r) => {
   const slug = r.href.match(/^\/blog\/([^/#?]+)\/?$/)?.[1];
   return !slug || !noPublicados.has(slug);
 });
+const guias = (await getCollection('blog', ({ data }) => isPublished(data)))
+  .map((p) => ({ p, veces: contarTermino(normaliza(textoPlano(p.body ?? '')), termino.data.termino) }))
+  .filter((x) => x.veces >= 2 && !relacionados.some((r) => r.href === `/blog/${x.p.id}/`))
+  .sort((a, b) => b.veces - a.veces)
+  .slice(0, 4)
+  .map((x) => x.p);
 const url = `${SITE.url}/glosario/${termino.id}/`;
 
 const jsonLd = [
@@ -64,6 +71,17 @@ const jsonLd = [
       <ul class="grid gap-2">
         {relacionados.map((r) => (
           <li><a href={r.href} class="font-medium text-brand underline decoration-brand/30 hover:decoration-brand">{r.label}</a></li>
+        ))}
+      </ul>
+    </aside>
+  )}
+
+  {guias.length > 0 && (
+    <aside aria-labelledby="guias-que-lo-mencionan" class="mt-8">
+      <h2 id="guias-que-lo-mencionan" class="mb-3 font-display text-xl text-ink">Guías donde se explica</h2>
+      <ul class="grid gap-2">
+        {guias.map((p) => (
+          <li><a href={`/blog/${p.id}/`} class="font-medium text-brand underline decoration-brand/30 hover:decoration-brand">{p.data.title}</a></li>
         ))}
       </ul>
     </aside>

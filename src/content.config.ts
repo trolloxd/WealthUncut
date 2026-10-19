@@ -13,6 +13,8 @@ const blog = defineCollection({
     tags: z.array(z.string()).default([]),
     // Tema del blog (ver src/config/categorias.ts). Si falta, se deduce de las etiquetas.
     categoria: z.string().optional(),
+    // Respuesta corta (1 o 2 frases) que se muestra arriba como "En breve" y va en el JSON-LD (abstract): ayuda a los fragmentos destacados.
+    resumen: z.string().max(420).optional(),
     sources: z
       .array(
         z.object({

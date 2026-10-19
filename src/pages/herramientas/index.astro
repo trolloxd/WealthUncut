@@ -4,6 +4,23 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { SITE } from '../../config/site';
 import { TOOLS } from '../../config/tools';
 
+type Herramienta = (typeof TOOLS)[number];
+const definiciones = [
+  { id: 'impuestos', nombre: 'Impuestos y IRPF', texto: 'Cuánto pagas a Hacienda por tus ganancias, tus dividendos, tu sueldo o tu piso alquilado, con las cifras oficiales de cada comunidad.', encaja: (t: Herramienta) => (t.tags as readonly string[]).includes('impuestos') },
+  { id: 'vivienda', nombre: 'Vivienda e hipoteca', texto: 'Simula la hipoteca con el euríbor real, decide entre alquilar y comprar y comprueba qué ayudas te corresponden.', encaja: (t: Herramienta) => (t.tags as readonly string[]).some((x) => ['vivienda', 'hipoteca'].includes(x)) },
+  { id: 'inversion', nombre: 'Fondos e inversión', texto: 'Compara fondos, mide su rentabilidad neta y simula tu cartera a largo plazo.', encaja: (t: Herramienta) => (t.tags as readonly string[]).some((x) => ['fondos indexados', 'carteras', 'interés compuesto'].includes(x)) },
+  { id: 'trabajo', nombre: 'Trabajo y autónomos', texto: 'Cuota de autónomos, facturas, indemnización por despido y lo que cobras de baja.', encaja: (t: Herramienta) => (t.tags as readonly string[]).some((x) => ['autónomos', 'empleo'].includes(x)) },
+  { id: 'ahorro', nombre: 'Ahorro y finanzas básicas', texto: 'Tu fondo de emergencia, la inflación, la regla 50/30/20 y las plantillas de Excel gratis.', encaja: () => true },
+];
+const restantes = new Set<string>();
+const GRUPOS = definiciones
+  .map((g) => {
+    const herramientas = TOOLS.filter((t) => !restantes.has(t.href) && g.encaja(t));
+    herramientas.forEach((t) => restantes.add(t.href));
+    return { ...g, herramientas };
+  })
+  .filter((g) => g.herramientas.length > 0);
+
 const itemListJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
@@ -26,17 +43,23 @@ const itemListJsonLd = {
   <h1 class="mb-4 font-display text-3xl text-ink">Herramientas</h1>
   <p class="mb-10 max-w-2xl text-ink-muted">
     Calculadoras propias, gratuitas y sin registro, con la fiscalidad española aplicada (tramos del
-    IRPF del ahorro, retenciones, traspasos) y cada supuesto explicado. Son orientativas, no una
-    recomendación personalizada.
+    IRPF del ahorro, retenciones, traspasos) y cada supuesto explicado, ordenadas por tema. Son
+    orientativas, no una recomendación personalizada.
   </p>
-  <ul class="grid gap-4 sm:grid-cols-2">
-    {TOOLS.map((t) => (
-      <li>
-        <a href={t.href} class="card group block h-full p-5 transition-colors hover:border-brand/40">
-          <span class="font-display text-lg text-ink group-hover:text-brand">{t.name}</span>
-          <span class="mt-2 block text-sm text-ink-muted">{t.description}</span>
-        </a>
-      </li>
-    ))}
-  </ul>
+  {GRUPOS.map((g) => (
+    <section id={g.id} aria-labelledby={`h-${g.id}`} class="mb-12 scroll-mt-8">
+      <h2 id={`h-${g.id}`} class="font-display text-2xl text-ink">{g.nombre}</h2>
+      <p class="mb-5 mt-1 max-w-2xl text-sm text-ink-muted">{g.texto}</p>
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {g.herramientas.map((t) => (
+          <li>
+            <a href={t.href} class="card group block h-full p-5 transition-colors hover:border-brand/40">
+              <span class="font-display text-lg text-ink group-hover:text-brand">{t.name}</span>
+              <span class="mt-2 block text-sm text-ink-muted">{t.description}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
 </BaseLayout>

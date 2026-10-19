@@ -6,17 +6,18 @@ import { SITE, AUTHOR } from '../config/site';
 import { TOOLS } from '../config/tools';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
 import DatosDeHoy from '../components/DatosDeHoy.astro';
+import { CATEGORIAS, categoriaDe } from '../config/categorias';
 
 const ultimaEdicion = (await getCollection('mercados', ({ data }) => isPublished(data))).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 )[0];
 
-const posts = (await getCollection('blog', ({ data }) => isPublished(data)))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 5);
+const publicados = (await getCollection('blog', ({ data }) => isPublished(data))).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = publicados.slice(0, 5);
+const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaDe(x.data).id === c.id).length })).filter((x) => x.n > 0);
 ---
 
-<BaseLayout title={`${SITE.name}: finanzas prácticas para jóvenes en España`} description={SITE.description} contentWidth="wide">
+<BaseLayout title="Calculadoras y guías de finanzas personales en España" description={SITE.description} contentWidth="wide">
   <section class="mx-auto max-w-2xl py-10 text-center">
     <p class="text-xs font-semibold uppercase tracking-widest text-brand">
       {SITE.name} · Finanzas sin humo
@@ -90,6 +91,24 @@ const posts = (await getCollection('blog', ({ data }) => isPublished(data)))
       </ul>
     )}
   </section>
+
+  {temas.length > 0 && (
+    <section aria-labelledby="h-temas" class="mx-auto mt-10 max-w-3xl border-t border-border pt-12">
+      <h2 id="h-temas" class="mb-2 font-display text-2xl text-ink">Explora por tema</h2>
+      <p class="mb-6 max-w-2xl text-sm text-ink-muted">Guías agrupadas por lo que quieres resolver: invertir, impuestos, vivienda, autónomos y más.</p>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {temas.map(({ c, n }) => (
+          <li>
+            <a href={`/blog/tema/${c.id}/`} class="card group block h-full p-4 transition-colors hover:border-brand/40">
+              <span class="font-display text-lg text-ink group-hover:text-brand">{c.nombre}</span>
+              <span class="mt-1 block text-sm text-ink-muted">{c.descripcion}</span>
+              <span class="mt-2 block text-xs text-ink-faint">{n} {n === 1 ? 'artículo' : 'artículos'}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 
   <section class="mx-auto mt-10 max-w-3xl border-t border-border pt-12">
     <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
