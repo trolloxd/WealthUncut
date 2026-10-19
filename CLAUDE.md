@@ -225,6 +225,10 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   (`src/lib/calculos/*.ts`, que los componentes React solo pintan), las protecciones de `/api/*` (`src/lib/api-seguridad.ts`) y `briefing.ts`.
   La acción `.github/workflows/pruebas.yml` las ejecuta con `astro check` y la compilación en cada cambio de código. **Antes de tocar una cifra
   o una fórmula, correr `npm test`; al añadir una calculadora, poner su lógica en `src/lib/calculos/` y una prueba con una cifra comprobada.**
+- SEO de contenido (2026-10-19): cada artículo lleva `resumen` (caja "En breve" y `abstract` en el JSON-LD; obligatorio, ver
+  `ARTICULOS-PROCEDIMIENTO.md`). Cada tema (`categorias.ts`) tiene `intro` propia. Los enlaces entre artículos y glosario se generan solos
+  (`src/lib/glosario-enlaces.ts`: "Términos de este artículo" y "Guías donde se explica"; con pruebas). `/herramientas/` agrupa las calculadoras
+  por tema; la portada enlaza a los temas. Las consultas reales de Search Console viven en `KEYWORDS.md`: revisarlas cada mes.
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se
