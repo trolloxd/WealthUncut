@@ -43,7 +43,7 @@ const jsonLd = [
 ];
 ---
 
-<BaseLayout title={`${c.nombre}: guías y artículos`} description={`${c.descripcion} ${posts.length} artículos con cifras verificadas y fuentes oficiales.`} extraJsonLd={jsonLd}>
+<BaseLayout title={`${c.nombre}: guías y artículos`} description={`${c.descripcion} ${posts.length === 1 ? 'Un artículo' : posts.length + ' artículos'} con fuentes oficiales.`} extraJsonLd={jsonLd}>
   <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Blog', href: '/blog/' }, { label: c.nombre }]} />
   <h1 class="mb-3 font-display text-3xl text-ink">{c.nombre}</h1>
   <p class="mb-10 max-w-2xl text-ink-muted">{c.descripcion}</p>

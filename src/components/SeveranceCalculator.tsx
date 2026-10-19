@@ -1,52 +1,10 @@
 import { useMemo } from 'react';
-import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, useEstadoUrl } from './CalculatorUI';
+import { TIPOS_EXTINCION, calcularIndemnizacion, esFecha, type TipoExtincion } from '../lib/calculos/indemnizacion.ts';
+import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, useEstadoUrl, formatEuros2 } from './CalculatorUI';
 
-const eur = (v: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: 'always' }).format(v);
 
-// Estatuto de los Trabajadores (BOE-A-2015-11430): art. 56.1 (despido improcedente: 33 días por año, máximo 24
-// mensualidades), art. 53.1.b (causas objetivas: 20 días por año, máximo 12 mensualidades) y art. 49.1.c (fin de
-// contrato temporal: parte proporcional de 12 días por año). Contratos firmados desde el 12-02-2012.
-export const TIPOS_EXTINCION = {
-  improcedente: { etiqueta: 'Despido improcedente (33 días por año, máximo 24 mensualidades)', dias: 33, topeMensualidades: 24 },
-  objetivo: { etiqueta: 'Despido objetivo, por ejemplo económico (20 días por año, máximo 12 mensualidades)', dias: 20, topeMensualidades: 12 },
-  temporal: { etiqueta: 'Fin de un contrato temporal (12 días por año)', dias: 12, topeMensualidades: Infinity },
-} as const;
-export type TipoExtincion = keyof typeof TIPOS_EXTINCION;
-
-/** Suma meses a una fecha sin desbordar al mes siguiente (31 de enero + 1 mes = 28 o 29 de febrero). */
-function sumaMeses(d: Date, n: number): Date {
-  const total = d.getUTCFullYear() * 12 + d.getUTCMonth() + n;
-  const anio = Math.floor(total / 12);
-  const mes = total % 12;
-  const ultimoDia = new Date(Date.UTC(anio, mes + 1, 0)).getUTCDate();
-  return new Date(Date.UTC(anio, mes, Math.min(d.getUTCDate(), ultimoDia)));
-}
-
-/** Meses de servicio: meses completos, y una fracción de mes cuenta como un mes (criterio habitual). El último día trabajado cuenta. */
-export function mesesDeServicio(inicio: string, fin: string): number {
-  const a = new Date(inicio + 'T00:00:00Z');
-  const hasta = new Date(new Date(fin + 'T00:00:00Z').getTime() + 86400000);
-  if (!(hasta > a)) return 0;
-  let meses = 0;
-  while (sumaMeses(a, meses + 1) <= hasta) meses++;
-  return meses + (sumaMeses(a, meses) < hasta ? 1 : 0);
-}
-
-export function calcularIndemnizacion(p: { salarioAnual: number; inicio: string; fin: string; tipo: TipoExtincion; diasVacaciones: number; diasMes: number }) {
-  const t = TIPOS_EXTINCION[p.tipo];
-  const diario = p.salarioAnual / 365;
-  const mensual = p.salarioAnual / 12;
-  const meses = mesesDeServicio(p.inicio, p.fin);
-  const anios = meses / 12;
-  const bruta = diario * t.dias * anios;
-  const tope = t.topeMensualidades * mensual;
-  const indemnizacion = Math.min(bruta, tope);
-  const vacaciones = diario * p.diasVacaciones;
-  const diasTrabajados = diario * p.diasMes;
-  return { diario, meses, anios, bruta, tope, topeAplicado: bruta > tope, indemnizacion, vacaciones, diasTrabajados, finiquito: vacaciones + diasTrabajados, total: indemnizacion + vacaciones + diasTrabajados };
-}
-
-const esFecha = (v: string) => /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(new Date(v).getTime());
+// Compatibilidad: la lógica vive en src/lib/calculos/ (con pruebas); se reexporta aquí por si algún artículo la importa desde el componente.
+export { TIPOS_EXTINCION, calcularIndemnizacion, mesesDeServicio, type TipoExtincion } from '../lib/calculos/indemnizacion.ts';
 
 export default function SeveranceCalculator() {
   const [salarioAnual, setSalario] = useEstadoUrl<number>('sal', 24000, { max: 1000000 });
@@ -86,14 +44,14 @@ export default function SeveranceCalculator() {
 
       <PanelResultados>
         <Resumen etiqueta="Tiempo de servicio" valor={`${anios} años y ${mesesResto} meses`} />
-        <Resumen etiqueta="Salario diario" valor={eur(r.diario)} />
+        <Resumen etiqueta="Salario diario" valor={formatEuros2(r.diario)} />
         <hr className="my-1 border-border" />
-        <Resumen etiqueta="Indemnización" valor={eur(r.indemnizacion)} destacado />
-        {r.topeAplicado && <p className="text-xs text-ink-faint">Se aplica el máximo legal de {eur(r.tope)}.</p>}
-        <Resumen etiqueta="Vacaciones sin disfrutar" valor={eur(r.vacaciones)} />
-        <Resumen etiqueta="Días trabajados sin cobrar" valor={eur(r.diasTrabajados)} />
-        <Resumen etiqueta="Finiquito (sin la indemnización)" valor={eur(r.finiquito)} />
-        <Resumen etiqueta="Total bruto estimado" valor={eur(r.total)} destacado />
+        <Resumen etiqueta="Indemnización" valor={formatEuros2(r.indemnizacion)} destacado />
+        {r.topeAplicado && <p className="text-xs text-ink-faint">Se aplica el máximo legal de {formatEuros2(r.tope)}.</p>}
+        <Resumen etiqueta="Vacaciones sin disfrutar" valor={formatEuros2(r.vacaciones)} />
+        <Resumen etiqueta="Días trabajados sin cobrar" valor={formatEuros2(r.diasTrabajados)} />
+        <Resumen etiqueta="Finiquito (sin la indemnización)" valor={formatEuros2(r.finiquito)} />
+        <Resumen etiqueta="Total bruto estimado" valor={formatEuros2(r.total)} destacado />
         <NotaCalculo>
           Cantidades brutas. La indemnización legal por despido no tributa en el IRPF dentro del mínimo legal; el finiquito sí, como sueldo. Cálculo para contratos firmados desde el 12 de
           febrero de 2012, con la fracción de mes contada como mes completo. Si tu convenio o tu contrato mejoran estas cifras, o si tu salario tiene complementos, el resultado cambia.

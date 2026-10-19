@@ -15,7 +15,7 @@ hasAffiliateLinks: false
 draft: false
 ---
 
-import { calcularIndemnizacion, TIPOS_EXTINCION } from '../../components/SeveranceCalculator';
+import { calcularIndemnizacion, TIPOS_EXTINCION } from '../../lib/calculos/indemnizacion.ts';
 import { formatEuros } from '../../components/CalculatorUI';
 
 export const P = { salarioAnual: 24000, inicio: '2022-03-01', fin: '2026-10-31', diasVacaciones: 0, diasMes: 0 };

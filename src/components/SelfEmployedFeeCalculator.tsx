@@ -1,26 +1,11 @@
 import { useMemo } from 'react';
-import { RETA_2026, tramoRETA } from '../config/finance';
-import { CampoNumero, NotaCalculo, PanelResultados, Resumen, formatPct, useEstadoUrl } from './CalculatorUI';
+import { calcularCuotaAutonomo } from '../lib/calculos/autonomo.ts';
+import { RETA_2026 } from '../config/finance';
+import { CampoNumero, NotaCalculo, PanelResultados, Resumen, formatPct, useEstadoUrl, formatEuros2 } from './CalculatorUI';
 
-const formatEuros = (v: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: 'always' }).format(v);
 
-export interface ParamsAutonomo {
-  ingresosAnuales: number;
-  gastosAnuales: number;
-  deduccion7: boolean;
-  societario: boolean;
-}
-
-export function calcularCuotaAutonomo(p: ParamsAutonomo) {
-  const deduccion = p.societario ? 0.03 : RETA_2026.deduccionGastosGenericos;
-  const beneficioAnual = Math.max(0, p.ingresosAnuales - p.gastosAnuales);
-  const netoAnual = p.deduccion7 ? beneficioAnual * (1 - deduccion) : beneficioAnual;
-  const netoMensual = netoAnual / 12;
-  const tramo = tramoRETA(netoMensual);
-  const cuotaMin = tramo.baseMin * RETA_2026.tipoTotal;
-  const cuotaMax = tramo.baseMax * RETA_2026.tipoTotal;
-  return { netoMensual, tramo, cuotaMin, cuotaMax, beneficioMensual: beneficioAnual / 12 };
-}
+// Compatibilidad: la lógica vive en src/lib/calculos/ (con pruebas); se reexporta aquí por si algún artículo la importa desde el componente.
+export { calcularCuotaAutonomo } from '../lib/calculos/autonomo.ts';
 
 export default function SelfEmployedFeeCalculator() {
   const [ingresosAnuales, setIngresos] = useEstadoUrl<number>('ingresos', 30000, { max: 5000000 });
@@ -50,14 +35,14 @@ export default function SelfEmployedFeeCalculator() {
         </form>
 
         <PanelResultados>
-          <Resumen etiqueta="Rendimiento neto mensual para cotizar" valor={formatEuros(r.netoMensual)} />
+          <Resumen etiqueta="Rendimiento neto mensual para cotizar" valor={formatEuros2(r.netoMensual)} />
           <Resumen etiqueta="Tu tramo" valor={`${r.tramo.tabla} ${r.tramo.n}`} />
-          <Resumen etiqueta="Base de cotización (mín. a máx.)" valor={`${formatEuros(r.tramo.baseMin)} a ${formatEuros(r.tramo.baseMax)}`} />
+          <Resumen etiqueta="Base de cotización (mín. a máx.)" valor={`${formatEuros2(r.tramo.baseMin)} a ${formatEuros2(r.tramo.baseMax)}`} />
           <hr className="my-1 border-border" />
-          <Resumen etiqueta="Cuota mensual mínima" valor={formatEuros(r.cuotaMin)} destacado />
-          <Resumen etiqueta="Cuota mensual máxima" valor={formatEuros(r.cuotaMax)} />
+          <Resumen etiqueta="Cuota mensual mínima" valor={formatEuros2(r.cuotaMin)} destacado />
+          <Resumen etiqueta="Cuota mensual máxima" valor={formatEuros2(r.cuotaMax)} />
           <Resumen etiqueta="Cuota mínima sobre tu beneficio" valor={r.beneficioMensual > 0 ? formatPct(r.cuotaMin / r.beneficioMensual, 1) : '-'} />
-          <Resumen etiqueta="Te quedaría al mes antes de IRPF" valor={`${formatEuros(Math.max(0, quedaMin))} a ${formatEuros(Math.max(0, quedaMax))}`} />
+          <Resumen etiqueta="Te quedaría al mes antes de IRPF" valor={`${formatEuros2(Math.max(0, quedaMin))} a ${formatEuros2(Math.max(0, quedaMax))}`} />
           <NotaCalculo>
             Cuota = base de cotización x {formatPct(RETA_2026.tipoTotal, 1)} (tipos 2026 de la Orden PJC/297/2026). Dentro de tu tramo eliges la base entre el mínimo y el máximo.
             Si eres nuevo autónomo, la tarifa plana es de {RETA_2026.tarifaPlanaMensual} € al mes los primeros 12 meses (más el MEI). El IRPF no está incluido.
@@ -84,8 +69,8 @@ export default function SelfEmployedFeeCalculator() {
                   <tr key={t.tabla + t.n} className={activo ? 'bg-cream font-semibold text-brand' : 'text-ink'}>
                     <td className="py-1.5 pr-3">{t.tabla} {t.n}</td>
                     <td className="py-1.5 pr-3">{Number.isFinite(t.hasta) ? t.hasta.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) : 'Más de 6.000'}</td>
-                    <td className="py-1.5 pr-3 text-right">{formatEuros(t.baseMin * RETA_2026.tipoTotal)}</td>
-                    <td className="py-1.5 text-right">{formatEuros(t.baseMax * RETA_2026.tipoTotal)}</td>
+                    <td className="py-1.5 pr-3 text-right">{formatEuros2(t.baseMin * RETA_2026.tipoTotal)}</td>
+                    <td className="py-1.5 text-right">{formatEuros2(t.baseMax * RETA_2026.tipoTotal)}</td>
                   </tr>
                 );
               })}

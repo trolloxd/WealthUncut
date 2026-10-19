@@ -10,6 +10,17 @@ export function formatEuros(value: number): string {
   }).format(value);
 }
 
+/** Euros con dos decimales (cuotas, facturas, subsidios): formatEuros redondea al euro. */
+export function formatEuros2(value: number): string {
+  return new Intl.NumberFormat('es-ES', {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    useGrouping: 'always',
+  }).format(value);
+}
+
 export function formatPct(value: number, decimals = 1): string {
   return `${new Intl.NumberFormat('es-ES', { maximumFractionDigits: decimals }).format(value * 100)}%`;
 }

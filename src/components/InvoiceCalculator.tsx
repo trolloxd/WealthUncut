@@ -1,17 +1,10 @@
 import { useMemo } from 'react';
-import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatPct, useEstadoUrl } from './CalculatorUI';
+import { calcularFactura } from '../lib/calculos/factura.ts';
+import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatPct, useEstadoUrl, formatEuros2 } from './CalculatorUI';
 
-const eur = (v: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: 'always' }).format(v);
 
-export function calcularFactura(p: { base: number; ivaPct: number; retencionPct: number; pagoFraccionadoPct: number }) {
-  const iva = p.base * (p.ivaPct / 100);
-  const retencion = p.base * (p.retencionPct / 100);
-  const total = p.base + iva - retencion;
-  // Lo que conviene apartar de lo cobrado: el IVA es de Hacienda; el 20 % del modelo 130 se descuenta de lo ya retenido.
-  const pago130 = Math.max(0, p.base * (p.pagoFraccionadoPct / 100) - retencion);
-  const apartar = iva + pago130;
-  return { iva, retencion, total, pago130, apartar, tuyoAntesDeGastos: total - apartar };
-}
+// Compatibilidad: la lógica vive en src/lib/calculos/ (con pruebas); se reexporta aquí por si algún artículo la importa desde el componente.
+export { calcularFactura } from '../lib/calculos/factura.ts';
 
 export default function InvoiceCalculator() {
   const [base, setBase] = useEstadoUrl<number>('base', 1000, { max: 10000000 });
@@ -42,15 +35,15 @@ export default function InvoiceCalculator() {
       </form>
 
       <PanelResultados>
-        <Resumen etiqueta="Base imponible" valor={eur(base)} />
-        <Resumen etiqueta={`+ IVA (${ivaPct} %)`} valor={eur(r.iva)} />
-        <Resumen etiqueta={`− Retención IRPF (${retencionPct} %)`} valor={eur(r.retencion)} negativo />
-        <Resumen etiqueta="Total a cobrar del cliente" valor={eur(r.total)} destacado />
+        <Resumen etiqueta="Base imponible" valor={formatEuros2(base)} />
+        <Resumen etiqueta={`+ IVA (${ivaPct} %)`} valor={formatEuros2(r.iva)} />
+        <Resumen etiqueta={`− Retención IRPF (${retencionPct} %)`} valor={formatEuros2(r.retencion)} negativo />
+        <Resumen etiqueta="Total a cobrar del cliente" valor={formatEuros2(r.total)} destacado />
         <hr className="my-1 border-border" />
-        <Resumen etiqueta="IVA que debes ingresar" valor={eur(r.iva)} />
-        <Resumen etiqueta="Adelanto de IRPF (modelo 130)" valor={eur(r.pago130)} />
-        <Resumen etiqueta="Conviene apartar de esta factura" valor={eur(r.apartar)} />
-        <Resumen etiqueta="Queda tuyo antes de gastos y cuota" valor={eur(r.tuyoAntesDeGastos)} />
+        <Resumen etiqueta="IVA que debes ingresar" valor={formatEuros2(r.iva)} />
+        <Resumen etiqueta="Adelanto de IRPF (modelo 130)" valor={formatEuros2(r.pago130)} />
+        <Resumen etiqueta="Conviene apartar de esta factura" valor={formatEuros2(r.apartar)} />
+        <Resumen etiqueta="Queda tuyo antes de gastos y cuota" valor={formatEuros2(r.tuyoAntesDeGastos)} />
         <NotaCalculo>
           Estimación por factura: el modelo 130 real se calcula con el rendimiento acumulado del año (ingresos menos gastos), así que el adelanto efectivo
           será menor si tienes gastos. El IVA soportado de tus gastos también se resta del que ingresas. Retención: {formatPct(retencionPct / 100, 0)} sobre la base.

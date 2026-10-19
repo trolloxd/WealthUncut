@@ -1,0 +1,35 @@
+# Pruebas y comprobación de tipos en cada cambio de código (no en los commits automáticos de contenido).
+name: Pruebas
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'src/content/**'
+      - 'src/data/**'
+      - 'public/**'
+      - '**/*.md'
+  pull_request:
+    paths-ignore:
+      - 'src/content/**'
+      - 'src/data/**'
+
+permissions:
+  contents: read
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Pruebas de las cuentas y de la API
+        run: npm test
+      - name: Tipos (astro check)
+        run: npx astro check
+      - name: Compilar el sitio
+        run: npm run build

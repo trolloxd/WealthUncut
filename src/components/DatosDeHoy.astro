@@ -7,7 +7,8 @@
 import euribor from '../data/euribor/ultimo.json';
 import cuentas from '../data/cuentas-remuneradas/ultimo.json';
 
-const ficheros = import.meta.glob('../data/mercados/*.json', { eager: true }) as Record<string, { default: any }>;
+type SerieBCE = { obs?: [string, number][] };
+const ficheros = import.meta.glob('../data/mercados/*.json', { eager: true }) as Record<string, { default: { series?: Record<string, SerieBCE> } }>;
 const ultimaSerie = (id: string): [string, number] | null => {
   const dias = Object.keys(ficheros).sort().reverse();
   for (const ruta of dias) {

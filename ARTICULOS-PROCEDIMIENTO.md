@@ -169,3 +169,9 @@ búsquedas de "qué es X" y enlazan a las herramientas y guías del sitio.
   guiones largos, sin recomendaciones. Si no estás seguro de que una definición es exacta, no la
   escribas.
 - Se añaden en el mismo commit que los artículos del lote (`git add src/content/glosario/`).
+
+
+## Importar cálculos en un artículo
+
+La lógica de las calculadoras vive en `src/lib/calculos/*.ts` (con pruebas en `tests/`). Si un artículo calcula con ella, impórtala de ahí
+(`import { calcularBaja } from '../../lib/calculos/baja.ts';`), no del componente React. Antes de cada commit, `npm run build` y `npm test`.
