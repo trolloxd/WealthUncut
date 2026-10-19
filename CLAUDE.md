@@ -221,6 +221,10 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   `cookies.astro` y `privacidad.astro` en el mismo commit.
 - `/plantilla-hipoteca/` (`src/pages/plantilla-hipoteca.astro`): cuadro de amortización con revisiones de tipo y entregas extra, generada por
   `scripts/plantilla-hipoteca/crear_plantilla.py` (misma mecánica de caché que las otras plantillas). Datos de ejemplo ficticios; sin seguros ni TAE.
+- Pruebas (`npm test`, Node 22.6+, sin dependencias nuevas): `tests/*.test.ts` cubren `finance.ts`, la lógica de las calculadoras nuevas
+  (`src/lib/calculos/*.ts`, que los componentes React solo pintan), las protecciones de `/api/*` (`src/lib/api-seguridad.ts`) y `briefing.ts`.
+  La acción `.github/workflows/pruebas.yml` las ejecuta con `astro check` y la compilación en cada cambio de código. **Antes de tocar una cifra
+  o una fórmula, correr `npm test`; al añadir una calculadora, poner su lógica en `src/lib/calculos/` y una prueba con una cifra comprobada.**
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se
