@@ -1,0 +1,159 @@
+---
+title: "Ayuda al alquiler para jóvenes: requisitos y cuánto cobras"
+description: "Ayuda estatal al alquiler para jóvenes del Plan de Vivienda 2026-2030: requisitos de edad, ingresos y renta, cuánto se cobra y cómo se pide."
+pubDate: 2026-10-29
+updatedDate: 2026-10-29
+author: "David Pérez Mitjà"
+tags: ["vivienda", "alquiler", "ahorro"]
+categoria: "vivienda"
+sources:
+  - label: "BOE: Real Decreto 326/2026, de 22 de abril, Plan Estatal de Vivienda 2026-2030 (arts. 8, 132 a 138 y 140 a 144)"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-8872"
+  - label: "BOE: Ley 31/2022, de Presupuestos Generales del Estado para 2023, disposición adicional nonagésima (IPREM)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2022-22128"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { AYUDAS_VIVIENDA_JOVENES as A } from '../../config/finance';
+import { evaluarAyudasVivienda } from '../../components/YouthHousingAidChecker';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const AL = A.alquiler;
+export const limite = A.limiteIngresosVecesIprem * A.iprem14PagasAnual;
+export const base = { edad: 28, ingresos: 22000, tieneVivienda: false, pequeno: false, precioCompra: 0 };
+export const casos = [
+  { texto: 'Piso entero por 750 € al mes', tipo: 'vivienda', renta: 750 },
+  { texto: 'Piso entero por 450 € al mes', tipo: 'vivienda', renta: 450 },
+  { texto: 'Habitación por 300 € al mes', tipo: 'habitacion', renta: 300 },
+  { texto: 'Habitación por 400 € al mes', tipo: 'habitacion', renta: 400 },
+  { texto: 'Piso entero por 1.100 € al mes', tipo: 'vivienda', renta: 1100 },
+].map((c) => ({ ...c, r: evaluarAyudasVivienda({ ...base, tipo: c.tipo, renta: c.renta }) }));
+export const meses = AL.duracionAnios * 12;
+export const pct = (n) => (n * 100).toLocaleString('es-ES');
+
+Si tienes 35 años o menos y vives de alquiler, el Plan Estatal de Vivienda 2026-2030 prevé una ayuda de hasta
+**{formatEuros(AL.ayudaMaxViviendaMes)} al mes** si alquilas un piso entero, o hasta **{formatEuros(AL.ayudaMaxHabitacionMes)} al mes** si alquilas una habitación, con el límite
+del {pct(AL.porcentajeMaxRenta)} % del alquiler. Se concede por {AL.duracionAnios} años, prorrogables. Los requisitos principales son tener ingresos de
+hasta {formatEuros(limite)} al año y pagar un alquiler de hasta {formatEuros(AL.rentaMaxViviendaMes)} al mes (piso) o {formatEuros(AL.rentaMaxHabitacionMes)} (habitación). La
+regula el Real Decreto 326/2026, pero la convocan y la pagan las comunidades autónomas.
+
+## Requisitos, uno a uno
+
+Según el artículo 133 del Real Decreto 326/2026, tienes que cumplir **todos** estos:
+
+1. **Edad: {A.edadMaxima} años o menos** al pedir la ayuda (el decreto dice "menos de treinta y cinco años, incluida la
+   edad de treinta y cinco").
+2. **Contrato de alquiler** de vivienda o de habitación a tu nombre, o estar en condiciones de firmarlo. Si aún no lo
+   tienes, debes firmarlo en los dos meses siguientes a la concesión.
+3. **Que sea tu residencia habitual**, acreditada con el empadronamiento.
+4. **Ingresos anuales de hasta {A.limiteIngresosVecesIprem} veces el IPREM**, es decir, {formatEuros(limite)}. El límite sube a 5,5 veces en caso
+   de discapacidad de al menos el 33 % o si eres hijo o hija de víctimas de violencia de género, y a 6 veces con
+   discapacidad de al menos el 65 %.
+5. **Alquiler máximo**: {formatEuros(AL.rentaMaxViviendaMes)} al mes por una vivienda o {formatEuros(AL.rentaMaxHabitacionMes)} por una habitación. En municipios o núcleos de
+   {A.compraMunicipioPequeno.habitantesMax.toLocaleString('es-ES')} habitantes o menos, los máximos bajan a {formatEuros(AL.rentaMaxViviendaMesMunicipioPequeno)} y {formatEuros(AL.rentaMaxHabitacionMesMunicipioPequeno)}.
+
+Y no puedes pedirla si:
+
+- Eres propietario o usufructuario de una vivienda en España (con excepciones, como no poder usarla por separación o
+  divorcio).
+- Tienes parentesco de primer o segundo grado con el casero (padres, hermanos, abuelos, también por afinidad).
+- Eres socio o partícipe de la persona o empresa que te alquila.
+
+### Qué es el IPREM y por qué son {formatEuros(limite)}
+
+El IPREM (Indicador Público de Renta de Efectos Múltiples) es la cifra que usa la Administración como referencia para
+ayudas y subsidios. Desde 2023 es de 600 € al mes (lo fijó la Ley de Presupuestos para 2023, que sigue prorrogada), y el
+decreto lo toma "referido a 14 pagas": 600 × 14 = {formatEuros(A.iprem14PagasAnual)} al año. Cinco veces esa cifra son {formatEuros(limite)}.
+
+Para comprobar tus ingresos, la comunidad consulta tus datos de IRPF a la Agencia Tributaria (lo autorizas al
+pedir la ayuda; si no, tienes que aportar un certificado de renta). Así que lo que cuenta es lo que declaraste, no
+lo que crees que ganas.
+
+## Cuánto cobrarías: ejemplos
+
+La ayuda es la **menor** de dos cantidades: el máximo ({formatEuros(AL.ayudaMaxViviendaMes)} para un piso, {formatEuros(AL.ayudaMaxHabitacionMes)} para una habitación) o el
+{pct(AL.porcentajeMaxRenta)} % de lo que pagas de alquiler (artículo 137). Con una persona de 28 años, 22.000 € de ingresos y sin vivienda en
+propiedad, en un municipio de más de {A.compraMunicipioPequeno.habitantesMax.toLocaleString('es-ES')} habitantes:
+
+<table>
+  <thead>
+    <tr>
+      <th>Caso</th>
+      <th>{pct(AL.porcentajeMaxRenta)} % del alquiler</th>
+      <th>Ayuda al mes</th>
+      <th>En {meses} meses</th>
+    </tr>
+  </thead>
+  <tbody>
+    {casos.map((c) => (
+      <tr>
+        <td>{c.texto}</td>
+        <td>{formatEuros(c.renta * AL.porcentajeMaxRenta)}</td>
+        <td>{c.r.ayudaAlquiler > 0 ? formatEuros(c.r.ayudaAlquiler) : 'No cumple'}</td>
+        <td>{c.r.ayudaAlquiler > 0 ? formatEuros(c.r.ayudaAlquiler * meses) : 'No cumple'}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+El último caso no cumple porque el alquiler supera los {formatEuros(AL.rentaMaxViviendaMes)} al mes. Fíjate también en que, con un piso de
+750 €, el {pct(AL.porcentajeMaxRenta)} % serían {formatEuros(750 * AL.porcentajeMaxRenta)}, pero el tope te deja en {formatEuros(AL.ayudaMaxViviendaMes)}. Con alquileres bajos, manda el
+porcentaje.
+
+Para tu caso, usa el [comprobador de ayudas a la vivienda para jóvenes](/herramientas/ayudas-vivienda-jovenes/):
+pones tu edad, ingresos y alquiler y te dice si cumplirías los requisitos básicos y cuánto te correspondería.
+
+## Duración y prórroga
+
+La ayuda se concede por **{AL.duracionAnios} años** (artículo 134). Al acabar, la comunidad puede prorrogarla hasta {AL.prorrogaAnios} años más,
+si sigues cumpliendo los requisitos. Mientras la cobras, tienes que comunicar enseguida cualquier cambio que afecte a
+los requisitos (por ejemplo, si tus ingresos suben por encima del límite o te mudas). Si te cambias de piso, no la
+pierdes siempre que el nuevo alquiler cumpla las condiciones y no haya interrupción entre contratos, pero la ayuda
+nunca sube por el cambio: se ajusta al nuevo alquiler y como mucho se queda igual.
+
+## Cómo se pide
+
+El plan es estatal, pero **la gestión es de cada comunidad autónoma** (y de Ceuta y Melilla): ellas publican la
+convocatoria, reciben las solicitudes y pagan la ayuda de forma periódica. El decreto prevé
+que esta ayuda se convoque de forma abierta y continuada, pero los plazos, los formularios y los requisitos
+adicionales los decide cada comunidad. Además, una comunidad puede subir el alquiler máximo si lo justifica con
+estudios del mercado de la zona y lo pacta con el Ministerio de Vivienda (artículo 135).
+
+En la práctica:
+
+1. Busca en la web de vivienda de tu comunidad la convocatoria de la ayuda al alquiler para jóvenes del Plan
+   Estatal 2026-2030.
+2. Ten preparados el contrato de alquiler, el certificado de empadronamiento y los justificantes de pago.
+3. Comprueba si tu comunidad pide algo más (por ejemplo, una antigüedad mínima de empadronamiento).
+
+Que la ayuda exista en el decreto no garantiza que haya una convocatoria abierta en tu comunidad en una fecha
+concreta, ni que haya presupuesto para todas las solicitudes.
+
+## Si quieres comprar en un pueblo
+
+El mismo plan tiene otra ayuda para jóvenes de {A.edadMaxima} años o menos que compren su vivienda habitual en un municipio o
+núcleo de {A.compraMunicipioPequeno.habitantesMax.toLocaleString('es-ES')} habitantes o menos: hasta **{formatEuros(A.compraMunicipioPequeno.ayudaMax)}**, con el límite del {pct(A.compraMunicipioPequeno.porcentajeMaxCoste)} % del precio (artículo 143).
+Se exige el mismo límite de ingresos, no tener otra vivienda y vivir en ella al menos {A.compraMunicipioPequeno.anosResidenciaMinima} años, y el precio no puede
+superar un máximo que fija el decreto para cada comunidad. Si estás pensando en comprar, mira también
+[cuánto ahorrar para la entrada de un piso](/blog/cuanto-ahorrar-entrada-piso/) y
+[alquilar o comprar: las cuentas](/blog/alquilar-o-comprar-vivienda-las-cuentas/).
+
+## Preguntas frecuentes
+
+**¿Puedo pedirla si comparto piso?**
+Sí, como alquiler de habitación, con un máximo de {formatEuros(AL.ayudaMaxHabitacionMes)} al mes y si la habitación cuesta {formatEuros(AL.rentaMaxHabitacionMes)} o menos. Para una
+habitación no hace falta que el contrato sea de la Ley de Arrendamientos Urbanos.
+
+**¿Cuenta el sueldo bruto o el neto para el límite de ingresos?**
+Se comprueba con tus datos del IRPF que obtiene la comunidad de la Agencia Tributaria, no con tu nómina. Si tienes
+dudas sobre qué cifra exacta usa tu comunidad, la convocatoria lo detalla.
+
+**¿Puedo alquilar a mis padres o a un hermano y pedirla?**
+No. El decreto excluye los alquileres entre parientes de primer o segundo grado.
+
+**¿Hasta cuándo puedo pedirla?**
+Mientras tengas {A.edadMaxima} años o menos en el momento de solicitarla y la comunidad tenga la convocatoria abierta.
+
+**¿Esto es asesoramiento?**
+No. Es un resumen del Real Decreto 326/2026. Los requisitos definitivos son los de la convocatoria de tu comunidad.

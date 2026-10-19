@@ -1,0 +1,149 @@
+---
+title: "Baja laboral: cuánto se cobra y quién la paga (con ejemplo)"
+description: "Cuánto se cobra de baja laboral en España: nada los 3 primeros días, el 60 % del día 4 al 20 y el 75 % desde el 21, con un ejemplo y los requisitos."
+pubDate: 2026-10-30
+updatedDate: 2026-10-30
+author: "David Pérez Mitjà"
+tags: ["empleo", "ahorro"]
+categoria: "trabajo"
+sources:
+  - label: "Seguridad Social (Aula): cuantía, nacimiento y duración de la incapacidad temporal"
+    url: "https://www.seg-social.es/wps/portal/wss/internet/PortalEducativo/Profesores/Unidad3/PESS303/PESS305"
+  - label: "BOE: Ley General de la Seguridad Social, arts. 169 a 173 (incapacidad temporal)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2015-11724"
+  - label: "BOE: Orden PJC/297/2026, de cotización a la Seguridad Social para 2026 (base máxima)"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { calcularBaja, porcentajeDia } from '../../components/SickLeaveCalculator';
+import { SS_TRABAJADOR } from '../../config/finance';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const BRUTO = 24000;
+export const c = (dias) => calcularBaja({ brutoAnual: BRUTO, tipo: 'comun', dias, complementoPct: 0 });
+export const l = (dias) => calcularBaja({ brutoAnual: BRUTO, tipo: 'laboral', dias, complementoPct: 0 });
+export const conMejora = calcularBaja({ brutoAnual: BRUTO, tipo: 'comun', dias: 30, complementoPct: 100 });
+export const e2 = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: 'always' }) + ' €';
+export const p = (n) => (n * 100).toLocaleString('es-ES');
+export const DIAS = [3, 10, 20, 30, 60];
+
+Si te das de baja por una enfermedad común o un accidente fuera del trabajo, **los tres primeros días no cobras
+nada** (salvo que tu convenio lo mejore). Del día 4 al 20 cobras el **{p(porcentajeDia('comun', 4))} %** de tu base reguladora y desde el día
+21, el **{p(porcentajeDia('comun', 21))} %**. Si la baja es por un accidente de trabajo o una enfermedad profesional, cobras el
+**{p(porcentajeDia('laboral', 2))} % desde el día siguiente** a la baja, y el primer día lo paga la empresa entero. Con un sueldo de {formatEuros(BRUTO)} brutos
+al año, un mes de baja por enfermedad común son unos {formatEuros(c(30).total)} brutos en lugar de {formatEuros(c(30).normal)}.
+
+## Cuánto cobras cada día
+
+La prestación por incapacidad temporal (el nombre oficial de la baja) se paga como un porcentaje de la **base
+reguladora**, que sale de lo que cotizas, no directamente de tu nómina:
+
+| Motivo de la baja | Días 1 a 3 | Días 4 a 20 | Desde el día 21 |
+|---|---|---|---|
+| Enfermedad común o accidente no laboral | 0 % | {p(porcentajeDia('comun', 4))} % | {p(porcentajeDia('comun', 21))} % |
+| Accidente de trabajo o enfermedad profesional | Día 1: salario íntegro (empresa). Después: {p(porcentajeDia('laboral', 2))} % | {p(porcentajeDia('laboral', 4))} % | {p(porcentajeDia('laboral', 21))} % |
+
+Lo fija la Ley General de la Seguridad Social (artículo 173) y lo resume así el Aula de la Seguridad Social. Hay
+excepciones, por ejemplo en las bajas especiales por menstruación incapacitante secundaria y por donación de órganos, la
+prestación se cobra desde el primer día.
+
+## Quién la paga
+
+En una baja por enfermedad común, **del día 4 al 15 paga la empresa** y desde el día 16 se hace cargo la Seguridad
+Social (o la mutua colaboradora, según tenga contratado tu empresa). Tú no notas la diferencia en el porcentaje: el cambio de
+pagador no cambia lo que cobras, que sigue la tabla de arriba.
+
+## Ejemplo: cuánto cobras con {formatEuros(BRUTO)} brutos
+
+Supongamos un sueldo de {formatEuros(BRUTO)} brutos al año, con las pagas extra incluidas. Como aproximación, su base de cotización
+mensual es el bruto entre 12: {e2(c(30).baseMensual)}. La base reguladora diaria es esa cifra entre 30: {e2(c(30).baseDiaria)}.
+
+- Días 1 a 3: 0 €.
+- Días 4 a 20: {p(porcentajeDia('comun', 4))} % de {e2(c(30).baseDiaria)} = {e2(c(30).baseDiaria * porcentajeDia('comun', 4))} al día.
+- Desde el día 21: {p(porcentajeDia('comun', 21))} % de {e2(c(30).baseDiaria)} = {e2(c(30).baseDiaria * porcentajeDia('comun', 21))} al día.
+
+Así queda según la duración de la baja (cifras brutas, antes de IRPF y cotizaciones):
+
+<table>
+  <thead>
+    <tr>
+      <th>Días de baja</th>
+      <th>Enfermedad común</th>
+      <th>Accidente de trabajo</th>
+      <th>Trabajando habrías cobrado</th>
+    </tr>
+  </thead>
+  <tbody>
+    {DIAS.map((d) => (
+      <tr>
+        <td>{d}</td>
+        <td>{formatEuros(c(d).total)}</td>
+        <td>{formatEuros(l(d).total)}</td>
+        <td>{formatEuros(c(d).normal)}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+Lo que más se nota es el primer mes de una enfermedad común: con 30 días de baja cobras {formatEuros(c(30).total)}, un
+{(c(30).total / c(30).normal * 100).toLocaleString('es-ES', { maximumFractionDigits: 0 })} % de lo normal. A partir del segundo mes, cada mes completo de baja son {formatEuros(c(60).mesLargo)}, el {p(porcentajeDia('comun', 21))} % del sueldo.
+
+La base de cotización tiene un tope: en 2026, {e2(SS_TRABAJADOR.baseMaximaMensual)} al mes. Si cobras más, la base reguladora no pasa de ahí y
+la baja cubre un porcentaje menor de tu sueldo real.
+
+Haz el cálculo con tu sueldo y los días que necesites en la
+[calculadora de la baja laboral](/herramientas/calculadora-baja-laboral/).
+
+## La base reguladora real
+
+El ejemplo usa el bruto entre 12 como aproximación. La base reguladora oficial se calcula con la **base de
+cotización de los meses anteriores a la baja**, que incluye la parte proporcional de las pagas extra. Si tu sueldo
+cambia cada mes (horas extra, variables, comisiones), la cifra real puede ser distinta. Tu base de cotización aparece
+en cada nómina.
+
+## ¿Tu convenio la mejora?
+
+Muchos convenios colectivos y contratos incluyen una **mejora voluntaria** de la baja: la empresa completa la
+prestación hasta el 100 % del sueldo, o hasta otro porcentaje, durante un tiempo o desde el primer día. Si tu convenio
+lo prevé, en el ejemplo cobrarías {formatEuros(conMejora.total)} en el primer mes en lugar de {formatEuros(c(30).total)}. Merece la pena buscar en el
+texto de tu convenio la palabra "incapacidad temporal".
+
+## Requisitos para cobrarla
+
+- **Enfermedad común**: estar dado de alta en la Seguridad Social y haber cotizado al menos **180 días en los 5 años
+  anteriores** a la baja (artículo 172 de la Ley General de la Seguridad Social).
+- **Accidente (laboral o no) o enfermedad profesional**: no se exige ningún periodo previo de cotización.
+
+Si llevas poco tiempo trabajando, quizá todavía no tengas derecho a la prestación por enfermedad común.
+
+## Cuánto puede durar
+
+La baja dura como máximo **365 días**, prorrogables otros **180** si se prevé que te vas a curar en ese tiempo. Al
+llegar a los 365 días, la Seguridad Social puede darte el alta o abrir un expediente de incapacidad permanente.
+
+## Qué hacer para no ahogarte
+
+Una baja larga baja tus ingresos justo cuando puedes tener más gastos. Por eso el colchón de imprevistos es tan
+importante: si no sabes cuánto necesitas, mira [cuánto necesitas en tu fondo de emergencia](/blog/fondo-de-emergencia-cuanto-necesitas/)
+o calcúlalo con la [calculadora del fondo de emergencia](/herramientas/calculadora-fondo-de-emergencia/). Y si quieres
+revisar cuánto apartas cada mes para ese colchón, prueba la herramienta
+[cuánto ahorrar al mes](/herramientas/cuanto-ahorrar-al-mes/).
+
+## Preguntas frecuentes
+
+**¿Se cobra la baja los tres primeros días?**
+En una enfermedad común o accidente no laboral, no por ley, salvo que tu convenio o tu contrato lo mejoren. En un
+accidente de trabajo, sí: el primer día lo paga la empresa entero y desde el segundo cobras el {p(porcentajeDia('laboral', 2))} %.
+
+**¿Cuánto se cobra de baja a partir del día 21?**
+El {p(porcentajeDia('comun', 21))} % de la base reguladora, tanto en enfermedad común como en accidente.
+
+**¿La baja cuenta las pagas extra?**
+Sí, de forma indirecta: la base de cotización incluye la parte proporcional de las pagas extra, y es la que se usa
+para la base reguladora.
+
+**¿Esto es asesoramiento laboral?**
+No. Es una explicación general con un ejemplo aproximado. Tu caso depende de tu base de cotización real y de tu
+convenio.

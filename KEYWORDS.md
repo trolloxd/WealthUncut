@@ -161,6 +161,11 @@ el 2026-09-24; keywords sin validar todavía con autocompletado.
 | diferencia entre ahorrar e invertir | `diferencia-entre-ahorrar-e-invertir` | Programado | Clúster 5 |
 | fondo de emergencia cuanto debe ser | `fondo-de-emergencia-cuanto-necesitas` | Programado | Clúster 5 |
 | primeros pasos para invertir en españa, como empezar a invertir siendo joven | `primeros-pasos-para-invertir-en-espana` | Programado | **Pilar clúster 5** |
+| inflacion que interes necesito para no perder dinero, ipc septiembre 2026 | `inflacion-que-interes-necesitas-para-no-perder` (26/10) | Programado | Clúster 5 |
+| como declarar ganancias de bolsa en la renta, fifo acciones, compensar perdidas | `declarar-ganancias-bolsa-renta` (27/10) | Programado | Clúster 4 |
+| indemnizacion por despido como se calcula, despido improcedente 33 dias | `indemnizacion-despido-como-se-calcula` (28/10) | Programado | Clúster 7 |
+| ayuda alquiler jovenes requisitos, bono alquiler joven 2026 | `ayuda-alquiler-jovenes-requisitos` (29/10) | Programado | Clúster 8 |
+| baja laboral cuanto se cobra, incapacidad temporal 60 75 | `baja-laboral-cuanto-se-cobra` (30/10) | Programado | Clúster 7 |
 
 Herramientas (añadidas el 2026-09-23) que refuerzan clústeres con intención de "calculadora":
 fondo de emergencia (clúster 5), fondo indexado vs ETF (clúster 3), impuestos al vender un fondo

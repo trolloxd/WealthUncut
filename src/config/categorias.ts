@@ -42,10 +42,16 @@ export const CATEGORIAS = [
     tags: ['pensiones', 'jubilación'],
   },
   {
+    id: 'trabajo',
+    nombre: 'Nómina y trabajo',
+    descripcion: 'Sueldo neto, IRPF de la nómina, despidos y bajas laborales: cuánto cobras y qué dice la ley.',
+    tags: ['nómina', 'empleo'],
+  },
+  {
     id: 'ahorro',
     nombre: 'Ahorro y finanzas básicas',
     descripcion: 'Fondo de emergencia, ahorrar frente a invertir y los primeros pasos para ordenar tu dinero.',
-    tags: ['ahorro', 'educación financiera', 'empleo'],
+    tags: ['ahorro', 'educación financiera'],
   },
 ] as const;
 

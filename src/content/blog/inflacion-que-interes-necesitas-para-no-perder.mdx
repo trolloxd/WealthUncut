@@ -1,0 +1,158 @@
+---
+title: "Inflación: qué interés necesitas para no perder dinero"
+description: "Con la inflación en el 4,9 % (INE, septiembre de 2026), qué interés bruto necesitas para no perder poder de compra tras pagar el IRPF de los intereses."
+pubDate: 2026-10-26
+updatedDate: 2026-10-26
+author: "David Pérez Mitjà"
+tags: ["ahorro", "educación financiera", "cuentas"]
+categoria: "ahorro"
+sources:
+  - label: "INE: Índice de Precios de Consumo (IPC) e IPCA, septiembre de 2026 (14 de octubre de 2026)"
+    url: "https://www.ine.es/dyngs/Prensa/IPC0926.htm"
+  - label: "Eurostat: Annual inflation up to 3.8% in the euro area, septiembre de 2026 (16 de octubre de 2026)"
+    url: "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-16102026-ap"
+  - label: "Banco Central Europeo: estrategia de política monetaria (objetivo de inflación del 2 %)"
+    url: "https://www.ecb.europa.eu/mopo/strategy/html/index.es.html"
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { poderAdquisitivo } from '../../components/InflationCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import { IRPF_AHORRO_BRACKETS } from '../../config/finance';
+import cuentas from '../../data/cuentas-remuneradas/ultimo.json';
+
+export const IPC = 4.9;
+export const IMPORTE = 10000;
+export const TIPO = IRPF_AHORRO_BRACKETS[0].tipo;
+export const pct = (n, d = 1) => n.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
+export const necesario = (inflacion) => poderAdquisitivo({ importe: IMPORTE, anios: 1, inflacion, interesBruto: 0 }).interesBrutoParaNoPerder * 100;
+export const real = (inflacion, anios, interes = 0) => poderAdquisitivo({ importe: IMPORTE, anios, inflacion, interesBruto: interes });
+export const sinVinculacion = cuentas.cuentas.filter((c) => !c.vinculacion).sort((a, b) => b.tae - a.tae)[0];
+export const maxTae = Math.max(...cuentas.cuentas.map((c) => c.tae), ...cuentas.depositos.map((d) => d.tae));
+export const fechaCuentas = new Date(cuentas.fecha + 'T00:00:00Z').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+Según el INE, los precios en España subieron un **{pct(IPC)} % en septiembre de 2026** respecto al mismo mes de
+2025, la tasa más alta desde febrero de 2023. Para que tu dinero no pierda poder de compra con esa inflación,
+no basta con un interés del {pct(IPC)} %: necesitas en torno a un **{pct(necesario(IPC), 2)} % bruto**, porque Hacienda se queda
+una parte de los intereses. Esta guía explica de dónde sale esa cifra, cuánto pierde el dinero parado y qué
+interés ofrecen hoy las cuentas que seguimos en el sitio.
+
+## Qué ha pasado con la inflación
+
+Los datos definitivos del INE para septiembre de 2026, publicados el 14 de octubre, fueron estos:
+
+- **IPC general: {pct(IPC)} %** interanual, seis décimas más que en agosto.
+- **Inflación subyacente: 3,1 %.** Es el IPC sin alimentos no elaborados ni productos energéticos, los precios
+  que más saltan de un mes a otro. Sirve para ver si la subida se está extendiendo al resto de la cesta.
+- **IPC armonizado (IPCA): 5,0 %.** Es la versión que se usa para comparar países de la Unión Europea.
+
+Según el INE, lo que más empujó la tasa fueron el transporte (los carburantes subieron, cuando en septiembre de
+2025 habían bajado) y los paquetes turísticos (bajaron menos que un año antes). En el conjunto de la zona euro, Eurostat situó la inflación de
+septiembre en el 3,8 %, así que España está por encima de la media. El Banco Central Europeo tiene como objetivo
+una inflación del 2 % a medio plazo: estamos lejos de esa cifra.
+
+La inflación de un mes no dice cuál será la del año que viene. Puede bajar si se relaja el precio de la energía o
+seguir alta. Por eso, más abajo verás varios escenarios en vez de una sola cifra.
+
+## Por qué el interés tiene que superar la inflación (y algo más)
+
+Imagina {formatEuros(IMPORTE)} en una cuenta. Si los precios suben un {pct(IPC)} % en un año, para comprar lo mismo que hoy
+necesitarás {formatEuros(IMPORTE * (1 + IPC / 100))} dentro de doce meses. Tu cuenta tendría que darte, después de impuestos,
+exactamente un {pct(IPC)} %.
+
+Pero los intereses de una cuenta o un depósito tributan en la base del ahorro del IRPF. Para los importes
+habituales de una cuenta remunerada caen en el primer tramo, al **{pct(TIPO * 100, 0)} %**. Así que de cada euro de intereses
+te quedas con {pct(1 - TIPO, 2)} €. El interés bruto que necesitas sale de una cuenta sencilla:
+
+> **Interés bruto necesario = inflación ÷ (1 − {pct(TIPO, 2)})**
+
+Con la inflación de septiembre, {pct(IPC)} ÷ {pct(1 - TIPO, 2)} = **{pct(necesario(IPC), 2)} %**. Es la misma fórmula que usa nuestra
+[calculadora de inflación](/herramientas/calculadora-inflacion/).
+
+| Si la inflación es del... | Interés bruto que necesitas para no perder |
+|---|---|
+| 2 % (objetivo del BCE) | {pct(necesario(2), 2)} % |
+| 3 % | {pct(necesario(3), 2)} % |
+| 4 % | {pct(necesario(4), 2)} % |
+| {pct(IPC)} % (IPC de septiembre de 2026) | {pct(necesario(IPC), 2)} % |
+
+Si tienes más de 6.000 € de intereses y ganancias en un año, la parte que pase de ahí tributa a un tipo mayor y el
+interés necesario sube un poco más. Puedes ver todos los tramos en
+[tramos del IRPF del ahorro](/blog/tramos-irpf-ahorro/).
+
+## Cuánto pierde el dinero parado
+
+Ahora lo contrario: {formatEuros(IMPORTE)} en una cuenta que no da nada. El importe que ves en el banco no cambia, pero lo que
+puedes comprar con él sí. Esta tabla muestra cuánto valdrían esos {formatEuros(IMPORTE)} en euros de hoy según la inflación media y
+los años que pasen:
+
+| Inflación media | Tras 1 año | Tras 5 años | Tras 10 años |
+|---|---|---|---|
+| 2 % | {formatEuros(real(2, 1).real)} | {formatEuros(real(2, 5).real)} | {formatEuros(real(2, 10).real)} |
+| 3 % | {formatEuros(real(3, 1).real)} | {formatEuros(real(3, 5).real)} | {formatEuros(real(3, 10).real)} |
+| {pct(IPC)} % | {formatEuros(real(IPC, 1).real)} | {formatEuros(real(IPC, 5).real)} | {formatEuros(real(IPC, 10).real)} |
+
+Con una inflación del {pct(IPC)} % durante un solo año, el dinero parado pierde unos {formatEuros(real(IPC, 1).perdida)} de poder de compra.
+Si la inflación se quedara en el 3 % de media durante diez años, la pérdida sería de unos {formatEuros(real(3, 10).perdida)}: una cuarta parte.
+Son escenarios, no previsiones: nadie sabe qué inflación habrá en los próximos años.
+
+## Y las cuentas remuneradas, ¿llegan?
+
+Seguimos cada semana las cuentas y depósitos que ofrecen los bancos en España en nuestro
+[comparador de cuentas remuneradas](/herramientas/comparador-cuentas-remuneradas/). En la última revisión
+({fechaCuentas}), la cuenta sin vinculación con la TAE más alta de la tabla daba un **{pct(sinVinculacion.tae, 2)} % TAE** ({sinVinculacion.banco}, {sinVinculacion.duracion.toLowerCase()}).
+
+Con ese tipo y la inflación del {pct(IPC)} %, y suponiendo que el tipo durara todo el año (en las ofertas de bienvenida
+no pasa), {formatEuros(IMPORTE)} acabarían valiendo
+{formatEuros(real(IPC, 1, sinVinculacion.tae).real)} en euros de hoy, después del {pct(TIPO * 100, 0)} % de IRPF sobre los intereses. Es decir, pierdes menos
+que con el dinero parado ({formatEuros(real(IPC, 1, sinVinculacion.tae).perdida)} frente a {formatEuros(real(IPC, 1).perdida)}), pero sigues perdiendo. La TAE más alta de
+toda la tabla, contando cuentas con vinculación y depósitos a varios años, es del {pct(maxTae, 2)} %, frente al {pct(necesario(IPC), 2)} % que
+haría falta con la inflación de septiembre.
+
+Dos matices importantes:
+
+- **Muchas TAE altas son de bienvenida.** Duran unos meses y luego bajan. Fíjate en la columna de duración del
+  comparador antes de hacer cuentas a un año.
+- **La TAE ya incluye la frecuencia de pago de intereses**, así que es la cifra correcta para comparar, no el TIN.
+
+## Qué hacer con esto (sin recetas)
+
+Ningún dato de inflación cambia una regla básica: el dinero tiene trabajos distintos según cuándo lo vayas a
+necesitar.
+
+1. **El colchón para imprevistos** tiene que estar disponible y sin riesgo. Ahí la inflación hace daño, pero
+   el trabajo de ese dinero es otro: estar cuando lo necesites. Una cuenta remunerada reduce la pérdida. Si no
+   sabes cuánto debería ser, mira [cuánto necesitas en tu fondo de emergencia](/blog/fondo-de-emergencia-cuanto-necesitas/).
+2. **El dinero para dentro de pocos años** (la entrada de un piso, por ejemplo) tampoco suele poder asumir caídas
+   fuertes. Los depósitos a plazo fijan el tipo durante un tiempo, lo que protege si los tipos bajan, pero no
+   si la inflación sube.
+3. **El dinero a largo plazo** es el único que puede buscar una rentabilidad por encima de la inflación
+   asumiendo riesgo, por ejemplo en fondos indexados de renta variable. Sin ninguna garantía: en plazos cortos
+   puede caer, y mucho.
+   La diferencia entre las dos cosas está en [ahorrar frente a invertir](/blog/diferencia-entre-ahorrar-e-invertir/).
+
+Lo que sí puedes hacer hoy es poner tus números: tu saldo, tu interés y la inflación que quieras suponer, en la
+[calculadora de inflación](/herramientas/calculadora-inflacion/).
+
+## Preguntas frecuentes
+
+**¿Qué diferencia hay entre el IPC y la inflación subyacente?**
+El IPC mide la subida de precios de toda la cesta de la compra. La subyacente quita los alimentos no elaborados y
+la energía, que son los precios más volátiles. En septiembre de 2026 el IPC subió un {pct(IPC)} % y la subyacente un
+3,1 %, así que buena parte de la subida viene de lo que la subyacente deja fuera, sobre todo la energía (el INE
+destaca los carburantes).
+
+**¿Por qué no basta con un interés igual a la inflación?**
+Porque los intereses pagan IRPF. Con un {pct(TIPO * 100, 0)} % de impuesto, un interés del {pct(IPC)} % se queda en un
+{pct(IPC * (1 - TIPO), 2)} % neto, por debajo de la inflación.
+
+**¿La inflación afecta igual a todo el mundo?**
+No. El IPC es una media. Si gastas mucho en transporte o en alquiler, tu inflación personal puede ser mayor o
+menor que la oficial.
+
+**¿Esto es una recomendación?**
+No. Es información con datos oficiales y cálculos que puedes repetir con tus cifras. Qué hacer con tu dinero
+depende de tu situación.

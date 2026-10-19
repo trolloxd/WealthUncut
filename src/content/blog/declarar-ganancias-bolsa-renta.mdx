@@ -1,0 +1,166 @@
+---
+title: "Cómo declarar ganancias de bolsa en la renta (con ejemplo)"
+description: "Cómo declarar ganancias de bolsa en la renta: comisiones, método FIFO, compensación de pérdidas y regla de los dos meses, con un ejemplo resuelto."
+pubDate: 2026-10-27
+updatedDate: 2026-10-27
+author: "David Pérez Mitjà"
+tags: ["impuestos", "etf", "fondos indexados"]
+categoria: "impuestos"
+sources:
+  - label: "AEAT, Manual práctico de Renta 2025: transmisiones onerosas de valores admitidos a negociación (valor de transmisión y criterio FIFO)"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/determinacion-importe-ganancias-perdidas-patrimon-especificas/transmisiones-onerosas-valores-admitidos-negociacion/general-transmisiones-onerosas-valores-cotizados.html"
+  - label: "AEAT, Manual práctico de Renta 2025: reglas generales de cálculo (gastos inherentes a la compra y a la venta, art. 35 Ley del IRPF)"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/determinacion-importe-ganancias-perdidas-patrimon-generales/derivadas-transmisiones-onerosas-lucrativas/reglas-generales-calculo.html"
+  - label: "AEAT, Manual práctico de Renta 2025: reglas de integración y compensación de rentas"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c12-integracion-compensacion-rentas/reglas-integracion-compensacion-rentas.html"
+  - label: "AEAT, Manual práctico de Renta 2025: pérdidas patrimoniales que no se computan (recompra de valores homogéneos)"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/ganancias-perdidas-patrimoniales-que-no-bi/perdidas-patrimoniales-que-no-se-tales.html"
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { formatEuros } from '../../components/CalculatorUI';
+import { calcularImpuestoAhorro, COMPENSACION_AHORRO, REGLA_RECOMPRA, IRPF_AHORRO_BRACKETS } from '../../config/finance';
+
+export const e2 = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: 'always' }) + ' €';
+export const C1 = { n: 100, precio: 50, comision: 10 };
+export const C2 = { n: 50, precio: 60, comision: 10 };
+export const V = { n: 120, precio: 70, comision: 10 };
+export const coste1 = C1.n * C1.precio + C1.comision;
+export const coste2 = C2.n * C2.precio + C2.comision;
+export const deC2 = V.n - C1.n;
+export const coste2Parte = (coste2 * deC2) / C2.n;
+export const adquisicion = coste1 + coste2Parte;
+export const transmision = V.n * V.precio - V.comision;
+export const ganancia = transmision - adquisicion;
+export const PERDIDA = 1000;
+export const DIVIDENDOS = 800;
+export const PERDIDA2 = 1500;
+export const limiteCruzado = DIVIDENDOS * COMPENSACION_AHORRO.limiteCruzado;
+export const pctTxt = (t) => (t * 100).toLocaleString('es-ES');
+
+Cuando vendes acciones o ETF con beneficio, esa ganancia se declara en la renta del año en que vendes, en la base
+del ahorro. La cuenta es **lo que recibes al vender, menos comisiones, menos lo que te costó comprar, más
+comisiones**. Si tenías compras en varias fechas, Hacienda entiende que vendes primero las más antiguas (criterio
+FIFO). Y si en el mismo año también tuviste pérdidas, se restan antes de pagar. Aquí tienes cada paso con un ejemplo
+resuelto.
+
+## Paso 1: calcula la ganancia de cada venta
+
+La ganancia o pérdida de una venta es la diferencia entre dos valores, según el artículo 35 de la Ley del IRPF:
+
+- **Valor de adquisición**: lo que pagaste por las acciones **más** los gastos de la compra (comisiones del bróker,
+  por ejemplo).
+- **Valor de transmisión**: lo que recibes al vender **menos** los gastos de la venta.
+
+Las comisiones cuentan, en la compra y en la venta, y bajan la ganancia. Por eso conviene guardar los justificantes
+del bróker de cada operación.
+
+## Paso 2: si compraste varias veces, aplica FIFO
+
+Si tienes acciones del mismo valor compradas en fechas distintas y vendes solo una parte, la ley (artículo 37.2) dice
+que vendes **primero las que compraste antes**. Es el criterio FIFO (del inglés *first in, first out*). No puedes
+elegir qué lote vendes, aunque tu bróker te deje verlo de otra forma.
+
+**Ejemplo.** Compras un ETF en dos veces y luego vendes una parte (cifras inventadas para el ejemplo):
+
+| Operación | Detalle | Importe |
+|---|---|---|
+| Compra 1 | {C1.n} participaciones a {C1.precio} € + {C1.comision} € de comisión | {e2(coste1)} |
+| Compra 2 | {C2.n} participaciones a {C2.precio} € + {C2.comision} € de comisión | {e2(coste2)} |
+| Venta | {V.n} participaciones a {V.precio} € − {V.comision} € de comisión | {e2(transmision)} |
+
+Por FIFO, las {V.n} que vendes son las {C1.n} de la primera compra y {deC2} de la segunda. El coste de esas {deC2} es la parte
+proporcional de la segunda compra, comisión incluida: {e2(coste2)} × {deC2} / {C2.n} = {e2(coste2Parte)}.
+
+- Valor de adquisición: {e2(coste1)} + {e2(coste2Parte)} = **{e2(adquisicion)}**
+- Valor de transmisión: **{e2(transmision)}**
+- Ganancia patrimonial: {e2(transmision)} − {e2(adquisicion)} = **{e2(ganancia)}**
+
+Las {C2.n - deC2} participaciones que te quedan conservan su coste de la segunda compra para cuando las vendas.
+
+## Paso 3: suma y compensa todo lo del año
+
+No se paga venta por venta. Se suman todas las ganancias y pérdidas patrimoniales del año que vienen de vender
+(acciones, ETF, fondos) y el resultado neto es lo que tributa.
+
+Siguiendo el ejemplo, si ese mismo año vendiste otro valor con una pérdida de {formatEuros(PERDIDA)}, tu ganancia neta queda
+en {e2(ganancia - PERDIDA)}. El impuesto, con los tramos del ahorro:
+
+| | Sin la pérdida | Con la pérdida |
+|---|---|---|
+| Ganancia neta | {e2(ganancia)} | {e2(ganancia - PERDIDA)} |
+| IRPF (base del ahorro) | {e2(calcularImpuestoAhorro(ganancia))} | {e2(calcularImpuestoAhorro(ganancia - PERDIDA))} |
+
+Los dos importes caen enteros en el primer tramo del ahorro, al {pctTxt(IRPF_AHORRO_BRACKETS[0].tipo)} %. Si tu ganancia neta supera los
+{formatEuros(IRPF_AHORRO_BRACKETS[0].hasta)}, lo que pase de ahí paga el {pctTxt(IRPF_AHORRO_BRACKETS[1].tipo)} %, y así sucesivamente. Tienes todos los tramos y
+ejemplos en [tramos del IRPF del ahorro](/blog/tramos-irpf-ahorro/).
+
+### Si el año acaba en pérdidas
+
+Las ganancias y pérdidas por ventas forman un bloque. Los intereses y dividendos (rendimientos del capital
+mobiliario) forman otro. Si uno de los dos bloques sale negativo, puede compensar el otro, pero solo hasta el
+**{pctTxt(COMPENSACION_AHORRO.limiteCruzado)} %** de su saldo positivo. Lo que no se compense se arrastra durante los
+**{COMPENSACION_AHORRO.aniosArrastre} años siguientes**.
+
+Ejemplo: un año con {formatEuros(PERDIDA2)} de pérdidas netas por ventas y {formatEuros(DIVIDENDOS)} de dividendos. Las pérdidas pueden
+compensar como máximo el {pctTxt(COMPENSACION_AHORRO.limiteCruzado)} % de los dividendos, {formatEuros(limiteCruzado)}. Tributas por
+{formatEuros(DIVIDENDOS - limiteCruzado)} de dividendos y te quedan {formatEuros(PERDIDA2 - limiteCruzado)} de pérdidas para los próximos
+{COMPENSACION_AHORRO.aniosArrastre} años, que podrás restar de futuras ganancias. Por eso **también se declaran las ventas con
+pérdidas**: si no las declaras, las pierdes.
+
+## Paso 4: cuidado con recomprar lo mismo
+
+Si vendes con pérdidas y compras el mismo valor (o uno homogéneo) poco antes o poco después, esa pérdida no se puede
+usar todavía. Queda aplazada hasta que vendas lo que recompraste. Los plazos son:
+
+- Valores cotizados (acciones y ETF): **{REGLA_RECOMPRA.valoresCotizados}** antes o después de la venta.
+- Valores no cotizados, como las participaciones de fondos de inversión: **{REGLA_RECOMPRA.valoresNoCotizados}**.
+
+No es una sanción: la pérdida no desaparece, solo se retrasa. Pero si contabas con ella para compensar las
+ganancias de este año, tu factura cambia.
+
+## Paso 5: dónde se pone en la declaración
+
+En Renta Web, las ventas de acciones y ETF se declaran en el apartado de ganancias y pérdidas patrimoniales,
+operación por operación, con su valor de transmisión y su valor de adquisición.
+
+Antes de confirmar el borrador, comprueba que las ventas que aparezcan coinciden con los justificantes de tu bróker,
+sobre todo los valores de adquisición y las comisiones. Si alguna operación no aparece, la tienes que añadir tú. Si tu bróker está fuera de España y tus valores allí superan ciertos importes, puede que
+además tengas que presentar el modelo 720: lo explicamos en
+[modelo 720: quién tiene que presentarlo](/blog/modelo-720-quien-tiene-que-presentarlo/).
+
+## Diferencias con los fondos de inversión
+
+Los fondos de inversión siguen las mismas reglas de cálculo y de tramos, con dos diferencias importantes. Puedes
+pasar el dinero de un fondo a otro mediante un traspaso sin pagar impuestos en ese momento, cosa que no se puede
+hacer con acciones ni con ETF. Y al reembolsar un fondo con ganancia, la gestora retiene un porcentaje a cuenta.
+Lo explicamos en [cómo tributan los fondos de inversión](/blog/como-tributan-los-fondos-de-inversion-en-espana/) y
+en [fondo indexado o ETF](/blog/fondo-indexado-vs-etf-diferencias/).
+
+Si quieres hacer el cálculo de una venta con FIFO y los tramos del ahorro sin hacerlo a mano, usa la
+[calculadora de impuestos al vender un fondo](/herramientas/calculadora-impuestos-venta-fondos/): la lógica es la misma
+para un ETF.
+
+## Preguntas frecuentes
+
+**¿Tengo que declarar si he vendido con pérdidas?**
+Sí, conviene. Las pérdidas restan de tus ganancias del año y, si sobran, se arrastran {COMPENSACION_AHORRO.aniosArrastre} años. Si no las
+declaras, no podrás usarlas.
+
+**¿Las comisiones del bróker se pueden restar?**
+Sí. Las de la compra suben el valor de adquisición y las de la venta bajan el valor de transmisión. Las dos reducen
+la ganancia.
+
+**¿Puedo elegir qué acciones vendo para pagar menos?**
+No. Con valores homogéneos se aplica el criterio FIFO: se venden primero los comprados antes.
+
+**¿Y si no he vendido nada?**
+Si no vendes, no hay ganancia patrimonial que declarar, aunque tus acciones hayan subido. Los dividendos cobrados
+sí se declaran: lo explicamos en [cómo tributan los dividendos](/blog/impuesto-dividendos-espana/).
+
+**¿Esto es asesoramiento fiscal?**
+No. Es una explicación general con el Manual de Renta de la AEAT y un ejemplo inventado. Para tu caso, revisa tu
+borrador o consulta con un asesor.

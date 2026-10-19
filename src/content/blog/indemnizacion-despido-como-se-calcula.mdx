@@ -1,0 +1,143 @@
+---
+title: "Indemnización por despido: cómo se calcula (con ejemplo)"
+description: "Indemnización por despido: 33 días por año si es improcedente, 20 si es objetivo y 12 al acabar un contrato temporal, con ejemplo, topes y plazos."
+pubDate: 2026-10-28
+updatedDate: 2026-10-28
+author: "David Pérez Mitjà"
+tags: ["empleo", "ahorro"]
+categoria: "trabajo"
+sources:
+  - label: "BOE: Estatuto de los Trabajadores (arts. 49.1.c, 53.1.b, 55.7, 56.1, 59.3 y disposición transitoria undécima)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2015-11430"
+  - label: "BOE: Ley 35/2006 del IRPF, artículo 7.e (exención de la indemnización por despido)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2006-20764"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { calcularIndemnizacion, TIPOS_EXTINCION } from '../../components/SeveranceCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const P = { salarioAnual: 24000, inicio: '2022-03-01', fin: '2026-10-31', diasVacaciones: 0, diasMes: 0 };
+export const imp = calcularIndemnizacion({ ...P, tipo: 'improcedente' });
+export const obj = calcularIndemnizacion({ ...P, tipo: 'objetivo' });
+export const tem = calcularIndemnizacion({ ...P, tipo: 'temporal' });
+export const T = TIPOS_EXTINCION;
+export const e2 = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: 'always' }) + ' €';
+export const a2 = (n) => n.toLocaleString('es-ES', { maximumFractionDigits: 2 });
+
+La indemnización por despido en España depende de **por qué** se acaba el contrato. Según el Estatuto de los
+Trabajadores, un despido improcedente se paga a **{T.improcedente.dias} días de salario por año trabajado** (máximo
+{T.improcedente.topeMensualidades} mensualidades), un despido objetivo a **{T.objetivo.dias} días por año** (máximo {T.objetivo.topeMensualidades} mensualidades) y el fin
+de un contrato temporal a **{T.temporal.dias} días por año**. Los periodos de menos de un año se prorratean por meses. Con
+un sueldo de 24.000 € y algo más de cuatro años y medio en la empresa, eso son unos {formatEuros(imp.indemnizacion)}, {formatEuros(obj.indemnizacion)} o
+{formatEuros(tem.indemnizacion)}, según el caso. Abajo está el cálculo paso a paso.
+
+## Los cuatro casos más habituales
+
+| Motivo | Indemnización | Tope | Dónde lo dice la ley |
+|---|---|---|---|
+| Despido improcedente | {T.improcedente.dias} días por año | {T.improcedente.topeMensualidades} mensualidades | Art. 56.1 ET |
+| Despido objetivo (causas económicas, técnicas, organizativas o de producción, entre otras) | {T.objetivo.dias} días por año | {T.objetivo.topeMensualidades} mensualidades | Art. 53.1.b ET |
+| Fin de un contrato temporal | {T.temporal.dias} días por año | Sin tope específico | Art. 49.1.c ET |
+| Despido disciplinario declarado procedente | Ninguna | | Art. 55.7 ET |
+
+Tres matices que conviene saber:
+
+- **Improcedente no es un tipo de despido, es un resultado.** Un despido es improcedente cuando lo reconoce la
+  empresa o lo declara un juez porque la causa no se sostiene. En ese caso, la empresa tiene cinco días para elegir
+  entre readmitirte o pagarte la indemnización.
+- **El objetivo se cobra al momento.** La empresa tiene que poner la indemnización a tu disposición a la vez que te
+  entrega la carta de despido (con alguna excepción por causas económicas que la propia ley prevé).
+- **Al acabar un contrato temporal** también hay indemnización, salvo en los contratos formativos y en los de
+  sustitución.
+
+## Cómo se calcula, paso a paso
+
+1. **Salario diario.** Se parte del salario bruto anual, con todo lo salarial y las pagas extra incluidas, aunque las
+   cobres prorrateadas. El criterio habitual es dividirlo entre 365.
+2. **Tiempo trabajado.** Años completos más la parte proporcional por meses. Un mes empezado cuenta como mes entero,
+   según el criterio habitual.
+3. **Multiplica.** Salario diario × días por año × años trabajados.
+4. **Aplica el tope.** Si el resultado supera el máximo de mensualidades, te quedas con el máximo.
+
+**Ejemplo.** Contrato desde el 1 de marzo de 2022 hasta el 31 de octubre de 2026, con un salario de 24.000 € brutos
+al año (cifras inventadas para el ejemplo):
+
+- Salario diario: 24.000 / 365 = {e2(imp.diario)}
+- Tiempo trabajado: {imp.meses} meses, es decir, {a2(imp.anios)} años
+
+| Motivo | Cálculo | Indemnización |
+|---|---|---|
+| Improcedente | {e2(imp.diario)} × {T.improcedente.dias} × {a2(imp.anios)} | **{e2(imp.indemnizacion)}** |
+| Objetivo | {e2(obj.diario)} × {T.objetivo.dias} × {a2(obj.anios)} | **{e2(obj.indemnizacion)}** |
+| Fin de contrato temporal | {e2(tem.diario)} × {T.temporal.dias} × {a2(tem.anios)} | **{e2(tem.indemnizacion)}** |
+
+En este ejemplo ningún tope entra en juego: el máximo de un despido improcedente serían {T.improcedente.topeMensualidades} mensualidades,
+{formatEuros(imp.tope)}. Los topes solo afectan a quien lleva muchos años en la empresa. Con 33 días por año, el tope de
+24 mensualidades (unos 730 días de salario) se alcanza a partir de unos 22 años de antigüedad.
+
+Haz el cálculo con tus fechas y tu sueldo en la
+[calculadora de indemnización por despido](/herramientas/calculadora-indemnizacion-despido/), que además suma el
+finiquito.
+
+## Si tu contrato es anterior al 12 de febrero de 2012
+
+La reforma laboral de 2012 bajó la indemnización del despido improcedente de 45 a 33 días por año. Para los
+contratos firmados antes del 12 de febrero de 2012, la disposición transitoria undécima del Estatuto manda calcularla
+en dos tramos:
+
+- **45 días por año** por el tiempo trabajado hasta esa fecha.
+- **33 días por año** por el tiempo trabajado después.
+
+El total no puede superar 720 días de salario, salvo que el tramo anterior a 2012 ya dé más días por sí solo. En ese
+caso se respeta ese importe, con un máximo absoluto de 42 mensualidades. Nuestra calculadora no hace este cálculo en
+dos tramos, así que si es tu caso, el resultado de la herramienta se quedará corto.
+
+## Indemnización y finiquito no son lo mismo
+
+Al acabar cualquier contrato, haya indemnización o no, la empresa te debe el **finiquito**: el salario de los días
+trabajados de ese mes que aún no has cobrado, las vacaciones generadas y no disfrutadas, y la parte proporcional de
+las pagas extra si no las cobras prorrateadas. La **indemnización** es otra cosa, una compensación por la pérdida del
+empleo, y solo existe en los casos de la tabla.
+
+## Plazos: 20 días hábiles para reclamar
+
+Si crees que tu despido es improcedente, el plazo para reclamar es corto: **20 días hábiles** desde el despido
+(artículo 59.3 del Estatuto). Es un plazo de caducidad: si se pasa, ya no se puede reclamar. El primer paso es la
+papeleta de conciliación ante el servicio de mediación de tu comunidad, que interrumpe el plazo. En un despido
+conviene asesorarse pronto con un abogado laboralista o con un sindicato.
+
+## ¿La indemnización paga IRPF?
+
+La indemnización obligatoria por ley está **exenta de IRPF**, con un límite máximo, según el artículo 7.e de la Ley del
+IRPF. Lo que la empresa pague por encima del mínimo legal porque así lo diga un convenio, un pacto o el contrato no
+está exento y tributa como rendimiento del trabajo. El finiquito, en cambio, es salario y tributa como cualquier
+nómina.
+
+## Qué hacer con el dinero
+
+Una indemnización suele llegar en un momento de incertidumbre. Antes de decidir nada, piensa en cuántos meses de
+gastos te cubre y en si vas a cobrar la prestación por desempleo. Para calcular el colchón que necesitas mientras
+buscas trabajo, usa la [calculadora del fondo de emergencia](/herramientas/calculadora-fondo-de-emergencia/) o lee
+[cuánto necesitas en tu fondo de emergencia](/blog/fondo-de-emergencia-cuanto-necesitas/).
+
+Hay un debate abierto sobre cambiar el coste del despido en España. Este artículo explica la ley vigente en la fecha
+de su última actualización: si cambia, lo actualizaremos.
+
+## Preguntas frecuentes
+
+**¿Cuántos días por año me corresponden si me despiden?**
+{T.improcedente.dias} si el despido es improcedente, {T.objetivo.dias} si es objetivo y {T.temporal.dias} al terminar un contrato temporal. En un despido
+disciplinario que se declara procedente no hay indemnización.
+
+**¿Se cuentan las pagas extra?**
+Sí. El salario que se usa para la indemnización es el anual completo, con las pagas extra incluidas.
+
+**¿Qué pasa si llevo menos de un año?**
+También hay indemnización, prorrateada por meses. Con 6 meses en un despido improcedente, por ejemplo, te
+corresponden la mitad de {T.improcedente.dias} días: 16,5 días de salario.
+
+**¿Esto es asesoramiento laboral?**
+No. Es una explicación general de la ley con un ejemplo. Tu convenio puede mejorar estas cifras, y cada despido
+tiene sus circunstancias: consulta con un profesional.
