@@ -81,9 +81,10 @@ Entradilla breve.
 
 ## 6. Envío real por email
 
-De momento este procedimiento solo genera la página pública del número; no envía ningún email.
-El sitio ya tiene un formulario de suscripción (`/api/newsletter`) que guarda los emails en el KV
-de Cloudflare a la espera de que se active un proveedor de email marketing (ver `privacidad.astro`
-y la nota en `CLAUDE.md`, sección "Newsletter"). Cuando David active ese proveedor, este paso 6
-se actualizará con cómo enviar el número (probablemente reenviando el contenido de este mismo
-archivo mediante la API de ese proveedor) y con quién tiene acceso a la lista de suscriptores.
+El envío lo hace el Control Center de David, no esta rutina. Cuando el consejo de administración
+publica el número en main, la tarea nocturna `wu-newsletter` lee la lista de suscriptores del KV de
+Cloudflare (con un token de solo lectura), convierte este MDX en correo (HTML y texto, con los enlaces
+completos, el aviso de contenido educativo y el enlace de baja) y lo envía desde el Gmail de David a
+todos los suscriptores en copia oculta, por lotes. Cada número se envía una sola vez y solo si tiene
+como mucho 3 días. Por eso el boletín debe funcionar también como correo: enlaces que se entiendan
+fuera de la web y nada que dependa de componentes interactivos.
