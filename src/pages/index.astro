@@ -103,7 +103,7 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
         {temas.map(({ c, n }) => (
           <li class="aparece">
             <a href={`/blog/tema/${c.id}/`} class="card group block h-full p-4 hover:border-brand/40">
-              <span class="font-display text-lg text-ink group-hover:text-brand">{c.nombre}</span>
+              <span class="font-display text-lg text-ink group-hover:text-brand">{c.nombre} <span class="card-flecha" aria-hidden="true">→</span></span>
               <span class="mt-1 block text-sm text-ink-muted">{c.descripcion}</span>
               <span class="mt-2 block text-xs text-ink-faint">{n} {n === 1 ? 'artículo' : 'artículos'}</span>
             </a>
@@ -122,7 +122,7 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
       {TOOLS.map((t) => (
         <li class="aparece">
           <a href={t.href} class="card group block h-full p-5 hover:border-brand/40">
-            <span class="font-display text-lg text-ink group-hover:text-brand">{t.name}</span>
+            <span class="font-display text-lg text-ink group-hover:text-brand">{t.name} <span class="card-flecha" aria-hidden="true">→</span></span>
             <span class="mt-2 block text-sm text-ink-muted">{t.description}</span>
           </a>
         </li>

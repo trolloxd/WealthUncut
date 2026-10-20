@@ -54,7 +54,7 @@ const itemListJsonLd = {
         {g.herramientas.map((t) => (
           <li class="aparece">
             <a href={t.href} class="card group block h-full p-5 hover:border-brand/40">
-              <span class="font-display text-lg text-ink group-hover:text-brand">{t.name}</span>
+              <span class="font-display text-lg text-ink group-hover:text-brand">{t.name} <span class="card-flecha" aria-hidden="true">→</span></span>
               <span class="mt-2 block text-sm text-ink-muted">{t.description}</span>
             </a>
           </li>

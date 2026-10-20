@@ -124,9 +124,42 @@
   a.card :where(span, h2, h3) {
     transition: color 200ms ease-out;
   }
+  /* Brillo verde suave que se enciende en la esquina superior al pasar por encima (solo opacidad). */
+  a.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(120% 90% at 100% 0%, rgba(30, 74, 58, 0.09), rgba(30, 74, 58, 0) 60%);
+    opacity: 0;
+    transition: opacity 250ms ease-out;
+    pointer-events: none;
+  }
   a.card:hover::after,
-  a.card:focus-visible::after {
+  a.card:focus-visible::after,
+  a.card:hover::before,
+  a.card:focus-visible::before {
     opacity: 1;
+  }
+  /* Flecha de las tarjetas: aparece y avanza 4 px al pasar por encima. */
+  a.card .card-flecha {
+    display: inline-block;
+    color: var(--color-brand);
+    opacity: 0.45;
+    transition:
+      opacity 200ms ease-out,
+      transform 200ms ease-out;
+  }
+  a.card:hover .card-flecha,
+  a.card:focus-visible .card-flecha {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    a.card:hover .card-flecha,
+    a.card:focus-visible .card-flecha {
+      transform: translateX(4px);
+    }
   }
   a.card:focus-visible {
     outline: 2px solid var(--color-brand);
