@@ -98,10 +98,10 @@ if (!reducido && 'IntersectionObserver' in window) {
 }
 
 // Índice del artículo: marca la sección visible (no es animación, va también con movimiento reducido).
-const indice = document.querySelector('[data-indice]');
-if (indice && 'IntersectionObserver' in window) {
+const enlacesIndice = document.querySelectorAll<HTMLAnchorElement>('[data-indice] a[href^="#"]');
+if (enlacesIndice.length > 0 && 'IntersectionObserver' in window) {
   const enlaces = new Map<string, HTMLAnchorElement[]>();
-  indice.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+  enlacesIndice.forEach((a) => {
     const id = decodeURIComponent(a.hash.slice(1));
     enlaces.set(id, [...(enlaces.get(id) ?? []), a]);
   });

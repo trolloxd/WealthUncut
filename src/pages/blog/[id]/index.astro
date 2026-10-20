@@ -10,6 +10,7 @@ import { herramientasRelacionadas } from '../../../config/tools';
 import { categoriaDe } from '../../../config/categorias';
 import { terminosEnTexto } from '../../../lib/glosario-enlaces';
 import NewsletterSignup from '../../../components/NewsletterSignup.astro';
+import IndiceArticulo from '../../../components/IndiceArticulo.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => isPublished(data));
@@ -20,7 +21,7 @@ export async function getStaticPaths() {
 }
 
 const { post, allPosts } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 const { title, description, pubDate, updatedDate, author, sources, hasAffiliateLinks, tags, resumen } = post.data;
 const url = `${SITE.url}/blog/${post.id}/`;
 const categoria = categoriaDe(post.data);
@@ -86,7 +87,9 @@ const breadcrumbJsonLd = {
   updatedDate={updatedDate}
   extraJsonLd={[articleJsonLd, breadcrumbJsonLd]}
 >
+  <div class="barra-lectura" aria-hidden="true"></div>
   <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Blog', href: '/blog/' }, { label: categoria.nombre, href: `/blog/tema/${categoria.id}/` }, { label: title }]} />
+  <div class="relative">
   <article class="prose max-w-none">
     <h1>{title}</h1>
     <ArticleMeta author={author} pubDate={pubDate} updatedDate={updatedDate} sources={sources} hasAffiliateLinks={hasAffiliateLinks}>
@@ -95,9 +98,12 @@ const breadcrumbJsonLd = {
           <strong class="text-brand">En breve:</strong> {resumen}
         </p>
       )}
+      <IndiceArticulo headings={headings} lugar="movil" />
       <Content components={{ a: ArticleLink }} />
     </ArticleMeta>
   </article>
+  <IndiceArticulo headings={headings} lugar="lateral" />
+  </div>
 
   <div class="mx-auto mt-12 max-w-md">
     <NewsletterSignup compacta />

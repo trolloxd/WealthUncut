@@ -60,6 +60,7 @@ const breadcrumbJsonLd = {
   updatedDate={updatedDate}
   extraJsonLd={[articleJsonLd, breadcrumbJsonLd]}
 >
+  <div class="barra-lectura" aria-hidden="true"></div>
   <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Noticias', href: '/mercados/' }, { label: title }]} />
   <article class="prose max-w-none">
     <h1>{title}</h1>

@@ -260,6 +260,52 @@
 }
 
 /*
+ * Barra de progreso de lectura (artículos y ediciones de mercados): avanza con el scroll de la
+ * página solo con CSS (animation-timeline: scroll()). Donde no hay soporte, no se muestra.
+ */
+.barra-lectura {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  .barra-lectura {
+    display: block;
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 40;
+    height: 3px;
+    background: var(--color-brand);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    animation: barra-lectura linear both;
+    animation-timeline: scroll(root block);
+    pointer-events: none;
+  }
+}
+@keyframes barra-lectura {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Índice del artículo: la sección que se lee se marca en verde (aria-current lo pone el script). */
+.indice-enlace {
+  transition:
+    color 200ms ease-out,
+    border-color 200ms ease-out;
+}
+.indice-enlace[aria-current] {
+  color: var(--color-brand);
+  font-weight: 600;
+  border-left-color: var(--color-brand);
+}
+.indice-movil summary::marker {
+  color: var(--color-brand);
+}
+.prose :where(h2[id]) {
+  scroll-margin-top: 1.5rem;
+}
+
+/*
  * Fondo vivo del hero de la portada: dos manchas de degradado radial (crema, verde y terracota de
  * la paleta) que se desplazan muy despacio. Solo transform; decorativo (aria-hidden) y quieto con
  * movimiento reducido.

@@ -1,0 +1,37 @@
+---
+/**
+ * Índice del artículo (titulares h2). En pantallas anchas va fijo a la derecha del texto y marca
+ * la sección que se está leyendo (src/scripts/animaciones.ts); en móvil es un desplegable al
+ * principio. Solo se muestra con 3 secciones o más.
+ */
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+  lugar: 'movil' | 'lateral';
+}
+const { headings, lugar } = Astro.props;
+const secciones = headings.filter((h) => h.depth === 2);
+---
+
+{secciones.length >= 3 && (
+  lugar === 'movil' ? (
+    <details class="indice-movil not-prose mb-8 rounded-xl border border-border bg-cream-elevated xl:hidden">
+      <summary class="flex min-h-11 cursor-pointer items-center px-4 text-sm font-semibold text-ink">En este artículo</summary>
+      <ol class="grid gap-1 px-4 pb-4 text-sm" data-indice>
+        {secciones.map((h) => (
+          <li><a href={`#${h.slug}`} class="indice-enlace block py-1.5 text-ink-muted hover:text-brand">{h.text}</a></li>
+        ))}
+      </ol>
+    </details>
+  ) : (
+    <aside aria-label="Índice del artículo" class="absolute inset-y-0 left-full ml-10 hidden w-52 xl:block">
+      <nav class="sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto pb-4">
+        <p class="mb-3 text-xs font-semibold uppercase tracking-widest text-ink-faint">En este artículo</p>
+        <ol class="grid gap-0.5 border-l border-border text-sm" data-indice>
+          {secciones.map((h) => (
+            <li><a href={`#${h.slug}`} class="indice-enlace -ml-px block border-l-2 border-transparent py-1.5 pl-3 leading-snug text-ink-muted hover:text-ink">{h.text}</a></li>
+          ))}
+        </ol>
+      </nav>
+    </aside>
+  )
+)}
