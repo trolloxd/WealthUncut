@@ -81,7 +81,7 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
     ) : (
       <ul class="grid gap-8">
         {posts.map((post) => (
-          <li class="border-b border-border pb-8 last:border-none">
+          <li class="aparece border-b border-border pb-8 last:border-none">
             <a href={`/blog/${post.id}/`} class="group block">
               <h3 class="font-display text-lg text-ink group-hover:text-brand">{post.data.title}</h3>
               <p class="mt-2 text-sm text-ink-muted">{post.data.description}</p>
@@ -98,7 +98,7 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
       <p class="mb-6 max-w-2xl text-sm text-ink-muted">Guías agrupadas por lo que quieres resolver: invertir, impuestos, vivienda, autónomos y más.</p>
       <ul class="grid gap-3 sm:grid-cols-2">
         {temas.map(({ c, n }) => (
-          <li>
+          <li class="aparece">
             <a href={`/blog/tema/${c.id}/`} class="card group block h-full p-4 hover:border-brand/40">
               <span class="font-display text-lg text-ink group-hover:text-brand">{c.nombre}</span>
               <span class="mt-1 block text-sm text-ink-muted">{c.descripcion}</span>
@@ -117,7 +117,7 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
     </div>
     <ul class="grid gap-4 sm:grid-cols-2">
       {TOOLS.map((t) => (
-        <li>
+        <li class="aparece">
           <a href={t.href} class="card group block h-full p-5 hover:border-brand/40">
             <span class="font-display text-lg text-ink group-hover:text-brand">{t.name}</span>
             <span class="mt-2 block text-sm text-ink-muted">{t.description}</span>
@@ -127,7 +127,7 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
     </ul>
   </section>
 
-  <section class="mx-auto mt-12 max-w-md border-t border-border pt-12">
+  <section class="aparece mx-auto mt-12 max-w-md border-t border-border pt-12">
     <NewsletterSignup />
   </section>
 </BaseLayout>

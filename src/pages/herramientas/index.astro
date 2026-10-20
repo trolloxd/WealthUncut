@@ -52,7 +52,7 @@ const itemListJsonLd = {
       <p class="mb-5 mt-1 max-w-2xl text-sm text-ink-muted">{g.texto}</p>
       <ul class="grid gap-4 sm:grid-cols-2">
         {g.herramientas.map((t) => (
-          <li>
+          <li class="aparece">
             <a href={t.href} class="card group block h-full p-5 hover:border-brand/40">
               <span class="font-display text-lg text-ink group-hover:text-brand">{t.name}</span>
               <span class="mt-2 block text-sm text-ink-muted">{t.description}</span>

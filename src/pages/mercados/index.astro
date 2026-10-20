@@ -27,7 +27,7 @@ const fecha = (d: Date) => d.toLocaleDateString('es-ES', { weekday: 'long', day:
   ) : (
     <ul class="grid gap-8">
       {dias.map((dia) => (
-        <li class="border-b border-border pb-8 last:border-none">
+        <li class="aparece border-b border-border pb-8 last:border-none">
           <a href={`/mercados/${dia.id}/`} class="group block">
             <p class="text-xs font-semibold uppercase tracking-wide text-brand">
               <time datetime={dia.id}>{fecha(dia.data.pubDate)}</time>
