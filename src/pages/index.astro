@@ -18,6 +18,8 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
 ---
 
 <BaseLayout title="Calculadoras y guías de finanzas personales en España" description={SITE.description} contentWidth="wide">
+  <div class="relative isolate">
+  <div class="hero-fondo" aria-hidden="true"></div>
   <section class="mx-auto max-w-2xl py-10 text-center">
     <p class="text-xs font-semibold uppercase tracking-widest text-brand">
       {SITE.name} · Finanzas sin humo
@@ -36,15 +38,15 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
     <dl class="mx-auto mt-10 flex max-w-md flex-wrap items-center justify-center gap-x-10 gap-y-3 border-t border-border pt-6 text-sm">
       <div>
         <dt class="text-ink-faint">Aportado</dt>
-        <dd class="font-display text-lg text-ink">37.000 €</dd>
+        <dd class="font-display text-lg text-ink" data-cuenta>37.000 €</dd>
       </div>
       <div>
         <dt class="text-ink-faint">Impuesto (IRPF ahorro)</dt>
-        <dd class="font-display text-lg text-accent">− 8.522 €</dd>
+        <dd class="font-display text-lg text-accent" data-cuenta>− 8.522 €</dd>
       </div>
       <div>
         <dt class="text-ink-faint">Neto final</dt>
-        <dd class="font-display text-lg text-brand">69.630 €</dd>
+        <dd class="font-display text-lg text-brand" data-cuenta>69.630 €</dd>
       </div>
     </dl>
     <p class="mx-auto mt-3 max-w-md text-xs text-ink-faint">
@@ -57,6 +59,7 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
       Por <a href="/autor/" class="underline hover:text-ink">{AUTHOR.name}</a> · sin recomendaciones de inversión personalizadas.
     </p>
   </section>
+  </div>
 
   <DatosDeHoy />
 

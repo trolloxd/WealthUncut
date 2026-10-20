@@ -169,6 +169,76 @@
 }
 
 /*
+ * Cifras que cuentan (src/scripts/animaciones.ts): la copia invisible con el valor final reserva
+ * el sitio y la cifra viva se pinta encima, alineada a la derecha. Cifras tabulares para que los
+ * dígitos no bailen.
+ */
+.cifra-pila {
+  position: relative;
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+.cifra-fantasma {
+  visibility: hidden;
+}
+.cifra-viva {
+  position: absolute;
+  top: 0;
+  right: 0;
+  white-space: nowrap;
+}
+
+/*
+ * Fondo vivo del hero de la portada: dos manchas de degradado radial (crema, verde y terracota de
+ * la paleta) que se desplazan muy despacio. Solo transform; decorativo (aria-hidden) y quieto con
+ * movimiento reducido.
+ */
+.hero-fondo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: 2rem;
+  pointer-events: none;
+}
+.hero-fondo::before,
+.hero-fondo::after {
+  content: '';
+  position: absolute;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+.hero-fondo::before {
+  top: -35%;
+  left: -12%;
+  background: radial-gradient(closest-side, rgba(30, 74, 58, 0.13), rgba(30, 74, 58, 0) 100%);
+}
+.hero-fondo::after {
+  bottom: -40%;
+  right: -14%;
+  background: radial-gradient(closest-side, rgba(179, 64, 42, 0.1), rgba(179, 64, 42, 0) 100%);
+}
+@keyframes deriva-a {
+  to {
+    transform: translate(9%, 7%) scale(1.08);
+  }
+}
+@keyframes deriva-b {
+  to {
+    transform: translate(-8%, -9%) scale(1.1);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-fondo::before {
+    animation: deriva-a 16s ease-in-out infinite alternate;
+  }
+  .hero-fondo::after {
+    animation: deriva-b 19s ease-in-out infinite alternate;
+  }
+}
+
+/*
  * Transición suave entre páginas (View Transitions entre documentos, solo CSS: sin JS ni
  * ClientRouter, así que no toca la CSP). El contenido se funde y sube 8 px; la cabecera tiene
  * nombre propio y se queda quieta. Chrome/Edge 126+ y Safari 18.2+; el resto navega como siempre.
