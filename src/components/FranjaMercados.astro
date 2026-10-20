@@ -1,0 +1,99 @@
+---
+/**
+ * Franja de datos de referencia del BCE que se desplaza en horizontal (/mercados/). Datos reales
+ * del último build (src/data/), nunca simulados en el navegador. La lista se pinta dos veces para
+ * que el bucle no tenga corte; la copia está oculta a los lectores de pantalla. Se puede detener
+ * (casilla "Detener", WCAG 2.2.2) y se para sola al pasar el ratón o con el foco; con movimiento
+ * reducido queda quieta, en varias líneas.
+ */
+import euribor from '../data/euribor/ultimo.json';
+
+type SerieBCE = { nombre: string; unidad: string; decimales: number; obs?: [string, number][] };
+const ficheros = import.meta.glob('../data/mercados/*.json', { eager: true }) as Record<string, { default: { series?: Record<string, SerieBCE> } }>;
+const serie = (id: string): { s: SerieBCE; obs: [string, number][] } | null => {
+  for (const ruta of Object.keys(ficheros).sort().reverse()) {
+    const s = ficheros[ruta].default?.series?.[id];
+    if (s && Array.isArray(s.obs) && s.obs.length > 1) return { s, obs: s.obs };
+  }
+  return null;
+};
+
+const num = (v: number, d: number) => {
+  const [e, dec] = Math.abs(v).toFixed(d).split('.');
+  return `${v < 0 ? '−' : ''}${e.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}${dec ? `,${dec}` : ''}`;
+};
+const fechaCorta = (f: string) => new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+
+type Item = { nombre: string; valor: string; cambio: string; signo: -1 | 0 | 1; fecha: string };
+const CORTOS: Record<string, string> = {
+  dfr: 'Depósito BCE',
+  estr: '€STR',
+  bono2a: 'Bono 2 años AAA',
+  bono10a: 'Bono 10 años AAA',
+  eurusd: 'EUR/USD',
+  eurgbp: 'EUR/GBP',
+  eurjpy: 'EUR/JPY',
+};
+const items: Item[] = [];
+const hist = euribor.historico;
+if (hist.length > 1) {
+  const dif = Math.round((hist.at(-1)!.valor - hist.at(-2)!.valor) * 100);
+  items.push({
+    nombre: 'Euríbor 12 meses',
+    valor: `${num(euribor.ultimoValor, 3)}%`,
+    cambio: `${dif > 0 ? '+' : ''}${num(dif, 0)} pb`,
+    signo: Math.sign(dif) as Item['signo'],
+    fecha: new Date(`${euribor.ultimoMes}-15T12:00:00Z`).toLocaleDateString('es-ES', { month: 'short', year: 'numeric' }),
+  });
+}
+for (const [id, nombre] of Object.entries(CORTOS)) {
+  const d = serie(id);
+  if (!d) continue;
+  const [f, v] = d.obs.at(-1)!;
+  const ant = d.obs.at(-2)![1];
+  const esTipo = d.s.unidad === '%';
+  const dif = esTipo ? Math.round((v - ant) * 100) : ((v - ant) / ant) * 100;
+  const signo = (Math.abs(dif) < (esTipo ? 0.5 : 0.005) ? 0 : Math.sign(dif)) as Item['signo'];
+  items.push({
+    nombre,
+    valor: `${num(v, d.s.decimales)}${esTipo ? '%' : ''}`,
+    cambio: esTipo ? `${dif > 0 ? '+' : ''}${num(dif, 0)} pb` : `${dif > 0 ? '+' : ''}${num(dif, 2)}%`,
+    signo,
+    fecha: fechaCorta(f),
+  });
+}
+const flecha = { '-1': '▼', '0': '=', '1': '▲' } as const;
+---
+
+{items.length > 0 && (
+  <section aria-labelledby="franja-titulo" class="franja not-prose mb-10 rounded-2xl border border-border bg-cream-elevated">
+    <div class="flex items-center justify-between gap-3 border-b border-border px-4 py-1">
+      <h2 id="franja-titulo" class="text-xs font-semibold uppercase tracking-widest text-brand">Datos de referencia del BCE</h2>
+      <label class="franja-control flex min-h-11 cursor-pointer items-center gap-2 text-xs text-ink-muted hover:text-ink">
+        <input type="checkbox" class="franja-pausa size-4 accent-brand" />
+        Detener
+      </label>
+    </div>
+    <div class="franja-ventana py-3">
+      <div class="franja-pista">
+        {[0, 1].map((copia) => (
+          <ul class:list={['franja-lista', copia === 1 && 'franja-copia']} aria-hidden={copia === 1 ? 'true' : undefined}>
+            {items.map((it) => (
+              <li class="flex shrink-0 items-baseline gap-2 whitespace-nowrap text-sm">
+                <span class="text-ink-muted">{it.nombre}</span>
+                <span class="font-semibold tabular-nums text-ink">{it.valor}</span>
+                <span class="text-xs tabular-nums text-ink-muted">
+                  <span aria-hidden="true">{flecha[String(it.signo) as keyof typeof flecha]}</span> {it.cambio}
+                </span>
+                <span class="text-xs text-ink-faint">({it.fecha})</span>
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+    <p class="border-t border-border px-4 py-2 text-xs text-ink-faint">
+      Variación frente al dato anterior (en tipos, puntos básicos). Fuente: Banco Central Europeo.
+    </p>
+  </section>
+)}

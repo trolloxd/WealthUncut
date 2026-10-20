@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { isPublished } from '../../lib/posts';
+import FranjaMercados from '../../components/FranjaMercados.astro';
 
 const dias = (await getCollection('mercados', ({ data }) => isPublished(data))).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -23,6 +24,7 @@ const fecha =(d: Date) => d.toLocaleDateString('es-ES', { weekday: 'long', day: 
     del Banco Central Europeo y cada cifra contrastada en varias fuentes. Es información, no una
     recomendación de inversión.
   </p>
+  <FranjaMercados />
   {!ultima ? (
     <p class="text-ink-muted">Todavía no hay ninguna edición publicada.</p>
   ) : (

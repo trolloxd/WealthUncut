@@ -306,6 +306,56 @@
 }
 
 /*
+ * Franja de datos de /mercados/ (FranjaMercados.astro). Por defecto (movimiento reducido) es una
+ * lista quieta que salta de línea, sin copia ni casilla. Con movimiento permitido,
+ * las dos copias de la lista se mueven un 50 % en bucle (solo transform).
+ */
+.franja-pista {
+  display: flex;
+}
+.franja-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+  padding-inline: 1rem;
+}
+.franja-copia,
+.franja-control {
+  display: none;
+}
+@keyframes franja {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .franja-ventana {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, #000 1.5rem, #000 calc(100% - 1.5rem), transparent);
+  }
+  .franja-pista {
+    width: max-content;
+  }
+  .franja-lista {
+    flex-wrap: nowrap;
+  }
+  .franja-copia {
+    display: flex;
+  }
+  .franja-control {
+    display: flex;
+  }
+  .franja-pista {
+    animation: franja 45s linear infinite;
+  }
+  .franja:has(.franja-pausa:checked) .franja-pista,
+  .franja-ventana:hover .franja-pista,
+  .franja:focus-within .franja-pista {
+    animation-play-state: paused;
+  }
+}
+
+/*
  * Fondo vivo del hero de la portada: dos manchas de degradado radial (crema, verde y terracota de
  * la paleta) que se desplazan muy despacio. Solo transform; decorativo (aria-hidden) y quieto con
  * movimiento reducido.
