@@ -7,7 +7,8 @@ import { isPublished } from '../../lib/posts';
 const dias = (await getCollection('mercados', ({ data }) => isPublished(data))).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-const fecha = (d: Date) => d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const [ultima, ...anteriores] = dias;
+const fecha =(d: Date) => d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
 <BaseLayout
@@ -22,21 +23,33 @@ const fecha = (d: Date) => d.toLocaleDateString('es-ES', { weekday: 'long', day:
     del Banco Central Europeo y cada cifra contrastada en varias fuentes. Es información, no una
     recomendación de inversión.
   </p>
-  {dias.length === 0 ? (
+  {!ultima ? (
     <p class="text-ink-muted">Todavía no hay ninguna edición publicada.</p>
   ) : (
+    <>
+    <a href={`/mercados/${ultima.id}/`} class="card group mb-12 block p-6 hover:border-brand/40 sm:p-8">
+      <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-wide">
+        <span class="rounded-full bg-brand-soft px-2.5 py-1 text-brand">Última edición</span>
+        <time datetime={ultima.id} class="text-ink-muted">{fecha(ultima.data.pubDate)}</time>
+      </p>
+      <h2 class="mt-3 font-display text-2xl leading-snug text-ink group-hover:text-brand sm:text-3xl">{ultima.data.title}</h2>
+      <p class="mt-3 text-ink-muted">{ultima.data.description}</p>
+      <span class="mt-5 inline-block text-sm font-semibold text-brand">Leer la edición <span aria-hidden="true">→</span></span>
+    </a>
+    {anteriores.length > 0 && <h2 class="mb-6 font-display text-xl text-ink">Ediciones anteriores</h2>}
     <ul class="grid gap-8">
-      {dias.map((dia) => (
+      {anteriores.map((dia) => (
         <li class="aparece border-b border-border pb-8 last:border-none">
           <a href={`/mercados/${dia.id}/`} class="group block">
             <p class="text-xs font-semibold uppercase tracking-wide text-brand">
               <time datetime={dia.id}>{fecha(dia.data.pubDate)}</time>
             </p>
-            <h2 class="mt-1 font-display text-xl text-ink group-hover:text-brand">{dia.data.title}</h2>
+            <h3 class="mt-1 font-display text-xl text-ink group-hover:text-brand">{dia.data.title}</h3>
             <p class="mt-2 text-ink-muted">{dia.data.description}</p>
           </a>
         </li>
       ))}
     </ul>
+    </>
   )}
 </BaseLayout>
