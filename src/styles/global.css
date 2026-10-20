@@ -75,13 +75,18 @@
       transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/15;
   }
 
+  /* Botones: color al pasar por encima, leve hundimiento al pulsar y foco visible con teclado. */
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-full bg-brand px-5 py-2.5 text-sm
-      font-semibold text-cream-elevated transition-colors hover:bg-brand-dark;
+    @apply inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-5 py-2.5 text-sm
+      font-semibold text-cream-elevated transition-[color,background-color,border-color,scale]
+      duration-200 ease-out hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2
+      focus-visible:outline-brand motion-safe:active:scale-[0.97];
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-full border border-ink/15 px-5 py-2.5
-      text-sm font-semibold text-ink transition-colors hover:border-ink/30;
+    @apply inline-flex min-h-11 items-center justify-center rounded-full border border-ink/15 px-5 py-2.5
+      text-sm font-semibold text-ink transition-[color,background-color,border-color,scale]
+      duration-200 ease-out hover:border-ink/30 hover:bg-cream-elevated focus-visible:outline-2
+      focus-visible:outline-offset-2 focus-visible:outline-brand motion-safe:active:scale-[0.97];
   }
 
   /* En las rejillas de las calculadoras, que los campos puedan encogerse en móvil. */
@@ -91,6 +96,49 @@
 
   .card {
     @apply rounded-2xl border border-border bg-cream-elevated shadow-[0_1px_2px_rgba(28,27,23,0.04),0_12px_32px_-16px_rgba(28,27,23,0.18)];
+  }
+
+  /*
+   * Tarjetas que son enlaces (portada, herramientas, temas, plantillas): al pasar por encima se
+   * elevan 2 px y ganan una sombra más honda. Solo se animan transform y opacity (la sombra extra
+   * vive en un pseudoelemento que aparece con opacidad), así que no se mueve nada del diseño.
+   */
+  a.card {
+    position: relative;
+    isolation: isolate;
+    transition:
+      border-color 200ms ease-out,
+      transform 200ms ease-out;
+  }
+  a.card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    box-shadow: 0 18px 40px -18px rgba(28, 27, 23, 0.28);
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+    pointer-events: none;
+  }
+  a.card :where(span, h2, h3) {
+    transition: color 200ms ease-out;
+  }
+  a.card:hover::after,
+  a.card:focus-visible::after {
+    opacity: 1;
+  }
+  a.card:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    a.card:hover {
+      transform: translateY(-2px);
+    }
+    a.card:active {
+      transform: translateY(0);
+    }
   }
 }
 

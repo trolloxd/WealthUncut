@@ -66,7 +66,7 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
         <h2 class="font-display text-2xl text-ink">Noticias del día</h2>
         <a href="/hoy/" class="text-sm font-medium text-brand underline decoration-brand/30 hover:decoration-brand">Tu briefing de hoy</a>
       </div>
-      <a href={`/mercados/${ultimaEdicion.id}/`} class="card group block p-6 transition-colors hover:border-brand/40">
+      <a href={`/mercados/${ultimaEdicion.id}/`} class="card group block p-6 hover:border-brand/40">
         <span class="text-xs font-semibold uppercase tracking-wide text-brand">Noticias de hoy</span>
         <span class="mt-2 block font-display text-xl text-ink group-hover:text-brand">{ultimaEdicion.data.title}</span>
         <span class="mt-2 block text-sm text-ink-muted">{ultimaEdicion.data.description}</span>
@@ -99,7 +99,7 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
       <ul class="grid gap-3 sm:grid-cols-2">
         {temas.map(({ c, n }) => (
           <li>
-            <a href={`/blog/tema/${c.id}/`} class="card group block h-full p-4 transition-colors hover:border-brand/40">
+            <a href={`/blog/tema/${c.id}/`} class="card group block h-full p-4 hover:border-brand/40">
               <span class="font-display text-lg text-ink group-hover:text-brand">{c.nombre}</span>
               <span class="mt-1 block text-sm text-ink-muted">{c.descripcion}</span>
               <span class="mt-2 block text-xs text-ink-faint">{n} {n === 1 ? 'artículo' : 'artículos'}</span>
@@ -118,7 +118,7 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
     <ul class="grid gap-4 sm:grid-cols-2">
       {TOOLS.map((t) => (
         <li>
-          <a href={t.href} class="card group block h-full p-5 transition-colors hover:border-brand/40">
+          <a href={t.href} class="card group block h-full p-5 hover:border-brand/40">
             <span class="font-display text-lg text-ink group-hover:text-brand">{t.name}</span>
             <span class="mt-2 block text-sm text-ink-muted">{t.description}</span>
           </a>
