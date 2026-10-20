@@ -168,6 +168,37 @@
   }
 }
 
+/*
+ * Transición suave entre páginas (View Transitions entre documentos, solo CSS: sin JS ni
+ * ClientRouter, así que no toca la CSP). El contenido se funde y sube 8 px; la cabecera tiene
+ * nombre propio y se queda quieta. Chrome/Edge 126+ y Safari 18.2+; el resto navega como siempre.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+  .cabecera-sitio {
+    view-transition-name: cabecera;
+  }
+  ::view-transition-old(root) {
+    animation: 160ms ease-out both vt-sale;
+  }
+  ::view-transition-new(root) {
+    animation: 240ms ease-out both vt-entra;
+  }
+}
+@keyframes vt-sale {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-entra {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
 .prose {
   --tw-prose-body: var(--color-ink);
   --tw-prose-headings: var(--color-ink);

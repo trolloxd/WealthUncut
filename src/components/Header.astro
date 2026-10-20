@@ -15,7 +15,7 @@ const path = Astro.url.pathname;
 const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href)) || (href === '/plantillas/' && path.startsWith('/plantilla-'));
 ---
 
-<header class="border-b border-border">
+<header class="cabecera-sitio border-b border-border">
   <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-5 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:px-8">
     <a href="/" class="font-display text-xl font-semibold tracking-tight text-brand">
       {SITE.name}
