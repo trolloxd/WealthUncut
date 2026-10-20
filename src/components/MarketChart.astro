@@ -37,6 +37,12 @@ const PAD = { top: 16, right: 64, bottom: 28, left: 12 };
 const x = (i: number) => PAD.left + (i / Math.max(1, obs.length - 1)) * (W - PAD.left - PAD.right);
 const y = (v: number) => PAD.top + (1 - (v - yMin) / (yMax - yMin)) * (H - PAD.top - PAD.bottom);
 const puntos = obs.map(([, v], i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+// Área suave bajo la línea (cierra el polígono por la base de la gráfica).
+const base = (H - PAD.bottom).toFixed(1);
+const area = `${x(0).toFixed(1)},${base} ${puntos} ${x(obs.length - 1).toFixed(1)},${base}`;
+// Id estable y único por gráfica (puede haber varias de la misma serie en una página).
+const huella = [...`${titulo ?? ''}${puntos}`].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+const idDegradado = `area-${id}-${huella.toString(36)}`;
 
 const fmt = (v: number) => v.toLocaleString('es-ES', { minimumFractionDigits: serie.decimales, maximumFractionDigits: serie.decimales });
 const fecha = (f: string) =>
@@ -51,15 +57,22 @@ const descripcion = `${serie.nombre}: de ${fmt(primerValor)}${sufijo} el ${fecha
   <figcaption class="mb-2 text-sm font-semibold text-ink">
     {titulo ?? serie.nombre} <span class="font-normal text-ink-muted">({serie.unidad})</span>
   </figcaption>
-  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={descripcion} class="h-auto w-full rounded-xl border border-border bg-cream-elevated">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={descripcion} class="h-auto w-full rounded-xl border border-border bg-cream-elevated" data-grafica>
+    <defs>
+      <linearGradient id={idDegradado} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--color-brand)" stop-opacity="0.14" />
+        <stop offset="100%" stop-color="var(--color-brand)" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+    <polygon points={area} fill={`url(#${idDegradado})`} class="grafica-area" />
     {[max, (max + min) / 2, min].map((v) => (
       <g>
         <line x1={PAD.left} x2={W - PAD.right} y1={y(v)} y2={y(v)} stroke="var(--color-border)" stroke-width="1" />
         <text x={W - PAD.right + 6} y={y(v) + 4} font-size="11" fill="var(--color-ink-muted)">{fmt(v)}</text>
       </g>
     ))}
-    <polyline points={puntos} fill="none" stroke="var(--color-brand)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
-    <circle cx={x(obs.length - 1)} cy={y(ultimoValor)} r="3.5" fill="var(--color-brand)" />
+    <polyline points={puntos} pathLength="1" fill="none" stroke="var(--color-brand)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" class="grafica-trazo" />
+    <circle cx={x(obs.length - 1)} cy={y(ultimoValor)} r="3.5" fill="var(--color-brand)" class="grafica-punto" />
     <text x={PAD.left} y={H - 8} font-size="11" fill="var(--color-ink-muted)">{fecha(primeraFecha)}</text>
     <text x={W - PAD.right} y={H - 8} font-size="11" fill="var(--color-ink-muted)" text-anchor="end">{fecha(ultimaFecha)}</text>
   </svg>

@@ -222,6 +222,44 @@
 }
 
 /*
+ * Gráficas SVG que se dibujan al aparecer (MarketChart.astro + animaciones.ts). Sin JS no se
+ * añade ninguna clase y la gráfica se ve completa. El trazo usa pathLength="1" para que el
+ * guion mida lo mismo que la línea; el área y el punto final aparecen con opacidad.
+ */
+.grafica-espera .grafica-trazo,
+.grafica-dibuja .grafica-trazo {
+  stroke-dasharray: 1 1;
+}
+.grafica-espera .grafica-trazo {
+  stroke-dashoffset: 1;
+}
+.grafica-espera :is(.grafica-area, .grafica-punto) {
+  opacity: 0;
+}
+.grafica-dibuja .grafica-trazo {
+  animation: grafica-trazo 1300ms cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+.grafica-dibuja .grafica-area {
+  animation: grafica-aparece 700ms ease-out 500ms both;
+}
+.grafica-dibuja .grafica-punto {
+  animation: grafica-aparece 250ms ease-out 1200ms both;
+}
+@keyframes grafica-trazo {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes grafica-aparece {
+  from {
+    opacity: 0;
+  }
+}
+
+/*
  * Fondo vivo del hero de la portada: dos manchas de degradado radial (crema, verde y terracota de
  * la paleta) que se desplazan muy despacio. Solo transform; decorativo (aria-hidden) y quieto con
  * movimiento reducido.
