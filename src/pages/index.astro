@@ -15,6 +15,18 @@ const ultimaEdicion = (await getCollection('mercados', ({ data }) => isPublished
 const publicados = (await getCollection('blog', ({ data }) => isPublished(data))).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const posts = publicados.slice(0, 5);
 const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaDe(x.data).id === c.id).length })).filter((x) => x.n > 0);
+
+// Las 6 calculadoras que se ven de entrada en la portada; el resto se despliega con "Ver todas".
+const TOP_CALCULADORAS = [
+  '/blog/rentabilidad-neta-fondo-indexado/',
+  '/herramientas/calculadora-interes-compuesto/',
+  '/herramientas/calculadora-sueldo-neto/',
+  '/herramientas/simulador-hipoteca-euribor/',
+  '/herramientas/alquilar-o-comprar-vivienda/',
+  '/herramientas/calculadora-fondo-de-emergencia/',
+];
+const destacadas = TOP_CALCULADORAS.map((href) => TOOLS.find((t) => t.href === href)).filter((t) => t !== undefined);
+const resto = TOOLS.filter((t) => !TOP_CALCULADORAS.includes(t.href));
 ---
 
 <BaseLayout title="Calculadoras y guías de finanzas personales en España" description={SITE.description} contentWidth="wide">
@@ -116,10 +128,10 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
   <section class="mx-auto mt-10 max-w-3xl border-t border-border pt-12">
     <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
       <h2 class="font-display text-2xl text-ink">Calculadoras</h2>
-      <a href="/herramientas/" class="text-sm font-medium text-brand underline decoration-brand/30 hover:decoration-brand">Ver todas</a>
+      <a href="/herramientas/" id="ver-todas-calc" aria-controls="calc-resto" aria-expanded="false" data-total={TOOLS.length} class="text-sm font-medium text-brand underline decoration-brand/30 hover:decoration-brand">Ver todas ({TOOLS.length})</a>
     </div>
     <ul class="grid gap-4 sm:grid-cols-2">
-      {TOOLS.map((t) => (
+      {destacadas.map((t) => (
         <li class="aparece">
           <a href={t.href} class="card group block h-full p-5 hover:border-brand/40">
             <span class="font-display text-lg text-ink group-hover:text-brand">{t.name} <span class="card-flecha" aria-hidden="true">→</span></span>
@@ -128,7 +140,34 @@ const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaD
         </li>
       ))}
     </ul>
+    <ul id="calc-resto" class="mt-4 grid gap-4 sm:grid-cols-2" hidden>
+      {resto.map((t) => (
+        <li>
+          <a href={t.href} class="card group block h-full p-5 hover:border-brand/40">
+            <span class="font-display text-lg text-ink group-hover:text-brand">{t.name} <span class="card-flecha" aria-hidden="true">→</span></span>
+            <span class="mt-2 block text-sm text-ink-muted">{t.description}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
   </section>
+
+  <script>
+    // "Ver todas" despliega aquí mismo el resto de calculadoras. Sin JavaScript sigue siendo un enlace a /herramientas/.
+    const boton = document.getElementById('ver-todas-calc');
+    const resto = document.getElementById('calc-resto');
+    if (boton && resto) {
+      boton.setAttribute('role', 'button');
+      boton.addEventListener('click', (e) => {
+        e.preventDefault();
+        const abrir = resto.hidden;
+        resto.hidden = !abrir;
+        boton.setAttribute('aria-expanded', String(abrir));
+        boton.textContent = abrir ? 'Ver menos' : `Ver todas (${boton.dataset.total})`;
+        if (!abrir) boton.closest('section')?.scrollIntoView({ block: 'start' });
+      });
+    }
+  </script>
 
   <section class="aparece mx-auto mt-12 max-w-md border-t border-border pt-12">
     <NewsletterSignup />
