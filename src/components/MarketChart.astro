@@ -17,9 +17,11 @@ interface Props {
   /** Últimas N observaciones a dibujar (por defecto, todas). */
   ultimas?: number;
   titulo?: string;
+  /** Serie mensual (fechas AAAA-MM): las etiquetas muestran mes y año en vez de día. */
+  mensual?: boolean;
 }
 
-const { datos, serie: id, ultimas, titulo } = Astro.props;
+const { datos, serie: id, ultimas, titulo, mensual = false } = Astro.props;
 const serie = datos.series[id];
 if (!serie) throw new Error(`MarketChart: la serie "${id}" no está en los datos`);
 
@@ -46,11 +48,14 @@ const idDegradado = `area-${id}-${huella.toString(36)}`;
 
 const fmt = (v: number) => v.toLocaleString('es-ES', { minimumFractionDigits: serie.decimales, maximumFractionDigits: serie.decimales });
 const fecha = (f: string) =>
-  new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: '2-digit' });
+  mensual
+    ? new Date(`${f}-15T12:00:00Z`).toLocaleDateString('es-ES', { month: 'short', year: 'numeric', timeZone: 'UTC' })
+    : new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: '2-digit' });
+const en = mensual ? 'en' : 'el';
 const [primeraFecha, primerValor] = obs[0];
 const [ultimaFecha, ultimoValor] = obs.at(-1)!;
 const sufijo = serie.unidad === '%' ? '%' : '';
-const descripcion = `${serie.nombre}: de ${fmt(primerValor)}${sufijo} el ${fecha(primeraFecha)} a ${fmt(ultimoValor)}${sufijo} el ${fecha(ultimaFecha)}. Mínimo ${fmt(min)}${sufijo}, máximo ${fmt(max)}${sufijo}.`;
+const descripcion = `${serie.nombre}: de ${fmt(primerValor)}${sufijo} ${en} ${fecha(primeraFecha)} a ${fmt(ultimoValor)}${sufijo} ${en} ${fecha(ultimaFecha)}. Mínimo ${fmt(min)}${sufijo}, máximo ${fmt(max)}${sufijo}.`;
 ---
 
 <figure class="not-prose my-8">

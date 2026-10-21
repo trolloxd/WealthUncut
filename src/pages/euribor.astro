@@ -1,0 +1,291 @@
+---
+/**
+ * /euribor/: media mensual del euríbor a 12 meses, variación, gráficas y resumen por año desde 1999.
+ * Datos: src/data/euribor/historico.json (serie completa) + ultimo.json (por si el histórico va un mes por detrás),
+ * los dos generados por scripts/datos-euribor.mjs desde el BCE. Redondeados a 3 decimales coinciden con el índice
+ * oficial que el Banco de España publica en el BOE (ver tests/euribor.test.ts).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import MarketChart from '../components/MarketChart.astro';
+import { SITE, AUTHOR } from '../config/site';
+import euriborUltimo from '../data/euribor/ultimo.json';
+import euriborHistorico from '../data/euribor/historico.json';
+import { combinarSeries, mesesAtras, redondear3, resumenAnual, revisarHipoteca, variacion } from '../lib/calculos/euribor';
+
+const serie = combinarSeries(euriborHistorico.historico, euriborUltimo.historico);
+const ultimo = serie.at(-1)!;
+const mensual = variacion(serie, 1)!;
+const anual = variacion(serie, 12)!;
+const resumen = resumenAnual(serie);
+const ultimos24 = serie.slice(-25);
+const filas24 = ultimos24
+  .slice(1)
+  .map((p, i) => ({ ...p, cambio: redondear3(redondear3(p.valor) - redondear3(ultimos24[i].valor)) }))
+  .reverse();
+
+const mesLargo = (mes: string) =>
+  new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${mes}-15T12:00:00Z`));
+const mesSolo = (mes: string) => new Intl.DateTimeFormat('es-ES', { month: 'long', timeZone: 'UTC' }).format(new Date(`${mes}-15T12:00:00Z`));
+const num = (v: number, d = 3) => v.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
+const pct = (v: number) => `${num(v)} %`;
+const pp = (v: number) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${num(Math.abs(v))} pp`;
+const sentido = (v: number) => (v > 0 ? 'sube' : v < 0 ? 'baja' : 'no cambia');
+
+// Ejemplo fijo y explicado: 150.000 € pendientes, 25 años, diferencial 0,60 %, revisión anual.
+const ejemplo = revisarHipoteca({
+  capitalPendiente: 150000,
+  mesesRestantes: 300,
+  diferencial: 0.6,
+  euriborAnterior: redondear3(anual.desde.valor),
+  euriborNuevo: redondear3(ultimo.valor),
+  mesesHastaSiguiente: 12,
+});
+const euros2 = (v: number) =>
+  new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, useGrouping: 'always' }).format(v);
+const euros0 = (v: number) =>
+  new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0, useGrouping: 'always' }).format(v);
+
+const negativos = serie.filter((p) => redondear3(p.valor) < 0);
+const primerNegativo = negativos[0];
+const ultimoNegativo = negativos.at(-1);
+const minimoHistorico = serie.reduce((a, b) => (b.valor < a.valor ? b : a));
+const maximoHistorico = serie.reduce((a, b) => (b.valor > a.valor ? b : a));
+const siguienteMes = mesesAtras(ultimo.mes, -1);
+const mesPublicacion = mesesAtras(ultimo.mes, -2);
+
+// Datos para MarketChart (misma forma que src/data/mercados/*.json).
+const datosGrafica = {
+  fuente: 'Banco Central Europeo (media mensual)',
+  series: {
+    euribor: {
+      nombre: 'Euríbor a 12 meses, media mensual',
+      unidad: '%',
+      decimales: 3,
+      url: euriborUltimo.fuenteUrl,
+      obs: serie.map((p) => [p.mes, redondear3(p.valor)] as [string, number]),
+    },
+  },
+};
+
+const title = 'Euríbor: valor mensual oficial e histórico desde 1999';
+const description = `El euríbor a 12 meses de ${mesLargo(ultimo.mes)} es ${pct(redondear3(ultimo.valor))}. Variación, gráficas, tabla de los últimos 24 meses y media de cada año desde 1999, con fuente oficial.`;
+const url = `${SITE.url}/euribor/`;
+const actualizado = euriborUltimo.generado.slice(0, 10);
+
+const faqs = [
+  {
+    pregunta: '¿Qué es el euríbor a 12 meses?',
+    respuesta:
+      'Es el tipo de interés al que los bancos de la zona euro se prestan dinero a un año. Su media mensual es el índice oficial que usan casi todas las hipotecas variables en España: la cuota se recalcula con él en cada revisión.',
+  },
+  {
+    pregunta: '¿Cuándo se publica el euríbor de cada mes?',
+    respuesta: `El Banco de España publica en el BOE, en los primeros días de cada mes, la media del mes anterior como tipo oficial de referencia del mercado hipotecario. La media de ${mesSolo(siguienteMes)} saldrá a primeros de ${mesSolo(mesPublicacion)}.`,
+  },
+  {
+    pregunta: '¿Por qué en otras webs aparece un euríbor distinto?',
+    respuesta:
+      'Muchas muestran el valor de un día o la media de los días que lleva el mes. Tu hipoteca usa la media del mes completo publicada como índice oficial, que es la que recoge esta página.',
+  },
+  {
+    pregunta: '¿Ha estado el euríbor en negativo?',
+    respuesta: primerNegativo
+      ? `Sí. La media mensual fue negativa desde ${mesLargo(primerNegativo.mes)} hasta ${mesLargo(ultimoNegativo!.mes)}, con un mínimo de ${pct(redondear3(minimoHistorico.valor))} en ${mesLargo(minimoHistorico.mes)}. En las hipotecas de la Ley 5/2019 el tipo que pagas (euríbor más diferencial) no puede ser negativo.`
+      : 'No en la serie mensual recogida aquí.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: title,
+    description,
+    inLanguage: SITE.locale,
+    dateModified: actualizado,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    author: { '@id': `${SITE.url}/autor/#person`, '@type': 'Person', name: AUTHOR.name },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Euríbor', item: url },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.pregunta, acceptedAnswer: { '@type': 'Answer', text: f.respuesta } })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} updatedDate={new Date(`${actualizado}T12:00:00Z`)} extraJsonLd={jsonLd}>
+  <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Euríbor' }]} />
+  <h1 class="mb-3 font-display text-3xl text-ink sm:text-4xl">Euríbor a 12 meses: el dato oficial de cada mes</h1>
+  <p class="mb-8 max-w-2xl text-ink-muted">
+    La media mensual que usan las hipotecas variables, cómo ha cambiado y cuánto mueve una cuota. Se actualiza cada mes con
+    el dato nuevo.
+  </p>
+
+  <section aria-labelledby="dato-actual" class="card mb-10 grid gap-6 p-6 sm:grid-cols-[1.2fr_1fr]">
+    <div>
+      <h2 id="dato-actual" class="text-sm font-medium text-ink-muted">Euríbor de {mesLargo(ultimo.mes)}</h2>
+      <p class="mt-1 font-display text-5xl text-brand tabular-nums">{pct(redondear3(ultimo.valor))}</p>
+      <p class="mt-3 text-sm text-ink-faint">
+        Media del mes completo. La de {mesSolo(siguienteMes)} se publica a primeros de {mesSolo(mesPublicacion)}.
+      </p>
+    </div>
+    <dl class="grid content-center gap-3 text-sm">
+      <div class="flex items-baseline justify-between gap-3 border-b border-border pb-2">
+        <dt class="text-ink-muted">Frente a {mesLargo(mensual.desde.mes)}</dt>
+        <dd class:list={['font-semibold tabular-nums', mensual.puntos > 0 ? 'text-accent' : 'text-brand']}>
+          {pp(mensual.puntos)}
+        </dd>
+      </div>
+      <div class="flex items-baseline justify-between gap-3 border-b border-border pb-2">
+        <dt class="text-ink-muted">Frente a {mesLargo(anual.desde.mes)}</dt>
+        <dd class:list={['font-semibold tabular-nums', anual.puntos > 0 ? 'text-accent' : 'text-brand']}>{pp(anual.puntos)}</dd>
+      </div>
+      <div class="flex items-baseline justify-between gap-3">
+        <dt class="text-ink-muted">Máximo desde 1999</dt>
+        <dd class="font-semibold tabular-nums text-ink">{pct(redondear3(maximoHistorico.valor))} ({mesLargo(maximoHistorico.mes)})</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section aria-labelledby="para-tu-hipoteca" class="mb-10 max-w-2xl">
+    <h2 id="para-tu-hipoteca" class="mb-3 font-display text-2xl text-ink">Qué supone en una hipoteca</h2>
+    <p class="text-ink-muted">
+      Ejemplo: quedan 150.000 € por pagar a 25 años, con un diferencial del 0,60 % y revisión anual. Con el euríbor de{' '}
+      {mesLargo(anual.desde.mes)} ({pct(redondear3(anual.desde.valor))}) la cuota era de {euros2(ejemplo.cuotaAnterior)}; con el de{' '}
+      {mesLargo(ultimo.mes)} ({pct(redondear3(ultimo.valor))}) {sentido(ejemplo.diferenciaMes)}
+      {ejemplo.diferenciaMes !== 0 && <> a {euros2(ejemplo.cuotaNueva)}</>}, {euros2(Math.abs(ejemplo.diferenciaMes))} al mes y{' '}
+      {euros0(Math.abs(ejemplo.diferenciaPeriodo))} en los 12 meses siguientes.
+    </p>
+    <p class="mt-4">
+      <a href="/herramientas/calculadora-revision-hipoteca/" class="btn-primary inline-block">Calcula tu revisión</a>
+    </p>
+  </section>
+
+  <section aria-labelledby="graficas" class="mb-10">
+    <h2 id="graficas" class="font-display text-2xl text-ink">Cómo ha cambiado</h2>
+    <MarketChart datos={datosGrafica} serie="euribor" ultimas={36} titulo="Últimos 3 años" mensual />
+    <MarketChart datos={datosGrafica} serie="euribor" titulo="Desde 1999" mensual />
+  </section>
+
+  <section aria-labelledby="ultimos-meses" class="mb-10">
+    <h2 id="ultimos-meses" class="mb-3 font-display text-2xl text-ink">Últimos 24 meses</h2>
+    <div class="max-w-md">
+      <table class="w-full text-sm">
+        <caption class="sr-only">Euríbor a 12 meses, media de cada mes y cambio frente al mes anterior</caption>
+        <thead>
+          <tr class="border-b border-border text-left text-ink-muted">
+            <th scope="col" class="py-2 font-medium">Mes</th>
+            <th scope="col" class="py-2 text-right font-medium">Euríbor</th>
+            <th scope="col" class="py-2 text-right font-medium">Cambio</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            filas24.map((f) => (
+              <tr class="border-b border-border/60">
+                <th scope="row" class="py-1.5 text-left font-normal capitalize text-ink">{mesLargo(f.mes)}</th>
+                <td class="py-1.5 text-right tabular-nums text-ink">{pct(redondear3(f.valor))}</td>
+                <td class:list={['py-1.5 text-right tabular-nums', f.cambio > 0 ? 'text-accent' : f.cambio < 0 ? 'text-brand' : 'text-ink-muted']}>
+                  {pp(f.cambio)}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="por-anio" class="mb-10">
+    <h2 id="por-anio" class="mb-3 font-display text-2xl text-ink">Media de cada año desde 1999</h2>
+    <p class="mb-3 max-w-2xl text-sm text-ink-muted">
+      Media de las medias mensuales de cada año, con el mes más bajo y el más alto. El año en curso solo incluye los meses ya
+      publicados.
+    </p>
+    <div class="max-w-xl">
+      <table class="w-full text-sm">
+        <caption class="sr-only">Euríbor a 12 meses: media, mínimo y máximo mensual de cada año</caption>
+        <thead>
+          <tr class="border-b border-border text-left text-ink-muted">
+            <th scope="col" class="py-2 font-medium">Año</th>
+            <th scope="col" class="py-2 text-right font-medium">Media</th>
+            <th scope="col" class="py-2 text-right font-medium">Mínimo</th>
+            <th scope="col" class="py-2 text-right font-medium">Máximo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            resumen.map((r) => (
+              <tr class="border-b border-border/60">
+                <th scope="row" class="py-1.5 text-left font-normal text-ink">
+                  {r.anio}
+                  {r.meses < 12 && <span class="text-xs text-ink-faint"> ({r.meses} meses)</span>}
+                </th>
+                <td class="py-1.5 text-right tabular-nums text-ink">{pct(r.media)}</td>
+                <td class="py-1.5 text-right tabular-nums text-ink-muted">{pct(r.minimo)}</td>
+                <td class="py-1.5 text-right tabular-nums text-ink-muted">{pct(r.maximo)}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="como-se-usa" class="prose mb-10 max-w-2xl">
+    <h2 id="como-se-usa">Cómo se usa en tu hipoteca</h2>
+    <p>
+      En una hipoteca variable pagas el euríbor más un diferencial fijo (por ejemplo, euríbor + 0,60 %). Cada 6 o 12 meses,
+      según tu contrato, el banco toma el euríbor oficial y recalcula la cuota con el capital que queda y los meses que
+      faltan. Qué mes cuenta lo dice la cláusula de tipo de interés variable de tu escritura: puede ser el último publicado
+      antes de la fecha de revisión o el de un mes concreto anterior.
+    </p>
+    <p>
+      El índice oficial lo publica cada mes el Banco de España en el BOE (su definición está en el anejo 8 de la Circular
+      5/2012). Las cifras de esta página son la media mensual del Banco Central Europeo: redondeadas a tres decimales
+      coinciden con la oficial, y lo hemos comprobado en ocho resoluciones del BOE entre 2016 y 2026.
+    </p>
+    <p>
+      Si quieres probar cuotas desde cero, fija, variable o mixta, usa el{' '}
+      <a href="/herramientas/simulador-hipoteca-euribor/">simulador de hipoteca</a>; si ya tienes una y te toca revisión, la{' '}
+      <a href="/herramientas/calculadora-revision-hipoteca/">calculadora de revisión</a>.
+    </p>
+
+    <h2>Preguntas frecuentes</h2>
+    {
+      faqs.map((f) => (
+        <p>
+          <strong>{f.pregunta}</strong>
+          <br />
+          {f.respuesta}
+        </p>
+      ))
+    }
+  </section>
+
+  <footer class="max-w-2xl border-t border-border pt-6 text-xs text-ink-faint">
+    <p>
+      Fuentes: <a href={euriborUltimo.fuenteUrl} class="underline" rel="noopener">Banco Central Europeo, euríbor a 12 meses, media mensual</a> (serie
+      desde enero de 1999) y resoluciones mensuales del Banco de España con los tipos oficiales de referencia del mercado
+      hipotecario, por ejemplo la de <a href="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20519" class="underline" rel="noopener">septiembre de 2026 (BOE del 2 de octubre)</a>. Datos
+      revisados el <time datetime={actualizado}>{new Date(`${actualizado}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}</time>.
+    </p>
+    <p class="mt-2">
+      Euribor® es una marca registrada del European Money Market Institute (EMMI). Información educativa: no es una oferta
+      ni una recomendación. ¿Has visto un error? Escríbenos a <a href={`mailto:${SITE.email}`} class="underline">{SITE.email}</a> y lo anotamos en las{' '}
+      <a href="/correcciones/" class="underline">correcciones</a>.
+    </p>
+  </footer>
+</BaseLayout>

@@ -19,6 +19,7 @@ export async function GET() {
     ...guias.map((p) => l(p.data.title, `/blog/${p.id}/`, p.data.description)),
     '',
     '## Datos y recursos',
+    l('Euríbor oficial mes a mes', '/euribor/', 'Euríbor a un año oficial de cada mes publicado en el BOE por el Banco de España, variación y resumen por año.'),
     l('Datos abiertos (CSV y JSON)', '/datos/', 'Tramos de IRPF, ITP por comunidad y cuota de autónomos (CC BY 4.0), y el euríbor oficial del BOE, con fuente y fecha.'),
     l('Plantillas de Excel gratis', '/plantillas/', 'Presupuesto mensual y seguimiento de inversiones.'),
     l('Glosario', '/glosario/', 'Definiciones cortas de términos financieros.'),
