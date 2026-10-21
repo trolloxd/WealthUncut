@@ -109,7 +109,7 @@ const resto = TOOLS.filter((t) => !TOP_CALCULADORAS.includes(t.href));
       <h2 id="h-ultimos" class="font-display text-2xl text-ink">Últimos artículos</h2>
       {publicados.length > 0 && (
         <a href="/blog/" class="enlace-todos">
-          Ver todos los artículos ({publicados.length}) <span class="enlace-todos-flecha" aria-hidden="true">→</span>
+          Ver el blog ({publicados.length} {publicados.length === 1 ? 'artículo' : 'artículos'}) <span class="enlace-todos-flecha" aria-hidden="true">→</span>
         </a>
       )}
     </div>
