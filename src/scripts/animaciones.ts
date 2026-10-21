@@ -96,9 +96,12 @@ if (!reducido && 'IntersectionObserver' in window) {
     g.classList.remove('grafica-espera');
   });
 
-  // Secciones con entrada escalonada (Últimos artículos de la portada). Solo se ocultan si hay JS,
-  // y se muestran al entrar en pantalla (estilos en global.css).
-  const escalonadas = [...document.querySelectorAll('[data-escalona]')];
+  // Secciones con entrada escalonada (Últimos artículos de la portada). Solo se ocultan si hay JS
+  // y la sección todavía está por debajo de la pantalla; si ya se ve (o se ha pasado), se queda
+  // visible sin animar para que no parpadee. Se muestran al entrar en pantalla (estilos en global.css).
+  const escalonadas = [...document.querySelectorAll('[data-escalona]')].filter(
+    (s) => s.getBoundingClientRect().top > window.innerHeight
+  );
   escalonadas.forEach((s) => s.setAttribute('data-escalona', 'espera'));
   alAparecer(escalonadas, (s) => s.setAttribute('data-escalona', 'lista'));
 }
