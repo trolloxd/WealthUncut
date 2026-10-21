@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { isPublished } from '../lib/posts';
+import { minutosDeLectura } from '../lib/briefing';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE, AUTHOR } from '../config/site';
 import { TOOLS } from '../config/tools';
@@ -13,7 +14,15 @@ const ultimaEdicion = (await getCollection('mercados', ({ data }) => isPublished
 )[0];
 
 const publicados = (await getCollection('blog', ({ data }) => isPublished(data))).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const posts = publicados.slice(0, 5);
+// Últimos artículos: tema, fecha y minutos de lectura salen del propio artículo (frontmatter y cuerpo).
+const fechaCorta = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+const [lider, ...siguientes] = publicados.slice(0, 5).map((post) => ({
+  post,
+  tema: categoriaDe(post.data).nombre,
+  fecha: fechaCorta(post.data.pubDate),
+  iso: post.data.pubDate.toISOString().slice(0, 10),
+  minutos: minutosDeLectura(post.body ?? ''),
+}));
 const temas = CATEGORIAS.map((c) => ({ c, n: publicados.filter((x) => categoriaDe(x.data).id === c.id).length })).filter((x) => x.n > 0);
 
 // Las 6 calculadoras que se ven de entrada en la portada; el resto se despliega con "Ver todas".
@@ -89,21 +98,67 @@ const resto = TOOLS.filter((t) => !TOP_CALCULADORAS.includes(t.href));
     </section>
   )}
 
-  <section class="mx-auto mt-12 max-w-2xl border-t border-border pt-12">
-    <h2 class="mb-6 font-display text-2xl text-ink">Últimos artículos</h2>
-    {posts.length === 0 ? (
-      <p class="text-ink-muted">Todavía no hay artículos publicados.</p>
+  <!--
+    Últimos artículos: el más reciente como pieza principal (bloque verde) y los cuatro siguientes en
+    una lista con tema, fecha y minutos de lectura. Entrada escalonada al hacer scroll con
+    [data-escalona] (src/scripts/animaciones.ts): sin JS o con movimiento reducido se ve todo tal cual.
+  -->
+  <section aria-labelledby="h-ultimos" class="mt-12 border-t border-border pt-12" data-escalona>
+    <div class="mb-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+      <h2 id="h-ultimos" class="font-display text-2xl text-ink">Últimos artículos</h2>
+      {publicados.length > 0 && (
+        <a href="/blog/" class="enlace-todos">
+          Ver todos los artículos ({publicados.length}) <span class="enlace-todos-flecha" aria-hidden="true">→</span>
+        </a>
+      )}
+    </div>
+    {!lider ? (
+      <p class="rounded-2xl bg-cream-elevated p-6 text-ink-muted">Todavía no hay artículos publicados.</p>
     ) : (
-      <ul class="grid gap-8">
-        {posts.map((post) => (
-          <li class="aparece border-b border-border pb-8 last:border-none">
-            <a href={`/blog/${post.id}/`} class="group block">
-              <h3 class="font-display text-lg text-ink group-hover:text-brand">{post.data.title}</h3>
-              <p class="mt-2 text-sm text-ink-muted">{post.data.description}</p>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div class="grid gap-8 lg:grid-cols-12 lg:gap-10">
+        <div class="entra entra-0 lg:col-span-7">
+          <a href={`/blog/${lider.post.id}/`} class="articulo-lider">
+            <p class="articulo-meta text-brand-soft">
+              <span class="font-semibold">{lider.tema}</span>
+              <span aria-hidden="true">·</span>
+              <time datetime={lider.iso}>{lider.fecha}</time>
+              <span aria-hidden="true">·</span>
+              <span>{lider.minutos} min de lectura</span>
+            </p>
+            <h3 class="articulo-lider-titulo">{lider.post.data.title}</h3>
+            <p class="mt-4 max-w-prose text-base leading-relaxed text-cream-elevated/85 sm:text-lg">{lider.post.data.resumen ?? lider.post.data.description}</p>
+            <p class="mt-6 text-sm text-brand-soft">
+              Por {lider.post.data.author}
+              {lider.post.data.sources.length > 0 && <span> · {lider.post.data.sources.length} {lider.post.data.sources.length === 1 ? 'fuente citada' : 'fuentes citadas'}</span>}
+            </p>
+            <span class="articulo-lider-leer">
+              Leer el artículo
+              <span class="articulo-lider-circulo" aria-hidden="true"><span class="articulo-lider-flecha">→</span></span>
+            </span>
+          </a>
+        </div>
+        {siguientes.length > 0 && (
+          <ul class="grid content-start gap-x-8 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1">
+            {siguientes.map((a, i) => (
+              <li class:list={['entra articulo-fila', `entra-${i + 1}`]}>
+                <a href={`/blog/${a.post.id}/`} class="articulo-fila-enlace">
+                  <p class="articulo-meta text-ink-faint">
+                    <span class="font-semibold text-brand">{a.tema}</span>
+                    <span aria-hidden="true">·</span>
+                    <time datetime={a.iso}>{a.fecha}</time>
+                    <span aria-hidden="true">·</span>
+                    <span>{a.minutos} min</span>
+                  </p>
+                  <h3 class="articulo-fila-titulo">
+                    {a.post.data.title} <span class="articulo-fila-flecha" aria-hidden="true">→</span>
+                  </h3>
+                  <p class="mt-1.5 line-clamp-2 text-sm text-ink-muted">{a.post.data.description}</p>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     )}
   </section>
 
