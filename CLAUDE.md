@@ -101,14 +101,15 @@ destacados), nunca datos nuevos: content collection `newsletter` en `src/content
 (`AAAA-MM-DD.mdx`, fecha de envío). Procedimiento y reglas de qué destacar en
 `NEWSLETTER-PROCEDIMIENTO.md`; lo ejecuta una rutina semanal en la nube (domingo), misma
 infraestructura que `/mercados/`. `NewsletterSignup.astro` es el formulario de suscripción
-(portada, índice del boletín y pie de cada número); `src/pages/api/newsletter.ts` guarda el email
-en el mismo KV que `sugerencias.ts` (prefijo `newsletter:`, sin namespace nuevo), con el mismo
-honeypot y límite de peticiones. **Todavía no envía ningún email de verdad**: solo guarda
-suscripciones a la espera de que David elija un proveedor de email marketing (cuenta que solo él
-puede crear) para activar el envío real; hasta entonces, `/newsletter/` en sí mismo es el boletín
-(contenido público, indexable, con su propio valor de SEO). Cuando se elija proveedor, actualizar
-`privacidad.astro` (ya tiene la nota [PENDIENTE] correspondiente) y el paso 6 de
-`NEWSLETTER-PROCEDIMIENTO.md`.
+(portada, índice del boletín y pie de cada número); `src/pages/api/newsletter.ts` y
+`newsletter-baja.ts` guardan y borran el email en el mismo KV que `sugerencias.ts` (prefijo
+`newsletter:`, sin namespace nuevo), con el mismo honeypot y límite de peticiones, a través de
+`src/lib/newsletter-suscripciones.ts` (con pruebas). El envío no sale del Worker ni de ningún
+proveedor: el boletín lo envía el PC de David por su Gmail como contacto@wealthuncut.com
+(`automation/newsletter.js` del Control Center). Para el correo de bienvenida y el de confirmación
+de baja, el Worker deja un aviso en el KV (`newsletter:aviso:<tipo>:<email>`, caduca a las 72 h) y
+`automation/newsletter-avisos.js` lo recoge cada 5 minutos y lo envía por el mismo Gmail. Si cambia
+qué se guarda o cuánto, actualizar `privacidad.astro` antes de publicarlo.
 
 ## Reposición automática de artículos (decisión de David, 2026-10-04)
 

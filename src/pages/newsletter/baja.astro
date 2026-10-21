@@ -42,6 +42,21 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
   const form = document.getElementById('baja-form') as HTMLFormElement;
   const status = document.getElementById('baja-status')!;
 
+  // El enlace de baja del correo de bienvenida lleva el email en el fragmento (#email=...), que el navegador no
+  // envía al servidor: se copia en el campo y se quita de la barra de direcciones.
+  const desdeEnlace = location.hash.match(/^#email=([^&]+)$/);
+  if (desdeEnlace) {
+    try {
+      const email = decodeURIComponent(desdeEnlace[1]);
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 200) {
+        (document.getElementById('baja-email') as HTMLInputElement).value = email;
+      }
+    } catch {
+      // fragmento mal formado: se deja el campo vacío
+    }
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     status.textContent = 'Enviando...';
