@@ -15,7 +15,8 @@ const ultimaEdicion = (await getCollection('mercados', ({ data }) => isPublished
 
 const publicados = (await getCollection('blog', ({ data }) => isPublished(data))).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 // Últimos artículos: tema, fecha y minutos de lectura salen del propio artículo (frontmatter y cuerpo).
-const fechaCorta = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+// En UTC, como el atributo datetime (toISOString), para que la fecha visible coincida siempre con él.
+const fechaCorta = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 const [lider, ...siguientes] = publicados.slice(0, 5).map((post) => ({
   post,
   tema: categoriaDe(post.data).nombre,
