@@ -95,6 +95,12 @@ if (!reducido && 'IntersectionObserver' in window) {
     g.classList.add('grafica-dibuja');
     g.classList.remove('grafica-espera');
   });
+
+  // Secciones con entrada escalonada (Últimos artículos de la portada). Solo se ocultan si hay JS,
+  // y se muestran al entrar en pantalla (estilos en global.css).
+  const escalonadas = [...document.querySelectorAll('[data-escalona]')];
+  escalonadas.forEach((s) => s.setAttribute('data-escalona', 'espera'));
+  alAparecer(escalonadas, (s) => s.setAttribute('data-escalona', 'lista'));
 }
 
 // Índice del artículo: marca la sección visible (no es animación, va también con movimiento reducido).

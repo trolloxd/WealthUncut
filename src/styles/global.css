@@ -408,6 +408,79 @@
 }
 
 /*
+ * Entrada escalonada al hacer scroll ([data-escalona], src/scripts/animaciones.ts). El script pone
+ * "espera" (oculto y 20 px más abajo) solo si hay JS y movimiento permitido, y "lista" cuando la
+ * sección entra en pantalla: cada pieza sube con su retardo y las líneas se dibujan de izquierda a
+ * derecha. Sin JS o con movimiento reducido no hay atributo con valor y todo se ve desde el principio.
+ */
+.entra-0 {
+  --retardo: 0ms;
+}
+.entra-1 {
+  --retardo: 120ms;
+}
+.entra-2 {
+  --retardo: 200ms;
+}
+.entra-3 {
+  --retardo: 280ms;
+}
+.entra-4 {
+  --retardo: 360ms;
+}
+@keyframes entra {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+@keyframes entra-dentro {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes dibuja-linea {
+  from {
+    transform: scaleX(0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-escalona='espera'] .entra {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  [data-escalona='espera'] .articulo-fila::before {
+    transform: scaleX(0);
+  }
+  [data-escalona='lista'] .entra {
+    animation: entra 700ms cubic-bezier(0.22, 0.8, 0.3, 1) var(--retardo, 0ms) backwards;
+  }
+  /* Dentro de la pieza principal, tema, título, resumen y enlace suben uno detrás de otro. */
+  [data-escalona='lista'] .articulo-lider > * {
+    animation: entra-dentro 600ms cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+  }
+  [data-escalona='lista'] .articulo-lider > :nth-child(1) {
+    animation-delay: 150ms;
+  }
+  [data-escalona='lista'] .articulo-lider > :nth-child(2) {
+    animation-delay: 230ms;
+  }
+  [data-escalona='lista'] .articulo-lider > :nth-child(3) {
+    animation-delay: 310ms;
+  }
+  [data-escalona='lista'] .articulo-lider > :nth-child(4) {
+    animation-delay: 390ms;
+  }
+  [data-escalona='lista'] .articulo-lider > :nth-child(5) {
+    animation-delay: 470ms;
+  }
+  [data-escalona='lista'] .articulo-fila::before {
+    animation: dibuja-linea 900ms cubic-bezier(0.65, 0, 0.35, 1) calc(var(--retardo, 0ms) + 120ms) backwards;
+  }
+}
+
+/*
  * Aparición suave al hacer scroll (clase .aparece): el bloque sube 12 px y gana opacidad mientras
  * entra en pantalla. Solo con CSS (animation-timeline: view()), sin JS: en navegadores que no lo
  * entienden, o con movimiento reducido, el contenido se ve tal cual desde el principio. Anima solo
