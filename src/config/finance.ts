@@ -646,6 +646,20 @@ export const COMISION_AMORTIZACION_ANTICIPADA = {
   verificado: true,
 } as const;
 
+// Cambio de hipoteca variable a fija (o con un primer periodo fijo de al menos 3 años), por novación con el
+// mismo banco o por subrogación a otro (Ley 5/2019, art. 23.6): durante los 3 primeros años del préstamo la
+// comisión no puede superar la pérdida financiera del banco, con el límite del 0,05 % del capital que se
+// reembolse; sin reembolso de capital en la novación, ninguna; pasados los 3 primeros años, ninguna.
+// Verificado el 2026-10-21 en el texto consolidado del BOE (última actualización publicada el 07/10/2026).
+export const COMISION_CAMBIO_A_FIJO = {
+  aniosConLimite: 3,
+  limitePct: 0.05,
+  fuente: 'BOE, Ley 5/2019, de 15 de marzo, reguladora de los contratos de crédito inmobiliario, artículo 23.6',
+  url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814',
+  fechaRegistro: '2026-10-21',
+  verificado: true,
+} as const;
+
 /**
  * Cotización de autónomos (RETA) 2026, por rendimientos netos mensuales. Verificado el 2026-10-06 contra el
  * BOE: Orden PJC/297/2026, art. 18 (tablas reducida y general, base máxima 5.101,20 €, contingencias

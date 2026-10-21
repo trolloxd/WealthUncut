@@ -47,6 +47,12 @@ export const TOOLS = [
     tags: ['vivienda', 'hipoteca'],
   },
   {
+    href: '/herramientas/calculadora-revision-hipoteca/',
+    name: '¿Cuánto me sube la hipoteca en la revisión?',
+    description: 'Cuánto cambia tu cuota variable con el euríbor oficial del último mes, tu capital pendiente y tu diferencial.',
+    tags: ['vivienda', 'hipoteca'],
+  },
+  {
     href: '/herramientas/plan-pensiones-vs-fondo-indexado/',
     name: 'Plan de pensiones vs fondo indexado',
     description: 'Cuánto te queda neto con la reducción fiscal de la aportación y los impuestos al rescatarlo o venderlo.',

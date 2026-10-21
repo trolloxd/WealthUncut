@@ -1,0 +1,134 @@
+---
+import { BotonCompartir } from '../../components/CalculatorUI';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+import RevisionHipotecaCalculator from '../../components/RevisionHipotecaCalculator';
+import euriborUltimo from '../../data/euribor/ultimo.json';
+import euriborHistorico from '../../data/euribor/historico.json';
+import { combinarSeries } from '../../lib/calculos/euribor';
+import { COMISION_AMORTIZACION_ANTICIPADA, COMISION_CAMBIO_A_FIJO } from '../../config/finance';
+
+const serie = combinarSeries(euriborHistorico.historico, euriborUltimo.historico);
+// A la isla solo le hacen falta los últimos meses (proponer el euríbor de hace 6 o 12 meses).
+const serieIsla = serie.slice(-25);
+const ultimo = serie.at(-1)!;
+const mesLargo = (mes: string) =>
+  new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${mes}-01T00:00:00Z`));
+const num = (v: number, d: number) => v.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
+const cambioFijo = `${num(COMISION_CAMBIO_A_FIJO.limitePct, 2)} %`;
+const variable = COMISION_AMORTIZACION_ANTICIPADA.variable;
+
+const faqs = [
+  {
+    pregunta: '¿Qué mes del euríbor se aplica en mi revisión?',
+    respuesta:
+      'Lo dice tu escritura, en la cláusula de tipo de interés variable: qué índice se usa (casi siempre el euríbor a un año) y qué publicación cuenta, por ejemplo el último valor publicado antes de la fecha de revisión o el de un mes concreto anterior. Si no lo tienes claro, pide al banco que te lo confirme por escrito.',
+  },
+  {
+    pregunta: '¿Cuándo se publica el euríbor oficial de cada mes?',
+    respuesta:
+      'El Banco de España publica en el BOE, en los primeros días de cada mes, la media del mes anterior como tipo oficial de referencia del mercado hipotecario. Por ejemplo, la media de septiembre de 2026 (3,247 %) salió en el BOE del 2 de octubre de 2026.',
+  },
+  {
+    pregunta: '¿Por qué mi banco me cobra una cuota distinta?',
+    respuesta:
+      'Porque el cálculo parte del capital que te queda y de los años que faltan, sin seguros ni comisiones. Las bonificaciones del diferencial, una amortización anticipada o el redondeo que aplique tu banco pueden mover la cuota unos euros.',
+  },
+  {
+    pregunta: '¿Puede salir un tipo negativo si el euríbor baja de cero?',
+    respuesta:
+      'No en los préstamos de la Ley 5/2019 (en vigor desde el 16 de junio de 2019): su artículo 21.4 dice que el interés no puede ser negativo, y el 21.3 prohíbe fijar un suelo. La calculadora deja el tipo en 0 % si euríbor más diferencial sale negativo.',
+  },
+];
+---
+
+<ToolLayout
+  title="¿Cuánto me sube la hipoteca en la revisión del euríbor?"
+  name="Revisión de la hipoteca"
+  description="Calcula cuánto sube o baja tu cuota en la próxima revisión, con el euríbor oficial del último mes, tu capital pendiente y tu diferencial."
+  pubDate={new Date('2026-10-21')}
+  sources={[
+    {
+      label: `Banco de España, resolución de 1 de octubre de 2026 en el BOE: euríbor a un año de septiembre de 2026`,
+      url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20519',
+    },
+    {
+      label: `Banco Central Europeo: euríbor a 12 meses, media mensual (último dato: ${mesLargo(ultimo.mes)})`,
+      url: euriborUltimo.fuenteUrl,
+    },
+    { label: 'Ley 5/2019, de crédito inmobiliario (arts. 21 y 23), texto consolidado del BOE', url: COMISION_CAMBIO_A_FIJO.url },
+  ]}
+  faqs={faqs}
+>
+  <p>
+    Si tienes una hipoteca variable, cada 6 o 12 meses el banco recalcula la cuota con el euríbor nuevo. Pon lo que te
+    queda por pagar, tu diferencial y el euríbor de la revisión anterior, y verás cuánto cambia la cuota y cuánto supone
+    hasta la siguiente revisión. El euríbor de partida es la media de {mesLargo(ultimo.mes)},{' '}
+    <strong>{num(ultimo.valor, 3)} %</strong>; el histórico completo está en la página del{' '}
+    <a href="/euribor/">euríbor mes a mes desde 1999</a>.
+  </p>
+
+  <RevisionHipotecaCalculator client:load serie={serieIsla} />
+
+  <BotonCompartir client:load />
+
+  <h2>Qué euríbor se aplica en tu revisión</h2>
+  <p>
+    El índice que usan casi todas las hipotecas variables en España es el euríbor a un año, en su versión oficial: la media
+    de cada mes que el Banco de España publica en el BOE como tipo de referencia del mercado hipotecario (la definición
+    está en el anejo 8 de su Circular 5/2012). Sale en los primeros días del mes siguiente: la media de septiembre de 2026
+    se publicó el 2 de octubre.
+  </p>
+  <p>
+    Qué mes cuenta en tu caso lo fija la escritura, en la cláusula de tipo de interés variable. Puede ser el último valor
+    publicado antes de la fecha de revisión o el de un mes concreto anterior. Por eso la calculadora te deja escribir el
+    euríbor de tu revisión anterior y el de esta: si tienes la carta del banco, usa sus cifras.
+  </p>
+
+  <h2>Por qué cada web da un euríbor distinto</h2>
+  <p>
+    El euríbor se calcula cada día hábil, y muchas webs muestran el valor del día o la media de los días que lleva el mes.
+    Tu hipoteca no usa ninguno de los dos: usa la media del mes completo publicada como índice oficial. Las cifras de esta
+    página son la media mensual del Banco Central Europeo, que redondeada a tres decimales coincide con la oficial del BOE
+    (lo hemos comprobado mes a mes en ocho resoluciones entre 2016 y 2026).
+  </p>
+
+  <h2>Si la cuota sube: qué opciones existen</h2>
+  <p>
+    No hay una respuesta que sirva a todo el mundo, pero conviene conocer las tres vías y lo que dice la ley de cada una:
+  </p>
+  <ul>
+    <li>
+      <strong>Amortizar parte del capital.</strong> En una hipoteca variable, la comisión tiene un máximo legal del{' '}
+      {num(variable.opcionCincoAnios.limitePct, 2)} % durante los {variable.opcionCincoAnios.anios} primeros años o del{' '}
+      {num(variable.opcionTresAnios.limitePct, 2)} % durante los {variable.opcionTresAnios.anios} primeros (según contrato), y
+      después ninguna. Calcula el ahorro en la{' '}
+      <a href="/herramientas/amortizar-hipoteca-cuanto-ahorras/">calculadora de amortizar hipoteca</a>.
+    </li>
+    <li>
+      <strong>Pasar a tipo fijo</strong>, con tu banco (novación) o con otro (subrogación). Durante los{' '}
+      {COMISION_CAMBIO_A_FIJO.aniosConLimite} primeros años del préstamo la comisión no puede pasar del {cambioFijo} del
+      capital que se reembolse; después, ninguna. Compara cuotas fija y variable en el{' '}
+      <a href="/herramientas/simulador-hipoteca-euribor/">simulador de hipoteca</a>.
+    </li>
+    <li>
+      <strong>Alargar el plazo</strong> baja la cuota, pero sube el total de intereses. Pruébalo aquí mismo cambiando los
+      años que faltan.
+    </li>
+  </ul>
+  <p>
+    Las diferencias entre fija y variable están explicadas en la guía{' '}
+    <ArticleLink href="/blog/hipoteca-fija-variable-o-mixta/">hipoteca fija, variable o mixta</ArticleLink>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  {
+    faqs.map((f) => (
+      <p>
+        <strong>{f.pregunta}</strong>
+        <br />
+        {f.respuesta}
+      </p>
+    ))
+  }
+</ToolLayout>
