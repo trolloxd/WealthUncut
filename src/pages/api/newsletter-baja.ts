@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { env } from 'cloudflare:workers';
 import { EMAIL_RE, dentroDelLimite, esBot, jsonRespuesta, leerJsonAcotado, rechazarPeticionAjena, respuestaLimite } from '../../lib/api-seguridad';
+import { darDeBaja } from '../../lib/newsletter-suscripciones';
 
 export const prerender = false;
 
@@ -11,8 +12,9 @@ interface Env {
 const MAX_BYTES = 5_000;
 
 // Siempre responde ok, exista o no el email, para que nadie pueda comprobar quién está suscrito.
-// PENDIENTE al activar el envío real de correos: cualquiera que conozca un email puede darlo de baja desde
-// aquí. Cuando haya proveedor de email, la baja debe hacerse con un enlace firmado (token en el correo).
+// Cualquiera que conozca un email puede darlo de baja desde aquí; el correo de confirmación de baja avisa
+// al titular y le deja volver a suscribirse. PENDIENTE: baja con enlace firmado (token por suscriptor),
+// que necesitaría una clave secreta en el Worker.
 export const POST: APIRoute = async ({ request }) => {
   const { SUGERENCIAS } = env as unknown as Env;
   const rechazo = rechazarPeticionAjena(request);
@@ -30,7 +32,8 @@ export const POST: APIRoute = async ({ request }) => {
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
   if (email.length > 200 || !EMAIL_RE.test(email)) return jsonRespuesta({ error: 'invalid_email' }, 400);
 
-  await SUGERENCIAS.delete(`newsletter:suscripcion:${email}`);
+  // Borra la suscripción y, solo si el email estaba en la lista, deja el aviso del correo de confirmación.
+  await darDeBaja(SUGERENCIAS, email);
 
   return jsonRespuesta({ ok: true });
 };

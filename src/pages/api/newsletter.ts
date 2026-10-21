@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { env } from 'cloudflare:workers';
 import { EMAIL_RE, dentroDelLimite, esBot, jsonRespuesta, leerJsonAcotado, rechazarPeticionAjena, respuestaLimite } from '../../lib/api-seguridad';
+import { darDeAlta } from '../../lib/newsletter-suscripciones';
 
 export const prerender = false;
 
@@ -31,13 +32,10 @@ export const POST: APIRoute = async ({ request }) => {
   if (email.length > 200 || !EMAIL_RE.test(email)) return jsonRespuesta({ error: 'invalid_email' }, 400);
   if (body.consentimiento !== true) return jsonRespuesta({ error: 'missing_consent' }, 400);
 
-  // Una clave por email (no por envío) para que suscribirse dos veces no duplique la entrada. La
-  // respuesta es idéntica exista o no ya el email, para que nadie pueda comprobar quién está
-  // suscrito probando direcciones.
-  const key = `newsletter:suscripcion:${email}`;
-  if ((await SUGERENCIAS.get(key)) === null) {
-    await SUGERENCIAS.put(key, JSON.stringify({ email, suscritoEn: new Date().toISOString() }));
-  }
+  // Una clave por email (no por envío) para que suscribirse dos veces no duplique la entrada ni el
+  // correo de bienvenida (ver src/lib/newsletter-suscripciones.ts). La respuesta es idéntica exista o
+  // no ya el email, para que nadie pueda comprobar quién está suscrito probando direcciones.
+  await darDeAlta(SUGERENCIAS, email);
 
   return jsonRespuesta({ ok: true });
 };
