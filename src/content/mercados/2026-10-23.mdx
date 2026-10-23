@@ -1,0 +1,160 @@
+---
+title: "El IBEX cae un 2,12% con la banca y pierde los 19.000"
+description: "El IBEX bajó un 2,12% el jueves, hasta 18.913,5 puntos, con Bankinter (-7,56%) al frente de las caídas. El Nasdaq cedió un 2,60% por las dudas sobre la IA."
+pubDate: 2026-10-23
+author: "David Pérez Mitjà"
+tags: ["mercados", "ibex", "banca", "bankinter", "wall-street", "tecnologicas", "petroleo", "francia"]
+sources:
+  - label: "Expansión: el Ibex pierde los 19.000 puntos por las fuertes caídas de los bancos (crónica de Bolsa, 22 de octubre de 2026)"
+    url: "https://www.expansion.com/mercados/cronica-bolsa/2026/10/22/6ad9a54ae5fdea1b788b457d.html"
+  - label: "Expansión: Bankinter gana 901 millones hasta septiembre, un 11% más (22 de octubre de 2026)"
+    url: "https://www.expansion.com/empresas/banca/2026/10/22/6ad99f1be5fdea25648b4573.html"
+  - label: "Expansión: por qué Bankinter cae un 7,56% (22 de octubre de 2026)"
+    url: "https://www.expansion.com/inversion/2026/10/22/6ada3a5be5fdead16a8b458c.html"
+  - label: "Expansión / Financial Times: las Bolsas mundiales se tambalean ante la subida del precio del petróleo (22 de octubre de 2026)"
+    url: "https://www.expansion.com/economia/financial-times/2026/10/22/bolsas-mundiales-desploman-subida-precio-petroleo.html"
+  - label: "Expansión: alerta en el mercado europeo, el bono francés ya rinde más del 5% (22 de octubre de 2026)"
+    url: "https://www.expansion.com/mercados/renta-fija/2026/10/22/6ad8f415468aebb12e8b458e.html"
+  - label: "Rankia: cotización del IBEX 35 y de sus valores"
+    url: "https://www.rankia.com/indices-bursatiles/ibex-35-ibex"
+  - label: "Rankia: cotización del CAC 40"
+    url: "https://www.rankia.com/indices-bursatiles/cac-40-fchi"
+  - label: "Rankia: índice NASDAQ Composite"
+    url: "https://www.rankia.com/indices-bursatiles/nasdaq-composite-ixic"
+  - label: "Rankia: cotización del Dow Jones Industrial Average"
+    url: "https://www.rankia.com/indices-bursatiles/dow-jones-industrial-average-dji"
+  - label: "Rankia: cotización del petróleo Brent"
+    url: "https://www.rankia.com/materias-primas/petroleo-brent-bz"
+  - label: "BCE: tipo de cambio euro/dólar de referencia (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/EXR/EXR.D.USD.EUR.SP00.A"
+  - label: "BCE: rentabilidad a 10 años, curva AAA de la zona euro (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/YC/YC.B.U2.EUR.4F.G_N_A.SV_C_YM.SR_10Y"
+  - label: "INE: calendario semanal de notas de prensa, 19 a 23 de octubre de 2026"
+    url: "https://www.ine.es/daco/daco41/calen_semanal.pdf"
+  - label: "BCE: calendario de reuniones del Consejo de Gobierno"
+    url: "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html"
+  - label: "Reserva Federal: calendario de reuniones del FOMC de 2026"
+    url: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+---
+
+import datos from '../../data/mercados/2026-10-23.json';
+import MarketSnapshot from '../../components/MarketSnapshot.astro';
+import MarketChart from '../../components/MarketChart.astro';
+import { FGD_COBERTURA } from '../../config/finance';
+
+export const euros = (n) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'always' }).format(n)} €`;
+
+El jueves deshizo todo lo que había ganado el miércoles, y algo más. El IBEX cayó un 2,12% y
+volvió por debajo de los 19.000 puntos, arrastrado por los bancos, que empezaron con mal pie su
+temporada de resultados. En Wall Street, las tecnológicas volvieron a sufrir por las dudas sobre la
+inteligencia artificial, mientras el petróleo seguía subiendo y la deuda francesa seguía por encima
+del 5%.
+
+## Lo más importante en 30 segundos
+
+- **IBEX 35**: bajó un 2,12% y cerró en 18.913,5 puntos, 410 puntos menos que el miércoles.
+- **Banca**: Bankinter se dejó un 7,56% tras presentar resultados, pese a ganar 901 millones hasta
+  septiembre (un 11% más). CaixaBank cayó un 5,72% y Santander un 4,06%.
+- **Europa**: el Cac francés perdió un 1,39%, con la rentabilidad del bono francés a 10 años todavía
+  por encima del 5%.
+- **Wall Street**: el Nasdaq cayó un 2,60%, hasta 26.008,86 puntos, mientras el Dow Jones terminó
+  prácticamente plano (+0,02%).
+- **Petróleo y euro**: el Brent superó los 112 dólares y el BCE fijó el cambio en 1,1205 dólares
+  por euro, por debajo de los 1,1234 del miércoles.
+
+## La banca hunde al IBEX: qué ha pasado
+
+Bankinter fue el primer gran banco español en presentar las cuentas del tercer trimestre, y el
+resultado fue llamativo: buenas cifras y una fuerte caída en bolsa. El banco ganó 901 millones de
+euros entre enero y septiembre, un 11% más que un año antes y en línea con lo que esperaban los
+analistas, según Expansión. Aun así, su acción bajó un 7,56%, hasta 14,13 euros.
+
+¿Por qué cae una acción si la empresa gana más? Porque el precio ya descontaba que las cosas irían
+bien. Tras varios años de fuertes subidas del sector, los analistas que cita Expansión explican que
+el mercado no se conforma con resultados en línea con lo previsto: quiere sorpresas positivas, y
+algunas partidas, como las comisiones y el margen bruto, no convencieron. A eso se sumó un día de
+miedo generalizado al riesgo y la preocupación por la deuda francesa, que pesa sobre todos los
+bancos europeos.
+
+La caída se contagió al resto del sector: CaixaBank bajó un 5,72%, Santander un 4,06%, Unicaja un
+4,00%, Sabadell un 3,75% y BBVA un 3,73%. También sufrieron empresas ligadas a los centros de datos,
+como Solaria y ACS (esta última, un 4,40%), por el mal día de todo lo relacionado con la
+inteligencia artificial. Al otro lado, subieron valores más defensivos (los que dependen menos de
+cómo vaya la economía) como Telefónica (+1,82%), Cellnex (+1,61%) y Colonial (+1,39%).
+
+### A qué te afecta
+
+Si tienes un fondo indexado del IBEX, días como este muestran lo mucho que pesan los bancos en el
+índice español: cuando caen todos a la vez, el fondo cae con ellos. Un fondo global reparte ese
+riesgo entre muchos sectores y países. Y si eres cliente de alguno de estos bancos, nada de esto
+afecta a tu dinero en cuenta: la cotización mide lo que el mercado está dispuesto a pagar por la
+acción, no la solvencia del banco, y los depósitos están protegidos por el Fondo de Garantía de
+Depósitos hasta {euros(FGD_COBERTURA.importe)} por titular y entidad.
+
+## Wall Street: las tecnológicas vuelven a tropezar
+
+En Nueva York, el Nasdaq, el índice con más peso de tecnología, perdió un 2,60% y cerró en
+26.008,86 puntos. El S&P 500 cayó algo más de un 1%. En cambio, el Dow Jones, con menos peso de
+tecnológicas, terminó casi sin cambios: subió un 0,02%, hasta 52.867,98 puntos.
+
+El origen fueron los resultados de las grandes tecnológicas publicados el miércoles tras el cierre.
+Meta y Tesla bajaron en bolsa después de presentarlos, y los fabricantes de chips sufrieron caídas
+fuertes. De fondo, vuelve una pregunta que el mercado se hace desde hace meses: si el enorme gasto
+de estas empresas en inteligencia artificial se traducirá en beneficios suficientes. La caída fue
+aún mayor en Asia: según Expansión y el Financial Times, el Kospi coreano se dejó un 3,5% y el
+índice chino CSI 300 entró en lo que se llama mercado bajista, al acumular una caída del 20% desde
+sus máximos de junio.
+
+### A qué te afecta
+
+Si tienes un fondo indexado del S&P 500 o del mundo, las grandes tecnológicas pesan mucho en él, y
+por eso un mal día del Nasdaq se nota en tu fondo aunque otros sectores aguanten. La diferencia entre el Nasdaq (-2,60%) y el Dow Jones (+0,02%) de ayer lo ilustra bien:
+lo que ganas o pierdes depende de en qué índice inviertes y de cuánto pesa en él cada sector.
+
+## Petróleo y deuda: los dos frentes que siguen abiertos
+
+El Brent, el petróleo de referencia en Europa, volvió a superar los 112 dólares por barril, cerca de
+sus máximos de cinco meses, por las tensiones en Oriente Próximo. Un petróleo caro encarece el
+transporte y la energía, y eso puede volver a empujar la inflación. Es una de las razones por las
+que las bolsas han estado nerviosas toda la semana.
+
+En la deuda, la rentabilidad del bono francés a 10 años (el interés que cobra quien lo compra ahora)
+siguió por encima del 5% un día después de superar esa cifra por primera vez desde 2002, por la
+crisis fiscal y política del país. Los inversores buscaron refugio en la deuda alemana y en la
+estadounidense, cuyas rentabilidades bajaron. Como referencia, la rentabilidad a 10 años de la curva
+AAA de la zona euro (la de los países con mejor nota) estaba el miércoles en el 3,43%, según el BCE,
+y el tipo de depósito del BCE sigue en el 2,50%.
+
+<MarketChart datos={datos} serie="bono10a" titulo="Rentabilidad del bono a 10 años, curva AAA zona euro (%)" ultimas={90} />
+
+### A qué te afecta
+
+El euro también bajó frente al dólar: el BCE lo fijó en 1,1205 dólares, cuando el miércoles estaba
+en 1,1234. Si vas a viajar a Estados Unidos o compras algo en dólares, te sale un poco más caro. Y
+si tienes un fondo de renta fija europea, los movimientos de la deuda francesa pueden notarse en
+su valor, porque cuando sube la rentabilidad de un bono, los que ya están en cartera valen menos.
+
+<MarketChart datos={datos} serie="eurusd" titulo="Euro/dólar, tipo de referencia del BCE" ultimas={90} />
+
+<MarketSnapshot datos={datos} />
+
+## Qué vigilar hoy
+
+Todas las horas son hora peninsular española.
+
+- **9:00**: el INE publica la Coyuntura Turística Hotelera de septiembre.
+- **10:00**: el INE publica el Indicador Multidimensional de Calidad de Vida de 2025 (hora
+  orientativa, según el propio INE).
+- **15:30**: abre Wall Street, pendiente de si continúan las ventas en las tecnológicas.
+- **Petróleo y Francia**: cualquier novedad en Oriente Próximo o sobre el presupuesto francés puede
+  volver a mover el crudo y la deuda.
+- **Próxima semana**: el domingo 25 se cambia la hora en España. La Reserva Federal se reúne el 27
+  y 28 de octubre, y el BCE, el 28 y 29.
+
+## Para entenderlo mejor
+
+Si quieres ver cuánto pesan las tecnológicas en cada índice, la comparación entre el
+[S&P 500 y el MSCI World](/blog/sp500-vs-msci-world/) lo explica con cifras. Y para entender por
+qué un fondo global reparte mejor el riesgo que uno de un solo país, la guía para
+[montar una cartera de fondos indexados](/blog/como-montar-cartera-fondos-indexados/) lo cuenta paso
+a paso.
