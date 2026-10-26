@@ -41,13 +41,22 @@ test('euríbor: desde el día 4 debe estar el mes anterior', () => {
 test('frescura de los datos actuales (avisa, no falla)', (t) => {
   const hoy = new Date().toISOString().slice(0, 10);
   const dir = new URL('../src/data/', import.meta.url);
-  const mercados = readdirSync(new URL('mercados/', dir)).filter((f) => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort();
-  const m = JSON.parse(readFileSync(new URL(`mercados/${mercados.at(-1)}`, dir), 'utf8'));
+  const mercados = readdirSync(new URL('mercados/', dir)).filter((f) => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().reverse();
+  // Última fecha de una serie, buscando hacia atrás si al fichero más reciente le falta (como la portada).
+  const ultima = (id: string): string | null => {
+    for (const f of mercados) {
+      const obs = JSON.parse(readFileSync(new URL(`mercados/${f}`, dir), 'utf8')).series?.[id]?.obs;
+      if (Array.isArray(obs) && obs.length) return obs.at(-1)[0];
+    }
+    return null;
+  };
   const e = JSON.parse(readFileSync(new URL('euribor/ultimo.json', dir), 'utf8'));
   const c = JSON.parse(readFileSync(new URL('cuentas-remuneradas/ultimo.json', dir), 'utf8'));
+  const dfr = ultima('dfr');
+  const eurusd = ultima('eurusd');
   const rs = [
-    frescuraBCE('Tipo de depósito del BCE', m.series.dfr.obs.at(-1)[0], hoy),
-    frescuraBCE('Euro / dólar', m.series.eurusd.obs.at(-1)[0], hoy),
+    dfr ? frescuraBCE('Tipo de depósito del BCE', dfr, hoy) : { dato: 'Tipo de depósito del BCE', estado: 'error' as const, detalle: 'sin datos' },
+    eurusd ? frescuraBCE('Euro / dólar', eurusd, hoy) : { dato: 'Euro / dólar', estado: 'error' as const, detalle: 'sin datos' },
     frescuraEuribor(e.ultimoMes, hoy),
     frescuraCuentas(c.fecha, hoy),
   ];

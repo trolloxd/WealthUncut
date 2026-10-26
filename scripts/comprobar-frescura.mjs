@@ -60,7 +60,14 @@ async function main() {
     .split('\n')
     .filter((f) => /\d{4}-\d{2}-\d{2}\.json$/.test(f))
     .sort();
-  const mercados = leerMain(ficherosMercados.at(-1));
+  // Última observación de una serie, buscando hacia atrás si al fichero más reciente le falta (como la portada).
+  const ultimaObs = (id) => {
+    for (const f of [...ficherosMercados].reverse()) {
+      const obs = leerMain(f).series?.[id]?.obs;
+      if (Array.isArray(obs) && obs.length) return obs.at(-1);
+    }
+    throw new Error(`ningún fichero de src/data/mercados tiene la serie ${id}`);
+  };
   const euribor = leerMain('src/data/euribor/ultimo.json');
   const cuentas = leerMain('src/data/cuentas-remuneradas/ultimo.json');
 
@@ -70,15 +77,20 @@ async function main() {
     ['dfr', 'Tipo de depósito del BCE', 'FM', 'D.U2.EUR.4F.KR.DFR.LEV', 2],
     ['eurusd', 'Euro / dólar', 'EXR', 'D.USD.EUR.SP00.A', 4],
   ]) {
-    const [fecha, valor] = mercados.series[id].obs.at(-1);
+    const [fecha, valor] = ultimaObs(id);
     const r = frescuraBCE(nombre, fecha, hoy);
     const [fFuente, vFuente] = await ecb(flow, key);
     if (fFuente > fecha) {
-      bceDesviado = true;
       r.detalle += `; el BCE ya tiene el del ${fFuente} (${num(vFuente, dec)})`;
-      if (id === 'dfr' && vFuente !== valor) {
-        r.estado = 'error';
-        r.detalle += `: el tipo ha cambiado de ${num(valor, dec)} a ${num(vFuente, dec)}`;
+      if (id === 'dfr') {
+        // La serie del tipo de depósito tiene un dato cada día natural: solo importa si cambia el valor.
+        if (vFuente !== valor) {
+          r.estado = 'error';
+          r.detalle += `: el tipo ha cambiado de ${num(valor, dec)} a ${num(vFuente, dec)}`;
+          bceDesviado = true;
+        }
+      } else if (r.estado !== 'ok') {
+        bceDesviado = true; // euro/dólar atrasado por encima del umbral: toca rama de arreglo
       }
     } else if (fFuente === fecha && vFuente !== valor) {
       r.estado = 'error';
@@ -96,7 +108,8 @@ async function main() {
   if (euribor.ultimoMes < mesPrevio) {
     euriborNuevo = await buscarEuriborBOE(mesPrevio);
     if (euriborNuevo) {
-      rEur.estado = 'error';
+      // Dentro del plazo (días 1 a 3) es solo un aviso; desde el día 4 ya era error.
+      if (rEur.estado === 'ok') rEur.estado = 'aviso';
       rEur.detalle += `; el BOE ya publicó ${mesPrevio}: ${num(euriborNuevo.valor, 3)} % (${euriborNuevo.boe})`;
     }
   }
@@ -112,8 +125,8 @@ async function main() {
     const mejor = cuentas.cuentas.filter((c) => !c.vinculacion).sort((x, y) => y.tae - x.tae)[0];
     const esperado = [
       `${num(euribor.ultimoValor, 3)}%`,
-      `${num(mercados.series.dfr.obs.at(-1)[1], 2)}%`,
-      `${num(mercados.series.eurusd.obs.at(-1)[1], 4)}`,
+      `${num(ultimaObs('dfr')[1], 2)}%`,
+      `${num(ultimaObs('eurusd')[1], 4)}`,
       mejor ? `${num(mejor.tae, 2)}% TAE` : null,
     ].filter(Boolean);
     const faltan = esperado.filter((t) => !html.includes(t));
@@ -128,13 +141,20 @@ async function main() {
 
   // Arreglo en una rama local, solo con los scripts fijos y sin publicar.
   if (!SIN_RAMA && (bceDesviado || euriborNuevo)) {
-    const rama = `auto/frescura-${hoy}`;
+    // Nombre libre (nunca se reinicia una rama que ya exista) y sin seguimiento de origin: no se puede empujar sin querer.
+    let rama = `auto/frescura-${hoy}`;
+    for (let n = 2; git('branch', '--list', rama); n++) rama = `auto/frescura-${hoy}-${n}`;
+    git('worktree', 'prune');
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'wu-frescura-'));
+    let guardado = false;
     try {
-      git('worktree', 'add', '-q', '-B', rama, dir, 'origin/main');
+      git('worktree', 'add', '-q', '--no-track', '-b', rama, dir, 'origin/main');
       const run = (script, ...a) => execFileSync(process.execPath, [script, ...a], { cwd: dir, stdio: 'pipe', encoding: 'utf8' });
       if (bceDesviado) {
         run('scripts/datos-mercados.mjs', hoy);
+        // No se guarda una instantánea incompleta (datos-mercados.mjs sale con 0 aunque falle una serie).
+        const nuevo = JSON.parse(fs.readFileSync(path.join(dir, 'src', 'data', 'mercados', `${hoy}.json`), 'utf8'));
+        if (!nuevo.series?.dfr?.obs?.length || !nuevo.series?.eurusd?.obs?.length) throw new Error('la descarga del BCE ha llegado incompleta');
         arreglos.push(`datos del BCE del ${hoy} (scripts/datos-mercados.mjs)`);
       }
       if (euriborNuevo) {
@@ -146,16 +166,25 @@ async function main() {
       if (g('status', '--porcelain')) {
         g('commit', '-q', '-m', `Datos de hoy: actualización de la comprobación diaria (${arreglos.join('; ')})`);
         arreglos.push(`rama local ${rama}, commit ${g('rev-parse', '--short', 'HEAD')}, sin publicar`);
+        guardado = true;
       } else {
         arreglos.push('sin cambios que guardar');
       }
     } catch (e) {
       arreglos.push(`no se pudo preparar la rama: ${e.message.split('\n')[0]}`);
+      resultados.push({ dato: 'Rama de arreglo', estado: 'aviso', detalle: `no se pudo preparar: ${e.message.split('\n')[0]}` });
     } finally {
       try {
         git('worktree', 'remove', '--force', dir);
       } catch {
-        // si no se puede quitar, se limpia con git worktree prune
+        git('worktree', 'prune');
+      }
+      if (!guardado) {
+        try {
+          git('branch', '-D', rama); // sin commit, la rama no sirve de nada
+        } catch {
+          // no llegó a crearse
+        }
       }
     }
   }
