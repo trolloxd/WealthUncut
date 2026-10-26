@@ -1,9 +1,8 @@
 // Euríbor a 12 meses y revisión de una hipoteca variable.
 //
-// Datos: media mensual del BCE (src/data/euribor/). Redondeada a 3 decimales coincide con el euríbor "Un año"
-// que el Banco de España publica cada mes en el BOE como tipo oficial de referencia del mercado hipotecario
-// (anejo 8 de la Circular 5/2012); comprobado en 8 meses entre 2016 y 2026 el 2026-10-21 (p. ej. septiembre de
-// 2026: 3,247 %, BOE-A-2026-20519).
+// Datos: el euríbor "Un año" que el Banco de España publica cada mes en el BOE como tipo oficial de referencia del
+// mercado hipotecario (anejo 8 de la Circular 5/2012), en src/data/euribor/ultimo.json (p. ej. septiembre de 2026:
+// 3,247 %, BOE-A-2026-20519). Solo el valor oficial del BOE: sin la serie del BCE ni de EMMI.
 //
 // Revisión: sistema francés (cuota constante). En cada revisión el banco recalcula la cuota con el capital que
 // queda, los meses que faltan y el nuevo tipo (euríbor + diferencial). El tipo no puede ser negativo en los

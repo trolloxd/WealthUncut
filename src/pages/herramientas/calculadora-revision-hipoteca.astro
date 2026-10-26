@@ -4,11 +4,11 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 import ArticleLink from '../../components/ArticleLink.astro';
 import RevisionHipotecaCalculator from '../../components/RevisionHipotecaCalculator';
 import euriborUltimo from '../../data/euribor/ultimo.json';
-import euriborHistorico from '../../data/euribor/historico.json';
 import { combinarSeries } from '../../lib/calculos/euribor';
 import { COMISION_AMORTIZACION_ANTICIPADA, COMISION_CAMBIO_A_FIJO } from '../../config/finance';
 
-const serie = combinarSeries(euriborHistorico.historico, euriborUltimo.historico);
+// Solo valores oficiales del BOE (src/data/euribor/ultimo.json, uno por mes con su resolución).
+const serie = combinarSeries(euriborUltimo.historico.map(({ mes, valor }) => ({ mes, valor })));
 // A la isla solo le hacen falta los últimos meses (proponer el euríbor de hace 6 o 12 meses).
 const serieIsla = serie.slice(-25);
 const ultimo = serie.at(-1)!;
@@ -49,11 +49,7 @@ const faqs = [
   pubDate={new Date('2026-10-21')}
   sources={[
     {
-      label: `Banco de España, resolución de 1 de octubre de 2026 en el BOE: euríbor a un año de septiembre de 2026`,
-      url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20519',
-    },
-    {
-      label: `Banco Central Europeo: euríbor a 12 meses, media mensual (último dato: ${mesLargo(ultimo.mes)})`,
+      label: `Banco de España en el BOE: euríbor a un año oficial de ${mesLargo(ultimo.mes)} (${euriborUltimo.ultimoBoe})`,
       url: euriborUltimo.fuenteUrl,
     },
     { label: 'Ley 5/2019, de crédito inmobiliario (arts. 21 y 23), texto consolidado del BOE', url: COMISION_CAMBIO_A_FIJO.url },
@@ -63,9 +59,9 @@ const faqs = [
   <p>
     Si tienes una hipoteca variable, cada 6 o 12 meses el banco recalcula la cuota con el euríbor nuevo. Pon lo que te
     queda por pagar, tu diferencial y el euríbor de la revisión anterior, y verás cuánto cambia la cuota y cuánto supone
-    hasta la siguiente revisión. El euríbor de partida es la media de {mesLargo(ultimo.mes)},{' '}
+    hasta la siguiente revisión. El euríbor de partida es el oficial de {mesLargo(ultimo.mes)} (BOE),{' '}
     <strong>{num(ultimo.valor, 3)} %</strong>; el histórico completo está en la página del{' '}
-    <a href="/euribor/">euríbor mes a mes desde 1999</a>.
+    <a href="/euribor/">euríbor oficial mes a mes</a>.
   </p>
 
   <RevisionHipotecaCalculator client:load serie={serieIsla} />
@@ -89,8 +85,7 @@ const faqs = [
   <p>
     El euríbor se calcula cada día hábil, y muchas webs muestran el valor del día o la media de los días que lleva el mes.
     Tu hipoteca no usa ninguno de los dos: usa la media del mes completo publicada como índice oficial. Las cifras de esta
-    página son la media mensual del Banco Central Europeo, que redondeada a tres decimales coincide con la oficial del BOE
-    (lo hemos comprobado mes a mes en ocho resoluciones entre 2016 y 2026).
+    página son las oficiales, tal como salen en cada resolución del BOE.
   </p>
 
   <h2>Si la cuota sube: qué opciones existen</h2>
