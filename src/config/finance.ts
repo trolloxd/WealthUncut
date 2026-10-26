@@ -93,6 +93,25 @@ export const MODELO_720 = {
   url: 'https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-720-decla_____sobre-bienes-derechos-extranjero_/preguntas-frecuentes.html',
 } as const;
 
+// Modelo 721 (declaración informativa sobre monedas virtuales situadas en el extranjero, art. 42 quater
+// del RGAT y Orden HFP/886/2023). Umbral: no hay que presentarlo si los saldos a 31 de diciembre de todas
+// las monedas virtuales en el extranjero no superan, conjuntamente, 50.000 €; en los años siguientes solo
+// es obligatorio si ese saldo conjunto sube más de 20.000 € respecto al de la última declaración (o si se
+// ha dejado de ser titular antes del 31 de diciembre). Se entienden "en el extranjero" cuando el custodio
+// de las claves privadas no está obligado a presentar en España la declaración del apartado 6 de la
+// disposición adicional decimotercera de la Ley del IRPF; las que guarda uno mismo con sus claves no
+// cuentan. Fuente: AEAT, preguntas frecuentes del modelo 721 (umbral, situación en el extranjero y plazo).
+// Verificado el 2026-10-26. VERIFICAR: pendiente de la confirmación de David, como las demás.
+export const MODELO_721 = {
+  umbralConjunto: 50000,
+  incrementoParaRepetir: 20000,
+  plazo: 'entre el 1 de enero y el 31 de marzo del año siguiente',
+  url: 'https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-721-decla-sobre-monedas-extranjero/preguntas-frecuentes-sobre-modelo-721/respecto-que-monedas-virtuales-no-informacion.html',
+  urlPlazo: 'https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-721-decla-sobre-monedas-extranjero/preguntas-frecuentes-sobre-modelo-721/plazo-presentacion-modelo-721.html',
+  urlExtranjero: 'https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-721-decla-sobre-monedas-extranjero/preguntas-frecuentes-sobre-modelo-721/cuando-se-entiende-moneda-virtual-extranjero.html',
+  fechaRegistro: '2026-10-26',
+} as const;
+
 // Cobertura del Fondo de Garantía de Depósitos de Entidades de Crédito para depósitos dinerarios,
 // por titular y entidad. Fuente: fgd.es ("hasta 100.000 € por titular y entidad"). Verificado el
 // 2026-09-23.
@@ -701,6 +720,87 @@ export const ALQUILER_IRPF = {
   url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c04-rendimientos-capital-inmobiliario/reducciones-rendimiento-neto/arrendamiento-inmuebles-destinados-vivienda.html',
   urlCalculo: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c04-rendimientos-capital-inmobiliario/rendimiento-neto-reducido.html',
 } as const;
+
+/**
+ * Real Decreto-ley 29/2026, de 6 de octubre (BOE núm. 249, de 7-10-2026, BOE-A-2026-20823), en vigor desde el
+ * 8-10-2026 y PENDIENTE DE CONVALIDACIÓN: a 26-10-2026 figura en el Congreso como "Diputación Permanente
+ * Convalidación" (iniciativa 130/000060). Si no se convalida en el plazo del art. 86.2 de la Constitución,
+ * queda derogado y estas cifras dejan de aplicarse. Verificado el 2026-10-26 en el texto del BOE.
+ * VERIFICAR: pendiente de la confirmación de David y de la convalidación.
+ *
+ * Art. 6.Segundo.Dos: nueva redacción del art. 23.2 de la Ley del IRPF (reducción del alquiler de vivienda
+ * habitual). Solo para contratos firmados después del 1-12-2026: la nueva disposición transitoria 38.ª
+ * (art. 6.Segundo.Catorce) mantiene la reducción de la redacción vigente a 31-12-2025 (ALQUILER_IRPF) para
+ * los contratos firmados entre la entrada en vigor de la Ley 12/2023 y el 1-12-2026. El arrendador no
+ * puede ser gran tenedor (art. 3.k Ley 12/2023) para las reducciones de las letras a) y b). Si varios casos
+ * encajan, se aplica la reducción mayor.
+ */
+export const ALQUILER_IRPF_RDL_29_2026 = {
+  // a) Nuevo contrato de una vivienda ya alquilada antes, con renta inicial rebajada más de un 5 %.
+  nuevoContratoRebajaMas5: {
+    mismoInquilinoTrasPlazoOIndice: 1, // mismo inquilino tras 5 años o prórrogas, u otro con renta bajo el índice
+    zonaTensionadaJoven: 0.95, // zona tensionada e inquilino de 18 a 35 años
+    zonaTensionada: 0.9,
+    joven: 0.85, // inquilino de 18 a 35 años
+    resto: 0.7,
+  },
+  nuevoContratoSinSubida: 0.5, // renta inicial no superior a la última del contrato anterior
+  // Renta inicial más alta que la del contrato anterior: la reducción baja con la subida.
+  nuevoContratoConSubida: [
+    { subidaHasta: 0.05, pct: 0.4 },
+    { subidaHasta: 0.1, pct: 0.3 },
+    { subidaHasta: 0.15, pct: 0.25 },
+    { subidaHasta: 0.2, pct: 0.2 },
+    { subidaHasta: Infinity, pct: 0.15 },
+  ],
+  // b) Primera vez que se alquila la vivienda.
+  primerAlquiler: {
+    rentaBajoIndice: 1,
+    zonaTensionadaJoven: 0.95,
+    zonaTensionada: 0.9,
+    joven: 0.85,
+    rentaIgualOSobreIndice: 0.5,
+  },
+  administracionOAlquilerSocial: 0.7, // c)
+  rehabilitacion: 0.6, // d) rehabilitación terminada en los 2 años anteriores
+  prorrogaTacitaBajoIndice: 0.8, // prórroga tácita del art. 10.1 LAU con renta bajo el índice, sin gran tenedor
+  fechaCorteContratos: '2026-12-01',
+  url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20823',
+  urlConvalidacion: 'https://www.congreso.es/es/proposiciones-de-ley?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=130%2F000060',
+  fechaRegistro: '2026-10-26',
+  verificado: false,
+} as const;
+
+/**
+ * Deducción estatal por alquiler de la vivienda habitual (nuevo art. 68.6 de la Ley del IRPF, añadido por el
+ * art. 6.Segundo.Cuatro del Real Decreto-ley 29/2026, "con efectos desde la entrada en vigor" del decreto,
+ * 8-10-2026). Mismas advertencias que ALQUILER_IRPF_RDL_29_2026: PENDIENTE DE CONVALIDACIÓN. 10 % de lo pagado
+ * por el alquiler si la base imponible es inferior a 33.007,20 €. Base máxima: 11.630 € con base imponible de
+ * hasta 23.007,20 €; entre 23.007,20 y 33.007,20 €, 11.630 menos 1,163 por la diferencia con 23.007,20. No se
+ * aplica si el contribuyente o su unidad familiar tienen, durante al menos la mitad del año, otra vivienda a menos
+ * de 50 km (salvo resolución que impida usarla). Verificado el 2026-10-26 en el BOE. VERIFICAR.
+ */
+export const DEDUCCION_ALQUILER_RDL_29_2026 = {
+  porcentaje: 0.1,
+  baseImponibleLimite: 33007.2,
+  baseImponibleTramoPleno: 23007.2,
+  baseMaxima: 11630,
+  factorReduccion: 1.163,
+  url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20823',
+  fechaRegistro: '2026-10-26',
+  verificado: false,
+} as const;
+
+/** Deducción del art. 68.6 (RDL 29/2026) para una base imponible y un alquiler anual pagado. */
+export function calcularDeduccionAlquilerRDL29(baseImponible: number, alquilerAnual: number): number {
+  const D = DEDUCCION_ALQUILER_RDL_29_2026;
+  if (baseImponible >= D.baseImponibleLimite || alquilerAnual <= 0) return 0;
+  const baseMax =
+    baseImponible <= D.baseImponibleTramoPleno
+      ? D.baseMaxima
+      : D.baseMaxima - D.factorReduccion * (baseImponible - D.baseImponibleTramoPleno);
+  return Math.max(0, Math.min(alquilerAnual, baseMax)) * D.porcentaje;
+}
 
 /**
  * Ayudas estatales a la vivienda para jóvenes, Plan Estatal de Vivienda 2026-2030. Verificado el 2026-10-06

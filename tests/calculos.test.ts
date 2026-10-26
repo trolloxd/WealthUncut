@@ -2,7 +2,17 @@
 // Cada cifra esperada se calculó a mano o contra la fuente oficial (ver comentarios).
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { RETA_2026, calcularImpuestoAhorro, calcularITP, calcularProgresivo, tramoRETA } from '../src/config/finance.ts';
+import {
+  ALQUILER_IRPF_RDL_29_2026,
+  MODELO_720,
+  MODELO_721,
+  RETA_2026,
+  calcularDeduccionAlquilerRDL29,
+  calcularImpuestoAhorro,
+  calcularITP,
+  calcularProgresivo,
+  tramoRETA,
+} from '../src/config/finance.ts';
 import { calcularCuotaAutonomo } from '../src/lib/calculos/autonomo.ts';
 import { calcularFactura } from '../src/lib/calculos/factura.ts';
 import { calcularIndemnizacion, esFecha, mesesDeServicio } from '../src/lib/calculos/indemnizacion.ts';
@@ -120,4 +130,34 @@ test('ayudas a la vivienda para jóvenes (Real Decreto 326/2026)', () => {
   assert.equal(evaluarAyudasVivienda({ ...ok, pequeno: true, renta: 600 }).ayudaAlquiler, 0); // máximo de 500 en municipios pequeños
   assert.equal(evaluarAyudasVivienda({ ...ok, pequeno: true }).ayudaCompra, 15000); // tope de 15.000 euros
   assert.equal(evaluarAyudasVivienda({ ...ok, pequeno: true, precioCompra: 50000 }).ayudaCompra, 10000); // 20 %
+});
+
+test('modelo 721: umbral de 50.000 y repetición con subida de más de 20.000 (AEAT, preguntas frecuentes)', () => {
+  assert.equal(MODELO_721.umbralConjunto, 50000);
+  assert.equal(MODELO_721.incrementoParaRepetir, 20000);
+  // Mismas cifras que el modelo 720, pero en el 721 el umbral es conjunto para todas las monedas virtuales.
+  assert.equal(MODELO_721.umbralConjunto, MODELO_720.umbralPorBloque);
+  assert.match(MODELO_721.plazo, /1 de enero y el 31 de marzo/);
+});
+
+test('deducción por alquiler del RDL 29/2026 (art. 68.6 Ley del IRPF)', () => {
+  // Base máxima de 11.630 hasta 23.007,20 de base imponible: 10 % de lo pagado con ese tope.
+  cerca(calcularDeduccionAlquilerRDL29(20000, 9000), 900);
+  cerca(calcularDeduccionAlquilerRDL29(20000, 15000), 1163);
+  // Entre 23.007,20 y 33.007,20 la base máxima baja 1,163 por euro: con 28.000, 11.630 - 1,163 x 4.992,80 = 5.823,38.
+  cerca(calcularDeduccionAlquilerRDL29(28000, 9000), 582.34);
+  // En el límite la base máxima llega a cero (11.630 - 1,163 x 10.000 = 0), y desde ahí no hay deducción.
+  cerca(calcularDeduccionAlquilerRDL29(33007.19, 9000), 0);
+  assert.equal(calcularDeduccionAlquilerRDL29(33007.2, 9000), 0);
+  assert.equal(calcularDeduccionAlquilerRDL29(40000, 9000), 0);
+});
+
+test('reducción del alquiler del RDL 29/2026: más rebaja o renta bajo índice, más reducción', () => {
+  const R = ALQUILER_IRPF_RDL_29_2026;
+  const escalera = [R.nuevoContratoRebajaMas5.mismoInquilinoTrasPlazoOIndice, R.nuevoContratoRebajaMas5.zonaTensionadaJoven, R.nuevoContratoRebajaMas5.zonaTensionada, R.nuevoContratoRebajaMas5.joven, R.nuevoContratoRebajaMas5.resto, R.nuevoContratoSinSubida];
+  for (let i = 1; i < escalera.length; i++) assert.ok(escalera[i] < escalera[i - 1]);
+  const subidas = R.nuevoContratoConSubida.map((t) => t.pct);
+  for (let i = 1; i < subidas.length; i++) assert.ok(subidas[i] < subidas[i - 1]);
+  assert.ok(subidas[0] < R.nuevoContratoSinSubida);
+  assert.equal(R.fechaCorteContratos, '2026-12-01');
 });
