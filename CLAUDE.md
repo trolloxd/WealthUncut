@@ -292,6 +292,12 @@ actualizaciones" en `metodologia.astro`.
   `FondosIndexadosTabla.astro`) son componentes Astro sin interactividad que leen directamente
   `src/data/cuentas-remuneradas/ultimo.json` y `src/data/fondos-indexados/ultimo.json` (ver
   sección de arriba).
+- Frescura de "Los datos de hoy" (2026-10-26, sin IA): `src/lib/frescura.ts` tiene los umbrales (BCE y euro/dólar: aviso
+  con 2 días hábiles TARGET sin dato nuevo y error con 3; cuentas: 8 y 10 días; euríbor: desde el día 4 debe estar el
+  mes anterior). `scripts/comprobar-frescura.mjs` lo compara cada noche con la API del BCE, el BOE y la portada en
+  producción (tarea `wu-frescura` de `automation/jobs.json` del Control Center, resultado en `logs/wu-frescura/`) y, si
+  el BCE o el BOE tienen un dato más nuevo, deja el arreglo en una rama local `auto/frescura-AAAA-MM-DD` sin publicar.
+  `tests/frescura.test.ts` y el build (`[frescura]` en la salida) avisan, pero no fallan por un dato atrasado.
 - `src/data/euribor/ultimo.json`, generado por `scripts/datos-euribor.mjs` desde los datos abiertos del BOE
   (resolución mensual del Banco de España; cada mes lleva su `BOE-A-...`, desde 2021-01). Decisión de David
   (2026-10-26): sin licencia de EMMI, así que **solo el valor oficial publicado en el BOE**, nunca la serie del

@@ -7,6 +7,7 @@
 import euribor from '../data/euribor/ultimo.json';
 import cuentas from '../data/cuentas-remuneradas/ultimo.json';
 import { condicionesCuenta, vigenteDesde, type Obs } from '../lib/datos-de-hoy';
+import { frescuraBCE, frescuraCuentas, frescuraEuribor } from '../lib/frescura';
 
 type SerieBCE = { obs?: [string, number][] };
 const ficheros = import.meta.glob('../data/mercados/*.json', { eager: true }) as Record<string, { default: { series?: Record<string, SerieBCE> } }>;
@@ -32,6 +33,18 @@ const mejorCuenta = cuentas.cuentas
   .filter((c) => !c.vinculacion)
   .sort((a, b) => b.tae - a.tae)[0];
 const condiciones = mejorCuenta ? condicionesCuenta(mejorCuenta) : [];
+
+// Aviso claro en el build si algún dato está atrasado (umbrales en src/lib/frescura.ts). No para el build: la
+// comprobación diaria (scripts/comprobar-frescura.mjs) es la que prepara el arreglo.
+const hoyBuild = new Date().toISOString().slice(0, 10);
+for (const r of [
+  dfr && frescuraBCE('Tipo de depósito del BCE', dfr[0], hoyBuild),
+  eurusd && frescuraBCE('Euro / dólar', eurusd[0], hoyBuild),
+  frescuraEuribor(euribor.ultimoMes, hoyBuild),
+  frescuraCuentas(cuentas.fecha, hoyBuild),
+]) {
+  if (r && r.estado !== 'ok') console.warn(`[frescura] ${r.estado === 'error' ? 'ERROR' : 'AVISO'} ${r.dato}: ${r.detalle}`);
+}
 
 const tarjetas = [
   {
