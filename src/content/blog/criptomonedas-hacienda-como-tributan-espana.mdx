@@ -1,9 +1,9 @@
 ---
 title: "Criptomonedas y Hacienda: cómo tributan en España"
 description: "Cómo declarar criptomonedas en el IRPF: ventas, cambios entre cripto, FIFO, tramos del ahorro y modelos 172, 173 y 721. Con ejemplo y fuentes de la AEAT."
-resumen: "Las criptomonedas tributan en el IRPF como ganancias patrimoniales de la base del ahorro, tanto al vender por euros como al cambiar una por otra. La ganancia se calcula por el método FIFO, y quien guarde más de 50.000 euros en custodios extranjeros debe presentar el modelo 721."
+resumen: "Las criptomonedas tributan en el IRPF como ganancias patrimoniales de la base del ahorro, tanto al vender por euros como al cambiar una por otra. La ganancia se calcula por el método FIFO, y quien tenga criptomonedas en custodios extranjeros por encima del umbral de la AEAT debe presentar el modelo 721."
 pubDate: 2026-10-24
-updatedDate: 2026-10-24
+updatedDate: 2026-10-26
 author: "David Pérez Mitjà"
 tags: ["impuestos", "criptomonedas", "educación financiera"]
 categoria: "criptomonedas"
@@ -12,25 +12,43 @@ sources:
     url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/monedas-virtuales/compra-venta-monedas-virtuales-tributacion-inversor.html"
   - label: "AEAT, Manual práctico de Renta 2025: concepto de moneda virtual y obligaciones de información"
     url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/monedas-virtuales/concepto.html"
-  - label: "AEAT: plazo de presentación del modelo 721 (monedas virtuales en el extranjero)"
-    url: "https://sede.agenciatributaria.gob.es/Sede/eu_es/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-721-decla-sobre-monedas-extranjero/preguntas-frecuentes-sobre-modelo-721/plazo-presentacion-modelo-721.html"
+  - label: "AEAT: preguntas frecuentes del modelo 721, monedas virtuales a las que no se aplica la obligación (umbral de 50.000 €)"
+    url: "https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-721-decla-sobre-monedas-extranjero/preguntas-frecuentes-sobre-modelo-721/respecto-que-monedas-virtuales-no-informacion.html"
+  - label: "AEAT: preguntas frecuentes del modelo 721, cuándo se entiende una moneda virtual situada en el extranjero"
+    url: "https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-721-decla-sobre-monedas-extranjero/preguntas-frecuentes-sobre-modelo-721/cuando-se-entiende-moneda-virtual-extranjero.html"
+  - label: "AEAT: plazo de presentación del modelo 721 y obligación de repetirlo"
+    url: "https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-721-decla-sobre-monedas-extranjero/preguntas-frecuentes-sobre-modelo-721/plazo-presentacion-modelo-721.html"
+  - label: "DOUE (copia del BOE): Reglamento (UE) 2023/1114, de 31 de mayo de 2023, relativo a los mercados de criptoactivos (MiCA), arts. 143 y 149"
+    url: "https://www.boe.es/doue/2023/150/L00040-00205.pdf"
+  - label: "CNMV: preguntas y respuestas sobre el Reglamento MiCA (15 de diciembre de 2025), fin del periodo transitorio en España"
+    url: "https://www.cnmv.es/docportal/Legislacion/FAQ/FAQ_MICA.pdf"
+  - label: "CNMV: relación de proveedores de servicios de criptoactivos (actualizada el 20 de octubre de 2026)"
+    url: "https://cnmv.es/Docportal/Proveedores-Servicios-Criptoactivos/Listado_ProveedoresCriptoactivos.pdf"
+  - label: "Directiva (UE) 2023/2226 del Consejo, de 17 de octubre de 2023 (DAC8), art. 2"
+    url: "http://data.europa.eu/eli/dir/2023/2226/oj"
+  - label: "Congreso de los Diputados: proyecto de ley 121/000060 (transposición de la DAC8), situación «Concluido (Caducado)» desde el 6 de octubre de 2026"
+    url: "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000060"
+  - label: "BOE: Real Decreto 806/2026, de 5 de octubre, de disolución del Congreso de los Diputados y del Senado y de convocatoria de elecciones"
+    url: "https://www.boe.es/eli/es/rd/2026/10/05/806"
 hasAffiliateLinks: false
 draft: false
 ---
 
 import { formatEuros } from '../../components/CalculatorUI';
 import TramosAhorroTabla from '../../components/TramosAhorroTabla.astro';
-import { calcularImpuestoAhorro } from '../../config/finance';
+import { COMPENSACION_AHORRO, MODELO_721, calcularImpuestoAhorro } from '../../config/finance';
 
 export const ganancia = 4000;
 export const impuesto = calcularImpuestoAhorro(ganancia);
 export const ganancia2 = 12000;
 export const impuesto2 = calcularImpuestoAhorro(ganancia2);
+export const pctCruzado = (COMPENSACION_AHORRO.limiteCruzado * 100).toLocaleString('es-ES');
 
-Las criptomonedas no son dinero a ojos de Hacienda: son un bien que compras y vendes, y lo que ganas al venderlo se declara.
-Esta guía explica cómo tributan en el IRPF, qué operaciones cuentan (más de las que muchos creen), cómo se calcula la ganancia y
-qué información recibe la Agencia Tributaria sin que tengas que decir nada. Es información general sobre la normativa, no una
-recomendación de invertir en criptomonedas, que son activos de alto riesgo.
+Las criptomonedas no son dinero a ojos de Hacienda: son un bien que compras y vendes, y lo que ganas al venderlo o al cambiarlo por otra
+criptomoneda se declara en la renta como ganancia del ahorro. Esta guía explica cómo tributan en el IRPF, qué operaciones cuentan (más de las
+que muchos creen), cómo se calcula la ganancia, qué información recibe la Agencia Tributaria sin que tengas que decir nada y qué cambia con
+las normas europeas MiCA y DAC8. Es información general sobre la normativa, no una recomendación de invertir en criptomonedas, que son
+activos de alto riesgo.
 
 ## Cómo las trata Hacienda
 
@@ -56,7 +74,8 @@ Si has comprado la misma criptomoneda en momentos y a precios distintos, Haciend
 primera entrada, primera salida). La ganancia es el valor de lo que recibes menos el coste de esas unidades más antiguas.
 Es la misma lógica que en los fondos de inversión, y por eso puedes usar la
 [calculadora de impuestos al vender un fondo](/herramientas/calculadora-impuestos-venta-fondos/) para hacerte una idea con tus compras, cambiando el
-"valor liquidativo" por el precio de la criptomoneda.
+"valor liquidativo" por el precio de la criptomoneda. Si también vendes acciones o fondos, la guía para
+[declarar las ganancias de bolsa en la renta](/blog/declarar-ganancias-bolsa-renta/) explica cómo se suman en la misma base del ahorro.
 
 ## Un ejemplo con números
 
@@ -65,31 +84,102 @@ el impuesto es de **{formatEuros(impuesto)}**, un {(impuesto / ganancia * 100).t
 fuera de {formatEuros(ganancia2)}, el impuesto sería de **{formatEuros(impuesto2)}**, un {(impuesto2 / ganancia2 * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 })} %.
 Como en cualquier base del ahorro, el tipo sube a medida que sube la ganancia total del año, sumando intereses, dividendos y otras ventas.
 
-Las **pérdidas** también cuentan: se compensan con ganancias del ahorro del mismo año y, con límites, con otras de los cuatro siguientes. Una pérdida
-por cambiar una criptomoneda por otra hay que poder acreditarla si Hacienda lo pide, así que conviene guardar los registros.
+Las **pérdidas** también cuentan: se compensan con ganancias del ahorro del mismo año y, con límites, con otras de los {COMPENSACION_AHORRO.aniosArrastre} años siguientes. Si
+después de compensar ganancias con pérdidas queda un saldo negativo, puede restarse hasta el {pctCruzado} % del saldo positivo de intereses,
+dividendos y demás rendimientos del capital mobiliario del año.
+Una pérdida por cambiar una criptomoneda por otra hay que poder acreditarla si Hacienda lo pide, así que conviene guardar los registros.
 
 ## Qué información recibe Hacienda sin que tú la des
 
 - **Modelos 172 y 173:** las entidades obligadas informan a la AEAT de los **saldos** y de las **operaciones** con monedas virtuales de sus clientes.
-- **Modelo 721:** lo presentas tú, entre el 1 de enero y el 31 de marzo del año siguiente, si tienes criptomonedas custodiadas **en el extranjero**
-  (por ejemplo, en un exchange extranjero) por encima de 50.000 € a 31 de diciembre. En los años siguientes solo hay que volver a presentarlo si el saldo sube
-  más de 20.000 € respecto al último declarado.
+- **Modelo 721:** lo presentas tú, {MODELO_721.plazo}, si tienes criptomonedas custodiadas **en el extranjero** y su saldo conjunto a 31 de
+  diciembre supera los {formatEuros(MODELO_721.umbralConjunto)}. El umbral es conjunto: se suman todas las monedas virtuales que tengas fuera, y si se supera
+  hay que informar de todas. En los años siguientes solo hay que volver a presentarlo si ese saldo conjunto sube más de
+  {formatEuros(MODELO_721.incrementoParaRepetir)} respecto al de la última declaración, o si has dejado de tener monedas que ya declaraste.
 
-Para el 721 se cuentan los custodios extranjeros, no las monedas que guardas tú con tus propias claves. Las normas europeas de intercambio de información entre
-Estados sobre criptoactivos (DAC8) se están implantando, así que cada vez hay menos margen para que una operación pase desapercibida.
+En el 721 se informa, para cada moneda, del custodio (nombre, número de identificación fiscal de su país y domicilio o web), de la moneda y
+del saldo a 31 de diciembre en unidades y en euros. Se parece al [modelo 720](/blog/modelo-720-quien-tiene-que-presentarlo/) de bienes en el
+extranjero, pero es una declaración distinta. Si además tienes cuentas, valores o inmuebles fuera, la
+[calculadora del modelo 720](/herramientas/calculadora-modelo-720/) te dice si también te toca ese otro modelo.
+
+### Cuándo cuenta una plataforma como "extranjera"
+
+No depende del idioma de la web ni de que la plataforma tenga clientes en España. Según la AEAT, las monedas virtuales están situadas en el
+extranjero cuando quien las custodia (quien guarda las claves privadas por ti) **no está obligado a presentar en España** la declaración
+informativa de saldos de monedas virtuales que prevé la Ley del IRPF. La propia AEAT remite al registro del Banco de España de proveedores
+de servicios de cambio y custodia de monedas virtuales para consultar dónde está cada proveedor inscrito.
+
+Las criptomonedas que guardas tú mismo, en un monedero en el que **controlas las claves privadas**, no cuentan para el 721, sea un monedero
+conectado a internet o no.
+
+## MiCA: qué es y qué cambia para ti
+
+El **Reglamento (UE) 2023/1114**, conocido como MiCA, regula en toda la Unión Europea la emisión de criptoactivos y a quienes prestan servicios
+con ellos: custodiarlos, gestionar una plataforma de negociación, cambiarlos por euros o por otras criptomonedas, ejecutar órdenes, asesorar o
+gestionar carteras. No cambia cómo tributan: es una norma de mercado, no fiscal.
+
+Las fechas clave salen de sus artículos 143 y 149:
+
+| Qué | Desde cuándo |
+| --- | --- |
+| Normas para las fichas referenciadas a activos y las de dinero electrónico (las llamadas *stablecoins*) | 30 de junio de 2024 |
+| Resto del reglamento, incluidos los proveedores de servicios de criptoactivos | 30 de diciembre de 2024 |
+| Fin del periodo transitorio en España para los proveedores que ya operaban con la normativa anterior | 1 de julio de 2026 |
+
+El reglamento dejaba a los proveedores que ya operaban antes del 30 de diciembre de 2024 seguir haciéndolo hasta el 1 de julio de 2026 (o hasta
+que se les concediera o denegara la autorización), y permitía a cada país acortar ese plazo. Según la CNMV, en España el periodo transitorio
+finalizó el 1 de julio de 2026, el máximo que permite MiCA. Desde entonces, para prestar estos servicios en España hace falta la autorización
+MiCA, de la CNMV o de la autoridad de otro país de la UE (en ese caso el proveedor opera en España en libre prestación). La CNMV advierte de
+que quien no tenga la autorización al terminar el periodo transitorio debe dejar de prestar esos servicios.
+
+**Qué significa para ti:** antes de abrir una cuenta o dejar tus criptomonedas en una plataforma, comprueba que figura en la
+[relación de proveedores de servicios de criptoactivos de la CNMV](https://cnmv.es/Docportal/Proveedores-Servicios-Criptoactivos/Listado_ProveedoresCriptoactivos.pdf),
+que indica qué servicios puede prestar cada una y desde qué fecha (la versión consultada para esta guía es del 20 de octubre de 2026). La
+autorización no elimina el riesgo de precio: protege frente a quién te presta el servicio, no frente a que la criptomoneda baje.
+
+## DAC8: el intercambio de información entre países
+
+La **Directiva (UE) 2023/2226** (DAC8) obliga a los proveedores de servicios de criptoactivos a recoger datos de sus clientes y de sus
+operaciones y a comunicarlos a Hacienda, que los intercambia con los demás países de la UE. Su artículo 2 fijaba que los Estados debían
+aprobar las normas antes del 31 de diciembre de 2025 y aplicarlas **a partir del 1 de enero de 2026**.
+
+En España, el proyecto de ley que la transponía (iniciativa 121/000060 del Congreso) figura como **«Concluido (Caducado)» desde el 6 de octubre
+de 2026**: decayó al disolverse las Cortes (Real Decreto 806/2026, publicado en el BOE ese mismo día, que convoca elecciones para el 29 de
+noviembre de 2026). Para que salga adelante habrá que volver a presentarlo en la nueva legislatura. Eso no cambia lo que ya existe: las
+entidades obligadas en España siguen informando con los modelos 172 y 173, y tú sigues teniendo que declarar tus ganancias.
 
 ## Errores frecuentes
 
 1. **No declarar los cambios entre criptomonedas**, pensando que "si no he vendido por euros, no tributo".
 2. **No guardar el historial de compras**, y no poder demostrar el coste de adquisición. Sin él es difícil demostrar cuánta ganancia es real.
-3. **Olvidar el 721** teniendo más de 50.000 € en un exchange extranjero.
+3. **Olvidar el 721** teniendo más de {formatEuros(MODELO_721.umbralConjunto)} en custodios extranjeros, o pensar que el umbral es por cada moneda.
 4. **Dar por perdido lo que está en una plataforma quebrada.** La quiebra no genera automáticamente una pérdida deducible: se trata como un crédito.
+5. **No comprobar la autorización de la plataforma** desde que terminó el periodo transitorio de MiCA.
 
 ## Qué hacer ahora
 
 1. Descarga el **historial completo** de cada exchange y monedero que uses, antes de que desaparezca o cambien las condiciones.
 2. Calcula tus ganancias con FIFO por criptomoneda, incluyendo los cambios entre ellas.
 3. Compáralo con tu otra renta del ahorro en la [guía de los tramos del ahorro](/blog/tramos-irpf-ahorro/).
-4. Si tienes saldos en el extranjero, comprueba el umbral del 721 antes de marzo.
+4. Si tienes saldos en el extranjero, suma todas las monedas a 31 de diciembre y comprueba el umbral del 721 antes del 31 de marzo.
+5. Comprueba en la relación de la CNMV que la plataforma que usas está autorizada para los servicios que te presta.
 
 Con importes grandes o operaciones complejas (decenas de cambios al año, DeFi, minería), conviene un asesor fiscal que conozca el criterio de la AEAT.
+
+## Preguntas frecuentes
+
+**¿Tengo que declarar algo si solo he comprado y no he vendido?**
+En el IRPF, no: comprar y mantener no genera ganancia. Pero si tus criptomonedas están en un custodio extranjero y su saldo conjunto a 31 de
+diciembre supera los {formatEuros(MODELO_721.umbralConjunto)}, tienes que presentar el modelo 721 aunque no hayas vendido nada.
+
+**¿Una plataforma con web en español cuenta como custodio en España?**
+No necesariamente. Para la AEAT lo que importa es si quien custodia tus claves está obligado a presentar en España la declaración informativa de
+saldos. Si no lo está, tus monedas se consideran situadas en el extranjero a efectos del 721.
+
+**¿Las criptomonedas de mi propio monedero entran en el 721?**
+No. La AEAT excluye las que guardas tú mismo controlando las claves privadas. En la renta sí tienes que declarar las ganancias cuando las
+vendas o las cambies, estén donde estén.
+
+**¿MiCA cambia lo que pago de impuestos?**
+No. MiCA regula quién puede ofrecer servicios con criptoactivos y con qué requisitos. Los impuestos siguen las reglas del IRPF que explica esta
+guía.
