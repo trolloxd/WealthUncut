@@ -34,7 +34,8 @@ export const casos = [
 ].map((c) => ({ ...c, r: evaluarAyudasVivienda({ ...base, tipo: c.tipo, renta: c.renta }) }));
 export const meses = AL.duracionAnios * 12;
 export const pct = (n) => (n * 100).toLocaleString('es-ES');
-export const dedEjemplo = calcularDeduccionAlquilerRDL29(base.ingresos, 750 * 12);
+export const baseImponibleEjemplo = 22000;
+export const dedEjemplo = calcularDeduccionAlquilerRDL29(baseImponibleEjemplo, 750 * 12);
 
 Si tienes 35 años o menos y vives de alquiler, el Plan Estatal de Vivienda 2026-2030 prevé una ayuda de hasta
 **{formatEuros(AL.ayudaMaxViviendaMes)} al mes** si alquilas un piso entero, o hasta **{formatEuros(AL.ayudaMaxHabitacionMes)} al mes** si alquilas una habitación, con el límite
@@ -151,7 +152,7 @@ Aparte de esta ayuda, el Real Decreto-ley 29/2026, en vigor desde el 8 de octubr
 poco a poco entre esa cifra y {formatEuros2(DED.baseImponibleLimite)}. No se aplica si tú o tu unidad familiar tenéis otra vivienda a menos de 50 km
 durante al menos la mitad del año.
 
-Con una base imponible de {formatEuros(base.ingresos)} y un alquiler de 750 € al mes ({formatEuros(750 * 12)} al año), la deducción sería de
+Con una base imponible de {formatEuros(baseImponibleEjemplo)} y un alquiler de 750 € al mes ({formatEuros(750 * 12)} al año), la deducción sería de
 **{formatEuros(dedEjemplo)}**. Ojo: el decreto está **pendiente de convalidación** en la Diputación Permanente del Congreso; si se deroga,
 la deducción deja de existir. Cómo encaja con la ayuda de tu comunidad lo dirán la convocatoria y el manual de la renta: no
 lo des por hecho al hacer tus cuentas.

@@ -144,7 +144,7 @@ test('deducción por alquiler del RDL 29/2026 (art. 68.6 Ley del IRPF)', () => {
   // Base máxima de 11.630 hasta 23.007,20 de base imponible: 10 % de lo pagado con ese tope.
   cerca(calcularDeduccionAlquilerRDL29(20000, 9000), 900);
   cerca(calcularDeduccionAlquilerRDL29(20000, 15000), 1163);
-  // Entre 23.007,20 y 33.007,20 la base máxima baja 1,163 por euro: con 28.000, 11.630 - 1,163 x 4.992,80 = 5.823,38.
+  // Entre 23.007,20 y 33.007,20 la base máxima baja 1,163 por euro: con 28.000, 11.630 - 1,163 x 4.992,80 = 5.823,37.
   cerca(calcularDeduccionAlquilerRDL29(28000, 9000), 582.34);
   // En el límite la base máxima llega a cero (11.630 - 1,163 x 10.000 = 0), y desde ahí no hay deducción.
   cerca(calcularDeduccionAlquilerRDL29(33007.19, 9000), 0);
