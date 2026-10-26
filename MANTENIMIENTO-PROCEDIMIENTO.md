@@ -4,14 +4,18 @@ Guía de las rutinas de mantenimiento de WealthUncut. Si algo choca con `CLAUDE.
 `CLAUDE.md`. Regla común: **si algo no se puede comprobar con garantías, no se toca**, y se avisa
 en el resumen. Todas terminan con un resumen breve de lo hecho y lo descartado.
 
-## 1. Euríbor del simulador de hipoteca (mensual)
+## 1. Euríbor oficial (mensual)
 
-El BCE publica la media mensual del euríbor a 12 meses a principios de mes.
+Fuente única: la resolución mensual del Banco de España en el BOE ("tipos de interés oficiales de referencia
+del mercado hipotecario"), que sale hacia el día 2 con el dato del mes anterior. No se usa la serie del BCE ni
+la de EMMI (no hay licencia de EMMI: solo el valor oficial publicado en el BOE, con su identificador).
 
-1. `npm ci` y `node scripts/datos-euribor.mjs` (guarda `src/data/euribor/ultimo.json`).
-2. Si el fichero no ha cambiado, termina sin commit.
-3. Si ha cambiado: comprueba que `ultimoMes` es el mes anterior al actual y que `ultimoValor` es un
-   número razonable (entre 0 y 8). `npm run build` sin errores.
+1. `npm ci` y `node scripts/datos-euribor.mjs` (lee los datos abiertos del BOE y añade a
+   `src/data/euribor/ultimo.json` los meses que falten, cada uno con su `BOE-A-...`).
+2. Si dice "Sin meses nuevos" o "aún no está en el BOE", termina sin commit. Si sale con error (código 1),
+   no toques nada y avísalo en el resumen.
+3. Si ha cambiado: comprueba que `ultimoMes` es el mes anterior al actual, abre el enlace de `fuenteUrl` y
+   confirma que el euríbor "Un año" coincide con `ultimoValor`. `npm test` y `npm run build` sin errores.
 4. `git add src/data/euribor/ultimo.json`; commit `Euríbor: actualización de AAAA-MM`;
    `git pull --rebase origin main`; `git push origin HEAD:main`. No toques nada más.
 

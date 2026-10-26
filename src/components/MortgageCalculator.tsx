@@ -133,7 +133,7 @@ export default function MortgageCalculator({ euriborInicial, euriborMes }: Props
               value={euribor}
               onChange={setEuribor}
               step={0.01}
-              ayuda={`Media de ${euriborMes} según el BCE: ${formatPct(euriborInicial / 100, 2)}. Puedes cambiarlo para probar otro momento.`}
+              ayuda={`Euríbor oficial de ${euriborMes} (Banco de España, BOE): ${formatPct(euriborInicial / 100, 3)}. Puedes cambiarlo para probar otro momento.`}
             />
             <CampoNumero label="Diferencial sobre el euríbor (%)" value={diferencial} onChange={setDiferencial} step={0.05} />
           </>

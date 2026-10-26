@@ -19,7 +19,7 @@ export async function GET() {
     ...guias.map((p) => l(p.data.title, `/blog/${p.id}/`, p.data.description)),
     '',
     '## Datos y recursos',
-    l('Datos abiertos (CSV y JSON, CC BY 4.0)', '/datos/', 'Tramos de IRPF, ITP por comunidad, cuota de autónomos y euríbor, con fuente y fecha.'),
+    l('Datos abiertos (CSV y JSON)', '/datos/', 'Tramos de IRPF, ITP por comunidad y cuota de autónomos (CC BY 4.0), y el euríbor oficial del BOE, con fuente y fecha.'),
     l('Plantillas de Excel gratis', '/plantillas/', 'Presupuesto mensual y seguimiento de inversiones.'),
     l('Glosario', '/glosario/', 'Definiciones cortas de términos financieros.'),
     l('Metodología', '/metodologia/', 'Cómo se verifican y corrigen los datos.'),

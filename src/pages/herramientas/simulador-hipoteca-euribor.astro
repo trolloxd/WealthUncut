@@ -14,11 +14,11 @@ const euriborMes = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'nume
 <ToolLayout
   title="Simulador de hipoteca con el euríbor: fija, variable, mixta"
   name="Simulador de hipoteca"
-  description="Calcula la cuota de una hipoteca fija, variable o mixta con el euríbor a 12 meses real del Banco Central Europeo, con escenarios de subida y bajada."
+  description="Calcula la cuota de una hipoteca fija, variable o mixta con el euríbor oficial del BOE, con escenarios de subida y bajada."
   pubDate={new Date('2026-09-24')}
   sources={[
     {
-      label: `Banco Central Europeo: euríbor a 12 meses, media mensual (${euriborMes})`,
+      label: `Banco de España en el BOE: euríbor a un año oficial de ${euriborMes} (${euriborData.ultimoBoe})`,
       url: euriborData.fuenteUrl,
     },
   ]}
@@ -35,8 +35,8 @@ const euriborMes = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'nume
 >
   <p>
     La cuota de una hipoteca depende del capital, el plazo y el tipo de interés, y si es variable o
-    mixta, también del euríbor. Este simulador usa el dato real del euríbor a 12 meses que publica
-    el Banco Central Europeo, y te deja probar qué pasa con la cuota si sube o baja.
+    mixta, también del euríbor. Este simulador usa el euríbor a un año oficial que publica el
+    Banco de España en el BOE, y te deja probar qué pasa con la cuota si sube o baja.
   </p>
 
   <MortgageCalculator client:load euriborInicial={euriborInicial} euriborMes={euriborMes} />
@@ -58,9 +58,8 @@ const euriborMes = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'nume
     Es el tipo de interés al que los bancos de la zona euro se prestan dinero entre ellos a un año,
     y es el índice de referencia que usan la mayoría de hipotecas variables en España. Sube y baja
     sobre todo en función de los tipos de interés que marca el Banco Central Europeo. La cifra que
-    aparece por defecto en el simulador es la media mensual que publica el BCE; el dato oficial que
-    usan los bancos para revisar tu hipoteca lo publica el Banco de España, y puede diferir
-    ligeramente de este.
+    aparece por defecto en el simulador es el último valor oficial, el que usan los bancos para
+    revisar tu hipoteca: lo publica cada mes el Banco de España en el BOE.
   </p>
 
   <h2>Qué no incluye esta simulación</h2>

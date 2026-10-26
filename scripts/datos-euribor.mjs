@@ -1,60 +1,73 @@
-// Descarga la media mensual del euríbor a 12 meses (índice de referencia hipotecario) del Banco
-// Central Europeo y la guarda en src/data/euribor/ultimo.json.
+// Euríbor a un año oficial, mes a mes, desde las resoluciones del Banco de España publicadas en el BOE, y lo
+// guarda en src/data/euribor/ultimo.json (lo usan la portada, /euribor/, las calculadoras de hipoteca y /datos/).
 //
-// Uso: node scripts/datos-euribor.mjs
+// Uso: node scripts/datos-euribor.mjs            (añade los meses que falten hasta el último publicado)
+//      node scripts/datos-euribor.mjs --rehacer  (vuelve a leer todos los meses desde DESDE)
 //
-// Fuente: BCE, ECB Data Portal (https://data.ecb.europa.eu), serie FM.M.U2.EUR.RT.MM.EURIBOR1YD_.HSTA
-// (media de cierres diarios de Refinitiv). No es exactamente el mismo dato que publica el Banco de
-// España como "índice de referencia euríbor a un año" (que usa las cifras oficiales de EMMI), pero
-// es la aproximación mensual más próxima disponible en el BCE con licencia de reutilización.
+// Fuente única: BOE, "Resolución ... del Banco de España, por la que se publican determinados tipos de interés
+// oficiales de referencia del mercado hipotecario" (sale hacia el día 2 de cada mes con el dato del mes
+// anterior). Cada mes guarda el identificador BOE-A de su resolución. No se usa la serie del BCE ni la de EMMI:
+// Euribor® es una marca de EMMI y aquí solo se reproduce el valor oficial publicado en el BOE.
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { buscarEuriborBOE, mesSiguiente } from './lib/euribor-boe.mjs';
 
-const FLOW = 'FM';
-const KEY = 'M.U2.EUR.RT.MM.EURIBOR1YD_.HSTA';
-const N_MESES = 37; // 36 meses de histórico + el mes actual si ya está publicado
+const DESDE = '2021-01';
+const fichero = path.join('src', 'data', 'euribor', 'ultimo.json');
+const rehacer = process.argv.includes('--rehacer');
 
-async function descargar() {
-  const url = `https://data-api.ecb.europa.eu/service/data/${FLOW}/${KEY}?lastNObservations=${N_MESES}&format=csvdata`;
-  for (let intento = 1; intento <= 3; intento++) {
-    try {
-      const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const csv = await res.text();
-      const [cabecera, ...filas] = csv.trim().split('\n');
-      const cols = cabecera.split(',');
-      const iFecha = cols.indexOf('TIME_PERIOD');
-      const iValor = cols.indexOf('OBS_VALUE');
-      return filas
-        .map((f) => f.split(','))
-        .filter((c) => c[iValor] !== '' && !Number.isNaN(Number(c[iValor])))
-        .map((c) => [c[iFecha], Number(c[iValor])]);
-    } catch (e) {
-      if (intento === 3) throw new Error(`${FLOW}/${KEY}: ${e.message}`);
-      await new Promise((r) => setTimeout(r, 2000 * intento));
-    }
-  }
+let previo = [];
+try {
+  const actual = JSON.parse(fs.readFileSync(fichero, 'utf8'));
+  // Solo se reaprovechan meses que ya vienen del BOE (con su identificador).
+  if (!rehacer) previo = (actual.historico ?? []).filter((p) => typeof p.boe === 'string');
+} catch {
+  // sin fichero previo: se descarga todo
 }
 
-const obs = await descargar();
-if (!obs || obs.length === 0) {
-  console.error('Sin datos del euríbor, no se actualiza el fichero existente.');
+const porMes = new Map(previo.map((p) => [p.mes, p]));
+const hoy = new Date();
+const mesActual = hoy.toISOString().slice(0, 7);
+let nuevos = 0;
+for (let mes = DESDE; mes < mesActual; mes = mesSiguiente(mes)) {
+  if (porMes.has(mes)) continue;
+  const dato = await buscarEuriborBOE(mes, { hoy });
+  if (!dato) {
+    // Todavía sin publicar (solo puede pasar con el mes anterior al actual).
+    if (mesSiguiente(mes) !== mesActual) {
+      console.error(`No se encuentra en el BOE la resolución del euríbor de ${mes}. No se actualiza el fichero.`);
+      process.exit(1);
+    }
+    console.log(`El euríbor de ${mes} aún no está en el BOE.`);
+    break;
+  }
+  porMes.set(mes, { mes: dato.mes, valor: dato.valor, boe: dato.boe, publicado: dato.publicado });
+  nuevos++;
+  console.log(`${dato.mes}: ${dato.valor.toFixed(3)} % (${dato.boe}, BOE del ${dato.publicado})`);
+}
+
+const historico = [...porMes.values()].sort((a, b) => a.mes.localeCompare(b.mes));
+if (historico.length === 0) {
+  console.error('Sin datos del euríbor en el BOE, no se actualiza el fichero existente.');
   process.exit(1);
 }
+if (nuevos === 0 && previo.length > 0) {
+  console.log('Sin meses nuevos: el fichero no cambia.');
+  process.exit(0);
+}
 
-const ultimo = obs.at(-1);
+const ultimo = historico.at(-1);
 const salida = {
   generado: new Date().toISOString(),
-  fuente: 'Banco Central Europeo, ECB Data Portal (media mensual de cierres, Refinitiv)',
-  fuenteUrl: `https://data.ecb.europa.eu/data/datasets/${FLOW}/${FLOW}.${KEY}`,
-  ultimoMes: ultimo[0],
-  ultimoValor: ultimo[1],
-  historico: obs.map(([mes, valor]) => ({ mes, valor })),
+  fuente: 'Banco de España, tipos de interés oficiales de referencia del mercado hipotecario, publicados en el BOE',
+  fuenteUrl: `https://www.boe.es/diario_boe/txt.php?id=${ultimo.boe}`,
+  ultimoMes: ultimo.mes,
+  ultimoValor: ultimo.valor,
+  ultimoBoe: ultimo.boe,
+  ultimoPublicado: ultimo.publicado,
+  historico,
 };
-
-const dir = path.join('src', 'data', 'euribor');
-fs.mkdirSync(dir, { recursive: true });
-fs.writeFileSync(path.join(dir, 'ultimo.json'), JSON.stringify(salida, null, 1) + '\n');
-console.log(`Euríbor 12 meses, ${ultimo[0]}: ${ultimo[1].toFixed(3)}%`);
-console.log(`Guardado src/data/euribor/ultimo.json`);
+fs.mkdirSync(path.dirname(fichero), { recursive: true });
+fs.writeFileSync(fichero, JSON.stringify(salida, null, 1) + '\n');
+console.log(`Euríbor oficial de ${ultimo.mes}: ${ultimo.valor.toFixed(3)} % (${ultimo.boe}). Guardado ${fichero} (${historico.length} meses).`);

@@ -1,157 +1,425 @@
 {
- "generado": "2026-10-05T14:02:57.441Z",
- "fuente": "Banco Central Europeo, ECB Data Portal (media mensual de cierres, Refinitiv)",
- "fuenteUrl": "https://data.ecb.europa.eu/data/datasets/FM/FM.M.U2.EUR.RT.MM.EURIBOR1YD_.HSTA",
+ "generado": "2026-10-26T17:07:34.873Z",
+ "fuente": "Banco de España, tipos de interés oficiales de referencia del mercado hipotecario, publicados en el BOE",
+ "fuenteUrl": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20519",
  "ultimoMes": "2026-09",
  "ultimoValor": 3.247,
+ "ultimoBoe": "BOE-A-2026-20519",
+ "ultimoPublicado": "2026-10-02",
  "historico": [
   {
+   "mes": "2021-01",
+   "valor": -0.505,
+   "boe": "BOE-A-2021-1527",
+   "publicado": "2021-02-02"
+  },
+  {
+   "mes": "2021-02",
+   "valor": -0.501,
+   "boe": "BOE-A-2021-3296",
+   "publicado": "2021-03-02"
+  },
+  {
+   "mes": "2021-03",
+   "valor": -0.487,
+   "boe": "BOE-A-2021-5389",
+   "publicado": "2021-04-06"
+  },
+  {
+   "mes": "2021-04",
+   "valor": -0.484,
+   "boe": "BOE-A-2021-7482",
+   "publicado": "2021-05-05"
+  },
+  {
+   "mes": "2021-05",
+   "valor": -0.481,
+   "boe": "BOE-A-2021-9230",
+   "publicado": "2021-06-02"
+  },
+  {
+   "mes": "2021-06",
+   "valor": -0.484,
+   "boe": "BOE-A-2021-11034",
+   "publicado": "2021-07-02"
+  },
+  {
+   "mes": "2021-07",
+   "valor": -0.491,
+   "boe": "BOE-A-2021-13257",
+   "publicado": "2021-08-03"
+  },
+  {
+   "mes": "2021-08",
+   "valor": -0.498,
+   "boe": "BOE-A-2021-14451",
+   "publicado": "2021-09-02"
+  },
+  {
+   "mes": "2021-09",
+   "valor": -0.492,
+   "boe": "BOE-A-2021-16058",
+   "publicado": "2021-10-02"
+  },
+  {
+   "mes": "2021-10",
+   "valor": -0.477,
+   "boe": "BOE-A-2021-17976",
+   "publicado": "2021-11-03"
+  },
+  {
+   "mes": "2021-11",
+   "valor": -0.487,
+   "boe": "BOE-A-2021-19998",
+   "publicado": "2021-12-02"
+  },
+  {
+   "mes": "2021-12",
+   "valor": -0.502,
+   "boe": "BOE-A-2022-227",
+   "publicado": "2022-01-04"
+  },
+  {
+   "mes": "2022-01",
+   "valor": -0.477,
+   "boe": "BOE-A-2022-1711",
+   "publicado": "2022-02-02"
+  },
+  {
+   "mes": "2022-02",
+   "valor": -0.335,
+   "boe": "BOE-A-2022-3342",
+   "publicado": "2022-03-02"
+  },
+  {
+   "mes": "2022-03",
+   "valor": -0.237,
+   "boe": "BOE-A-2022-5330",
+   "publicado": "2022-04-02"
+  },
+  {
+   "mes": "2022-04",
+   "valor": 0.013,
+   "boe": "BOE-A-2022-7305",
+   "publicado": "2022-05-04"
+  },
+  {
+   "mes": "2022-05",
+   "valor": 0.287,
+   "boe": "BOE-A-2022-9093",
+   "publicado": "2022-06-02"
+  },
+  {
+   "mes": "2022-06",
+   "valor": 0.852,
+   "boe": "BOE-A-2022-10973",
+   "publicado": "2022-07-02"
+  },
+  {
+   "mes": "2022-07",
+   "valor": 0.992,
+   "boe": "BOE-A-2022-13065",
+   "publicado": "2022-08-02"
+  },
+  {
+   "mes": "2022-08",
+   "valor": 1.249,
+   "boe": "BOE-A-2022-14447",
+   "publicado": "2022-09-02"
+  },
+  {
+   "mes": "2022-09",
+   "valor": 2.233,
+   "boe": "BOE-A-2022-16188",
+   "publicado": "2022-10-04"
+  },
+  {
+   "mes": "2022-10",
+   "valor": 2.629,
+   "boe": "BOE-A-2022-18102",
+   "publicado": "2022-11-03"
+  },
+  {
+   "mes": "2022-11",
+   "valor": 2.828,
+   "boe": "BOE-A-2022-20272",
+   "publicado": "2022-12-02"
+  },
+  {
+   "mes": "2022-12",
+   "valor": 3.018,
+   "boe": "BOE-A-2023-115",
+   "publicado": "2023-01-03"
+  },
+  {
+   "mes": "2023-01",
+   "valor": 3.337,
+   "boe": "BOE-A-2023-2826",
+   "publicado": "2023-02-02"
+  },
+  {
+   "mes": "2023-02",
+   "valor": 3.534,
+   "boe": "BOE-A-2023-5577",
+   "publicado": "2023-03-02"
+  },
+  {
+   "mes": "2023-03",
+   "valor": 3.647,
+   "boe": "BOE-A-2023-8571",
+   "publicado": "2023-04-04"
+  },
+  {
+   "mes": "2023-04",
+   "valor": 3.757,
+   "boe": "BOE-A-2023-10780",
+   "publicado": "2023-05-04"
+  },
+  {
+   "mes": "2023-05",
+   "valor": 3.862,
+   "boe": "BOE-A-2023-13209",
+   "publicado": "2023-06-02"
+  },
+  {
+   "mes": "2023-06",
+   "valor": 4.007,
+   "boe": "BOE-A-2023-15547",
+   "publicado": "2023-07-04"
+  },
+  {
+   "mes": "2023-07",
+   "valor": 4.149,
+   "boe": "BOE-A-2023-17802",
+   "publicado": "2023-08-02"
+  },
+  {
+   "mes": "2023-08",
+   "valor": 4.073,
+   "boe": "BOE-A-2023-18937",
+   "publicado": "2023-09-02"
+  },
+  {
    "mes": "2023-09",
-   "valor": 4.1491905
+   "valor": 4.149,
+   "boe": "BOE-A-2023-20559",
+   "publicado": "2023-10-03"
   },
   {
    "mes": "2023-10",
-   "valor": 4.16
+   "valor": 4.16,
+   "boe": "BOE-A-2023-22557",
+   "publicado": "2023-11-03"
   },
   {
    "mes": "2023-11",
-   "valor": 4.0220909
+   "valor": 4.022,
+   "boe": "BOE-A-2023-24667",
+   "publicado": "2023-12-02"
   },
   {
    "mes": "2023-12",
-   "valor": 3.6791053
+   "valor": 3.679,
+   "boe": "BOE-A-2024-209",
+   "publicado": "2024-01-03"
   },
   {
    "mes": "2024-01",
-   "valor": 3.6092273
+   "valor": 3.609,
+   "boe": "BOE-A-2024-2028",
+   "publicado": "2024-02-02"
   },
   {
    "mes": "2024-02",
-   "valor": 3.6705238
+   "valor": 3.671,
+   "boe": "BOE-A-2024-4138",
+   "publicado": "2024-03-02"
   },
   {
    "mes": "2024-03",
-   "valor": 3.71785
+   "valor": 3.718,
+   "boe": "BOE-A-2024-6664",
+   "publicado": "2024-04-03"
   },
   {
    "mes": "2024-04",
-   "valor": 3.7033333
+   "valor": 3.703,
+   "boe": "BOE-A-2024-9025",
+   "publicado": "2024-05-04"
   },
   {
    "mes": "2024-05",
-   "valor": 3.6801364
+   "valor": 3.68,
+   "boe": "BOE-A-2024-11372",
+   "publicado": "2024-06-04"
   },
   {
    "mes": "2024-06",
-   "valor": 3.6496
+   "valor": 3.65,
+   "boe": "BOE-A-2024-13414",
+   "publicado": "2024-07-02"
   },
   {
    "mes": "2024-07",
-   "valor": 3.525913
+   "valor": 3.526,
+   "boe": "BOE-A-2024-16032",
+   "publicado": "2024-08-02"
   },
   {
    "mes": "2024-08",
-   "valor": 3.1661364
+   "valor": 3.166,
+   "boe": "BOE-A-2024-17869",
+   "publicado": "2024-09-04"
   },
   {
    "mes": "2024-09",
-   "valor": 2.9360476
+   "valor": 2.936,
+   "boe": "BOE-A-2024-19889",
+   "publicado": "2024-10-02"
   },
   {
    "mes": "2024-10",
-   "valor": 2.6913043
+   "valor": 2.691,
+   "boe": "BOE-A-2024-22927",
+   "publicado": "2024-11-05"
   },
   {
    "mes": "2024-11",
-   "valor": 2.5055714
+   "valor": 2.506,
+   "boe": "BOE-A-2024-25202",
+   "publicado": "2024-12-03"
   },
   {
    "mes": "2024-12",
-   "valor": 2.43605
+   "valor": 2.436,
+   "boe": "BOE-A-2025-169",
+   "publicado": "2025-01-03"
   },
   {
    "mes": "2025-01",
-   "valor": 2.5252273
+   "valor": 2.525,
+   "boe": "BOE-A-2025-2037",
+   "publicado": "2025-02-04"
   },
   {
    "mes": "2025-02",
-   "valor": 2.40695
+   "valor": 2.407,
+   "boe": "BOE-A-2025-4317",
+   "publicado": "2025-03-04"
   },
   {
    "mes": "2025-03",
-   "valor": 2.398381
+   "valor": 2.398,
+   "boe": "BOE-A-2025-6698",
+   "publicado": "2025-04-02"
   },
   {
    "mes": "2025-04",
-   "valor": 2.1434
+   "valor": 2.143,
+   "boe": "BOE-A-2025-8962",
+   "publicado": "2025-05-06"
   },
   {
    "mes": "2025-05",
-   "valor": 2.0805714
+   "valor": 2.081,
+   "boe": "BOE-A-2025-11062",
+   "publicado": "2025-06-03"
   },
   {
    "mes": "2025-06",
-   "valor": 2.0809048
+   "valor": 2.081,
+   "boe": "BOE-A-2025-13550",
+   "publicado": "2025-07-02"
   },
   {
    "mes": "2025-07",
-   "valor": 2.079087
+   "valor": 2.079,
+   "boe": "BOE-A-2025-16054",
+   "publicado": "2025-08-02"
   },
   {
    "mes": "2025-08",
-   "valor": 2.1139048
+   "valor": 2.114,
+   "boe": "BOE-A-2025-17501",
+   "publicado": "2025-09-02"
   },
   {
    "mes": "2025-09",
-   "valor": 2.1715
+   "valor": 2.172,
+   "boe": "BOE-A-2025-19593",
+   "publicado": "2025-10-02"
   },
   {
    "mes": "2025-10",
-   "valor": 2.1873043
+   "valor": 2.187,
+   "boe": "BOE-A-2025-22331",
+   "publicado": "2025-11-04"
   },
   {
    "mes": "2025-11",
-   "valor": 2.2169
+   "valor": 2.217,
+   "boe": "BOE-A-2025-24444",
+   "publicado": "2025-12-02"
   },
   {
    "mes": "2025-12",
-   "valor": 2.2671429
+   "valor": 2.267,
+   "boe": "BOE-A-2026-245",
+   "publicado": "2026-01-03"
   },
   {
    "mes": "2026-01",
-   "valor": 2.2450952
+   "valor": 2.245,
+   "boe": "BOE-A-2026-2546",
+   "publicado": "2026-02-03"
   },
   {
    "mes": "2026-02",
-   "valor": 2.2207
+   "valor": 2.221,
+   "boe": "BOE-A-2026-5059",
+   "publicado": "2026-03-03"
   },
   {
    "mes": "2026-03",
-   "valor": 2.5651364
+   "valor": 2.565,
+   "boe": "BOE-A-2026-7549",
+   "publicado": "2026-04-02"
   },
   {
    "mes": "2026-04",
-   "valor": 2.7468
+   "valor": 2.747,
+   "boe": "BOE-A-2026-9792",
+   "publicado": "2026-05-05"
   },
   {
    "mes": "2026-05",
-   "valor": 2.8042
+   "valor": 2.804,
+   "boe": "BOE-A-2026-11844",
+   "publicado": "2026-06-02"
   },
   {
    "mes": "2026-06",
-   "valor": 2.7975909
+   "valor": 2.798,
+   "boe": "BOE-A-2026-14420",
+   "publicado": "2026-07-02"
   },
   {
    "mes": "2026-07",
-   "valor": 2.855087
+   "valor": 2.855,
+   "boe": "BOE-A-2026-16997",
+   "publicado": "2026-08-04"
   },
   {
    "mes": "2026-08",
-   "valor": 2.9536667
+   "valor": 2.954,
+   "boe": "BOE-A-2026-18507",
+   "publicado": "2026-09-02"
   },
   {
    "mes": "2026-09",
-   "valor": 3.247
+   "valor": 3.247,
+   "boe": "BOE-A-2026-20519",
+   "publicado": "2026-10-02"
   }
  ]
 }

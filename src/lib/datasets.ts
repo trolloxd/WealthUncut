@@ -1,6 +1,8 @@
 // Conjuntos de datos abiertos de /datos/ (JSON y CSV). Salen de las mismas constantes que usan las
 // calculadoras (src/config/finance.ts y src/data/euribor), así que no pueden desincronizarse: cualquier
-// revisión de cifras se refleja sola aquí. Licencia CC BY 4.0 (atribución a WealthUncut).
+// revisión de cifras se refleja sola aquí. Licencia CC BY 4.0 (atribución a WealthUncut), salvo los conjuntos con
+// `licenciaPropia: false` (el euríbor: es el valor oficial publicado en el BOE y se reproduce citando la fuente,
+// sin licenciarlo como propio).
 import {
   IRPF_AHORRO_BRACKETS,
   IRPF_AHORRO_FUENTE,
@@ -21,7 +23,15 @@ export interface Dataset {
   revisado: string;
   columnas: string[];
   filas: (string | number | null)[][];
+  /** false si el dato no es de elaboración propia y no se licencia bajo CC BY (por defecto, true). */
+  licenciaPropia?: boolean;
+  /** Condiciones de uso cuando licenciaPropia es false. */
+  aviso?: string;
 }
+
+export const LICENCIA_CC_BY = 'CC BY 4.0: https://creativecommons.org/licenses/by/4.0/ (atribución a WealthUncut, https://wealthuncut.com/datos/)';
+export const AVISO_EURIBOR =
+  'Valor oficial del euríbor a un año publicado cada mes en el BOE por el Banco de España (tipos de interés oficiales de referencia del mercado hipotecario). No es un dato de WealthUncut ni se ofrece bajo CC BY: se reproduce con su fuente, indicando en cada mes la resolución del BOE. Euribor® es una marca registrada del European Money Market Institute (EMMI).';
 
 type Tramo = { hasta: number; tipo: number };
 const limpia = (n: number) => (Number.isFinite(n) ? n : null);
@@ -88,13 +98,15 @@ export const DATASETS: Dataset[] = [
   },
   {
     id: 'euribor-12m',
-    titulo: 'Euríbor a 12 meses, media mensual',
-    descripcion: 'Serie mensual del euríbor a 12 meses (media de cierres), actualizada cada mes.',
+    titulo: 'Euríbor a un año, valor oficial de cada mes (BOE)',
+    descripcion: `Euríbor a un año oficial de cada mes desde ${euribor.historico[0].mes}, tal como lo publica el Banco de España en el BOE, con el identificador de cada resolución.`,
     fuente: euribor.fuente,
     fuenteUrl: euribor.fuenteUrl,
     revisado: euribor.generado.slice(0, 10),
-    columnas: ['mes', 'valor_pct'],
-    filas: euribor.historico.map((h) => [h.mes, Math.round(h.valor * 1000) / 1000]),
+    columnas: ['mes', 'valor_pct', 'boe'],
+    filas: euribor.historico.map((h) => [h.mes, h.valor, h.boe]),
+    licenciaPropia: false,
+    aviso: AVISO_EURIBOR,
   },
 ];
 
@@ -112,7 +124,7 @@ export function aJson(d: Dataset) {
     fuente: d.fuente,
     fuenteUrl: d.fuenteUrl,
     revisado: d.revisado,
-    licencia: 'CC BY 4.0: https://creativecommons.org/licenses/by/4.0/ (atribución a WealthUncut, https://wealthuncut.com/datos/)',
+    licencia: d.licenciaPropia === false ? d.aviso : LICENCIA_CC_BY,
     columnas: d.columnas,
     filas: d.filas.map((f) => Object.fromEntries(d.columnas.map((c, i) => [c, f[i]]))),
   };

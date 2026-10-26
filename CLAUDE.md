@@ -210,7 +210,8 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
 - `/herramientas/calculadora-irpf-alquiler/`: IRPF del propietario que alquila vivienda. Reducciones y amortización en `ALQUILER_IRPF`
   (`finance.ts`, AEAT Manual Renta 2025, verificadas el 2026-10-08); revisar cada año con el manual nuevo. Estimación sin deducciones autonómicas.
 - Visibilidad (2026-10-08): `/datos/` (CSV y JSON de IRPF, ITP, cuota de autónomos y euríbor, generados desde `finance.ts` por
-  `src/lib/datasets.ts`, nunca editar a mano; marcado `Dataset`; CC BY 4.0), `/incrustar/` (todas las calculadoras incrustables),
+  `src/lib/datasets.ts`, nunca editar a mano; marcado `Dataset`; CC BY 4.0 salvo el euríbor, que es el valor oficial del BOE y lleva
+  `licenciaPropia: false` con su aviso y la marca de EMMI), `/incrustar/` (todas las calculadoras incrustables),
   `/prensa/`, `/llms.txt` y robots `max-image-preview:large`. Al añadir una calculadora incrustable o un dato nuevo, añadirlo ahí.
 - `/herramientas/calculadora-indemnizacion-despido/` y `calculadora-factura-autonomo/`: reglas del Estatuto de los Trabajadores (arts. 49.1.c,
   53.1.b, 56.1) y del Reglamento del IRPF (arts. 101 y 110), verificadas en el BOE el 2026-10-08. Las constantes viven en cada componente
@@ -291,8 +292,10 @@ actualizaciones" en `metodologia.astro`.
   `FondosIndexadosTabla.astro`) son componentes Astro sin interactividad que leen directamente
   `src/data/cuentas-remuneradas/ultimo.json` y `src/data/fondos-indexados/ultimo.json` (ver
   sección de arriba).
-- `src/data/euribor/ultimo.json`, generado por `scripts/datos-euribor.mjs` (BCE, euríbor a 12
-  meses, media mensual): lo usa el simulador de hipoteca como valor de partida.
+- `src/data/euribor/ultimo.json`, generado por `scripts/datos-euribor.mjs` desde los datos abiertos del BOE
+  (resolución mensual del Banco de España; cada mes lleva su `BOE-A-...`, desde 2021-01). Decisión de David
+  (2026-10-26): sin licencia de EMMI, así que **solo el valor oficial publicado en el BOE**, nunca la serie del
+  BCE ni de EMMI, y nunca bajo CC BY. Euribor® es marca de EMMI: citarlo así donde se muestre el histórico.
 - `src/pages/`: home, blog, autor, metodología, transparencia, legales, sugerencias (+ API con
   KV), RSS, 404.
 - `public/`: favicon propio, `og-default.png`, `_headers` (cabeceras de seguridad), robots.txt.
