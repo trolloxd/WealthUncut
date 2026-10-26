@@ -43,8 +43,8 @@ export const limiteCruzado = DIVIDENDOS * COMPENSACION_AHORRO.limiteCruzado;
 export const pctTxt = (t) => (t * 100).toLocaleString('es-ES');
 
 Cuando vendes acciones o ETF con beneficio, esa ganancia se declara en la renta del año en que vendes, en la base
-del ahorro. La cuenta es **lo que recibes al vender, menos comisiones, menos lo que te costó comprar, más
-comisiones**. Si tenías compras en varias fechas, Hacienda entiende que vendes primero las más antiguas (criterio
+del ahorro. La cuenta es **lo que recibes al vender (menos sus comisiones), menos lo que te costó comprar
+(con sus comisiones incluidas)**. Si tenías compras en varias fechas, Hacienda entiende que vendes primero las más antiguas (criterio
 FIFO). Y si en el mismo año también tuviste pérdidas, se restan antes de pagar. Aquí tienes cada paso con un ejemplo
 resuelto.
 
