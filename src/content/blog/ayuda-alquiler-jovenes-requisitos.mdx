@@ -12,13 +12,15 @@ sources:
     url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-8872"
   - label: "BOE: Ley 31/2022, de Presupuestos Generales del Estado para 2023, disposición adicional nonagésima (IPREM)"
     url: "https://www.boe.es/buscar/act.php?id=BOE-A-2022-22128"
+  - label: "BOE: Real Decreto-ley 29/2026, de 6 de octubre, función social de la vivienda (deducción estatal por alquiler de la vivienda habitual; BOE núm. 249, de 7 de octubre de 2026)"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20823"
 hasAffiliateLinks: false
 draft: false
 ---
 
-import { AYUDAS_VIVIENDA_JOVENES as A } from '../../config/finance';
+import { AYUDAS_VIVIENDA_JOVENES as A, DEDUCCION_ALQUILER_RDL_29_2026 as DED, calcularDeduccionAlquilerRDL29 } from '../../config/finance';
 import { evaluarAyudasVivienda } from '../../lib/calculos/ayudas.ts';
-import { formatEuros } from '../../components/CalculatorUI';
+import { formatEuros, formatEuros2 } from '../../components/CalculatorUI';
 
 export const AL = A.alquiler;
 export const limite = A.limiteIngresosVecesIprem * A.iprem14PagasAnual;
@@ -32,6 +34,7 @@ export const casos = [
 ].map((c) => ({ ...c, r: evaluarAyudasVivienda({ ...base, tipo: c.tipo, renta: c.renta }) }));
 export const meses = AL.duracionAnios * 12;
 export const pct = (n) => (n * 100).toLocaleString('es-ES');
+export const dedEjemplo = calcularDeduccionAlquilerRDL29(base.ingresos, 750 * 12);
 
 Si tienes 35 años o menos y vives de alquiler, el Plan Estatal de Vivienda 2026-2030 prevé una ayuda de hasta
 **{formatEuros(AL.ayudaMaxViviendaMes)} al mes** si alquilas un piso entero, o hasta **{formatEuros(AL.ayudaMaxHabitacionMes)} al mes** si alquilas una habitación, con el límite
@@ -139,6 +142,19 @@ Se exige el mismo límite de ingresos, no tener otra vivienda y vivir en ella al
 superar un máximo que fija el decreto para cada comunidad. Si estás pensando en comprar, mira también
 [cuánto ahorrar para la entrada de un piso](/blog/cuanto-ahorrar-entrada-piso/) y
 [alquilar o comprar: las cuentas](/blog/alquilar-o-comprar-vivienda-las-cuentas/).
+
+## Novedad de octubre de 2026: deducción estatal por alquiler en el IRPF
+
+Aparte de esta ayuda, el Real Decreto-ley 29/2026, en vigor desde el 8 de octubre de 2026, añade a la Ley del IRPF una
+**deducción estatal por el alquiler de la vivienda habitual**: el {pct(DED.porcentaje)} % de lo que pagas, si tu base imponible es inferior a
+{formatEuros2(DED.baseImponibleLimite)}. La base máxima es de {formatEuros(DED.baseMaxima)} al año con una base imponible de hasta {formatEuros2(DED.baseImponibleTramoPleno)}, y baja
+poco a poco entre esa cifra y {formatEuros2(DED.baseImponibleLimite)}. No se aplica si tú o tu unidad familiar tenéis otra vivienda a menos de 50 km
+durante al menos la mitad del año.
+
+Con una base imponible de {formatEuros(base.ingresos)} y un alquiler de 750 € al mes ({formatEuros(750 * 12)} al año), la deducción sería de
+**{formatEuros(dedEjemplo)}**. Ojo: el decreto está **pendiente de convalidación** en la Diputación Permanente del Congreso; si se deroga,
+la deducción deja de existir. Cómo encaja con la ayuda de tu comunidad lo dirán la convocatoria y el manual de la renta: no
+lo des por hecho al hacer tus cuentas.
 
 ## Preguntas frecuentes
 
