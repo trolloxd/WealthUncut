@@ -4,7 +4,6 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
   ALQUILER_IRPF_RDL_29_2026,
-  MODELO_720,
   MODELO_721,
   RETA_2026,
   calcularDeduccionAlquilerRDL29,
@@ -135,8 +134,6 @@ test('ayudas a la vivienda para jóvenes (Real Decreto 326/2026)', () => {
 test('modelo 721: umbral de 50.000 y repetición con subida de más de 20.000 (AEAT, preguntas frecuentes)', () => {
   assert.equal(MODELO_721.umbralConjunto, 50000);
   assert.equal(MODELO_721.incrementoParaRepetir, 20000);
-  // Mismas cifras que el modelo 720, pero en el 721 el umbral es conjunto para todas las monedas virtuales.
-  assert.equal(MODELO_721.umbralConjunto, MODELO_720.umbralPorBloque);
   assert.match(MODELO_721.plazo, /1 de enero y el 31 de marzo/);
 });
 

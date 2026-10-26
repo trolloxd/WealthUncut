@@ -1,9 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../config/site';
 
-const correcciones = (await getCollection('correcciones')).sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+const ordenadas = (await getCollection('correcciones')).sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+// El cuerpo de cada entrada lleva el detalle (qué decía antes y qué dice ahora): se muestra bajo el resumen.
+const correcciones = await Promise.all(ordenadas.map(async (c) => ({ ...c, Content: (await render(c)).Content })));
 ---
 
 <BaseLayout
@@ -36,6 +38,9 @@ const correcciones = (await getCollection('correcciones')).sort((a, b) => b.data
             <a href={c.data.url} class="hover:text-brand">{c.data.pieza}</a>
           </h2>
           <p class="mt-2 text-ink-muted">{c.data.resumen}</p>
+          <div class="prose prose-sm mt-4 max-w-2xl text-ink-muted">
+            <c.Content />
+          </div>
         </li>
       ))}
     </ul>
