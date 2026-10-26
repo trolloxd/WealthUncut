@@ -1,50 +1,56 @@
 ---
 /**
- * Franja de portada con los datos vivos del sitio: euríbor, tipo del BCE, euro/dólar y la mejor TAE
- * de cuenta. Todo sale de ficheros que ya mantienen las rutinas automáticas (src/data/), así que
- * se actualiza solo en cada build. Si un dato falta, esa tarjeta no se muestra.
+ * Franja de portada con los datos vivos del sitio: euríbor oficial (BOE), tipo de depósito del BCE, euro/dólar
+ * (BCE) y la cuenta remunerada sin vinculación con más TAE del comparador. Cada tarjeta dice su fuente y su
+ * fecha; salen de src/data/ en cada build. Si un dato falta, esa tarjeta no se muestra. La frescura de cada uno
+ * la vigila scripts/comprobar-frescura.mjs (y tests/frescura.test.ts).
  */
 import euribor from '../data/euribor/ultimo.json';
 import cuentas from '../data/cuentas-remuneradas/ultimo.json';
+import { condicionesCuenta, vigenteDesde, type Obs } from '../lib/datos-de-hoy';
 
 type SerieBCE = { obs?: [string, number][] };
 const ficheros = import.meta.glob('../data/mercados/*.json', { eager: true }) as Record<string, { default: { series?: Record<string, SerieBCE> } }>;
-const ultimaSerie = (id: string): [string, number] | null => {
+const serieCompleta = (id: string): Obs[] | null => {
   const dias = Object.keys(ficheros).sort().reverse();
   for (const ruta of dias) {
     const obs = ficheros[ruta].default?.series?.[id]?.obs;
-    if (Array.isArray(obs) && obs.length > 0) return obs[obs.length - 1] as [string, number];
+    if (Array.isArray(obs) && obs.length > 0) return obs as Obs[];
   }
   return null;
 };
+const ultimaSerie = (id: string): Obs | null => serieCompleta(id)?.at(-1) ?? null;
 
 const num = (v: number, d: number) => v.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
 const fechaCorta = (f: string) => new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
 const mesLargo = (m: string) => new Date(`${m}-15T12:00:00Z`).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
 
-const dfr = ultimaSerie('dfr');
+const serieDfr = serieCompleta('dfr');
+const dfr = serieDfr?.at(-1) ?? null;
+const dfrDesde = serieDfr ? vigenteDesde(serieDfr) : null;
 const eurusd = ultimaSerie('eurusd');
 const mejorCuenta = cuentas.cuentas
   .filter((c) => !c.vinculacion)
   .sort((a, b) => b.tae - a.tae)[0];
+const condiciones = mejorCuenta ? condicionesCuenta(mejorCuenta) : [];
 
 const tarjetas = [
   {
     etiqueta: 'Euríbor a 12 meses',
     valor: `${num(euribor.ultimoValor, 3)}%`,
-    detalle: `Media de ${mesLargo(euribor.ultimoMes)}`,
+    detalle: `Oficial de ${mesLargo(euribor.ultimoMes)} (BOE)`,
     href: '/herramientas/simulador-hipoteca-euribor/',
   },
   dfr && {
     etiqueta: 'Tipo de depósito del BCE',
     valor: `${num(dfr[1], 2)}%`,
-    detalle: `Dato del ${fechaCorta(dfr[0])}`,
+    detalle: dfrDesde ? `En vigor desde el ${fechaCorta(dfrDesde)}` : `Dato del ${fechaCorta(dfr[0])}`,
     href: '/mercados/',
   },
   mejorCuenta && {
-    etiqueta: 'Mejor cuenta remunerada',
+    etiqueta: 'Cuenta remunerada con más TAE',
     valor: `${num(mejorCuenta.tae, 2)}% TAE`,
-    detalle: `${mejorCuenta.banco}, sin vinculación`,
+    detalle: condiciones.length > 0 ? `${mejorCuenta.banco}: ${condiciones.join(', ')}` : `${mejorCuenta.banco}, sin vinculación`,
     href: '/herramientas/comparador-cuentas-remuneradas/',
   },
   eurusd && {
@@ -59,7 +65,11 @@ const tarjetas = [
 <section aria-labelledby="datos-de-hoy" class="mx-auto mt-2 max-w-3xl border-t border-border pt-10">
   <div class="mb-5 flex flex-wrap items-baseline justify-between gap-2">
     <h2 id="datos-de-hoy" class="font-display text-2xl text-ink">Los datos de hoy</h2>
-    <p class="text-xs text-ink-faint">Fuentes: BCE y comparador de cuentas de este sitio, actualizados automáticamente.</p>
+    <p class="text-xs text-ink-faint">
+      Fuentes: BCE (tipo de depósito y euro/dólar), Banco de España en el{' '}
+      <a href={euribor.fuenteUrl} class="underline" rel="noopener">BOE</a> (euríbor) y el comparador de cuentas de este sitio,
+      revisado el {fechaCorta(cuentas.fecha)}. Dato de mercado, no una recomendación.
+    </p>
   </div>
   <ul class="grid grid-cols-2 gap-3 sm:grid-cols-4">
     {tarjetas.map((t) => (
