@@ -69,5 +69,7 @@ const salida = {
   historico,
 };
 fs.mkdirSync(path.dirname(fichero), { recursive: true });
-fs.writeFileSync(fichero, JSON.stringify(salida, null, 1) + '\n');
+// Escritura atómica: primero a un temporal y luego se renombra, para no dejar nunca el fichero a medias.
+fs.writeFileSync(`${fichero}.tmp`, JSON.stringify(salida, null, 1) + '\n');
+fs.renameSync(`${fichero}.tmp`, fichero);
 console.log(`Euríbor oficial de ${ultimo.mes}: ${ultimo.valor.toFixed(3)} % (${ultimo.boe}). Guardado ${fichero} (${historico.length} meses).`);

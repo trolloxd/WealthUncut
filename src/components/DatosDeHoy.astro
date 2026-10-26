@@ -2,8 +2,7 @@
 /**
  * Franja de portada con los datos vivos del sitio: euríbor oficial (BOE), tipo de depósito del BCE, euro/dólar
  * (BCE) y la cuenta remunerada sin vinculación con más TAE del comparador. Cada tarjeta dice su fuente y su
- * fecha; salen de src/data/ en cada build. Si un dato falta, esa tarjeta no se muestra. La frescura de cada uno
- * la vigila scripts/comprobar-frescura.mjs (y tests/frescura.test.ts).
+ * fecha; salen de src/data/ en cada build. Si un dato falta, esa tarjeta no se muestra.
  */
 import euribor from '../data/euribor/ultimo.json';
 import cuentas from '../data/cuentas-remuneradas/ultimo.json';

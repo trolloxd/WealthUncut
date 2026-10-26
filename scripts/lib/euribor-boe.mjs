@@ -2,8 +2,7 @@
 // publican determinados tipos de interés oficiales de referencia del mercado hipotecario").
 //
 // Solo usa los datos abiertos del BOE (https://www.boe.es/datosabiertos/): el sumario de cada día y el XML de
-// cada disposición. No usa el BCE ni EMMI. Lo comparten scripts/datos-euribor.mjs (actualización mensual) y
-// scripts/comprobar-frescura.mjs (comprobación diaria, sin IA).
+// cada disposición. No usa el BCE ni EMMI. Lo usa scripts/datos-euribor.mjs (actualización mensual).
 
 const UA = { 'User-Agent': 'WealthUncut (datos abiertos del BOE; contacto@wealthuncut.com)' };
 const TITULO = /Banco de España.*(tipos de interés oficiales de referencia del mercado hipotecario|índices de referencia oficiales)/i;

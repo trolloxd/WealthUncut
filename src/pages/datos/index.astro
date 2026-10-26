@@ -29,7 +29,10 @@ const jsonLd = [
     isAccessibleForFree: true,
     inLanguage: SITE.locale,
     dateModified: d.revisado,
-    creator: { '@id': `${SITE.url}/autor/#person`, '@type': 'Person', name: AUTHOR.name },
+    creator:
+      d.licenciaPropia === false
+        ? { '@type': 'Organization', name: 'Banco de España' }
+        : { '@id': `${SITE.url}/autor/#person`, '@type': 'Person', name: AUTHOR.name },
     publisher: { '@id': `${SITE.url}/#organization` },
     isBasedOn: d.fuenteUrl,
     spatialCoverage: 'España',

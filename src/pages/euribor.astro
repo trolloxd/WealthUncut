@@ -32,7 +32,8 @@ const mesSolo = (mes: string) => new Intl.DateTimeFormat('es-ES', { month: 'long
 const num = (v: number, d = 3) => v.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
 const fechaLarga = (f: string) =>
   new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
-const pct = (v: number) => `${num(v)} %`;
+const pct = (v: number) => `${v < 0 ? '−' : ''}${num(Math.abs(v))} %`;
+const mayuscula = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 const pp = (v: number) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${num(Math.abs(v))} pp`;
 const sentido = (v: number) => (v > 0 ? 'sube' : v < 0 ? 'baja' : 'no cambia');
 
@@ -72,8 +73,8 @@ const datosGrafica = {
   },
 };
 
-const title = 'Euríbor hoy: valor oficial de cada mes (BOE) e histórico';
-const description = `El euríbor a 12 meses oficial de ${mesLargo(ultimo.mes)} es ${pct(redondear3(ultimo.valor))} (BOE). Variación, gráficas, últimos 24 meses y media de cada año desde ${inicio.mes.slice(0, 4)}, con la resolución del BOE de cada mes.`;
+const title = 'Euríbor a 12 meses: valor oficial de cada mes (BOE)';
+const description = `Euríbor a 12 meses oficial de ${mesLargo(ultimo.mes)}: ${pct(redondear3(ultimo.valor))} (BOE). Variación, gráficas, últimos 24 meses y media anual desde ${inicio.mes.slice(0, 4)}.`;
 const url = `${SITE.url}/euribor/`;
 const actualizado = euriborUltimo.generado.slice(0, 10);
 
@@ -202,7 +203,7 @@ const jsonLd = [
           {
             filas24.map((f) => (
               <tr class="border-b border-border/60">
-                <th scope="row" class="py-1.5 text-left font-normal capitalize text-ink">{mesLargo(f.mes)}</th>
+                <th scope="row" class="py-1.5 text-left font-normal text-ink">{mayuscula(mesLargo(f.mes))}</th>
                 <td class="py-1.5 text-right tabular-nums text-ink">{pct(redondear3(f.valor))}</td>
                 <td class:list={['py-1.5 text-right tabular-nums', f.cambio > 0 ? 'text-accent' : f.cambio < 0 ? 'text-brand' : 'text-ink-muted']}>
                   {pp(f.cambio)}

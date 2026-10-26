@@ -15,6 +15,8 @@ const ultimo = serie.at(-1)!;
 const mesLargo = (mes: string) =>
   new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${mes}-01T00:00:00Z`));
 const num = (v: number, d: number) => v.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fechaLarga = (f: string) =>
+  new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 const cambioFijo = `${num(COMISION_CAMBIO_A_FIJO.limitePct, 2)} %`;
 const variable = COMISION_AMORTIZACION_ANTICIPADA.variable;
 
@@ -26,8 +28,7 @@ const faqs = [
   },
   {
     pregunta: '¿Cuándo se publica el euríbor oficial de cada mes?',
-    respuesta:
-      'El Banco de España publica en el BOE, en los primeros días de cada mes, la media del mes anterior como tipo oficial de referencia del mercado hipotecario. Por ejemplo, la media de septiembre de 2026 (3,247 %) salió en el BOE del 2 de octubre de 2026.',
+    respuesta: `El Banco de España publica en el BOE, en los primeros días de cada mes, la media del mes anterior como tipo oficial de referencia del mercado hipotecario. Por ejemplo, la de ${mesLargo(ultimo.mes)} (${num(ultimo.valor, 3)} %) salió en el BOE del ${fechaLarga(euriborUltimo.ultimoPublicado)}.`,
   },
   {
     pregunta: '¿Por qué mi banco me cobra una cuota distinta?',
@@ -46,7 +47,7 @@ const faqs = [
   title="¿Cuánto me sube la hipoteca en la revisión del euríbor?"
   name="Revisión de la hipoteca"
   description="Calcula cuánto sube o baja tu cuota en la próxima revisión, con el euríbor oficial del último mes, tu capital pendiente y tu diferencial."
-  pubDate={new Date('2026-10-21')}
+  pubDate={new Date('2026-10-26')}
   sources={[
     {
       label: `Banco de España en el BOE: euríbor a un año oficial de ${mesLargo(ultimo.mes)} (${euriborUltimo.ultimoBoe})`,
@@ -72,8 +73,8 @@ const faqs = [
   <p>
     El índice que usan casi todas las hipotecas variables en España es el euríbor a un año, en su versión oficial: la media
     de cada mes que el Banco de España publica en el BOE como tipo de referencia del mercado hipotecario (la definición
-    está en el anejo 8 de su Circular 5/2012). Sale en los primeros días del mes siguiente: la media de septiembre de 2026
-    se publicó el 2 de octubre.
+    está en el anejo 8 de su Circular 5/2012). Sale en los primeros días del mes siguiente: la de {mesLargo(ultimo.mes)} se
+    publicó el {fechaLarga(euriborUltimo.ultimoPublicado)}.
   </p>
   <p>
     Qué mes cuenta en tu caso lo fija la escritura, en la cláusula de tipo de interés variable. Puede ser el último valor
