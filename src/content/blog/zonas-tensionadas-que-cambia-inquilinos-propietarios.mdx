@@ -1,15 +1,29 @@
 ---
 title: "Zonas tensionadas: qué cambia para inquilinos y propietarios"
-description: "Qué es una zona tensionada, cómo se declara, qué límite de renta se aplica al firmar un contrato y qué ventaja fiscal tiene alquilar en una."
-resumen: "Una zona tensionada es un ámbito concreto que una administración declara por tres años y que, mientras está vigente, limita la renta de los contratos nuevos y mejora la reducción fiscal de quien alquila. No es un tope de precios general ni vale para toda España."
+description: "Qué es una zona tensionada, qué límite de renta se aplica, qué prórrogas puedes pedir y qué cambian los decretos de vivienda de octubre de 2026."
+resumen: "Una zona tensionada es un ámbito concreto que una administración declara por tres años y que, mientras está vigente, limita la renta de los contratos nuevos, permite al inquilino pedir prórrogas extraordinarias y mejora la reducción fiscal de quien alquila. No es un tope de precios general ni vale para toda España."
 pubDate: 2026-10-25
-updatedDate: 2026-10-25
+updatedDate: 2026-10-26
 author: "David Pérez Mitjà"
 tags: ["vivienda", "alquiler", "impuestos"]
 categoria: "vivienda"
 sources:
-  - label: "BOE: Ley 12/2023, de 24 de mayo, por el derecho a la vivienda"
-    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2023-12203"
+  - label: "BOE: Ley 12/2023, de 24 de mayo, por el derecho a la vivienda (texto consolidado, arts. 3.k y 18)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2023-12203"
+  - label: "BOE: Real Decreto-ley 29/2026, de 6 de octubre, función social de la vivienda y oferta de vivienda asequible (BOE núm. 249, de 7 de octubre de 2026)"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20823"
+  - label: "BOE: Real Decreto-ley 28/2026, de 6 de octubre, estabilidad de los contratos de arrendamiento de vivienda habitual (BOE núm. 249, en vigor el 15 de noviembre de 2026)"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20822"
+  - label: "Congreso: Real Decreto-ley 29/2026, en convalidación en la Diputación Permanente desde el 13 de octubre de 2026 (iniciativa 130/000060)"
+    url: "https://www.congreso.es/es/proposiciones-de-ley?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=130%2F000060"
+  - label: "Congreso: Real Decreto-ley 28/2026, en convalidación en la Diputación Permanente desde el 13 de octubre de 2026 (iniciativa 130/000059)"
+    url: "https://www.congreso.es/es/proposiciones-de-ley?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=130%2F000059"
+  - label: "BOE: Resolución de 2 de octubre de 2026, del Congreso, de derogación del Real Decreto-ley 26/2026"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20526"
+  - label: "BOE: Resolución de 2 de octubre de 2026, del Congreso, de derogación del Real Decreto-ley 27/2026"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20527"
+  - label: "BOE: Constitución Española, arts. 78 y 86"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-1978-31229"
   - label: "Ministerio de Vivienda y Agenda Urbana: consultar zonas de mercado residencial tensionado"
     url: "https://www.mivau.gob.es/vivienda/alquila-bien-es-tu-derecho/serpavi/consultar-zonas-de-mercado-residencial-tensionado"
   - label: "AEAT: reducciones por arrendamiento de inmuebles destinados a vivienda (Manual de Renta 2025)"
@@ -18,60 +32,155 @@ hasAffiliateLinks: false
 draft: false
 ---
 
+import { ALQUILER_IRPF, ALQUILER_IRPF_RDL_29_2026 as N } from '../../config/finance';
+
+export const pct = (n) => (n * 100).toLocaleString('es-ES') + ' %';
+export const antigua = (id) => pct(ALQUILER_IRPF.reducciones.find((r) => r.id === id).pct);
+
 "Zona tensionada" es una de las expresiones que más se oyen y menos se entienden en el debate de la vivienda. No es un
 tope de precios general ni vale para toda España. Es una etiqueta que una administración pone a un ámbito concreto
 (un municipio, un distrito) y que, **solo mientras está vigente**, activa unas reglas especiales para los contratos
-de alquiler y para los impuestos de quien alquila. Aquí tienes qué cambia, para quién, y dónde mirar si tu zona lo es.
+de alquiler y para los impuestos de quien alquila. Aquí tienes qué cambia, para quién, dónde mirar si tu zona lo es y
+qué añaden los decretos de vivienda aprobados en octubre de 2026.
+
+**Situación a 26 de octubre de 2026.** Desde el 8 de octubre está en vigor el Real Decreto-ley 29/2026, que cambia
+varias de estas reglas, y el Real Decreto-ley 28/2026 entrará en vigor el 15 de noviembre. Los dos están **pendientes
+de convalidación**: si la Diputación Permanente del Congreso los deroga, dejan de aplicarse. Al final tienes el estado
+de cada norma.
 
 ## Qué es y cómo se declara una zona tensionada
 
-La Ley 12/2023 por el derecho a la vivienda permite que las administraciones competentes (en la práctica, las
-comunidades autónomas) declaren una zona como "mercado residencial tensionado" cuando hay un especial riesgo de que la
-oferta de vivienda sea insuficiente y asequible para la población. Para hacerlo tienen que justificarlo con datos de precios de
-alquiler y compra y de renta de los hogares, y publicar la información.
+La Ley 12/2023 por el derecho a la vivienda permite que las administraciones competentes en vivienda (en la práctica,
+las comunidades autónomas) declaren una zona como "mercado residencial tensionado". Tienen que justificarlo en una
+memoria con datos objetivos y demostrar al menos una de estas dos situaciones (artículo 18.3):
+
+- Que el coste medio de la hipoteca o del alquiler, más los gastos y suministros básicos, **supere el 30 % de los
+  ingresos medios** de los hogares de la zona.
+- Que el precio de compra o alquiler haya crecido en los cinco años anteriores **al menos tres puntos más que el IPC**
+  de la comunidad autónoma.
 
 Tres detalles importantes de la ley:
 
 - **Dura tres años** y se puede prorrogar año a año si se mantienen las circunstancias.
-- **La lista no es fija.** El Ministerio publica cada trimestre la relación de zonas declaradas, y se van sumando
-  y renovando municipios.
+- **La lista no es fija.** El Ministerio aprueba cada trimestre una resolución con la relación de zonas declaradas, y se
+  van sumando y renovando municipios.
 - **No todas las comunidades la usan.** Que exista la herramienta no significa que tu ciudad la haya pedido.
 
 Para saber si tu vivienda está en una, el Ministerio tiene un [buscador oficial de zonas tensionadas](https://www.mivau.gob.es/vivienda/alquila-bien-es-tu-derecho/serpavi/consultar-zonas-de-mercado-residencial-tensionado).
 Es la única fuente que conviene mirar: la lista cambia, y los recuentos de las webs de divulgación se quedan antiguos pronto.
 
-## Qué cambia para el inquilino
+## Qué cambia para el inquilino al firmar un contrato nuevo
 
-En una zona tensionada vigente, al firmar un contrato nuevo de vivienda habitual:
+En una zona tensionada vigente, al firmar un contrato nuevo de vivienda (artículo 17.6 y 17.7 de la Ley de Arrendamientos Urbanos):
 
 - **La renta inicial no puede superar la del último contrato de los últimos cinco años** en la misma vivienda, ya con la actualización anual
   aplicada. No se pueden añadir gastos que el contrato anterior no repercutía.
 - Esa renta puede subir **hasta un 10 % más** en casos concretos: si hubo una rehabilitación reciente, una mejora energética acreditada
   del 30 %, mejoras de accesibilidad, o si el contrato es de diez años o más.
-- Si el arrendador es un **gran tenedor** (más de diez inmuebles urbanos residenciales, o más de 1.500 m², aunque la zona puede
-  rebajarlo a cinco), la renta no puede pasar del máximo que fije el **sistema de índices de precios de referencia**.
-- Al terminar el contrato, puedes pedir **prórrogas anuales extraordinarias de hasta tres años**, con las mismas condiciones, y el
-  propietario tiene que aceptar salvo causas concretas (por ejemplo, que necesite la vivienda para sí o para un familiar de primer grado).
+- Si el arrendador es un **gran tenedor**, la renta no puede pasar del máximo que fije el **sistema de índices de precios de referencia**.
+  Gran tenedor es quien tiene más de diez inmuebles urbanos de uso residencial o más de 1.500 m² construidos de uso residencial, sin contar
+  garajes ni trasteros; la comunidad puede bajarlo, si lo justifica, a quien tenga cinco o más viviendas en esa zona (artículo 3.k de la Ley
+  12/2023). Desde el 8 de octubre de 2026, esa condición se acredita con un certificado del Registro de la Propiedad, y cada vivienda de un
+  edificio cuenta por separado aunque no haya división horizontal.
+- **Si alquilas una habitación**, desde el 8 de octubre la suma de las rentas de las habitaciones alquiladas a la vez no puede superar la renta
+  del piso entero, y en zona tensionada tiene que respetar los mismos límites.
+- Los anuncios tienen que incluir el índice de referencia en zona tensionada, el límite de renta aplicable y si el arrendador es gran tenedor
+  (artículo 20 del Real Decreto-ley 29/2026).
 
-## Qué cambia para el propietario
+## Qué prórrogas puedes pedir al terminar el contrato
 
-Además del límite de renta, hay un incentivo fiscal. Quien alquila una vivienda tiene una reducción sobre el rendimiento neto del alquiler en
-el IRPF. Con la normativa vigente para contratos desde mayo de 2023:
+**En zona tensionada**, cuando termina la prórroga obligatoria de cinco años (siete si el casero es una empresa) o la prórroga tácita, puedes
+pedir **prórrogas extraordinarias por plazos anuales, hasta un máximo de tres años**, con las mismas condiciones (artículo 10.3 de la Ley de
+Arrendamientos Urbanos). El propietario tiene que aceptarlas salvo que pactéis otras condiciones, firméis un contrato nuevo con los límites de
+renta, o haya comunicado a tiempo que necesita la vivienda para sí, para un familiar de primer grado o para su cónyuge tras una separación.
 
-- **50 %** con carácter general.
-- **70 %** si es el primer alquiler de esa vivienda en zona tensionada y el inquilino tiene entre 18 y 35 años.
-- **90 %** si firmas un nuevo contrato en zona tensionada rebajando la renta más de un 5 % respecto al anterior.
+**En cualquier zona**, el Real Decreto-ley 29/2026 añade otra prórroga extraordinaria (disposición final quinta). Se aplica a los contratos de
+vivienda habitual vigentes el 8 de octubre de 2026 cuando termina la prórroga obligatoria (si termina antes del 31 de diciembre de 2028), la
+prórroga tácita o la tácita reconducción:
+
+- La pides tú, por **plazos anuales y hasta dos años más**, con las mismas condiciones del contrato.
+- Tienes que estar **al corriente de pago** y haberlo estado los **ocho meses anteriores**.
+- El propietario tiene que aceptarla salvo acuerdo distinto, contrato nuevo o necesidad de la vivienda para él o su familia comunicada en plazo.
+- No se puede sumar a la de zona tensionada: si te corresponde esa, se aplica primero.
+- No se aplica si renováis o firmáis un contrato nuevo con una renta al menos un 5 % más baja.
+
+**Desde el 15 de noviembre de 2026**, si se convalida, el Real Decreto-ley 28/2026 cambia la prórroga tácita: pasados los cinco años (o
+siete), el contrato se prorrogará por **periodos sucesivos de cinco años** (o siete) si nadie avisa. El propietario tendrá que avisar con
+**seis meses** de antelación (ahora son cuatro) y, si no prorroga, **indemnizar al inquilino** con la mayor de dos cantidades: doce mensualidades
+calculadas con el valor superior del índice estatal de referencia para esa vivienda, o una mensualidad por cada año vivido en ella. No hay
+indemnización, entre otros casos, si el propietario persona física necesita la vivienda para sí o un familiar hasta segundo grado, si el
+inquilino no ha vivido en ella más de seis meses de los últimos doce o si rechaza una oferta de contrato nuevo de cinco años con renta
+limitada. Los avisos de no renovación enviados antes del 7 de octubre de 2026 mantienen su efecto y no dan derecho a indemnización.
+
+## Cuánto puede subir el alquiler de un contrato en marcha
+
+El tope de zona tensionada se aplica al firmar un contrato nuevo. Pero desde el 8 de octubre de 2026 la **actualización anual** de los contratos
+en vigor también tiene límites, en toda España:
+
+- Solo se actualiza si el contrato lo pacta. Si no dice nada, no hay subida, y en ningún caso puede superar la variación del **Índice de
+  Referencia para la Actualización Anual de los Contratos de Arrendamiento de Vivienda (IRAV)** (artículo 18.1 de la ley).
+- Para las actualizaciones que toquen entre el 8 de octubre de 2026 y el 31 de diciembre de 2027 (disposición final sexta del Real
+  Decreto-ley 29/2026): si la renta supera el máximo del índice de precios de referencia, **no puede subir nada**; en los demás casos, la
+  subida es la que acordéis y, **sin acuerdo, como mucho un 2 %**.
+
+## Alquiler de temporada y turístico
+
+Desde el 8 de octubre de 2026, el alquiler de **vivienda temporal** (cuando te desplazas de tu domicilio por una causa justificada) pasa a
+regularse dentro de la Ley de Arrendamientos Urbanos como arrendamiento de vivienda. El contrato tiene que indicar la causa, que debe ser real y
+demostrable; si no, se trata como vivienda habitual. Debe durar más de 31 días y, como regla general, no más de doce meses, y si se encadenan
+más de dos contratos temporales con las mismas partes se considera vivienda habitual desde el primero. Las subidas entre contratos temporales
+sucesivos en la misma vivienda no pueden superar el IRAV. Los contratos de temporada firmados antes de esa fecha siguen con su régimen hasta
+que terminen. El **alquiler turístico** (cesiones de hasta 31 días con normativa turística) sigue fuera de esta ley.
+
+## Qué cambia para el propietario: la reducción en el IRPF
+
+Además del límite de renta, hay un incentivo fiscal: una reducción sobre el rendimiento neto del alquiler de vivienda en el IRPF. Para los
+contratos firmados desde mayo de 2023 **hasta el 1 de diciembre de 2026**, se sigue aplicando la redacción anterior:
+
+- **{antigua('r50')}** con carácter general.
+- **{antigua('r60')}** si la vivienda se rehabilitó en los dos años anteriores.
+- **{antigua('r70')}** si es el primer alquiler de esa vivienda en zona tensionada y el inquilino tiene entre 18 y 35 años.
+- **{antigua('r90')}** si firmas un nuevo contrato en zona tensionada rebajando la renta más de un 5 % respecto al anterior.
 - Si no cumples el límite de renta en zona tensionada, **no hay ninguna reducción**.
 
-Esas cifras están en el [Manual de Renta 2025 de la AEAT](https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c04-rendimientos-capital-inmobiliario/reducciones-rendimiento-neto/arrendamiento-inmuebles-destinados-vivienda.html).
-Para ver cuánto significan en euros con tu caso, usa la [calculadora de IRPF del alquiler](/herramientas/calculadora-irpf-alquiler/): comparando 50, 70 y 90 %
-la diferencia suele ser de cientos o miles de euros al año.
+Para los contratos firmados **después del 1 de diciembre de 2026**, el Real Decreto-ley 29/2026 (si se convalida) cambia la escala. Solo
+pueden aplicarla los propietarios que no sean grandes tenedores:
+
+| Nuevo contrato o primer alquiler | Reducción |
+| --- | --- |
+| Rebaja de más del 5 % al mismo inquilino tras el plazo, o renta por debajo del índice | {pct(N.nuevoContratoRebajaMas5.mismoInquilinoTrasPlazoOIndice)} |
+| Zona tensionada con inquilino de 18 a 35 años | {pct(N.nuevoContratoRebajaMas5.zonaTensionadaJoven)} |
+| Zona tensionada | {pct(N.nuevoContratoRebajaMas5.zonaTensionada)} |
+| Inquilino de 18 a 35 años | {pct(N.nuevoContratoRebajaMas5.joven)} |
+| Misma renta que el contrato anterior | {pct(N.nuevoContratoSinSubida)} |
+| Renta más alta que la del contrato anterior | de {pct(N.nuevoContratoConSubida[0].pct)} a {pct(N.nuevoContratoConSubida[N.nuevoContratoConSubida.length - 1].pct)}, según la subida |
+
+Las tres primeras filas exigen, en un contrato nuevo, que la renta baje más de un 5 % respecto al anterior (si no hay ningún otro requisito
+de la tabla, la reducción es del {pct(N.nuevoContratoRebajaMas5.resto)}); en el primer alquiler de la vivienda se aplican sin esa rebaja, y si la renta
+iguala o supera el índice, la reducción es del {pct(N.primerAlquiler.rentaIgualOSobreIndice)}. Además, la prórroga tácita con renta por debajo del índice tendrá
+un {pct(N.prorrogaTacitaBajoIndice)}. Para ver cuánto significan en euros con tu caso, usa la
+[calculadora de IRPF del alquiler](/herramientas/calculadora-irpf-alquiler/), que hoy aplica los porcentajes de los contratos firmados hasta
+diciembre de 2026: la diferencia entre unos y otros suele ser de cientos o miles de euros al año.
+
+## Estado de cada norma a 26 de octubre de 2026
+
+| Norma | Publicación en el BOE | Situación |
+| --- | --- | --- |
+| Real Decreto-ley 26/2026 | 30 de septiembre | Derogado por el Congreso el 2 de octubre |
+| Real Decreto-ley 27/2026 | 1 de octubre | Derogado por el Congreso el 2 de octubre |
+| Real Decreto-ley 28/2026 | 7 de octubre | Entra en vigor el 15 de noviembre; pendiente de convalidación |
+| Real Decreto-ley 29/2026 | 7 de octubre | En vigor desde el 8 de octubre; pendiente de convalidación |
+
+La Constitución (artículo 86.2) obliga a que el Congreso se pronuncie sobre la convalidación o derogación de un real decreto-ley en los treinta
+días siguientes a su promulgación. Como las Cortes se disolvieron con el Real Decreto 806/2026, lo hace la Diputación Permanente (artículo
+78.2). Según la web del Congreso, consultada el 26 de octubre, los dos decretos siguen en trámite de convalidación desde el 13 de octubre.
+Actualizaremos esta guía con el resultado.
 
 ## Lo que la ley no hace
 
-- **No congela todos los alquileres.** El tope se aplica al firmar un contrato nuevo, no a un contrato que ya está en marcha, que sigue
-  su cláusula de actualización anual.
-- **No cubre alquileres de temporada ni turísticos**, que se rigen por otras normas.
+- **No congela todos los alquileres.** Limita la renta de los contratos nuevos en zona tensionada y la subida anual de los que están en marcha,
+  pero no baja las rentas que ya pagas.
+- **No cubre el alquiler turístico**, que se rige por la normativa turística.
 - **No arregla la oferta.** Limita el precio de lo que existe, pero no construye vivienda: por eso el plan estatal de vivienda combina
   ayudas, vivienda pública y rehabilitación.
 
@@ -79,8 +188,29 @@ la diferencia suele ser de cientos o miles de euros al año.
 
 1. **Comprueba si tu vivienda está en una zona vigente** en el buscador del Ministerio, y la fecha hasta la que lo está.
 2. **Si vas a firmar un contrato nuevo**, pide el contrato anterior de los últimos cinco años y revisa que la renta no lo supere.
-3. **Si eres joven y alquilas**, mira si cumples los requisitos de la [ayuda estatal al alquiler](/herramientas/ayudas-vivienda-jovenes/).
-4. **Si eres propietario**, calcula tu IRPF con los distintos porcentajes antes de decidir renta y duración del contrato.
+3. **Si te toca la actualización anual**, revisa qué dice tu contrato y aplica los límites de arriba antes de pagar la subida.
+4. **Si eres joven y alquilas**, mira si cumples los requisitos de la [ayuda estatal al alquiler](/herramientas/ayudas-vivienda-jovenes/) y lee
+   la guía de la [ayuda al alquiler para jóvenes](/blog/ayuda-alquiler-jovenes-requisitos/).
+5. **Si dudas entre seguir de alquiler o comprar**, haz las cuentas con [alquilar o comprar: las cuentas](/blog/alquilar-o-comprar-vivienda-las-cuentas/).
+6. **Si eres propietario**, calcula tu IRPF con los distintos porcentajes antes de decidir renta y duración del contrato.
+
+## Preguntas frecuentes
+
+**¿El límite de renta se aplica si mi contrato ya está firmado?**
+El tope de zona tensionada, no: se aplica al firmar un contrato nuevo. Lo que sí afecta a tu contrato es el límite a la actualización anual
+(sin acuerdo, como mucho un 2 % hasta el 31 de diciembre de 2027, y nada si la renta supera el índice de referencia).
+
+**¿Puedo pedir la prórroga extraordinaria si no vivo en zona tensionada?**
+Sí, la de la disposición final quinta del Real Decreto-ley 29/2026 vale en toda España, hasta dos años, si estás al corriente de pago y lo
+has estado los ocho meses anteriores. La de zona tensionada llega a tres años.
+
+**¿Qué pasa con estas reglas si no se convalidan los decretos?**
+Si la Diputación Permanente deroga un real decreto-ley, deja de aplicarse. La Ley 12/2023 y el resto de la Ley de Arrendamientos Urbanos
+anteriores a los decretos siguen vigentes.
+
+**¿Cómo sé si mi casero es gran tenedor?**
+Desde el 8 de octubre de 2026, el anuncio del alquiler debe indicarlo y la condición se acredita con certificado del Registro de la Propiedad.
+Si tienes dudas, puedes pedírselo por escrito.
 
 Este artículo es información general sobre la normativa, no asesoramiento jurídico ni fiscal. La aplicación a un caso concreto depende de
 tu comunidad autónoma y de las condiciones del contrato.
