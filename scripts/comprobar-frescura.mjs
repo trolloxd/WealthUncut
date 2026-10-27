@@ -26,7 +26,7 @@ const arg = (n) => (process.argv.includes(n) ? process.argv[process.argv.indexOf
 const LOG = arg('--log');
 const SIN_RAMA = process.argv.includes('--sin-rama');
 const PROBAR_RAMA = process.argv.includes('--probar-rama');
-const hoy = new Date().toISOString().slice(0, 10);
+const hoy = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Madrid' });
 
 const git = (...a) => execFileSync('git', a, { cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 const leerMain = (ruta) => JSON.parse(git('show', `origin/main:${ruta}`));
