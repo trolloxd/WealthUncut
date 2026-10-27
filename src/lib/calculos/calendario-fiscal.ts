@@ -34,6 +34,11 @@ export interface EventoFiscal {
 
 const CAL = 'https://sede.agenciatributaria.gob.es/Sede/ayuda/calendario-contribuyente/calendario-contribuyente-2026';
 const DOMICILIACION = `${CAL}/plazos-presentacion-autoliquidaciones-domiciliacion-bancaria.html`;
+export const FUENTE_REGLA_DIA_INHABIL = {
+  etiqueta: 'AEAT, Calendario del contribuyente 2026: plazos y domiciliación bancaria',
+  url: DOMICILIACION,
+};
+
 const fuenteCal = (etiqueta: string, ruta: string) => ({ etiqueta, url: `${CAL}/calendario-anual/${ruta}.html` });
 
 /** Fecha de la última revisión de las fechas de esta lista (se muestra en la página y va en el .ics). */
@@ -54,7 +59,7 @@ export const EVENTOS_FISCALES: EventoFiscal[] = [
     id: 'cierre-2026',
     fecha: '2026-12-31',
     titulo: 'Cierre del año fiscal 2026',
-    detalle: `Lo que cuenta para la Renta 2026 se decide hasta hoy: aportaciones a planes de pensiones (límite individual de ${eur(PLAN_PENSIONES.limiteIndividual)} euros al año), ventas con ganancias o pérdidas y la regla de los dos meses si piensas recomprar. Guía completa en "Antes del 31 de diciembre".`,
+    detalle: `Lo que cuenta para la Renta 2026 se decide hasta hoy. Las aportaciones a planes de pensiones tienen un límite individual de ${eur(PLAN_PENSIONES.limiteIndividual)} euros al año según el Manual de Renta 2025 de la AEAT (confirma si cambia para 2026). Para las ventas con pérdidas o ganancias y la regla de los dos meses, mira la guía "Antes del 31 de diciembre".`,
     perfiles: ['asalariado', 'autonomo', 'inversor'],
     estado: 'norma',
     fuente: { etiqueta: 'AEAT, Manual práctico de Renta 2025: reducciones por aportaciones a sistemas de previsión social', url: PLAN_PENSIONES.url },
@@ -72,18 +77,27 @@ export const EVENTOS_FISCALES: EventoFiscal[] = [
   {
     id: 'saldo-extranjero-2026',
     fecha: '2026-12-31',
-    titulo: 'Foto a 31 de diciembre: saldos en el extranjero y monedas virtuales',
-    detalle: `Para los modelos 720 y 721 se mira el saldo a 31 de diciembre. El umbral es de ${eur(MODELO_720.umbralPorBloque)} euros por bloque en el 720 y de ${eur(MODELO_721.umbralConjunto)} euros en conjunto en el 721. Anota hoy esos saldos para presentarlos en el primer trimestre.`,
+    titulo: 'Foto a 31 de diciembre: bienes y derechos en el extranjero (modelo 720)',
+    detalle: `Para el modelo 720 se mira el saldo a 31 de diciembre y, en las cuentas bancarias, también el saldo medio del último trimestre. El umbral es de ${eur(MODELO_720.umbralPorBloque)} euros por bloque. Anota hoy esos saldos para presentarlo en el primer trimestre si te toca.`,
     perfiles: ['inversor'],
     estado: 'norma',
-    fuente: { etiqueta: 'AEAT, preguntas frecuentes del modelo 720', url: MODELO_720.url },
+    fuente: { etiqueta: 'AEAT, modelo 720: forma de calcular el límite que obliga a declarar', url: 'https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-720-decla_____sobre-bienes-derechos-extranjero_/preguntas-frecuentes/forma-calcular-limite-que-obliga-declarar.html' },
+  },
+  {
+    id: 'saldo-cripto-2026',
+    fecha: '2026-12-31',
+    titulo: 'Foto a 31 de diciembre: monedas virtuales en el extranjero (modelo 721)',
+    detalle: `Para el modelo 721 se mira el saldo conjunto a 31 de diciembre de las monedas virtuales custodiadas en el extranjero, con un umbral de ${eur(MODELO_721.umbralConjunto)} euros. Anótalo hoy para presentarlo en el primer trimestre si te toca.`,
+    perfiles: ['inversor'],
+    estado: 'norma',
+    fuente: { etiqueta: 'AEAT, modelo 721: preguntas frecuentes', url: MODELO_721.url },
   },
   {
     id: 'retenciones-4t-2026',
     fecha: '2027-01-20',
     titulo: 'Cuarto trimestre: retenciones e ingresos a cuenta (modelos 111 y 115)',
     detalle:
-      'Para autónomos que pagan nóminas, facturas de profesionales con retención o el alquiler de un local. Fecha prevista: el cuarto trimestre de 2025 venció el 20 de enero de 2026 y el 20 de enero de 2027 es miércoles.',
+      'Retenciones e ingresos a cuenta sobre rendimientos del trabajo, actividades económicas y alquileres de inmuebles urbanos, si las has practicado. Fecha prevista: el cuarto trimestre de 2025 venció el 20 de enero de 2026 y el 20 de enero de 2027 es miércoles.',
     perfiles: ['autonomo'],
     estado: 'previsto',
     fuente: fuenteCal('AEAT, Calendario del contribuyente 2026: hasta el 20 de enero (cuarto trimestre de 2025)', 'enero/hasta-20-enero'),
@@ -91,26 +105,34 @@ export const EVENTOS_FISCALES: EventoFiscal[] = [
   {
     id: 'pago-fraccionado-4t-2026',
     fecha: '2027-02-01',
-    titulo: 'Cuarto trimestre: pago fraccionado del IRPF, IVA y resumen anual del IVA (modelos 130, 303 y 390)',
-    detalle:
-      'El cuarto trimestre de 2025 venció el 30 de enero de 2026. El 30 de enero de 2027 es sábado y, si el último día es inhábil, el plazo termina el primer día hábil siguiente: lunes 1 de febrero. Fecha prevista hasta que la AEAT publique el calendario de 2027; la domiciliación bancaria tiene un plazo más corto.',
+    titulo: 'Cuarto trimestre: pago fraccionado del IRPF (130 o 131), IVA y resumen anual (303 y 390)',
+    detalle: `El cuarto trimestre de 2025 venció el 30 de enero de 2026. El 30 de enero de 2027 es sábado y, si el último día es inhábil, el plazo termina el primer día hábil siguiente (regla en ${FUENTE_REGLA_DIA_INHABIL.url}): lunes 1 de febrero. Fecha prevista hasta que la AEAT publique el calendario de 2027; la domiciliación bancaria tiene un plazo más corto.`,
     perfiles: ['autonomo'],
     estado: 'previsto',
     fuente: fuenteCal('AEAT, Calendario del contribuyente 2026: hasta el 30 de enero (cuarto trimestre de 2025)', 'enero/hasta-30-enero'),
   },
   {
-    id: 'modelos-720-721-2027',
+    id: 'modelo-720-2027',
     fecha: '2027-03-31',
-    titulo: 'Último día para los modelos 720 y 721 (bienes y criptomonedas en el extranjero)',
-    detalle: `El plazo es ${MODELO_720.plazo}. Solo hay que presentarlos si el saldo a 31 de diciembre supera el umbral de cada modelo, o si ha subido más de ${eur(MODELO_720.incrementoParaRepetir)} euros desde la última declaración. Usa la calculadora del 720 para comprobarlo.`,
+    titulo: 'Último día para el modelo 720 (bienes y derechos en el extranjero)',
+    detalle: `El plazo es ${MODELO_720.plazo}. Solo hay que presentarlo si algún bloque supera el umbral, o si ha subido más de ${eur(MODELO_720.incrementoParaRepetir)} euros respecto al de la última declaración. Usa la calculadora del 720 para comprobarlo.`,
     perfiles: ['inversor'],
     estado: 'norma',
-    fuente: { etiqueta: 'AEAT, preguntas frecuentes del modelo 721: plazo de presentación', url: MODELO_721.urlPlazo },
+    fuente: { etiqueta: 'AEAT, modelo 720: preguntas frecuentes', url: MODELO_720.url },
+  },
+  {
+    id: 'modelo-721-2027',
+    fecha: '2027-03-31',
+    titulo: 'Último día para el modelo 721 (monedas virtuales en el extranjero)',
+    detalle: `El plazo es ${MODELO_721.plazo}. Solo hay que presentarlo si el saldo conjunto supera el umbral, o si ha subido más de ${eur(MODELO_721.incrementoParaRepetir)} euros respecto al de la última declaración.`,
+    perfiles: ['inversor'],
+    estado: 'norma',
+    fuente: { etiqueta: 'AEAT, modelo 721: plazo de presentación', url: MODELO_721.urlPlazo },
   },
   {
     id: 'renta-2026-campana',
     fecha: null,
-    titulo: 'Campaña de la Renta 2026 (abril a junio de 2027)',
+    titulo: 'Campaña de la Renta 2026 (fechas por publicar)',
     detalle:
       'La AEAT anuncia las fechas de cada campaña poco antes de empezar. La de la Renta 2025 fue del 8 de abril al 30 de junio de 2026, con domiciliación hasta el 25 de junio. Cuando se publiquen las de 2027, se añadirán aquí.',
     perfiles: ['asalariado', 'autonomo', 'inversor'],
@@ -120,7 +142,7 @@ export const EVENTOS_FISCALES: EventoFiscal[] = [
   {
     id: 'trimestre-1-2027',
     fecha: '2027-04-20',
-    titulo: 'Primer trimestre: retenciones y pago fraccionado (modelos 111, 115, 130 y 303)',
+    titulo: 'Primer trimestre: retenciones y pago fraccionado (modelos 111, 115, 130 o 131, y 303)',
     detalle:
       'Fecha prevista: el primer trimestre de 2026 venció el 20 de abril y el 20 de abril de 2027 es martes. Se confirmará con el calendario de 2027.',
     perfiles: ['autonomo'],
@@ -130,7 +152,7 @@ export const EVENTOS_FISCALES: EventoFiscal[] = [
   {
     id: 'trimestre-2-2027',
     fecha: '2027-07-20',
-    titulo: 'Segundo trimestre: retenciones y pago fraccionado (modelos 111, 115, 130 y 303)',
+    titulo: 'Segundo trimestre: retenciones y pago fraccionado (modelos 111, 115, 130 o 131, y 303)',
     detalle:
       'Fecha prevista: el segundo trimestre de 2026 venció el 20 de julio y el 20 de julio de 2027 es martes. Se confirmará con el calendario de 2027.',
     perfiles: ['autonomo'],
@@ -138,11 +160,6 @@ export const EVENTOS_FISCALES: EventoFiscal[] = [
     fuente: fuenteCal('AEAT, Calendario del contribuyente 2026: hasta el 20 de julio', 'julio/hasta-20-julio'),
   },
 ];
-
-export const FUENTE_REGLA_DIA_INHABIL = {
-  etiqueta: 'AEAT, Calendario del contribuyente 2026: plazos y domiciliación bancaria',
-  url: DOMICILIACION,
-};
 
 /** Eventos de un perfil, con fecha a partir de `desde` (AAAA-MM-DD, inclusive), ordenados; sin fecha al final. */
 export function eventosDePerfil(perfil: Perfil, desde = '0000-00-00', eventos = EVENTOS_FISCALES): EventoFiscal[] {
@@ -189,7 +206,7 @@ function diaSiguiente(f: string): string {
   return d.toISOString().slice(0, 10);
 }
 
-/** Calendario .ics del perfil: eventos de día completo con dos avisos (7 días y 1 día antes). */
+/** Calendario .ics del perfil: eventos de día completo con dos avisos (a las 9:00 de 7 y de 1 día antes). */
 export function generarIcs(perfil: Perfil, desde = '0000-00-00', eventos = EVENTOS_FISCALES): string {
   const nombre = PERFILES.find((p) => p.id === perfil)!.nombre;
   const sello = `${compacta(CALENDARIO_REVISADO)}T000000Z`;
@@ -219,12 +236,12 @@ export function generarIcs(perfil: Perfil, desde = '0000-00-00', eventos = EVENT
       'BEGIN:VALARM',
       'ACTION:DISPLAY',
       `DESCRIPTION:${escaparTexto(e.titulo)}`,
-      'TRIGGER:-P7D',
+      'TRIGGER:-P6DT15H',
       'END:VALARM',
       'BEGIN:VALARM',
       'ACTION:DISPLAY',
       `DESCRIPTION:${escaparTexto(e.titulo)}`,
-      'TRIGGER:-P1D',
+      'TRIGGER:-PT15H',
       'END:VALARM',
       'END:VEVENT'
     );

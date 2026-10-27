@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useEstadoUrl } from './CalculatorUI';
 import { PERFILES, eventosDePerfil, type EventoFiscal, type Perfil } from '../lib/calculos/calendario-fiscal';
 
@@ -21,10 +21,18 @@ const CLASE_ESTADO: Record<EventoFiscal['estado'], string> = {
   previsto: 'bg-cream text-ink-muted',
 };
 
-const fechaLarga = (f: string) =>
-  new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const fechaLarga = (f: string) => {
+  const t = new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  return t.charAt(0).toUpperCase() + t.slice(1);
+};
 
-export default function CalendarioFiscal({ eventos, desde }: Props) {
+export default function CalendarioFiscal({ eventos, desde: desdeBuild }: Props) {
+  // El primer render usa la fecha del build (igual que el HTML del servidor); al montar se pasa a la de hoy.
+  const [desde, setDesde] = useState(desdeBuild);
+  useEffect(() => {
+    const hoy = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Madrid' });
+    if (hoy > desdeBuild) setDesde(hoy);
+  }, [desdeBuild]);
   const [perfil, setPerfil] = useEstadoUrl<Perfil>('perfil', 'asalariado', {
     validar: (v) => PERFILES.some((p) => p.id === v),
   });
@@ -67,15 +75,20 @@ export default function CalendarioFiscal({ eventos, desde }: Props) {
           Descargar calendario (.ics) de {actual.nombre.toLowerCase()}
         </a>
         <p className="text-sm text-ink-muted">
-          Se abre en Google Calendar, Apple Calendar u Outlook, con un aviso 7 días y otro 1 día antes de cada fecha.
+          Se abre en Google Calendar, Apple Calendar u Outlook. Incluye avisos a las 9:00, 7 días y 1 día antes; algunas aplicaciones, como Google Calendar, pueden ignorarlos y usar tus avisos por defecto.
         </p>
       </div>
 
-      <ol className="grid gap-4" aria-live="polite">
+      <h2 className="mb-1 text-xl font-semibold text-ink">Tus próximas fechas</h2>
+      <p className="mb-4 text-sm text-ink-muted" aria-live="polite">
+        {conFecha.length} {conFecha.length === 1 ? 'fecha' : 'fechas'} para el perfil {actual.nombre.toLowerCase()}
+        {sinFecha.length > 0 ? ' y una pendiente de fecha oficial' : ''}.
+      </p>
+      <ol className="grid gap-4">
         {conFecha.map((e) => (
           <li key={e.id} className="rounded-xl border border-border bg-white p-5">
             <div className="mb-2 flex flex-wrap items-center gap-2">
-              <time dateTime={e.fecha!} className="text-sm font-semibold capitalize text-brand">
+              <time dateTime={e.fecha!} className="text-sm font-semibold text-brand">
                 {fechaLarga(e.fecha!)}
               </time>
               <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${CLASE_ESTADO[e.estado]}`}>{ETIQUETA_ESTADO[e.estado]}</span>
@@ -94,11 +107,11 @@ export default function CalendarioFiscal({ eventos, desde }: Props) {
 
       {sinFecha.length > 0 && (
         <div className="mt-8">
-          <h3 className="mb-3 text-base font-semibold text-ink">Pendiente de fecha oficial</h3>
+          <h2 className="mb-3 text-xl font-semibold text-ink">Pendiente de fecha oficial</h2>
           <ul className="grid gap-4">
             {sinFecha.map((e) => (
               <li key={e.id} className="rounded-xl border border-dashed border-border bg-white p-5">
-                <h4 className="text-base font-semibold text-ink">{e.titulo}</h4>
+                <h3 className="text-base font-semibold text-ink">{e.titulo}</h3>
                 <p className="mt-1 text-sm text-ink-muted">{e.detalle}</p>
                 <p className="mt-2 text-xs text-ink-faint">
                   Fuente:{' '}

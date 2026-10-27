@@ -9,7 +9,7 @@ import {
   FUENTE_REGLA_DIA_INHABIL,
 } from '../../../lib/calculos/calendario-fiscal';
 
-// Fecha del build en hora de Madrid: el calendario no enseña fechas ya pasadas (el sitio se reconstruye a diario).
+// Fecha del build en hora de Madrid. La isla la actualiza con la fecha de hoy al cargar, así que no enseña fechas pasadas.
 const desde = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Madrid' });
 const fechaLarga = (f: string) =>
   new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
@@ -28,7 +28,7 @@ const faqs = [
   {
     pregunta: '¿Cómo añado el calendario a mi móvil o a mi ordenador?',
     respuesta:
-      'Descarga el archivo .ics de tu perfil y ábrelo: Google Calendar, Apple Calendar y Outlook lo importan como eventos de día completo, con un aviso 7 días y otro 1 día antes de cada fecha. El archivo es una copia de hoy: si cambia una fecha, vuelve a descargarlo.',
+      'Descarga el archivo .ics de tu perfil y ábrelo: Google Calendar, Apple Calendar y Outlook lo importan como eventos de día completo, con avisos a las 9:00, 7 días y 1 día antes de cada fecha; algunas aplicaciones, como Google Calendar, pueden ignorar los avisos del archivo y usar los tuyos. El archivo es una copia de hoy: si cambia una fecha, borra el calendario anterior y vuelve a importarlo.',
   },
   {
     pregunta: '¿Dónde están las fechas de la Renta 2026?',
@@ -51,7 +51,7 @@ const faqs = [
 >
   <p>
     Elige tu perfil y verás solo las fechas fiscales que te afectan en los próximos meses, cada una con su fuente. Si
-    quieres que te avisen, descarga el calendario y ábrelo en tu agenda: llevará un aviso 7 días y otro 1 día antes.
+    quieres que te avisen, descarga el calendario y ábrelo en tu agenda: incluye avisos 7 días y 1 día antes (según tu aplicación).
     Fechas revisadas el {fechaLarga(CALENDARIO_REVISADO)}.
   </p>
 

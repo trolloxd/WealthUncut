@@ -27,7 +27,7 @@ test('cada evento tiene fuente https, perfiles y un id único', () => {
 });
 
 test('los plazos de presentación no caen en fin de semana', () => {
-  const cierres = new Set(['cierre-2026', 'regimen-autonomo-2027', 'saldo-extranjero-2026']);
+  const cierres = new Set(['cierre-2026', 'regimen-autonomo-2027', 'saldo-extranjero-2026', 'saldo-cripto-2026']);
   for (const e of EVENTOS_FISCALES) {
     if (!e.fecha || cierres.has(e.id)) continue;
     const d = diaSemana(e.fecha);
@@ -48,7 +48,7 @@ test('estados de las fechas conocidas', () => {
   assert.equal(segundoPlazo.fecha, '2026-11-05');
   assert.equal(segundoPlazo.estado, 'oficial');
   assert.equal(EVENTOS_FISCALES.find((x) => x.id === 'trimestre-1-2027')!.estado, 'previsto');
-  assert.equal(EVENTOS_FISCALES.find((x) => x.id === 'modelos-720-721-2027')!.fecha, '2027-03-31');
+  assert.equal(EVENTOS_FISCALES.find((x) => x.id === 'modelo-720-2027')!.fecha, '2027-03-31');
 });
 
 test('filtro por perfil: ordenado, sin pasadas y con las pendientes de fecha al final', () => {
@@ -59,7 +59,7 @@ test('filtro por perfil: ordenado, sin pasadas y con las pendientes de fecha al 
   const desdeEnero = eventosDePerfil('autonomo', '2027-01-01');
   assert.ok(desdeEnero.every((e) => e.fecha === null || e.fecha >= '2027-01-01'));
   assert.ok(!eventosDePerfil('asalariado').some((e) => e.id === 'pago-fraccionado-4t-2026'));
-  assert.ok(eventosDePerfil('inversor').some((e) => e.id === 'modelos-720-721-2027'));
+  assert.ok(eventosDePerfil('inversor').some((e) => e.id === 'modelo-720-2027'));
 });
 
 test('escapado y plegado de líneas iCalendar', () => {

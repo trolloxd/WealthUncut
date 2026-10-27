@@ -62,7 +62,7 @@ export const DIVIDENDOS = {
 export const COMPENSACION_AHORRO = {
   limiteCruzado: 0.25,
   aniosArrastre: 4,
-  url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c12-integracion-compensacion-rentas/reglas-integracion-compensacion-rentas.html',
+  url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c12-integracion-compensacion-rentas/reglas-integracion-compensacion-rentas/integracion-compensacion-rentas-base-imponible-ahorro.html',
 } as const;
 
 // Regla antiaplicación de pérdidas por recompra de valores homogéneos
