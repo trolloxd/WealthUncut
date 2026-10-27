@@ -25,7 +25,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
         <a
           href={item.href}
           aria-current={path === item.href ? 'page' : undefined}
-          class:list={['hover:text-ink', isCurrent(item.href) && 'text-ink']}
+          class:list={['nav-vivo py-1 hover:text-ink', isCurrent(item.href) && 'text-ink']}
         >
           {item.label}
         </a>

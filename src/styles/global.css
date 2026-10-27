@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @plugin '@tailwindcss/typography';
+@import './movimiento.css';
+@import './tarjetas.css';
 
 /*
  * Fuentes propias con font-display: optional. Con swap, el navegador pintaba primero la fuente de
@@ -327,9 +329,38 @@
   }
   .articulo-fila-enlace {
     position: relative;
-    display: block;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
     padding-block: 1.25rem;
     border-radius: 0.5rem;
+  }
+  /* Miniatura con la ilustración del tema: crece y se inclina un poco al pasar por encima (transform). */
+  .articulo-fila-arte {
+    flex: none;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-top: 0.125rem;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    transition: transform 300ms cubic-bezier(0.22, 0.8, 0.3, 1);
+  }
+  /* Banner con la ilustración del tema arriba de la pieza principal, a sangre sobre su relleno. */
+  .articulo-lider-arte {
+    flex: none;
+    height: 7rem;
+    margin: -1.5rem -1.5rem 1.5rem;
+    overflow: hidden;
+    opacity: 0.95;
+  }
+  @media (min-width: 40rem) {
+    .articulo-lider-arte {
+      height: 9rem;
+      margin: -2.5rem -2.5rem 2rem;
+    }
+  }
+  .articulo-lider-arte > svg {
+    transition: transform 600ms cubic-bezier(0.22, 0.8, 0.3, 1);
   }
   .articulo-fila-enlace::after {
     content: '';
@@ -389,6 +420,32 @@
     .articulo-lider:hover .articulo-lider-flecha,
     .articulo-lider:focus-visible .articulo-lider-flecha {
       transform: translateX(3px);
+    }
+    .articulo-lider:hover .articulo-lider-arte > svg,
+    .articulo-lider:focus-visible .articulo-lider-arte > svg {
+      transform: scale(1.06);
+    }
+    .articulo-fila-enlace:hover .articulo-fila-arte,
+    .articulo-fila-enlace:focus-visible .articulo-fila-arte {
+      transform: scale(1.08) rotate(-3deg);
+    }
+    .articulo-lider:hover .arte-sube,
+    .articulo-lider:focus-visible .arte-sube,
+    .articulo-fila-enlace:hover .arte-sube,
+    .articulo-fila-enlace:focus-visible .arte-sube {
+      animation: arte-sube 700ms cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+    }
+    .articulo-lider:hover .arte-flota,
+    .articulo-lider:focus-visible .arte-flota,
+    .articulo-fila-enlace:hover .arte-flota,
+    .articulo-fila-enlace:focus-visible .arte-flota {
+      animation: arte-flota 900ms ease-in-out;
+    }
+    .articulo-lider:hover .arte-gira,
+    .articulo-lider:focus-visible .arte-gira,
+    .articulo-fila-enlace:hover .arte-gira,
+    .articulo-fila-enlace:focus-visible .arte-gira {
+      animation: arte-gira 900ms cubic-bezier(0.22, 0.8, 0.3, 1);
     }
   }
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
@@ -460,19 +517,19 @@
   [data-escalona='lista'] .articulo-lider > * {
     animation: entra-dentro 600ms cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
   }
-  [data-escalona='lista'] .articulo-lider > :nth-child(1) {
+  [data-escalona='lista'] .articulo-lider > :nth-child(2) {
     animation-delay: 150ms;
   }
-  [data-escalona='lista'] .articulo-lider > :nth-child(2) {
+  [data-escalona='lista'] .articulo-lider > :nth-child(3) {
     animation-delay: 230ms;
   }
-  [data-escalona='lista'] .articulo-lider > :nth-child(3) {
+  [data-escalona='lista'] .articulo-lider > :nth-child(4) {
     animation-delay: 310ms;
   }
-  [data-escalona='lista'] .articulo-lider > :nth-child(4) {
+  [data-escalona='lista'] .articulo-lider > :nth-child(5) {
     animation-delay: 390ms;
   }
-  [data-escalona='lista'] .articulo-lider > :nth-child(5) {
+  [data-escalona='lista'] .articulo-lider > :nth-child(6) {
     animation-delay: 470ms;
   }
   [data-escalona='lista'] .articulo-fila::before {

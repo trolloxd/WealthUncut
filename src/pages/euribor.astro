@@ -141,7 +141,7 @@ const jsonLd = [
   <section aria-labelledby="dato-actual" class="card mb-10 grid gap-6 p-6 sm:grid-cols-[1.2fr_1fr]">
     <div>
       <h2 id="dato-actual" class="text-sm font-medium text-ink-muted">Euríbor de {mesLargo(ultimo.mes)}</h2>
-      <p class="mt-1 font-display text-5xl text-brand tabular-nums">{pct(redondear3(ultimo.valor))}</p>
+      <p class="mt-1 font-display text-5xl text-brand tabular-nums" data-cuenta>{pct(redondear3(ultimo.valor))}</p>
       <p class="mt-3 text-sm text-ink-faint">
         Media del mes completo, publicada en el{' '}
         <a href={euriborUltimo.fuenteUrl} class="underline" rel="noopener">BOE del {fechaLarga(euriborUltimo.ultimoPublicado)}</a>{' '}
@@ -151,13 +151,13 @@ const jsonLd = [
     <dl class="grid content-center gap-3 text-sm">
       <div class="flex items-baseline justify-between gap-3 border-b border-border pb-2">
         <dt class="text-ink-muted">Frente a {mesLargo(mensual.desde.mes)}</dt>
-        <dd class:list={['font-semibold tabular-nums', mensual.puntos > 0 ? 'text-accent' : 'text-brand']}>
+        <dd class:list={['font-semibold tabular-nums', mensual.puntos > 0 ? 'text-accent' : 'text-brand']} data-cuenta>
           {pp(mensual.puntos)}
         </dd>
       </div>
       <div class="flex items-baseline justify-between gap-3 border-b border-border pb-2">
         <dt class="text-ink-muted">Frente a {mesLargo(anual.desde.mes)}</dt>
-        <dd class:list={['font-semibold tabular-nums', anual.puntos > 0 ? 'text-accent' : 'text-brand']}>{pp(anual.puntos)}</dd>
+        <dd class:list={['font-semibold tabular-nums', anual.puntos > 0 ? 'text-accent' : 'text-brand']} data-cuenta>{pp(anual.puntos)}</dd>
       </div>
       <div class="flex items-baseline justify-between gap-3">
         <dt class="text-ink-muted">Máximo desde {mesLargo(inicio.mes)}</dt>

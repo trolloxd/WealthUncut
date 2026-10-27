@@ -1,0 +1,119 @@
+/*
+ * Sistema común de movimiento del sitio (CSS). Lo gobierna src/scripts/animaciones.ts y se importa desde global.css.
+ *
+ * Reglas que cumple todo lo de este archivo:
+ * - Solo se animan transform y opacity (nada mueve el diseño: CLS 0).
+ * - Todo va dentro de prefers-reduced-motion: no-preference. Con movimiento reducido o sin JavaScript no se oculta
+ *   nada: los atributos de espera los pone el script y solo si hay movimiento permitido.
+ * - Sin estilos en línea (CSP): los retardos escalonados son atributos (data-rv-d="1".."6") con su clase aquí.
+ *
+ * Piezas:
+ * 1. [data-rv]    aparición escalonada al entrar en pantalla (el script marca solo lo que está bajo la primera pantalla).
+ * 2. [data-barra] barras que se dibujan de izquierda a derecha (o de abajo arriba con data-barra-eje="y").
+ * 3. (tarjetas.css) tarjetas de artículo con ilustración por tema.
+ * 4. .enlace-vivo y .nav-vivo: subrayado que se dibuja al pasar por encima o enfocar.
+ */
+
+@layer components {
+:root {
+  --ease-salida: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+
+/* 1. Aparición escalonada ------------------------------------------------------------------------------------- */
+[data-rv-d='1'] {
+  --rv-retardo: 70ms;
+}
+[data-rv-d='2'] {
+  --rv-retardo: 140ms;
+}
+[data-rv-d='3'] {
+  --rv-retardo: 210ms;
+}
+[data-rv-d='4'] {
+  --rv-retardo: 280ms;
+}
+[data-rv-d='5'] {
+  --rv-retardo: 350ms;
+}
+[data-rv-d='6'] {
+  --rv-retardo: 420ms;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Doble atributo para ganar en especificidad a las transiciones propias de .card y compañía mientras dura la entrada. */
+  [data-rv][data-rv] {
+    transition:
+      opacity 650ms var(--ease-salida) var(--rv-retardo, 0ms),
+      transform 650ms var(--ease-salida) var(--rv-retardo, 0ms);
+  }
+  [data-rv='espera'][data-rv] {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  /* 2. Barras que se dibujan */
+  [data-barra] {
+    transform-origin: 0 50%;
+    transition: transform 900ms cubic-bezier(0.65, 0, 0.35, 1) var(--rv-retardo, 0ms);
+  }
+  [data-barra][data-barra-eje='y'] {
+    transform-origin: 50% 100%;
+  }
+  [data-barra='espera'] {
+    transform: scaleX(0);
+  }
+  [data-barra='espera'][data-barra-eje='y'] {
+    transform: scaleY(0);
+  }
+}
+
+/* Al imprimir, todo visible aunque no se haya llegado a bajar. */
+@media print {
+  [data-rv],
+  [data-barra] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* 4. Enlaces con subrayado que se dibuja ---------------------------------------------------------------------- */
+.enlace-vivo {
+  position: relative;
+  display: inline-block;
+}
+.enlace-vivo::after,
+.nav-vivo::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 -2px 0;
+  height: 2px;
+  border-radius: 1px;
+  background-color: var(--color-brand);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 260ms var(--ease-salida);
+}
+.enlace-vivo:hover::after,
+.enlace-vivo:focus-visible::after,
+.nav-vivo:hover::after,
+.nav-vivo:focus-visible::after,
+.nav-vivo[aria-current='page']::after {
+  transform: scaleX(1);
+}
+.nav-vivo {
+  position: relative;
+}
+.nav-vivo:focus-visible,
+.enlace-vivo:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .enlace-vivo::after,
+  .nav-vivo::after {
+    transition: none;
+  }
+}
+}

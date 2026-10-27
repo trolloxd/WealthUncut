@@ -8,6 +8,11 @@
  * - [data-grafica]: el trazo de la gráfica SVG se dibuja al aparecer (clases .grafica-espera y
  *   .grafica-dibuja de global.css).
  * - [data-indice]: marca en el índice del artículo la sección que se está leyendo.
+ * - [data-rv]: aparición escalonada de los bloques de cada página al entrar en pantalla (sistema común, ver
+ *   `prepararAparicion` y src/styles/movimiento.css). Se aplica sola a los hijos de <main> que quedan bajo la
+ *   primera pantalla y a las tarjetas de sus rejillas; no hace falta marcar nada en cada página.
+ * - [data-barra]: barras que se dibujan al entrar en pantalla (de izquierda a derecha, o de abajo arriba con
+ *   data-barra-eje="y").
  */
 
 const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -79,7 +84,78 @@ function alAparecer(elementos: Element[], accion: (el: Element) => void) {
   elementos.forEach((el) => io.observe(el));
 }
 
+/** Qué partes de un bloque aparecen por separado: si lleva una rejilla (ul.grid), sus hijos y las tarjetas de la rejilla. */
+function unidadesDe(bloque: Element): Element[] {
+  const hijos = [...bloque.children];
+  const rejilla = hijos.find((h) => h.matches('ul.grid, ol.grid'));
+  if (!rejilla) return [bloque];
+  return hijos.flatMap((h) => (h === rejilla ? [...h.children] : [h]));
+}
+
+/** Bloques que no entran en el sistema: ya tienen su propia entrada, son fijos o son texto largo del artículo. */
+const EXCLUIDOS = 'article, .prose, .barra-lectura, [data-escalona], .aparece, .entra, [data-sin-rv], [hidden], script, style';
+
+function prepararAparicion() {
+  const altoPantalla = window.innerHeight;
+  const bloques = [...document.querySelectorAll('main > *')].filter((b) => !b.matches(EXCLUIDOS) && !b.querySelector('article, .prose'));
+  const unidades = bloques
+    .flatMap(unidadesDe)
+    .filter((u) => !u.matches(EXCLUIDOS) && !u.closest('[data-escalona], .aparece') && u.getBoundingClientRect().top > altoPantalla);
+  unidades.forEach((u) => u.setAttribute('data-rv', 'espera'));
+
+  const mostrar = (u: Element, indice: number) => {
+    if (indice > 0) u.setAttribute('data-rv-d', String(Math.min(indice, 6)));
+    u.setAttribute('data-rv', 'lista');
+    // Cuando termina la entrada se quitan los atributos, para que el hover y el foco de la tarjeta vuelvan a ser los suyos.
+    window.setTimeout(() => {
+      u.removeAttribute('data-rv');
+      u.removeAttribute('data-rv-d');
+    }, 650 + Math.min(indice, 6) * 70 + 150);
+  };
+
+  const orden = (a: Element, b: Element) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1);
+  const io = new IntersectionObserver(
+    (entradas) => {
+      const visibles = entradas.filter((e) => e.isIntersecting).map((e) => e.target);
+      visibles.sort(orden).forEach((u, i) => {
+        io.unobserve(u);
+        mostrar(u, i);
+      });
+    },
+    { rootMargin: '0px 0px -8% 0px' }
+  );
+  unidades.forEach((u) => io.observe(u));
+
+  // Quien navega con teclado puede llegar a algo que aún no ha aparecido: se muestra al recibir el foco.
+  document.addEventListener('focusin', (e) => {
+    const u = (e.target as Element).closest('[data-rv="espera"]');
+    if (u) {
+      io.unobserve(u);
+      mostrar(u, 0);
+    }
+  });
+}
+
 if (!reducido && 'IntersectionObserver' in window) {
+  prepararAparicion();
+
+  // Barras que se dibujan: ocultas (escala 0) hasta que entran en pantalla, las de una misma lista una tras otra.
+  const barras = [...document.querySelectorAll<HTMLElement>('[data-barra]')].filter((b) => b.getBoundingClientRect().top > window.innerHeight);
+  barras.forEach((b) => b.setAttribute('data-barra', 'espera'));
+  const ioBarras = new IntersectionObserver(
+    (entradas) => {
+      entradas
+        .filter((e) => e.isIntersecting)
+        .forEach((e, i) => {
+          ioBarras.unobserve(e.target);
+          if (i > 0) e.target.setAttribute('data-rv-d', String(Math.min(i, 6)));
+          e.target.setAttribute('data-barra', 'lista');
+        });
+    },
+    { rootMargin: '0px 0px -8% 0px' }
+  );
+  barras.forEach((b) => ioBarras.observe(b));
+
   // Cifras que cuentan.
   const arranques = new Map<Element, () => void>();
   document.querySelectorAll<HTMLElement>('[data-cuenta]').forEach((el) => {

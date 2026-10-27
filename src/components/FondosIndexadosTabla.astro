@@ -17,10 +17,14 @@ interface Props {
 import catalogo from '../data/myinvestor-fondos/catalogo.json';
 import destacados from '../data/myinvestor-fondos/ultimo.json';
 
+import { claseAnchoBarra } from './CalculatorUI';
+
 const { datos } = Astro.props;
 // Solo se enlaza al simulador si Carteras conoce ese ISIN (si no, abriría una cartera vacía).
 const isinsCarteras = new Set([...destacados.fondos.map((f) => f.isin), ...catalogo.fondos.map((r) => r[0] as string)]);
 const fondos = [...datos.fondos].sort((a, b) => a.ter - b.ter);
+// Barra junto a cada TER (proporcional al mayor de la tabla); se dibuja al entrar en pantalla (data-barra, animaciones.ts).
+const maxTer = Math.max(...fondos.map((f) => f.ter), 0.01);
 const fecha = new Date(`${datos.fecha}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
@@ -39,13 +43,16 @@ const fecha = new Date(`${datos.fecha}T12:00:00Z`).toLocaleDateString('es-ES', {
     </thead>
     <tbody>
       {fondos.map((f) => (
-        <tr class="border-b border-border/60">
+        <tr class="border-b border-border/60 transition-colors duration-200 hover:bg-brand-soft/50">
           <td class="py-2 pr-3 text-ink">
             {f.gestora} <span class="text-xs text-ink-faint">({f.nombre})</span>
             {f.minimoNota && <div class="text-xs text-ink-faint">{f.minimoNota}</div>}
           </td>
           <td class="py-2 pr-3 text-ink-muted">{f.indice}</td>
-          <td class="py-2 pr-3 text-right font-semibold text-brand">{f.ter.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+          <td class="py-2 pr-3 text-right font-semibold text-brand">
+            {f.ter.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
+            <span class="ml-auto mt-1 block h-1 w-16 overflow-hidden rounded-full bg-brand-soft" aria-hidden="true"><span data-barra class:list={['block h-1 rounded-full bg-brand', claseAnchoBarra((f.ter / maxTer) * 100, 5)]}></span></span>
+          </td>
           <td class="py-2 pr-3 font-mono text-xs text-ink-muted">{f.isin}</td>
           <td class="py-2 pr-3 text-xs text-ink-muted">{f.plataformas}</td>
           <td class="py-2 text-xs">
