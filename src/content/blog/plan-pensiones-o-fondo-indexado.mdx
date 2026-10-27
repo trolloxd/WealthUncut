@@ -1,0 +1,146 @@
+---
+title: "Plan de pensiones o fondo indexado: comparación con números"
+description: "Plan de pensiones o fondo indexado: qué sale mejor tras impuestos con 1.500 € al año durante 30 años, según tus tipos marginales y la comisión del plan."
+resumen: "Un plan de pensiones sale mejor que un fondo indexado cuando su comisión es baja y tu tipo marginal al rescatarlo es igual o menor que el de hoy, siempre que reinviertas lo que te devuelve Hacienda. Con un plan caro, la comisión puede comerse toda la ventaja fiscal. A cambio, el dinero del plan queda bloqueado hasta la jubilación salvo casos tasados."
+pubDate: 2026-11-02
+updatedDate: 2026-11-02
+author: "David Pérez Mitjà"
+tags: ["pensiones", "fondos indexados", "impuestos"]
+categoria: "jubilacion"
+sources:
+  - label: "AEAT, Manual práctico de Renta 2025: reducciones por aportaciones a sistemas de previsión social"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c13-determinacion-renta-contribuyente-sujeta-gravamen/reducciones-base-imponible-general/reducciones-aportaciones-contribuciones-sistemas-prevision-social/normas-comunes-aplicables-aportaciones-sistemas-social/cuadro-reducciones-aportaciones-contribuciones-sps.html"
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { compararPensionVsFondo } from '../../components/PensionVsFundCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import { PLAN_PENSIONES as PP } from '../../config/finance';
+
+export const base = { aportacionAnual: PP.limiteIndividual, anios: 30, rentabilidadBruta: 7, terFondo: 0.2 };
+export const c = (terPlan, hoy, jub) => compararPensionVsFondo({ ...base, terPlan, tipoMarginalHoy: hoy, tipoMarginalJubilacion: jub });
+export const d = (terPlan, hoy, jub) => { const v = c(terPlan, hoy, jub).diferencia; return (v >= 0 ? '+' : '−') + formatEuros(Math.abs(v)); };
+export const barato = c(0.3, 30, 30);
+export const caro = c(1.2, 30, 30);
+export const eu = (n) => n.toLocaleString('es-ES', { useGrouping: 'always' }) + ' €';
+
+Depende de dos cosas: **la comisión del plan** y **la diferencia entre tu tipo marginal de hoy y el que tendrás al
+rescatarlo**. Con los supuestos de esta guía ({eu(PP.limiteIndividual)} al año durante 30 años, un 7 % de rentabilidad bruta y
+reinvirtiendo en un fondo lo que te devuelve Hacienda), un plan de pensiones barato (0,3 % de comisión total) termina por
+delante del fondo indexado incluso si tu tipo marginal no baja al jubilarte: **{formatEuros(barato.totalPlan)} frente a
+{formatEuros(barato.fondo.neto)}** netos. Un plan caro (1,2 %) se queda en {formatEuros(caro.totalPlan)} y pierde frente al fondo. Abajo
+está el cálculo, las tablas por tipo marginal y lo que el número no cuenta.
+
+Si todavía no sabes cuánto desgrava un plan ni cómo se rescata, empieza por la guía
+[plan de pensiones: cuánto desgrava y cuándo compensa](/blog/plan-de-pensiones-cuanto-desgrava/). Aquí vamos directos a la
+comparación.
+
+## Cómo comparamos los dos caminos
+
+Para que la comparación sea justa, las dos opciones cuestan lo mismo de tu bolsillo:
+
+- **Camino A, plan de pensiones.** Aportas {eu(PP.limiteIndividual)} al año, el límite general. Esa aportación reduce tu base
+  imponible, así que Hacienda te devuelve (o te cobra de menos) tu tipo marginal sobre ella. **Ese ahorro fiscal lo
+  inviertes cada año en un fondo indexado.** Al final, el rescate del plan tributa entero como
+  {PP.tributaComo}, y la ganancia del fondo donde reinviertes el ahorro fiscal, en la base del ahorro.
+- **Camino B, fondo indexado.** Inviertes los mismos {eu(PP.limiteIndividual)} al año en un fondo indexado con una comisión
+  total (TER) del 0,2 %. Al final vendes y pagas impuestos solo por la ganancia, con los tramos del ahorro.
+
+Supuestos comunes: 30 años, 7 % anual bruto antes de comisiones en los dos productos (la misma cartera de fondo), sin
+inflación. Son hipótesis para comparar, no una previsión de rentabilidad.
+
+## El ejemplo completo: tipo marginal del 30 % hoy y al jubilarte
+
+Con el mismo tipo marginal antes y después, el plan solo te ofrece **diferir** el impuesto. Aun así:
+
+| | Plan barato (0,3 %) | Plan caro (1,2 %) | Fondo indexado (0,2 %) |
+|---|---|---|---|
+| Valor final del producto principal | {formatEuros(barato.plan.valorFinalBruto)} | {formatEuros(caro.plan.valorFinalBruto)} | {formatEuros(barato.fondo.valorFinalBruto)} |
+| Impuestos al final | −{formatEuros(barato.plan.impuestoRescate)} | −{formatEuros(caro.plan.impuestoRescate)} | −{formatEuros(barato.fondo.impuesto)} |
+| Ahorro fiscal reinvertido (neto) | +{formatEuros(barato.ahorroFiscalReinvertido.neto)} | +{formatEuros(caro.ahorroFiscalReinvertido.neto)} | |
+| **Total neto** | **{formatEuros(barato.totalPlan)}** | **{formatEuros(caro.totalPlan)}** | **{formatEuros(barato.fondo.neto)}** |
+
+¿Por qué gana el plan barato si el tipo no cambia? Porque en el plan crece también el dinero que habrías pagado de
+impuestos, y en el fondo pagas impuestos por toda la ganancia acumulada. El plan caro pierde porque **casi un punto más de
+comisión al año, durante 30 años, pesa más que esa ventaja**: su valor final es unos
+{formatEuros(barato.plan.valorFinalBruto - caro.plan.valorFinalBruto)} menor que el del plan barato con las mismas aportaciones.
+
+## Tabla: cuánto gana o pierde el plan según tus tipos
+
+Diferencia de **plan + ahorro fiscal reinvertido** menos **fondo indexado**, en euros netos al cabo de 30 años. Un número
+positivo significa que el plan sale mejor.
+
+**Plan con comisión total del 0,3 %:**
+
+| Tipo marginal hoy ↓ / al rescatar → | 19 % | 24 % | 30 % |
+|---|---|---|---|
+| 24 % | {d(0.3, 24, 19)} | {d(0.3, 24, 24)} | {d(0.3, 24, 30)} |
+| 30 % | {d(0.3, 30, 19)} | {d(0.3, 30, 24)} | {d(0.3, 30, 30)} |
+| 37 % | {d(0.3, 37, 19)} | {d(0.3, 37, 24)} | {d(0.3, 37, 30)} |
+
+**Plan con comisión total del 1,2 %:**
+
+| Tipo marginal hoy ↓ / al rescatar → | 19 % | 24 % | 30 % |
+|---|---|---|---|
+| 24 % | {d(1.2, 24, 19)} | {d(1.2, 24, 24)} | {d(1.2, 24, 30)} |
+| 30 % | {d(1.2, 30, 19)} | {d(1.2, 30, 24)} | {d(1.2, 30, 30)} |
+| 37 % | {d(1.2, 37, 19)} | {d(1.2, 37, 24)} | {d(1.2, 37, 30)} |
+
+Los tipos de la tabla son ilustrativos: el tuyo depende de tu base y de tu comunidad. Si no sabes qué es el tipo
+marginal ni cómo encontrar el tuyo, la definición de [tipo marginal](/glosario/tipo-marginal/) lo explica.
+
+Tres lecturas de las tablas:
+
+1. **La comisión es lo que más decide.** Con el plan barato, el plan sale por delante en todas las casillas. Con el
+   caro, pierde en cuanto el tipo al rescatar se acerca al de hoy.
+2. **Cuanto más alto es tu tipo hoy y más bajo al rescatar, mejor para el plan.** Por eso suele interesar más a quien
+   tiene un sueldo alto que a quien empieza a trabajar con un tipo bajo.
+3. **Todo depende de reinvertir la devolución.** Si lo que te devuelve Hacienda se va en gastos, el plan pierde esa
+   parte de su ventaja: en el ejemplo del 30 %, el ahorro fiscal reinvertido aporta {formatEuros(barato.ahorroFiscalReinvertido.neto)} al total. Sin él, incluso el plan
+   barato se quedaría en {formatEuros(barato.plan.neto)}, por debajo del fondo.
+
+## Lo que el número no cuenta
+
+- **El tipo al rescatar no es fijo.** El rescate tributa como rendimiento del trabajo, sumado a tu pensión pública y a
+  tus otras rentas. Si rescatas todo de golpe en un año, una parte puede saltar a tramos más altos que los de la tabla.
+  Repartirlo en varios años suele reducir ese efecto.
+- **Liquidez.** El dinero del plan queda bloqueado hasta la jubilación, salvo supuestos concretos que fija la ley. El
+  fondo indexado lo puedes vender cuando quieras, y mientras tanto lo puedes traspasar a otro fondo sin pagar impuestos.
+- **Las reglas cambian.** El límite de aportación ya se redujo en el pasado y puede volver a cambiar. Con un horizonte de
+  30 años, la incertidumbre legal es real en los dos productos.
+- **La rentabilidad no está garantizada** en ninguno de los dos. Hemos usado la misma para ambos para aislar el efecto
+  de las comisiones y los impuestos.
+- **Planes de empleo.** Si tu empresa ofrece un plan de empleo, el límite conjunto puede llegar a {eu(PP.limiteIndividual + PP.limiteAdicionalEmpleo)} al año
+  y la empresa puede aportar por ti: es otra comparación, y suele ser favorable al plan.
+
+## Cómo hacer la cuenta con tus cifras
+
+La herramienta [plan de pensiones vs fondo indexado](/herramientas/plan-pensiones-vs-fondo-indexado/) hace este mismo
+cálculo con tu aportación, tus años, las comisiones de tu plan y de tu fondo y tus dos tipos marginales. Para entender
+cómo tributa el fondo al venderlo, la guía de [tramos del IRPF del ahorro](/blog/tramos-irpf-ahorro/) tiene la tabla
+completa, y la de [rentabilidad neta de un fondo indexado](/blog/rentabilidad-neta-fondo-indexado/) muestra cuánto se
+queda la comisión año a año.
+
+Esta guía es información general con supuestos explícitos. No es una recomendación de contratar ningún producto.
+
+## Preguntas frecuentes
+
+**¿Es mejor un plan de pensiones o un fondo indexado?**
+Con los supuestos de esta guía, un plan de comisión baja sale mejor si reinviertes el ahorro fiscal y tu tipo al
+rescatar no es más alto que el de hoy. Un plan de comisión alta puede salir peor. A cambio, el plan inmoviliza el dinero
+hasta la jubilación.
+
+**¿Cuánto se puede aportar a un plan de pensiones individual?**
+El límite general de aportación con reducción en la base imponible es de {eu(PP.limiteIndividual)} al año, con límites adicionales
+para planes de empleo y para autónomos.
+
+**¿Cómo tributa el rescate de un plan de pensiones?**
+Como {PP.tributaComo}, tanto si lo cobras de una vez como en rentas. El fondo indexado, en cambio, tributa en la base del
+ahorro y solo por la ganancia.
+
+**¿Puedo tener los dos?**
+Sí. Mucha gente combina un plan (por la ventaja fiscal) con un fondo indexado (por la liquidez). El reparto depende de
+cuánto dinero puedes dejar inmovilizado durante décadas.

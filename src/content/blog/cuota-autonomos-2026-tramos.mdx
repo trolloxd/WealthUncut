@@ -1,0 +1,176 @@
+---
+title: "Cuota de autónomos 2026: cuánto pagas según tus ingresos"
+description: "Cuánto paga un autónomo en 2026 según sus rendimientos netos: los 15 tramos, ejemplos de 12.000 a 60.000 €, tarifa plana y cómo funciona la regularización."
+resumen: "Un autónomo cotiza según sus rendimientos netos: ingresos menos gastos de la actividad, menos una deducción del 7 % por gastos genéricos. Con la media mensual se busca el tramo, que fija una base mínima y una máxima, y la cuota es la base elegida por el tipo de cotización. Al año siguiente la Seguridad Social la regulariza con los datos de Hacienda."
+pubDate: 2026-11-01
+updatedDate: 2026-11-01
+author: "David Pérez Mitjà"
+tags: ["autónomos", "impuestos", "educación financiera"]
+categoria: "autonomos"
+sources:
+  - label: "BOE: Orden PJC/297/2026, de cotización a la Seguridad Social para 2026 (art. 18, autónomos)"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+  - label: "BOE: Ley General de la Seguridad Social, art. 308 (cotización por rendimientos y regularización)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2015-11724"
+  - label: "BOE: Ley 20/2007, del Estatuto del Trabajo Autónomo, art. 38 ter (cuota reducida por inicio de actividad)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2007-13409"
+  - label: "BOE: Reglamento general de cotización (RD 2064/1995), art. 45 (cambios de base)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-1996-1579"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { RETA_2026 as R } from '../../config/finance';
+import { calcularCuotaAutonomo } from '../../lib/calculos/autonomo.ts';
+import { formatEuros, formatEuros2 } from '../../components/CalculatorUI';
+
+export const T = R.tramos;
+export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: 'always' });
+export const pctT = (v) => (v * 100).toLocaleString('es-ES', { maximumFractionDigits: 2 }) + ' %';
+export const desde = (i) => (i === 0 ? 'Hasta' : T[i - 1].exclusivo ? `De ${n2(T[i - 1].hasta)} a` : `De ${n2(T[i - 1].hasta + 0.01)} a`);
+export const hasta = (i) => (T[i].hasta === Infinity ? '' : T[i].exclusivo ? `${n2(T[i].hasta - 0.01)} €` : `${n2(T[i].hasta)} €`);
+export const rango = (i) => (T[i].hasta === Infinity ? `Más de ${n2(T[i - 1].hasta)} €` : `${desde(i)} ${hasta(i)}`);
+export const caso = (beneficio) => calcularCuotaAutonomo({ ingresosAnuales: beneficio, gastosAnuales: 0, deduccion7: true, societario: false });
+export const c12 = caso(12000);
+export const c18 = caso(18000);
+export const c24 = caso(24000);
+export const c30 = caso(30000);
+export const c40 = caso(40000);
+export const c60 = caso(60000);
+export const ej = calcularCuotaAutonomo({ ingresosAnuales: 30000, gastosAnuales: 6000, deduccion7: true, societario: false });
+
+Un autónomo no paga una cuota fija: cotiza según sus **rendimientos netos**, es decir, lo que factura menos los gastos
+de su actividad y menos una deducción del {pctT(R.deduccionGastosGenericos)} por gastos genéricos. Con la media mensual de esa cifra se busca un
+**tramo**, que marca una base de cotización mínima y una máxima, y la cuota es la base que elijas multiplicada por el
+**{pctT(R.tipoTotal)}**. En 2026, con la base mínima de cada tramo, la cuota va de {formatEuros2(T[0].baseMin * R.tipoTotal)} al mes a {formatEuros2(T[T.length - 1].baseMin * R.tipoTotal)}.
+Por ejemplo, con un beneficio de 24.000 € al año la cuota mínima es de **{formatEuros2(c24.cuotaMin)} al mes**. Los nuevos
+autónomos pueden pagar una cuota reducida de {R.tarifaPlanaMensual} € durante su primer año.
+
+Las tablas son las de la orden de cotización de 2026 publicada en el BOE. Cambian cada año, así que si lees esto más
+adelante comprueba que siguen vigentes. Puedes calcular tu caso en la
+[calculadora de cuota de autónomos](/herramientas/calculadora-cuota-autonomos/).
+
+## Cómo se calcula, en cuatro pasos
+
+1. **Rendimiento neto anual.** Ingresos de la actividad menos los gastos deducibles (material, programas, cuota de un
+   coworking, asesoría...). La propia cuota de autónomos **no** se resta aquí: la ley la vuelve a sumar para calcular
+   este rendimiento.
+2. **Deducción por gastos genéricos.** Se resta un {pctT(R.deduccionGastosGenericos)} del resultado (un 3 % si eres autónomo societario, por ejemplo
+   administrador de tu sociedad).
+3. **Media mensual.** Se divide entre 12 y se busca el tramo en la tabla de abajo.
+4. **Base y cuota.** Eliges una base entre la mínima y la máxima del tramo. La cuota mensual es esa base por el
+   {pctT(R.tipoTotal)}.
+
+**Ejemplo.** Facturas 30.000 € al año (sin IVA) y tienes 6.000 € de gastos de la actividad:
+
+- Rendimiento neto: 30.000 − 6.000 = 24.000 €.
+- Tras la deducción del {pctT(R.deduccionGastosGenericos)}: 24.000 × {(1 - R.deduccionGastosGenericos).toLocaleString('es-ES')} = {n2(ej.netoMensual * 12)} € al año, **{n2(ej.netoMensual)} € al mes**.
+- Tramo: tabla {ej.tramo.tabla.toLowerCase()}, tramo {ej.tramo.n}, con bases entre {n2(ej.tramo.baseMin)} y {n2(ej.tramo.baseMax)} €.
+- Cuota: entre **{formatEuros2(ej.cuotaMin)}** (base mínima) y {formatEuros2(ej.cuotaMax)} al mes (base máxima).
+
+## La tabla de 2026, tramo a tramo
+
+Rendimientos netos **mensuales** (ya con la deducción aplicada), bases y cuotas resultantes:
+
+| Tabla y tramo | Rendimiento neto mensual | Base mínima | Cuota mínima al mes | Base máxima |
+|---|---|---|---|---|
+| {T[0].tabla} {T[0].n} | {rango(0)} | {n2(T[0].baseMin)} € | {formatEuros2(T[0].baseMin * R.tipoTotal)} | {n2(T[0].baseMax)} € |
+| {T[1].tabla} {T[1].n} | {rango(1)} | {n2(T[1].baseMin)} € | {formatEuros2(T[1].baseMin * R.tipoTotal)} | {n2(T[1].baseMax)} € |
+| {T[2].tabla} {T[2].n} | {rango(2)} | {n2(T[2].baseMin)} € | {formatEuros2(T[2].baseMin * R.tipoTotal)} | {n2(T[2].baseMax)} € |
+| {T[3].tabla} {T[3].n} | {rango(3)} | {n2(T[3].baseMin)} € | {formatEuros2(T[3].baseMin * R.tipoTotal)} | {n2(T[3].baseMax)} € |
+| {T[4].tabla} {T[4].n} | {rango(4)} | {n2(T[4].baseMin)} € | {formatEuros2(T[4].baseMin * R.tipoTotal)} | {n2(T[4].baseMax)} € |
+| {T[5].tabla} {T[5].n} | {rango(5)} | {n2(T[5].baseMin)} € | {formatEuros2(T[5].baseMin * R.tipoTotal)} | {n2(T[5].baseMax)} € |
+| {T[6].tabla} {T[6].n} | {rango(6)} | {n2(T[6].baseMin)} € | {formatEuros2(T[6].baseMin * R.tipoTotal)} | {n2(T[6].baseMax)} € |
+| {T[7].tabla} {T[7].n} | {rango(7)} | {n2(T[7].baseMin)} € | {formatEuros2(T[7].baseMin * R.tipoTotal)} | {n2(T[7].baseMax)} € |
+| {T[8].tabla} {T[8].n} | {rango(8)} | {n2(T[8].baseMin)} € | {formatEuros2(T[8].baseMin * R.tipoTotal)} | {n2(T[8].baseMax)} € |
+| {T[9].tabla} {T[9].n} | {rango(9)} | {n2(T[9].baseMin)} € | {formatEuros2(T[9].baseMin * R.tipoTotal)} | {n2(T[9].baseMax)} € |
+| {T[10].tabla} {T[10].n} | {rango(10)} | {n2(T[10].baseMin)} € | {formatEuros2(T[10].baseMin * R.tipoTotal)} | {n2(T[10].baseMax)} € |
+| {T[11].tabla} {T[11].n} | {rango(11)} | {n2(T[11].baseMin)} € | {formatEuros2(T[11].baseMin * R.tipoTotal)} | {n2(T[11].baseMax)} € |
+| {T[12].tabla} {T[12].n} | {rango(12)} | {n2(T[12].baseMin)} € | {formatEuros2(T[12].baseMin * R.tipoTotal)} | {n2(T[12].baseMax)} € |
+| {T[13].tabla} {T[13].n} | {rango(13)} | {n2(T[13].baseMin)} € | {formatEuros2(T[13].baseMin * R.tipoTotal)} | {n2(T[13].baseMax)} € |
+| {T[14].tabla} {T[14].n} | {rango(14)} | {n2(T[14].baseMin)} € | {formatEuros2(T[14].baseMin * R.tipoTotal)} | {n2(T[14].baseMax)} € |
+
+La tabla **reducida** es para quien gana poco (rendimientos por debajo del primer tramo de la general). La **general**
+empieza en el tramo 1 y llega hasta el 12, que cubre a quien gana más de {n2(T[13].hasta)} € al mes.
+
+El {pctT(R.tipoTotal)} se reparte así:
+{R.desglose.map((d) => `${d.concepto} (${pctT(d.tipo)})`).join('; ')}.
+
+## Cuánto pagarías según lo que ganes
+
+Rendimiento neto anual antes de la deducción (es decir, ingresos menos gastos), cuota con la base mínima y con la máxima
+de tu tramo:
+
+| Beneficio anual | Rendimiento mensual tras el 7 % | Tramo | Cuota mínima | Cuota máxima | Cuota mínima al año |
+|---|---|---|---|---|---|
+| 12.000 € | {n2(c12.netoMensual)} € | {c12.tramo.tabla} {c12.tramo.n} | {formatEuros2(c12.cuotaMin)} | {formatEuros2(c12.cuotaMax)} | {formatEuros(c12.cuotaMin * 12)} |
+| 18.000 € | {n2(c18.netoMensual)} € | {c18.tramo.tabla} {c18.tramo.n} | {formatEuros2(c18.cuotaMin)} | {formatEuros2(c18.cuotaMax)} | {formatEuros(c18.cuotaMin * 12)} |
+| 24.000 € | {n2(c24.netoMensual)} € | {c24.tramo.tabla} {c24.tramo.n} | {formatEuros2(c24.cuotaMin)} | {formatEuros2(c24.cuotaMax)} | {formatEuros(c24.cuotaMin * 12)} |
+| 30.000 € | {n2(c30.netoMensual)} € | {c30.tramo.tabla} {c30.tramo.n} | {formatEuros2(c30.cuotaMin)} | {formatEuros2(c30.cuotaMax)} | {formatEuros(c30.cuotaMin * 12)} |
+| 40.000 € | {n2(c40.netoMensual)} € | {c40.tramo.tabla} {c40.tramo.n} | {formatEuros2(c40.cuotaMin)} | {formatEuros2(c40.cuotaMax)} | {formatEuros(c40.cuotaMin * 12)} |
+| 60.000 € | {n2(c60.netoMensual)} € | {c60.tramo.tabla} {c60.tramo.n} | {formatEuros2(c60.cuotaMin)} | {formatEuros2(c60.cuotaMax)} | {formatEuros(c60.cuotaMin * 12)} |
+
+Lo que enseña la tabla: con la base mínima, la cuota pesa mucho más en proporción cuando se gana poco. Con 12.000 € de
+beneficio, la cuota mínima anual equivale a un {((c12.cuotaMin * 12) / 12000 * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 })} % de lo que ganas; con 60.000 €, a un
+{((c60.cuotaMin * 12) / 60000 * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 })} %. Y a eso hay que sumar el IRPF.
+
+## ¿Base mínima o más alta?
+
+Dentro de tu tramo puedes elegir cualquier base. Cotizar por la mínima deja más dinero cada mes, pero las prestaciones
+(baja por enfermedad, cese de actividad, jubilación) se calculan con lo que cotizas: una base más alta significa más
+cuota hoy y más protección después. No hay una opción correcta para todo el mundo; depende de cuánto valores esa
+protección frente a tener el dinero ahora y, por ejemplo, invertirlo por tu cuenta.
+
+Puedes cambiar de base **hasta seis veces al año**. El cambio tiene efectos el 1 de marzo, mayo, julio, septiembre o
+noviembre, o el 1 de enero del año siguiente, según cuándo lo pidas (artículo 45 del Reglamento general de cotización).
+Conviene hacerlo si tus ingresos previstos cambian mucho, para que la regularización no te dé un susto.
+
+## La regularización: el ajuste del año siguiente
+
+La base que eliges durante el año es **provisional**. Cuando Hacienda comunica a la Seguridad Social tus rendimientos
+reales, se comparan con lo que cotizaste (artículo 308 de la Ley General de la Seguridad Social):
+
+- **Si cotizaste por debajo de la base mínima** del tramo que te corresponde de verdad, te reclaman la diferencia. Tienes
+  hasta el último día del mes siguiente a la notificación para pagarla sin recargo.
+- **Si cotizaste por encima de la base máxima** de tu tramo real, te devuelven la diferencia de oficio, sin intereses.
+- **Si tu base estaba dentro del tramo correcto**, no hay ajuste.
+
+La lección práctica: si tus ingresos van mejor de lo previsto, apartar algo cada mes evita tener que pagar de golpe al
+año siguiente. Lo mismo vale para el IRPF y el IVA, que explica la guía de
+[impuestos de un autónomo nuevo](/blog/impuestos-autonomo-nuevo-irpf-iva-plazos/).
+
+## La tarifa plana del primer año
+
+Quien se da de alta como autónomo por primera vez, o no ha estado de alta en los **dos años anteriores** (tres si ya
+disfrutó antes de esta ayuda), puede pedir una **cuota reducida** durante los 12 primeros meses naturales completos
+(artículo 38 ter del Estatuto del Trabajo Autónomo). En 2026 es de **{R.tarifaPlanaMensual} € al mes**.
+
+- Se pide **al darse de alta**; si no, se pierde.
+- Puede alargarse **otros 12 meses** si tus rendimientos netos de ese periodo van a quedar por debajo del salario mínimo
+  interprofesional. Hay que pedirlo antes de que empiece ese segundo año, con una declaración de tus ingresos previstos.
+- La cuota reducida **no se regulariza** después, aunque ganes más de lo previsto.
+- Mientras la disfrutas, las prestaciones se calculan con la base mínima del tramo 1 de la tabla general.
+
+## Qué hacer con estos números
+
+La cuota es solo una parte de lo que paga un autónomo: falta el IRPF, y el IVA que cobras no es tuyo. Calcula cuánto
+apartar de cada factura con la [calculadora de factura de autónomo](/herramientas/calculadora-factura-autonomo/). Como los ingresos
+de un autónomo varían más, el colchón también debería ser mayor: la
+[calculadora del fondo de emergencia](/herramientas/calculadora-fondo-de-emergencia/) te ayuda a fijarlo.
+
+## Preguntas frecuentes
+
+**¿Cuál es la cuota mínima de autónomos en 2026?**
+La del primer tramo de la tabla reducida: base de {n2(T[0].baseMin)} € por el {pctT(R.tipoTotal)}, unos {formatEuros2(T[0].baseMin * R.tipoTotal)} al mes. Durante el primer
+año, quien cumple los requisitos puede pagar la cuota reducida de {R.tarifaPlanaMensual} €.
+
+**¿La cuota de autónomos se resta para calcular el tramo?**
+No. Los gastos que se restan son los de la actividad; la propia cuota se vuelve a sumar al calcular el rendimiento que
+cuenta para la Seguridad Social. Lo que sí se resta es la deducción del {pctT(R.deduccionGastosGenericos)} por gastos genéricos.
+
+**¿Qué pasa si un mes gano mucho y otro nada?**
+Cuenta la media del año. Por eso conviene estimar el total anual y, si cambia mucho, ajustar la base en uno de los seis
+cambios permitidos.
+
+**¿La cuota de autónomos desgrava en el IRPF?**
+Sí: es un gasto deducible de la actividad en el IRPF, aunque no se reste para calcular tu tramo de cotización.

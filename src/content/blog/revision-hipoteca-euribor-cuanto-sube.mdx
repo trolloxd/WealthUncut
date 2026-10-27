@@ -1,0 +1,153 @@
+---
+title: "Revisión de la hipoteca: cuánto sube la cuota con el euríbor"
+description: "Cuánto cambia tu cuota en la revisión de la hipoteca variable con el euríbor oficial: cálculo paso a paso y tabla según el capital pendiente y los años."
+resumen: "En cada revisión, el banco recalcula la cuota de una hipoteca variable con el capital que queda, los meses que faltan y el nuevo tipo (euríbor más diferencial). Como regla práctica, con un tipo en torno al 4 %, cada punto que sube el euríbor encarece la cuota entre 50 y 60 € al mes por cada 100.000 € pendientes, con plazos de entre 15 y 25 años."
+pubDate: 2026-10-31
+updatedDate: 2026-10-31
+author: "David Pérez Mitjà"
+tags: ["hipoteca", "vivienda", "educación financiera"]
+categoria: "vivienda"
+sources:
+  - label: "BOE: tipos oficiales de referencia del mercado hipotecario de septiembre de 2026 (Banco de España, BOE-A-2026-20519)"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20519"
+  - label: "BOE: Ley 5/2019, de 15 de marzo, reguladora de los contratos de crédito inmobiliario (arts. 21 y 23)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814"
+hasAffiliateLinks: false
+draft: false
+---
+
+import euribor from '../../data/euribor/ultimo.json';
+import { revisarHipoteca, cuotaFrancesa, valorMes, mesesAtras } from '../../lib/calculos/euribor.ts';
+import { formatEuros } from '../../components/CalculatorUI';
+import { COMISION_AMORTIZACION_ANTICIPADA as CA, COMISION_CAMBIO_A_FIJO as CF } from '../../config/finance';
+
+export const serie = euribor.historico.map((p) => ({ mes: p.mes, valor: p.valor }));
+export const ult = serie.at(-1);
+export const mes12 = mesesAtras(ult.mes, 12);
+export const eur12 = valorMes(serie, mes12);
+export const mesLargo = (m) => new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${m}-01T00:00:00Z`));
+export const n3 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+export const n2 = (v) => v.toLocaleString('es-ES', { maximumFractionDigits: 2 });
+export const signo = (v) => (v >= 0 ? '+' : '−') + formatEuros(Math.abs(v));
+export const rev = revisarHipoteca({ capitalPendiente: 140000, mesesRestantes: 264, diferencial: 0.8, euriborAnterior: eur12, euriborNuevo: ult.valor, mesesHastaSiguiente: 12 });
+export const subidaPunto = (capital, anios) => cuotaFrancesa(capital, ult.valor + 0.8 + 1, anios * 12) - cuotaFrancesa(capital, ult.valor + 0.8, anios * 12);
+export const ultimos = serie.slice(-7);
+
+En la revisión de una hipoteca variable, el banco **recalcula la cuota** con tres datos: el capital que te queda, los
+meses que faltan y el tipo nuevo, que es el euríbor que fije tu escritura más tu diferencial. Si el euríbor ha subido
+desde la revisión anterior, la cuota sube. Según el último dato oficial publicado en el BOE, el euríbor a un año fue del
+**{n3(ult.valor)} %** en {mesLargo(ult.mes)}, frente al {n3(eur12)} % de {mesLargo(mes12)}. Para una hipoteca con 140.000 €
+pendientes, 22 años por delante y un diferencial de 0,8 puntos, ese cambio supone pasar de {formatEuros(rev.cuotaAnterior)} a
+**{formatEuros(rev.cuotaNueva)} al mes** ({signo(rev.diferenciaMes)}). Abajo está el cálculo y una tabla para otros casos.
+
+## Cómo está el euríbor oficial
+
+El euríbor que usa tu hipoteca no es el que ves cada día en las noticias, sino la **media de cada mes** que el Banco de
+España publica en el BOE como tipo oficial de referencia del mercado hipotecario. Los últimos meses publicados:
+
+| Mes | Euríbor a un año (oficial) |
+|---|---|
+| {mesLargo(ultimos[0].mes)} | {n3(ultimos[0].valor)} % |
+| {mesLargo(ultimos[1].mes)} | {n3(ultimos[1].valor)} % |
+| {mesLargo(ultimos[2].mes)} | {n3(ultimos[2].valor)} % |
+| {mesLargo(ultimos[3].mes)} | {n3(ultimos[3].valor)} % |
+| {mesLargo(ultimos[4].mes)} | {n3(ultimos[4].valor)} % |
+| {mesLargo(ultimos[5].mes)} | {n3(ultimos[5].valor)} % |
+| {mesLargo(ultimos[6].mes)} | {n3(ultimos[6].valor)} % |
+
+El histórico completo, mes a mes y con la resolución del BOE de cada dato, está en la página del
+[euríbor oficial](/euribor/). Nadie sabe hacia dónde irá en los próximos meses: depende sobre todo de lo que espere el
+mercado de los tipos del Banco Central Europeo, y los pronósticos fallan a menudo. Lo útil es saber **cuánto te afecta
+cada movimiento**.
+
+## Cómo se recalcula la cuota, paso a paso
+
+Supuesto del ejemplo (inventado, para ilustrar): hipoteca variable con revisión anual, **140.000 €** de capital pendiente,
+**264 meses** (22 años) por delante y un diferencial de **0,8 puntos**. Comparamos la revisión de hace un año con la de
+ahora, usando el euríbor oficial de cada momento.
+
+1. **Tipo anterior.** Euríbor de {mesLargo(mes12)} ({n3(eur12)} %) + 0,8 = {n3(rev.tipoAnterior)} %.
+2. **Tipo nuevo.** Euríbor de {mesLargo(ult.mes)} ({n3(ult.valor)} %) + 0,8 = {n3(rev.tipoNuevo)} %.
+3. **Cuota.** El banco aplica el sistema francés (cuota constante hasta la siguiente revisión) con el capital y los
+   meses que quedan. Con el tipo anterior saldría {formatEuros(rev.cuotaAnterior)} al mes; con el nuevo, **{formatEuros(rev.cuotaNueva)}**.
+4. **Impacto.** {signo(rev.diferenciaMes)} al mes, unos **{signo(rev.diferenciaPeriodo)} en los 12 meses** hasta la siguiente revisión.
+
+Para simplificar, el ejemplo usa el mismo capital y el mismo plazo en las dos cuotas. En la realidad, en la revisión
+anterior te quedaban más capital y más meses; el cálculo de tu banco partirá de las cifras exactas del día de la revisión.
+
+Hay un detalle que suele sorprender: la subida va entera a **intereses**. Con el tipo anterior, de la primera cuota
+{formatEuros(rev.interesesPrimeraAnterior)} eran intereses; con el nuevo, {formatEuros(rev.interesesPrimeraNueva)}. Pagas más y, al principio, incluso
+devuelves algo menos de capital: {formatEuros(rev.cuotaNueva - rev.interesesPrimeraNueva)} en la primera cuota, frente a {formatEuros(rev.cuotaAnterior - rev.interesesPrimeraAnterior)} con el tipo anterior.
+
+## Cuánto sube la cuota por cada punto de euríbor
+
+La regla útil para hacer cuentas rápidas: cuánto sube la cuota mensual si el euríbor sube **un punto** desde su nivel
+actual, con un diferencial de 0,8.
+
+| Capital pendiente | A 15 años | A 20 años | A 25 años |
+|---|---|---|---|
+| 100.000 € | {signo(subidaPunto(100000, 15))} | {signo(subidaPunto(100000, 20))} | {signo(subidaPunto(100000, 25))} |
+| 150.000 € | {signo(subidaPunto(150000, 15))} | {signo(subidaPunto(150000, 20))} | {signo(subidaPunto(150000, 25))} |
+| 200.000 € | {signo(subidaPunto(200000, 15))} | {signo(subidaPunto(200000, 20))} | {signo(subidaPunto(200000, 25))} |
+
+Funciona igual a la baja: si el euríbor bajara un punto, la cuota bajaría algo menos que esas cifras. Dos conclusiones:
+
+- **Lo que más pesa es el capital pendiente.** El doble de deuda, el doble de subida.
+- **Cuantos más años quedan, más sube la cuota en proporción**, porque una parte mayor de cada cuota son intereses.
+
+Con tus cifras exactas, usa la [calculadora de revisión de la hipoteca](/herramientas/calculadora-revision-hipoteca/):
+pones capital, meses restantes, diferencial y los dos euríbor, y te dice la cuota nueva y el impacto hasta la siguiente
+revisión.
+
+## Qué euríbor se aplica en tu revisión
+
+Lo fija tu escritura, en la cláusula de interés variable. Lo habitual es que diga qué índice se usa (casi siempre el
+euríbor a un año oficial) y qué publicación cuenta: por ejemplo, el último valor publicado antes de la fecha de revisión,
+o el de un mes concreto anterior. Por eso dos hipotecas que se revisan el mismo mes pueden usar euríbor distintos.
+
+Dos comprobaciones que merecen la pena cuando llega la carta del banco:
+
+1. **Que el euríbor coincide con el oficial** del mes que dice tu escritura. Las cifras exactas están en
+   [la página del euríbor](/euribor/), con su referencia del BOE.
+2. **Que el diferencial es el correcto.** Si tienes bonificaciones por nómina, seguros u otros productos, y has dejado de
+   cumplir alguna, el diferencial puede haber subido además del euríbor.
+
+En las hipotecas firmadas con la Ley 5/2019 el tipo nunca puede ser negativo, aunque el euríbor lo sea (artículo 21.4),
+y la ley prohíbe pactar un suelo (artículo 21.3).
+
+## Si la cuota sube: tres opciones con sus límites legales
+
+Ninguna es mejor para todo el mundo; depende de tu colchón, de tu plazo y de lo que cueste cada una en tu contrato.
+
+- **Amortizar parte del capital.** Reduce la deuda sobre la que se calculan los intereses. En una hipoteca variable, la
+  comisión máxima es del {n2(CA.variable.opcionCincoAnios.limitePct)} % del capital amortizado durante los {CA.variable.opcionCincoAnios.anios} primeros años o del
+  {n2(CA.variable.opcionTresAnios.limitePct)} % durante los {CA.variable.opcionTresAnios.anios} primeros, según elija el contrato, y después ninguna (artículo 23 de la Ley 5/2019).
+  Calcula el ahorro en [amortizar la hipoteca](/herramientas/amortizar-hipoteca-cuanto-ahorras/) y lee si te compensa
+  más que invertir en [amortizar la hipoteca o invertir](/blog/amortizar-hipoteca-o-invertir/).
+- **Pasar a tipo fijo**, con tu banco o con otro. Durante los {CF.aniosConLimite} primeros años del préstamo, la comisión no puede
+  superar el {n2(CF.limitePct)} % del capital reembolsado; después, ninguna. A cambio, el tipo fijo que te ofrezcan será el del
+  mercado de ese momento. La guía [hipoteca fija, variable o mixta](/blog/hipoteca-fija-variable-o-mixta/) compara
+  las tres con números.
+- **Alargar el plazo.** Baja la cuota, pero pagas intereses durante más años y el coste total sube. Suele ser la última
+  opción, no la primera.
+
+Si la subida te aprieta, antes de nada revisa cuántos meses de gastos tienes cubiertos. La
+[calculadora del fondo de emergencia](/herramientas/calculadora-fondo-de-emergencia/) te ayuda a fijar ese colchón.
+
+## Preguntas frecuentes
+
+**¿Cada cuánto se revisa una hipoteca variable?**
+Lo dice tu escritura. Lo más común es cada 12 meses, y en algunas hipotecas cada 6. Entre revisión y revisión la cuota
+no cambia aunque el euríbor se mueva.
+
+**¿Por qué mi banco me cobra una cuota algo distinta a la de la calculadora?**
+Porque parte del capital y los meses exactos del día de la revisión, y puede aplicar redondeos o bonificaciones del
+diferencial. Las diferencias deberían ser de pocos euros; si son mayores, pide el detalle por escrito.
+
+**¿Cuándo se publica el euríbor oficial de cada mes?**
+El Banco de España publica en el BOE, en los primeros días de cada mes, la media del mes anterior. El de
+{mesLargo(ult.mes)} salió en la resolución {euribor.ultimoBoe}.
+
+**¿Me conviene cambiar a fijo ahora?**
+Es una decisión personal que depende de tu plazo, tu margen de ahorro y la oferta concreta. Esta guía no puede
+recomendártelo: te da los números y los límites legales para que lo compares con calma.

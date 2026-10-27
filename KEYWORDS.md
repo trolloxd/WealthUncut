@@ -166,6 +166,13 @@ el 2026-09-24; keywords sin validar todavía con autocompletado.
 | indemnizacion por despido como se calcula, despido improcedente 33 dias | `indemnizacion-despido-como-se-calcula` (28/10) | Programado | Clúster 7 |
 | ayuda alquiler jovenes requisitos, bono alquiler joven 2026 | `ayuda-alquiler-jovenes-requisitos` (29/10) | Programado | Clúster 8 |
 | baja laboral cuanto se cobra, incapacidad temporal 60 75 | `baja-laboral-cuanto-se-cobra` (30/10) | Programado | Clúster 7 |
+| sueldo neto 2026, de bruto a neto, cuanto se paga de seguridad social nomina | `sueldo-neto-de-bruto-a-neto` | Borrador: bloqueado hasta corregir `IRPF_GENERAL_ESTATAL` en `finance.ts` (tiene los tipos combinados, no los estatales) | Clúster 7 |
+| revision hipoteca euribor, cuanto sube la cuota de la hipoteca | `revision-hipoteca-euribor-cuanto-sube` (31/10) | Programado | Clúster 8 |
+| cuota autonomos 2026, tramos autonomos 2026, tarifa plana autonomos | `cuota-autonomos-2026-tramos` (1/11) | Programado | Autónomos |
+| plan de pensiones o fondo indexado (Search Console) | `plan-pensiones-o-fondo-indexado` (2/11) | Programado | Clúster 6 |
+| declarar alquiler renta, gastos deducibles alquiler, reduccion alquiler irpf | `declarar-alquiler-renta-gastos-reducciones` | Borrador: bloqueado hasta corregir `IRPF_GENERAL_ESTATAL` | Clúster 8 |
+| irpf por comunidad autonoma comparativa, donde se paga menos irpf | `irpf-por-comunidad-autonoma-donde-se-paga-menos` | Borrador: bloqueado hasta corregir `IRPF_GENERAL_ESTATAL` | Clúster 7 |
+| como hacer una factura de autonomo, retencion 15 7 factura | `como-hacer-factura-autonomo` (3/11) | Programado | Autónomos |
 
 Herramientas (añadidas el 2026-09-23) que refuerzan clústeres con intención de "calculadora":
 fondo de emergencia (clúster 5), fondo indexado vs ETF (clúster 3), impuestos al vender un fondo

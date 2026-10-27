@@ -1,0 +1,141 @@
+---
+title: "IRPF por comunidad autónoma: dónde se paga menos"
+description: "Cuánto IRPF paga el mismo sueldo en cada comunidad: tabla con 24.000, 30.000 y 50.000 € brutos, por qué las diferencias son pequeñas y qué no incluye."
+resumen: "Cerca de la mitad del IRPF de un sueldo depende de la escala de tu comunidad autónoma, así que el mismo bruto no paga lo mismo en todas partes. Con sueldos medios la diferencia entre la comunidad más barata y la más cara es de unos cientos de euros al año, y crece con la renta. Cuenta la comunidad donde vives más días del año, no la de tu empresa."
+pubDate: 2026-11-06
+updatedDate: 2026-11-06
+author: "David Pérez Mitjà"
+tags: ["impuestos", "nómina"]
+categoria: "trabajo"
+sources:
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen autonómico de la base liquidable general (escalas de cada comunidad)"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-general/gravamen-autonomico/comunidad-autonoma-andalucia.html"
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen estatal de la base liquidable general"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-general/gravamen-estatal.html"
+  - label: "BOE: Ley 35/2006 del IRPF, artículos 68.4 (Ceuta y Melilla) y 72 (residencia en una comunidad autónoma)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2006-20764"
+hasAffiliateLinks: false
+draft: true
+---
+
+import ArticleLink from '../../components/ArticleLink.astro';
+import { calcularRanking } from '../../components/IrpfRankingCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const rk = (bruto) => calcularRanking(bruto).filter((f) => f.id !== 'ceutaMelilla');
+export const k24 = rk(24000);
+export const k30 = rk(30000);
+export const k50 = rk(50000);
+export const irpf = (lista, id) => formatEuros(lista.find((f) => f.id === id).irpfAnual);
+export const dif = (lista) => lista.at(-1).irpfAnual - lista[0].irpfAnual;
+export const fila = (id) => k30.find((f) => f.id === id).nombre;
+
+El mismo sueldo no paga el mismo IRPF en toda España: el impuesto se divide en una parte estatal, igual para todos, y
+una parte autonómica que fija cada comunidad con su propia escala. Con **30.000 € brutos al año**, sin hijos y con
+contrato indefinido, la comunidad donde menos IRPF se paga es **{k30[0].nombre}** ({formatEuros(k30[0].irpfAnual)} al año) y donde más,
+**{k30.at(-1).nombre}** ({formatEuros(k30.at(-1).irpfAnual)}): una diferencia de **{formatEuros(dif(k30))} al año**, unos {formatEuros(dif(k30) / 12)} al mes. Con
+sueldos altos la distancia crece: con 50.000 € llega a {formatEuros(dif(k50))}.
+
+Los cálculos usan las escalas del Manual práctico de Renta 2025 de la Agencia Tributaria (las últimas publicadas
+completas) y las cotizaciones de 2026. Puedes comparar cualquier sueldo en las 15 comunidades a la vez con el
+[ranking de IRPF por comunidades](/herramientas/ranking-irpf-comunidades/).
+
+## Por qué cambia el IRPF entre comunidades
+
+El IRPF que pagas por tu sueldo es la suma de dos cuotas calculadas sobre la **misma base**:
+
+- **La estatal**, con una escala única para toda España.
+- **La autonómica**, con la escala que aprueba tu comunidad: sus propios tramos y porcentajes.
+
+Además, cada comunidad puede tener sus propias deducciones (por alquiler, por hijos, por estudios...) y, en algunos
+casos, mínimos personales distintos. Esta comparación solo recoge la escala, que es lo que afecta a todo el mundo; las
+deducciones dependen de tu situación y pueden cambiar el orden.
+
+## La tabla: el mismo sueldo en las 15 comunidades
+
+IRPF anual estimado para un trabajador por cuenta ajena, menor de 65 años, sin hijos ni otras rentas, en cada
+comunidad de régimen común:
+
+| Comunidad | 24.000 € brutos | 30.000 € brutos | 50.000 € brutos |
+|---|---|---|---|
+| {fila('andalucia')} | {irpf(k24, 'andalucia')} | {irpf(k30, 'andalucia')} | {irpf(k50, 'andalucia')} |
+| {fila('aragon')} | {irpf(k24, 'aragon')} | {irpf(k30, 'aragon')} | {irpf(k50, 'aragon')} |
+| {fila('asturias')} | {irpf(k24, 'asturias')} | {irpf(k30, 'asturias')} | {irpf(k50, 'asturias')} |
+| {fila('baleares')} | {irpf(k24, 'baleares')} | {irpf(k30, 'baleares')} | {irpf(k50, 'baleares')} |
+| {fila('canarias')} | {irpf(k24, 'canarias')} | {irpf(k30, 'canarias')} | {irpf(k50, 'canarias')} |
+| {fila('cantabria')} | {irpf(k24, 'cantabria')} | {irpf(k30, 'cantabria')} | {irpf(k50, 'cantabria')} |
+| {fila('castillaLaMancha')} | {irpf(k24, 'castillaLaMancha')} | {irpf(k30, 'castillaLaMancha')} | {irpf(k50, 'castillaLaMancha')} |
+| {fila('castillaYLeon')} | {irpf(k24, 'castillaYLeon')} | {irpf(k30, 'castillaYLeon')} | {irpf(k50, 'castillaYLeon')} |
+| {fila('cataluna')} | {irpf(k24, 'cataluna')} | {irpf(k30, 'cataluna')} | {irpf(k50, 'cataluna')} |
+| {fila('extremadura')} | {irpf(k24, 'extremadura')} | {irpf(k30, 'extremadura')} | {irpf(k50, 'extremadura')} |
+| {fila('galicia')} | {irpf(k24, 'galicia')} | {irpf(k30, 'galicia')} | {irpf(k50, 'galicia')} |
+| {fila('madrid')} | {irpf(k24, 'madrid')} | {irpf(k30, 'madrid')} | {irpf(k50, 'madrid')} |
+| {fila('murcia')} | {irpf(k24, 'murcia')} | {irpf(k30, 'murcia')} | {irpf(k50, 'murcia')} |
+| {fila('laRioja')} | {irpf(k24, 'laRioja')} | {irpf(k30, 'laRioja')} | {irpf(k50, 'laRioja')} |
+| {fila('valencia')} | {irpf(k24, 'valencia')} | {irpf(k30, 'valencia')} | {irpf(k50, 'valencia')} |
+
+| Sueldo bruto | Menos IRPF | Más IRPF | Diferencia al año |
+|---|---|---|---|
+| 24.000 € | {k24[0].nombre} ({formatEuros(k24[0].irpfAnual)}) | {k24.at(-1).nombre} ({formatEuros(k24.at(-1).irpfAnual)}) | {formatEuros(dif(k24))} |
+| 30.000 € | {k30[0].nombre} ({formatEuros(k30[0].irpfAnual)}) | {k30.at(-1).nombre} ({formatEuros(k30.at(-1).irpfAnual)}) | {formatEuros(dif(k30))} |
+| 50.000 € | {k50[0].nombre} ({formatEuros(k50[0].irpfAnual)}) | {k50.at(-1).nombre} ({formatEuros(k50.at(-1).irpfAnual)}) | {formatEuros(dif(k50))} |
+
+## Tres cosas que enseña la tabla
+
+1. **Las diferencias son reales, pero menores de lo que se suele pensar.** Con sueldos medios hablamos de unos cientos
+   de euros al año. Es dinero, pero rara vez compensa por sí solo diferencias de alquiler o de coste de vida entre
+   ciudades.
+2. **El orden cambia según el sueldo.** Cada comunidad baja o sube impuestos en tramos distintos: una puede ser de las
+   más baratas con un sueldo medio y de las más caras con uno alto. Por eso no existe "la comunidad con menos IRPF" para
+   todo el mundo, sino para cada nivel de renta.
+3. **La distancia crece con la renta**, porque las diferencias entre escalas se concentran en los tramos altos.
+
+## Qué no incluye esta comparación
+
+- **Deducciones autonómicas.** Muchas comunidades tienen deducciones por alquiler de vivienda habitual para jóvenes, por
+  nacimiento o por gastos de estudios. Si te corresponde alguna, tu IRPF real será más bajo.
+- **Mínimos personales propios.** Algunas comunidades fijan un mínimo personal distinto del estatal para su parte del
+  impuesto. Aquí usamos el estatal en las dos partes.
+- **País Vasco y Navarra.** Tienen un sistema foral propio, con su propio IRPF, que no sigue estas escalas.
+- **Ceuta y Melilla.** Quienes residen allí de forma habitual y efectiva se deducen el **60 %** de la parte de la cuota
+  que corresponde a las rentas obtenidas en esas ciudades (artículo 68.4 de la Ley del IRPF), lo que las sitúa muy por
+  debajo de cualquier comunidad. Como esa deducción depende de dónde se obtienen las rentas, no las incluimos en la
+  tabla.
+- **El año.** Las escalas son las del ejercicio 2025. Si tu comunidad las cambia para 2026, el resultado cambiará: lo
+  actualizaremos cuando la Agencia Tributaria publique el nuevo manual.
+
+## ¿Qué comunidad cuenta: donde vives o donde trabajas?
+
+Donde vives. Según el artículo 72 de la Ley del IRPF, tributas en la comunidad donde **pasas más días del año**, y se
+presume que es aquella donde tienes tu vivienda habitual. No importa dónde esté la sede de tu empresa ni dónde te
+paguen la nómina.
+
+Y una advertencia: la ley **no da efecto a los cambios de residencia hechos principalmente para pagar menos**. Si te
+empadronas en otra comunidad sin vivir allí, Hacienda puede considerar que no ha habido cambio y reclamar la diferencia
+con intereses.
+
+## Qué hacer con este dato
+
+Si te vas a mudar por trabajo, el IRPF es solo una de las cuentas: suma también vivienda, transporte y el resto de
+impuestos autonómicos, como el de transmisiones patrimoniales si compras piso (está en la tabla de
+[ITP por comunidades](/herramientas/itp-por-comunidades/)). Para ver tu neto exacto en tu comunidad, usa la
+[calculadora de sueldo neto](/herramientas/calculadora-sueldo-neto/), y para entender cada paso del cálculo, la guía
+<ArticleLink href="/blog/sueldo-neto-de-bruto-a-neto/">sueldo neto: cómo pasar de bruto a neto</ArticleLink>.
+
+Si lo que te interesa es cómo tributan tus inversiones, ahí la comunidad no cambia nada: la escala del ahorro es la misma
+en todas las comunidades de régimen común, como explica la guía de [tramos del IRPF del ahorro](/blog/tramos-irpf-ahorro/).
+
+## Preguntas frecuentes
+
+**¿En qué comunidad se paga menos IRPF?**
+Depende del sueldo. Con los supuestos de esta guía, con 24.000 € brutos es {k24[0].nombre}, con 30.000 € es {k30[0].nombre} y con
+50.000 € es {k50[0].nombre}, sin contar País Vasco, Navarra ni Ceuta y Melilla, que tienen reglas propias.
+
+**¿Cuánto se ahorra cambiando de comunidad?**
+Con 30.000 € brutos, como mucho {formatEuros(dif(k30))} al año entre la comunidad más cara y la más barata, antes de deducciones
+autonómicas. Con sueldos más altos, más.
+
+**¿Mi empresa me retiene según mi comunidad?**
+La retención mensual de la nómina se calcula con un procedimiento estatal, sin tener en cuenta la escala de cada
+comunidad. La diferencia se ajusta en la declaración de la renta, así que es ahí donde notarás si tu comunidad cobra más
+o menos.

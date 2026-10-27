@@ -1,0 +1,169 @@
+---
+title: "Sueldo neto 2026: cómo pasar de bruto a neto (con ejemplo)"
+description: "Cómo se pasa del sueldo bruto al neto: Seguridad Social, gastos deducibles, reducción por trabajo y tramos del IRPF, con ejemplos de 18.000 a 40.000 € al año."
+resumen: "El sueldo neto es el bruto menos dos descuentos: tu cotización a la Seguridad Social (un porcentaje fijo del bruto) y el IRPF, que se calcula por tramos sobre lo que queda tras restar la cotización, un gasto fijo de 2.000 € y, con sueldos bajos, una reducción por rendimientos del trabajo. Por eso el porcentaje que te quitan sube con el sueldo."
+pubDate: 2026-11-04
+updatedDate: 2026-11-04
+author: "David Pérez Mitjà"
+tags: ["nómina", "impuestos", "educación financiera"]
+categoria: "trabajo"
+sources:
+  - label: "BOE: Orden PJC/297/2026, de cotización a la Seguridad Social para 2026"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen estatal de la base liquidable general"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-general/gravamen-estatal.html"
+  - label: "AEAT, Manual práctico de Renta 2025: reducción por obtención de rendimientos del trabajo"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c03-rendimientos-trabajo/rendimiento-neto-trabajo-integrar-base-imponible/fase-3-determinacion-rendimiento-neto-reducido.html"
+  - label: "AEAT: mínimo personal y familiar"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/manual-especifico-irpf-2025-personas-anos/minimos/minimo-personal-familiar.html"
+hasAffiliateLinks: false
+draft: true
+---
+
+import { calcularSueldoNeto } from '../../components/SalaryCalculator';
+import { formatEuros, formatPct } from '../../components/CalculatorUI';
+import {
+  SS_TRABAJADOR as SS,
+  IRPF_GASTO_DEDUCIBLE_TRABAJO as GASTO,
+  IRPF_MINIMO_CONTRIBUYENTE as MIN,
+  IRPF_REDUCCION_TRABAJO as RED,
+} from '../../config/finance';
+
+export const tipoSS = SS.contingenciasComunes + SS.desempleoIndefinido + SS.formacionProfesional + SS.mei;
+export const neto = (bruto, comunidad = 'madrid', pagas = 14) => calcularSueldoNeto({ brutoAnual: bruto, comunidad, pagas });
+export const e = neto(24000);
+export const b = neto(18000);
+export const r18 = b;
+export const r24 = e;
+export const r30 = neto(30000);
+export const r40 = neto(40000);
+export const pct = (n) => (n * 100).toLocaleString('es-ES', { maximumFractionDigits: 2 }) + ' %';
+export const eu = (n) => n.toLocaleString('es-ES', { maximumFractionDigits: 2, useGrouping: 'always' }) + ' €';
+
+Para pasar de sueldo bruto a neto se restan dos cosas: tu **cotización a la Seguridad Social** y el **IRPF**. Con un
+contrato indefinido, la cotización es el {pct(tipoSS)} del bruto. El IRPF no se aplica sobre todo el sueldo: antes se
+restan la cotización, un gasto fijo de {eu(GASTO)} y, si cobras poco, una reducción por rendimientos del trabajo, y lo
+que queda paga por tramos. Con 24.000 € brutos al año, viviendo en Madrid y sin hijos, el neto anual estimado es de
+unos **{formatEuros(e.netoAnual)}**: {formatEuros(e.netoAnual / 14)} al mes en 14 pagas o {formatEuros(e.netoAnual / 12)} en 12. Abajo está el
+cálculo paso a paso y una tabla con otros sueldos.
+
+Las cifras salen de las cotizaciones de 2026 (BOE) y de las escalas del IRPF del Manual práctico de Renta 2025 de la
+Agencia Tributaria, las últimas que ha publicado completas. Puedes repetir el cálculo con tu sueldo y tu comunidad en la
+[calculadora de sueldo neto](/herramientas/calculadora-sueldo-neto/).
+
+## Qué te descuentan en la nómina
+
+| Concepto | Qué es | Cuánto |
+|---|---|---|
+| Contingencias comunes | Pensiones, bajas por enfermedad, sanidad | {pct(SS.contingenciasComunes)} del bruto |
+| Desempleo | El paro, si un día lo necesitas | {pct(SS.desempleoIndefinido)} (contrato indefinido) |
+| Formación profesional | Cursos de formación para el empleo | {pct(SS.formacionProfesional)} |
+| MEI (equidad intergeneracional) | Una cotización extra para reforzar las pensiones | {pct(SS.mei)} |
+| IRPF | El impuesto sobre la renta | Depende del sueldo y de la comunidad |
+
+La cotización tiene un techo: se calcula como máximo sobre {eu(SS.baseMaximaMensual)} al mes en 2026. Por encima,
+solo se paga una pequeña cotización de solidaridad. Con un contrato temporal, la parte de desempleo es algo más alta.
+
+La empresa paga además su propia parte de Seguridad Social, bastante mayor que la tuya, pero no sale de tu bruto y no
+aparece restando en tu neto.
+
+## Cómo se calcula el IRPF, paso a paso
+
+Ejemplo: **24.000 € brutos al año**, residente en Madrid, menor de 65 años, sin hijos ni otras rentas.
+
+1. **Cotización a la Seguridad Social.** 24.000 × {pct(tipoSS)} = **{eu(e.cotizacionSSAnual)}**.
+2. **Gasto deducible fijo.** Todo trabajador por cuenta ajena resta {eu(GASTO)} al año (artículo 19 de la Ley del IRPF).
+3. **Rendimiento neto.** 24.000 − {eu(e.cotizacionSSAnual)} − {eu(GASTO)} = **{eu(e.rendimientoNeto)}**.
+4. **Reducción por rendimientos del trabajo.** Solo existe si el rendimiento neto no pasa de {eu(RED.umbralMaximo)}. Aquí
+   lo supera, así que es {eu(e.reduccionTrabajo)}. La base liquidable queda en **{eu(e.baseLiquidable)}**.
+5. **Escalas.** A la base se le aplican dos escalas por tramos: la estatal y la de tu comunidad. De cada una se resta lo
+   que correspondería al **mínimo personal** ({eu(MIN.general)}), la parte de la renta que la ley considera necesaria
+   para vivir y que no tributa.
+6. **Resultado.** Cuota estatal: {formatEuros(e.cuotaEstatal)}. Cuota autonómica de Madrid: {formatEuros(e.cuotaAutonomica)}. IRPF total:
+   **{formatEuros(e.irpfAnual)}**, un {formatPct(e.tipoEfectivo)} del bruto.
+
+Neto anual: 24.000 − {formatEuros(e.cotizacionSSAnual)} − {formatEuros(e.irpfAnual)} = **{formatEuros(e.netoAnual)}**.
+
+Fíjate en el paso 5: pagar por tramos significa que cada euro paga el porcentaje del tramo en el que cae, no que todo tu
+sueldo pague el del tramo más alto. Si quieres ver cómo funcionan los porcentajes por franjas con más calma, la
+definición de [tipo marginal](/glosario/tipo-marginal/) del glosario lo resume en tres párrafos.
+
+## La reducción que protege los sueldos bajos
+
+La reducción por rendimientos del trabajo hace que los sueldos bajos paguen muy poco IRPF. Si el rendimiento neto es de
+{eu(RED.umbral1)} o menos, se restan {eu(RED.importeFijo)}. Por encima, la reducción va bajando hasta desaparecer en
+{eu(RED.umbralMaximo)}.
+
+Con **18.000 € brutos** en Madrid, el rendimiento neto es de {eu(b.rendimientoNeto)}, la reducción es de
+{eu(b.reduccionTrabajo)} y la base liquidable baja a {eu(b.baseLiquidable)}. El IRPF estimado se queda en
+{formatEuros(b.irpfAnual)} al año, un {formatPct(b.tipoEfectivo)} del bruto. Con 24.000 € la reducción ya no existe, y por eso el
+salto de IRPF entre un sueldo y otro es mucho mayor que el salto de sueldo.
+
+## Tabla: de bruto a neto en Madrid
+
+Misma situación (Madrid, sin hijos, contrato indefinido, menor de 65 años), con varios sueldos:
+
+| Bruto anual | Seguridad Social | IRPF | % de IRPF sobre el bruto | Neto anual | Neto al mes (14 pagas) | Neto al mes (12 pagas) |
+|---|---|---|---|---|---|---|
+| 18.000 € | {formatEuros(r18.cotizacionSSAnual)} | {formatEuros(r18.irpfAnual)} | {formatPct(r18.tipoEfectivo)} | {formatEuros(r18.netoAnual)} | {formatEuros(r18.netoAnual / 14)} | {formatEuros(r18.netoAnual / 12)} |
+| 24.000 € | {formatEuros(r24.cotizacionSSAnual)} | {formatEuros(r24.irpfAnual)} | {formatPct(r24.tipoEfectivo)} | {formatEuros(r24.netoAnual)} | {formatEuros(r24.netoAnual / 14)} | {formatEuros(r24.netoAnual / 12)} |
+| 30.000 € | {formatEuros(r30.cotizacionSSAnual)} | {formatEuros(r30.irpfAnual)} | {formatPct(r30.tipoEfectivo)} | {formatEuros(r30.netoAnual)} | {formatEuros(r30.netoAnual / 14)} | {formatEuros(r30.netoAnual / 12)} |
+| 40.000 € | {formatEuros(r40.cotizacionSSAnual)} | {formatEuros(r40.irpfAnual)} | {formatPct(r40.tipoEfectivo)} | {formatEuros(r40.netoAnual)} | {formatEuros(r40.netoAnual / 14)} | {formatEuros(r40.netoAnual / 12)} |
+
+Dos lecturas útiles de la tabla:
+
+- **El porcentaje de IRPF sube más deprisa que el sueldo.** Pasar de 18.000 a 24.000 € brutos sube el IRPF de
+  {formatEuros(r18.irpfAnual)} a {formatEuros(r24.irpfAnual)}, porque desaparece la reducción y la base entra en tramos más altos.
+- **12 o 14 pagas no cambia lo que cobras al año**, solo cómo se reparte. Con 14 pagas cobras menos cada mes y recibes
+  dos pagas extra (normalmente en verano y en Navidad).
+
+## Por qué tu nómina puede no coincidir
+
+Esta estimación calcula el IRPF que te corresponde **en el año**. Tu empresa, en cambio, te aplica cada mes una
+**retención**, un adelanto calculado con un procedimiento propio. Si te retienen de más o de menos, la diferencia se
+ajusta en la declaración de la renta del año siguiente. Por eso dos nóminas con el mismo bruto pueden mostrar netos
+algo distintos.
+
+Otras cosas que cambian el resultado y que este cálculo no incluye:
+
+- **Hijos, ascendientes a cargo o discapacidad**: aumentan el mínimo que no tributa y bajan el IRPF.
+- **Deducciones de tu comunidad** (por alquiler, por nacimiento, por estudios...) y mínimos personales propios de
+  algunas comunidades.
+- **Retribución en especie** (seguro médico, coche de empresa), que suma a la base aunque no la cobres en dinero.
+- **Sueldos bajos**: hay límites a la retención que pueden hacer que no te retengan nada en la nómina.
+- **País Vasco y Navarra** tienen su propio IRPF, con escalas distintas.
+
+## ¿Cambia mucho según la comunidad?
+
+Sí, aunque menos de lo que se suele pensar. La escala estatal es la misma en todas partes y solo cambia la parte
+autonómica. Con 24.000 € brutos, el neto anual en Cataluña sería de {formatEuros(neto(24000, 'cataluna').netoAnual)}, frente a
+{formatEuros(e.netoAnual)} en Madrid. Para ver el mismo sueldo en todas las comunidades a la vez, usa el
+[ranking de IRPF por comunidades](/herramientas/ranking-irpf-comunidades/).
+
+## Qué hacer con el neto
+
+Saber tu neto real es el primer paso para organizar el dinero: cuánto puedes ahorrar, cuánto destinar a un fondo de
+emergencia y cuánto invertir. La [calculadora de cuánto ahorrar al mes](/herramientas/cuanto-ahorrar-al-mes/) parte
+justo de esa cifra, y la guía de [diferencia entre ahorrar e invertir](/blog/diferencia-entre-ahorrar-e-invertir/)
+ayuda a decidir el siguiente paso.
+
+Si estás pensando en trabajar por tu cuenta, la comparación no es directa: un autónomo paga su propia cuota y no tiene
+la reducción por rendimientos del trabajo. La guía de
+[impuestos de un autónomo nuevo](/blog/impuestos-autonomo-nuevo-irpf-iva-plazos/) explica qué cambia.
+
+## Preguntas frecuentes
+
+**¿Cuánto es el neto de 24.000 € brutos al año?**
+Con las condiciones del ejemplo (Madrid, sin hijos, contrato indefinido), unos {formatEuros(e.netoAnual)} al año:
+{formatEuros(e.netoAnual / 14)} al mes en 14 pagas o {formatEuros(e.netoAnual / 12)} en 12. En otra comunidad o con hijos a cargo, la cifra cambia.
+
+**¿Qué porcentaje me quitan del sueldo bruto?**
+Depende del sueldo. La Seguridad Social es un porcentaje fijo ({pct(tipoSS)} con contrato indefinido), pero el IRPF crece
+con la renta: en los ejemplos de arriba va de un {formatPct(b.tipoEfectivo)} con 18.000 € a un {formatPct(neto(40000).tipoEfectivo)} con 40.000 €.
+
+**¿Cobrar en 12 o en 14 pagas cambia los impuestos?**
+No. El IRPF y la cotización se calculan sobre el bruto anual. Solo cambia cuánto llega cada mes.
+
+**¿Esto sustituye a mi nómina o a la declaración de la renta?**
+No. Es una estimación educativa para entender de dónde sale tu neto. La cifra exacta depende de tu situación personal,
+de tu convenio y de las deducciones que te correspondan.

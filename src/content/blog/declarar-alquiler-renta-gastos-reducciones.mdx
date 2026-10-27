@@ -1,0 +1,171 @@
+---
+title: "Declarar el alquiler en la renta: gastos y reducciones"
+description: "Cómo tributa en el IRPF el piso que alquilas: qué gastos restar, cómo se calcula la amortización del 3 % y qué reducción te toca, con ejemplo de 900 € al mes."
+resumen: "El alquiler de una vivienda tributa en la base general del IRPF por el rendimiento neto: lo que cobras menos los gastos deducibles (intereses, reparaciones, IBI, comunidad, seguros) y una amortización del 3 % del valor de la construcción. Si la vivienda es la residencia permanente del inquilino y el rendimiento es positivo, se reduce como mínimo a la mitad."
+pubDate: 2026-11-05
+updatedDate: 2026-11-05
+author: "David Pérez Mitjà"
+tags: ["vivienda", "alquiler", "impuestos"]
+categoria: "vivienda"
+sources:
+  - label: "AEAT, Manual práctico de Renta 2025: reducción por arrendamiento de inmuebles destinados a vivienda"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c04-rendimientos-capital-inmobiliario/reducciones-rendimiento-neto/arrendamiento-inmuebles-destinados-vivienda.html"
+  - label: "AEAT, Manual práctico de Renta 2025: rendimiento neto reducido del capital inmobiliario"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c04-rendimientos-capital-inmobiliario/rendimiento-neto-reducido.html"
+  - label: "BOE: Ley 35/2006 del IRPF, artículo 23 (gastos deducibles y reducciones)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2006-20764"
+  - label: "BOE: Reglamento del IRPF (RD 439/2007), artículos 13 y 14 (gastos y amortización)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2007-6820"
+hasAffiliateLinks: false
+draft: true
+---
+
+import ArticleLink from '../../components/ArticleLink.astro';
+import { calcularAlquiler } from '../../lib/calculos/alquiler.ts';
+import { ALQUILER_IRPF as A } from '../../config/finance';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const P = { ingresos: 10800, gastos: 2200, valorConstruccion: 90000, otrosIngresosNetos: 26050, comunidad: 'madrid' };
+export const r = (pct) => calcularAlquiler({ ...P, reduccionPct: pct });
+export const r0 = r(0);
+export const r50 = r(0.5);
+export const r60 = r(0.6);
+export const r70 = r(0.7);
+export const r90 = r(0.9);
+export const pc = (v) => (v * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 }) + ' %';
+export const eu = (n) => n.toLocaleString('es-ES', { maximumFractionDigits: 2, useGrouping: 'always' }) + ' €';
+
+Si alquilas una vivienda, lo que declaras en la renta no es lo que cobras, sino el **rendimiento neto**: los alquileres
+del año menos los gastos deducibles y menos una **amortización** del {pc(A.amortizacion)} del valor de la construcción. Si el inquilino vive
+allí de forma permanente y el resultado es positivo, ese rendimiento se **reduce un 50 %** en el caso general (hasta un
+90 % en algunos casos), y lo que queda se suma a tu sueldo en la base general del IRPF. Con un piso alquilado a 900 € al
+mes, 2.200 € de gastos y una construcción valorada en 90.000 €, el rendimiento neto es de **{eu(r50.netoPrevio)}** y, tras la
+reducción del 50 %, tributan {eu(r50.netoReducido)}. Abajo está el cálculo completo y cuánto IRPF supone.
+
+Esta guía explica las reglas del Manual práctico de Renta 2025 de la Agencia Tributaria para contratos de vivienda.
+Puedes hacer el cálculo con tus cifras en la
+[calculadora del IRPF del alquiler](/herramientas/calculadora-irpf-alquiler/).
+
+## Qué gastos puedes restar
+
+La ley permite deducir todos los gastos necesarios para obtener el alquiler (artículo 23 de la Ley del IRPF y 13 de su
+Reglamento). Los más habituales:
+
+| Gasto | Se puede restar | Detalle |
+|---|---|---|
+| Intereses de la hipoteca del piso alquilado | Sí | Solo los intereses, no la parte de la cuota que devuelve capital |
+| Reparación y conservación | Sí | Pintar, arreglar instalaciones, cambiar la caldera o una puerta. No las ampliaciones ni mejoras |
+| IBI, tasa de basuras y otros tributos del inmueble | Sí | Los que recaen sobre el piso o el alquiler y no sean multas |
+| Comunidad de propietarios | Sí | La parte de los meses en que está alquilado |
+| Seguros del inmueble | Sí | Responsabilidad civil, incendio, robo, rotura de cristales y similares |
+| Servicios de terceros | Sí | Administración, gestión del alquiler, portería |
+| Formalización del contrato y defensa jurídica | Sí | Por ejemplo, la agencia o un abogado por un impago |
+| Suministros | Sí, si los pagas tú | Si los paga el inquilino, no |
+| Amortización | Sí | {pc(A.amortizacion)} anual, explicado abajo |
+
+**Un límite importante:** los intereses y los gastos de reparación y conservación, sumados, no pueden superar lo que
+cobras de alquiler en el año por ese inmueble. Lo que exceda se puede deducir en los **cuatro años siguientes**, con el
+mismo límite.
+
+## La amortización: el gasto que más gente olvida
+
+La amortización reconoce que el edificio se desgasta. No es un pago real, pero se resta como gasto cada año:
+
+- Se aplica el **{pc(A.amortizacion)}** sobre el **mayor** de dos valores: lo que pagaste por la vivienda (con gastos e impuestos de la
+  compra) o su valor catastral.
+- **Sin incluir el suelo**, que no se desgasta. Si no conoces el valor del suelo, se reparte el coste según la proporción
+  entre el valor catastral del suelo y el de la construcción que figura en el recibo del IBI.
+- Los muebles y electrodomésticos que alquilas con el piso se amortizan aparte, con sus propios coeficientes.
+
+En el ejemplo, si la parte de construcción vale 90.000 €, la amortización es de 90.000 × {pc(A.amortizacion)} = **{eu(r50.amortizacion)} al año**,
+una cantidad que baja mucho la factura fiscal y que mucha gente no aplica.
+
+## Qué reducción te corresponde
+
+La reducción solo se aplica al **alquiler de vivienda** (el inquilino vive allí de forma permanente) y solo si el
+rendimiento neto es **positivo**. Para los contratos firmados desde el 26 de mayo de 2023:
+
+| Caso | Reducción |
+|---|---|
+| General | **{pc(A.reducciones[1].pct)}** |
+| Vivienda rehabilitada en los dos años anteriores al contrato | {pc(A.reducciones[2].pct)} |
+| Primera vez que se alquila, en zona tensionada, a un inquilino de 18 a 35 años (o alquiler social a una administración o entidad sin ánimo de lucro) | {pc(A.reducciones[3].pct)} |
+| Nuevo contrato del mismo arrendador en zona tensionada con una rebaja de la renta de más del 5 % | {pc(A.reducciones[4].pct)} |
+| Contratos firmados antes del 26 de mayo de 2023 | {pc(A.reducciones[2].pct)} |
+| Alquiler turístico o de temporada | Ninguna |
+
+Dos condiciones que conviene no pasar por alto:
+
+- La reducción solo vale para el rendimiento que tú declares en tu autoliquidación. Si Hacienda descubre después
+  ingresos que no declaraste o gastos mal deducidos, esa parte no tiene reducción.
+- Si el inquilino es una empresa que lo usa para alojar "a sus empleados" en general, no hay reducción.
+
+**Novedad de octubre de 2026.** El Real Decreto-ley 29/2026 cambia estas reducciones para los contratos firmados
+**después del 1 de diciembre de 2026**; los firmados antes mantienen las de la tabla. Un real decreto-ley tiene que ser
+convalidado por el Congreso para seguir en vigor, así que su situación puede haber cambiado cuando leas esto: la explicamos
+y la seguimos en la guía de [zonas tensionadas](/blog/zonas-tensionadas-que-cambia-inquilinos-propietarios/).
+
+## Ejemplo completo: cuánto IRPF paga un alquiler de 900 € al mes
+
+Supuestos (inventados para el ejemplo): piso alquilado como vivienda todo el año a 900 € al mes, sin hipoteca. Gastos:
+IBI 400 €, comunidad 960 €, seguro 240 € y una reparación de 600 €. Valor de la construcción, 90.000 €. El propietario
+trabaja por cuenta ajena con un sueldo de 30.000 € brutos y vive en Madrid (su base liquidable por el sueldo ronda
+los 26.050 €).
+
+1. **Ingresos íntegros:** 900 × 12 = 10.800 €.
+2. **Gastos:** 400 + 960 + 240 + 600 = 2.200 €.
+3. **Amortización:** {eu(r50.amortizacion)}.
+4. **Rendimiento neto:** 10.800 − 2.200 − {eu(r50.amortizacion)} = **{eu(r50.netoPrevio)}**.
+5. **Reducción del 50 %:** {eu(r50.reduccion)}. Rendimiento neto reducido: **{eu(r50.netoReducido)}**.
+6. **IRPF:** ese importe se suma al sueldo y tributa al tipo marginal del propietario. El IRPF adicional estimado es de
+   **{formatEuros(r50.irpfExtra)}** al año, un {pc(r50.tipoSobreIngresos)} de lo que cobra de alquiler.
+
+Cómo cambia el resultado según la reducción:
+
+| Reducción | Rendimiento que tributa | IRPF adicional estimado | Sobre lo cobrado |
+|---|---|---|---|
+| Ninguna (temporada o turístico) | {eu(r0.netoReducido)} | {formatEuros(r0.irpfExtra)} | {pc(r0.tipoSobreIngresos)} |
+| 50 % | {eu(r50.netoReducido)} | {formatEuros(r50.irpfExtra)} | {pc(r50.tipoSobreIngresos)} |
+| 60 % | {eu(r60.netoReducido)} | {formatEuros(r60.irpfExtra)} | {pc(r60.tipoSobreIngresos)} |
+| 70 % | {eu(r70.netoReducido)} | {formatEuros(r70.irpfExtra)} | {pc(r70.tipoSobreIngresos)} |
+| 90 % | {eu(r90.netoReducido)} | {formatEuros(r90.irpfExtra)} | {pc(r90.tipoSobreIngresos)} |
+
+La estimación usa las escalas estatal y de Madrid del IRPF y no incluye deducciones autonómicas. Con otra comunidad o
+con otro sueldo, el tipo marginal cambia y el resultado también: por eso la
+[calculadora del IRPF del alquiler](/herramientas/calculadora-irpf-alquiler/) te deja elegir ambos.
+
+## Errores frecuentes al declarar un alquiler
+
+- **No aplicar la amortización.** Es legal, es anual y suele ser el gasto más grande después de los intereses.
+- **Restar la cuota entera de la hipoteca.** Solo son deducibles los intereses; la parte que amortiza capital, no.
+- **Deducir mejoras como si fueran reparaciones.** Una reforma que amplía o mejora la vivienda no es gasto del año: se
+  suma al valor del inmueble y se amortiza.
+- **Olvidar los meses vacíos.** Si el piso estuvo sin alquilar parte del año, los gastos de esos meses no se restan del
+  alquiler, y además hay que declarar una imputación de rentas por ese periodo.
+- **Pensar que un alquiler de temporada tiene la misma reducción.** No la tiene: tributa el rendimiento neto entero.
+
+## ¿Y si eres inquilino?
+
+Si estás del otro lado, mira la guía de <ArticleLink href="/blog/ayuda-alquiler-jovenes-requisitos/">ayuda al alquiler para
+jóvenes</ArticleLink> y, si dudas entre seguir alquilando o comprar, la herramienta
+[alquilar o comprar vivienda](/herramientas/alquilar-o-comprar-vivienda/).
+
+## Preguntas frecuentes
+
+**¿Cuánto paga a Hacienda un alquiler de 900 € al mes?**
+Depende de los gastos, de la amortización y de tu tipo marginal. En el ejemplo de esta guía, con 2.200 € de gastos,
+90.000 € de construcción, la reducción del 50 % y un sueldo de 30.000 € en Madrid, unos {formatEuros(r50.irpfExtra)} al año.
+
+**¿Se puede declarar un rendimiento negativo?**
+Sí. Si los gastos y la amortización superan los ingresos, el rendimiento es negativo y se compensa con el resto de la
+base general, aunque en ese caso no hay reducción. Recuerda el límite: intereses y reparaciones no pueden superar los
+ingresos de ese inmueble.
+
+**¿Tengo que declarar el alquiler aunque el inquilino no me haya pagado algún mes?**
+Declaras lo que te corresponde cobrar. Las rentas impagadas pueden restarse como saldo de dudoso cobro si el inquilino
+está en concurso o si han pasado más de seis meses desde la primera gestión de cobro sin que se haya renovado la deuda
+(artículo 13 del Reglamento del IRPF).
+
+**¿Esto es asesoramiento fiscal?**
+No. Es información general con un ejemplo. Cada caso tiene matices; si tu situación es compleja, consulta con un asesor o
+con la Agencia Tributaria.

@@ -1,0 +1,157 @@
+---
+title: "Cómo hacer una factura de autónomo: datos, IVA y retención"
+description: "Qué datos debe llevar una factura de autónomo, cómo calcular el IVA y la retención del 15 % o del 7 %, en qué plazo emitirla y cuánto apartar de cada cobro."
+resumen: "Una factura de autónomo debe llevar número correlativo, fecha, datos y NIF de las dos partes, descripción con precio, tipo y cuota de IVA. El total es la base más el IVA menos la retención de IRPF, que solo se aplica a profesionales que facturan a empresas u otros profesionales: un 15 % en general y un 7 % el año de inicio y los dos siguientes."
+pubDate: 2026-11-03
+updatedDate: 2026-11-03
+author: "David Pérez Mitjà"
+tags: ["autónomos", "impuestos", "educación financiera"]
+categoria: "autonomos"
+sources:
+  - label: "BOE: Reglamento de facturación (RD 1619/2012), artículos 6 (contenido) y 11 (plazo)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2012-14696"
+  - label: "BOE: Reglamento del IRPF (RD 439/2007), artículos 95.1 (retención de profesionales), 109 y 110 (pago fraccionado)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2007-6820"
+hasAffiliateLinks: false
+draft: false
+---
+
+import ArticleLink from '../../components/ArticleLink.astro';
+import { calcularFactura } from '../../lib/calculos/factura.ts';
+import { formatEuros2 } from '../../components/CalculatorUI';
+
+export const f15 = calcularFactura({ base: 1000, ivaPct: 21, retencionPct: 15, pagoFraccionadoPct: 20 });
+export const f7 = calcularFactura({ base: 1000, ivaPct: 21, retencionPct: 7, pagoFraccionadoPct: 20 });
+export const f0 = calcularFactura({ base: 1000, ivaPct: 21, retencionPct: 0, pagoFraccionadoPct: 20 });
+
+Una factura de autónomo tiene que llevar unos datos mínimos que fija el Reglamento de facturación: número, fecha,
+nombre, NIF y domicilio de quien factura y de quien paga, descripción del trabajo con su precio, tipo de IVA y cuota de
+IVA. El total se calcula así: **base + IVA − retención de IRPF**. Por un trabajo de 1.000 € con IVA del 21 % y retención
+del 15 %, el cliente te paga **{formatEuros2(f15.total)}**. De ese dinero, los {formatEuros2(f15.iva)} de IVA no son tuyos: los ingresarás a Hacienda.
+Abajo tienes la lista completa, los cálculos con cada retención y cuánto conviene apartar.
+
+Puedes hacer estos números con cualquier importe en la
+[calculadora de factura de autónomo](/herramientas/calculadora-factura-autonomo/).
+
+## Los datos que debe llevar una factura
+
+El artículo 6 del Reglamento de facturación (Real Decreto 1619/2012) enumera el contenido obligatorio. Para la factura
+habitual de un autónomo:
+
+1. **Número y, si usas, serie.** La numeración tiene que ser correlativa dentro de cada serie: no puedes saltarte
+   números ni repetirlos. Las facturas rectificativas van en una serie propia.
+2. **Fecha de expedición.**
+3. **Tus datos y los del cliente:** nombre y apellidos o razón social completa.
+4. **NIF.** El tuyo y, en las operaciones realizadas en España, también el del cliente.
+5. **Domicilio** tuyo y del cliente.
+6. **Descripción del servicio o del producto**, con todo lo necesario para calcular la base: precio unitario sin IVA y
+   cualquier descuento que no esté incluido en él.
+7. **Tipo de IVA aplicado** (el general es el 21 %).
+8. **Cuota de IVA**, en euros y por separado.
+9. **Fecha de la operación**, si es distinta de la de la factura.
+10. **Mención de la exención**, si el servicio está exento de IVA (algunas actividades sanitarias o de enseñanza, por
+    ejemplo), citando el artículo de la ley que la aplica.
+
+La retención de IRPF no está en esa lista porque es un dato del IRPF, no del IVA. Si la aplicas, inclúyela en la
+factura con su porcentaje y su importe, para que el cliente sepa cuánto pagarte y cuánto ingresar a Hacienda por ti.
+
+Para importes pequeños existe la **factura simplificada** (el típico tique), con menos datos obligatorios: se puede
+usar cuando el importe no pasa de 400 € con IVA incluido, y en algunos sectores, como el comercio minorista o la
+hostelería, hasta 3.000 € (artículo 4 del Reglamento de facturación).
+
+## Un ejemplo de factura, con números
+
+Facturas 1.000 € por un trabajo de diseño a una empresa. Así queda según tu situación:
+
+| | Profesional con más de 3 años (15 %) | Profesional nuevo (7 %) | Cliente particular (sin retención) |
+|---|---|---|---|
+| Base imponible | 1.000,00 € | 1.000,00 € | 1.000,00 € |
+| IVA 21 % | +{formatEuros2(f15.iva)} | +{formatEuros2(f7.iva)} | +{formatEuros2(f0.iva)} |
+| Retención de IRPF | −{formatEuros2(f15.retencion)} | −{formatEuros2(f7.retencion)} | 0,00 € |
+| **Total a cobrar** | **{formatEuros2(f15.total)}** | **{formatEuros2(f7.total)}** | **{formatEuros2(f0.total)}** |
+
+La retención **no la pierdes**: es un adelanto de tu IRPF que el cliente ingresa a Hacienda en tu nombre. Al hacer la
+declaración de la renta, se resta de lo que te toque pagar.
+
+## La retención: 15 %, 7 % o ninguna
+
+Según el artículo 95.1 del Reglamento del IRPF:
+
+- **15 %** es el tipo general para los rendimientos de **actividades profesionales** (diseñadores, programadores,
+  consultores, abogados, traductores...).
+- **7 %** durante el año en que empiezas la actividad profesional y los **dos siguientes**, siempre que no hayas ejercido
+  ninguna actividad profesional en el año anterior al inicio. Tienes que comunicárselo por escrito a tu cliente, que
+  debe guardar esa comunicación firmada.
+- **Sin retención** cuando facturas a un **particular**, porque un particular no está obligado a retener. Tampoco
+  llevan retención, por regla general, las actividades empresariales (comercio, hostelería...) en estimación directa.
+
+## Cuánto apartar de cada factura
+
+Lo que cobras no es todo tuyo. De cada factura, conviene separar en una cuenta aparte:
+
+1. **Todo el IVA.** Lo declaras cada trimestre en el modelo 303, restando el IVA que has pagado en tus gastos de la
+   actividad.
+2. **El adelanto de IRPF del modelo 130.** Cada trimestre ingresas el 20 % del rendimiento neto acumulado en el año
+   (ingresos menos gastos), restando las retenciones que te han hecho tus clientes (artículo 110 del Reglamento del IRPF).
+
+Con 1.000 € de base y sin contar gastos (el caso que más aparta), la cuenta queda así:
+
+| | Con retención del 15 % | Con retención del 7 % | Sin retención |
+|---|---|---|---|
+| IVA a apartar | {formatEuros2(f15.iva)} | {formatEuros2(f7.iva)} | {formatEuros2(f0.iva)} |
+| Modelo 130 (20 % menos lo ya retenido) | {formatEuros2(f15.pago130)} | {formatEuros2(f7.pago130)} | {formatEuros2(f0.pago130)} |
+| **Total a apartar** | **{formatEuros2(f15.apartar)}** | **{formatEuros2(f7.apartar)}** | **{formatEuros2(f0.apartar)}** |
+| Te queda antes de gastos y cuota | {formatEuros2(f15.tuyoAntesDeGastos)} | {formatEuros2(f7.tuyoAntesDeGastos)} | {formatEuros2(f0.tuyoAntesDeGastos)} |
+
+Fíjate en la última fila: en los tres casos te quedan {formatEuros2(f15.tuyoAntesDeGastos)} antes de gastos y de la cuota de autónomos. La
+retención solo cambia **cuándo** pagas el IRPF (adelantado por el cliente o por ti en el modelo 130), no cuánto. Y el
+IRPF final se calcula en la declaración de la renta: según tus ingresos del año, puede salirte a pagar o a devolver.
+
+Un detalle útil: si en el año anterior **al menos el 70 % de tus ingresos profesionales tuvieron retención**, no estás
+obligado a presentar el modelo 130 por esa actividad (artículo 109.2 del Reglamento del IRPF). Si empiezas, se mira el
+porcentaje del propio trimestre.
+
+## En qué plazo hay que emitirla
+
+La factura se emite **en el momento de hacer el trabajo**. Si el cliente es una empresa o un profesional, puedes
+emitirla hasta **antes del día 16 del mes siguiente** a aquel en que se devengó el IVA (artículo 11 del Reglamento de
+facturación). Lo práctico es facturar al terminar cada trabajo o a final de mes, y nunca dejar huecos en la numeración.
+
+Si usas un programa de facturación, ten en cuenta que Hacienda está desplegando la obligación de usar sistemas de
+facturación verificables (lo que se conoce como Verifactu). Su calendario se ha aplazado más de una vez, así que
+comprueba la fecha que te afecta en la web de la Agencia Tributaria.
+
+## Errores típicos en las primeras facturas
+
+- **Aplicar retención a un particular.** No corresponde: el particular te pagaría menos y nadie ingresaría esa
+  retención.
+- **Aplicar el 15 % cuando te tocaba el 7 %** (o al revés). El 7 % hay que comunicarlo al cliente.
+- **Gastar el IVA.** Es el error más caro: al final del trimestre hay que pagarlo aunque ya no tengas el dinero.
+- **Números de factura desordenados o repetidos.** Si te equivocas en una factura ya emitida, no la borres: emite una
+  rectificativa en su serie.
+
+## Lo que viene después
+
+Las facturas alimentan tres pagos: el IVA trimestral, el adelanto de IRPF y, al año siguiente, la regularización de tu
+cuota de autónomos. La guía de [impuestos de un autónomo nuevo](/blog/impuestos-autonomo-nuevo-irpf-iva-plazos/) explica
+el calendario de los modelos 303 y 130, y la de <ArticleLink href="/blog/cuota-autonomos-2026-tramos/">cuota de autónomos
+según tus ingresos</ArticleLink> cuánto pagarás a la Seguridad Social. Para calcular tu cuota con tus números, usa la
+[calculadora de cuota de autónomos](/herramientas/calculadora-cuota-autonomos/).
+
+## Preguntas frecuentes
+
+**¿Cómo se calcula el total de una factura de autónomo?**
+Base imponible + IVA − retención. Con 1.000 € de base, IVA del 21 % y retención del 15 %, el total es {formatEuros2(f15.total)}.
+
+**¿Puedo hacer facturas a mano o en una hoja de cálculo?**
+El Reglamento de facturación no exige un programa concreto, pero sí que la factura tenga todos los datos y que la
+numeración sea correlativa. Si usas un programa de facturación, debe cumplir los requisitos que vaya exigiendo Hacienda.
+
+**¿Tengo que poner el NIF del cliente si es un particular?**
+En una factura completa por una operación realizada en España, sí: el Reglamento de facturación exige el NIF del
+destinatario. Si el importe no pasa de 400 € con IVA incluido, puedes emitir una factura simplificada, que no lo exige.
+
+**¿Qué pasa si el cliente no me paga?**
+En el régimen general, el IVA de una factura emitida se declara aunque no la hayas cobrado (salvo que te acojas al
+régimen especial del criterio de caja). Hay procedimientos para recuperarlo si el impago se
+alarga, con plazos y requisitos propios; si te ocurre, consulta con un asesor o con la Agencia Tributaria.
