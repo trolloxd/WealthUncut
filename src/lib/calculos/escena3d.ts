@@ -72,7 +72,7 @@ export function datosEscena(tipo: TipoEscena): DatosEscena {
       tipo,
       titulo: 'Los tramos del IRPF del ahorro, escalón a escalón',
       resumen:
-        'Cinco escalones que suben con la renta del ahorro: ' +
+        `${escalones.length} escalones que suben con la renta del ahorro: ` +
         escalones
           .map((e) => (e.hasta === null ? `más de ${euros(e.desde)}, ${pct(e.tipo)}` : `hasta ${euros(e.hasta)}, ${pct(e.tipo)}`))
           .join('; ') +

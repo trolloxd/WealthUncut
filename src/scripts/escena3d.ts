@@ -176,11 +176,11 @@ export async function montar(figura: HTMLElement): Promise<void> {
 
   const canvas = renderer.domElement;
   canvas.className =
-    'absolute inset-0 block h-full w-full cursor-grab touch-pan-y focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand';
+    'absolute inset-0 block h-full w-full cursor-grab touch-pan-y touch-pinch-zoom focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand';
   canvas.tabIndex = 0;
   canvas.setAttribute('role', 'img');
   canvas.setAttribute('aria-label', `${datos.resumen} Gráfico en 3D: con el gráfico seleccionado, gíralo con las flechas del teclado.`);
-  canvas.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight ArrowUp ArrowDown + - Home');
+  canvas.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight ArrowUp ArrowDown Plus - Home');
   lienzo.appendChild(canvas);
   plano.hidden = true;
   figura.dataset.escena3dLista = 'true';
@@ -205,6 +205,7 @@ export async function montar(figura: HTMLElement): Promise<void> {
   canvas.addEventListener('pointercancel', soltar);
 
   canvas.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return; // no robar el zoom del navegador ni "atrás"
     const paso = 0.12;
     let cambio = true;
     if (e.key === 'ArrowLeft') estado.yaw = Math.max(-1.45, estado.yaw - paso);
@@ -240,5 +241,18 @@ export async function montar(figura: HTMLElement): Promise<void> {
   };
   requestAnimationFrame(crecer);
 
-  addEventListener('pagehide', () => renderer.dispose(), { once: true });
+  // Si el navegador pierde el contexto WebGL (habitual en móvil con muchas pestañas), vuelve la versión 2D.
+  canvas.addEventListener('webglcontextlost', (e) => {
+    e.preventDefault();
+    canvas.hidden = true;
+    plano.hidden = false;
+  });
+  canvas.addEventListener('webglcontextrestored', () => {
+    canvas.hidden = false;
+    plano.hidden = true;
+    pintar();
+  });
+  addEventListener('pagehide', (e) => {
+    if (!e.persisted) renderer.dispose();
+  });
 }
