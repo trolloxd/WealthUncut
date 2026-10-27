@@ -6,7 +6,8 @@ import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { SITE } from '../../../config/site';
 import { CATEGORIAS, categoriaDe } from '../../../config/categorias';
 import { TOOLS } from '../../../config/tools';
-import ArticulosEditorial from '../../../components/ArticulosEditorial.astro';
+import ListadoTarjetas from '../../../components/ListadoTarjetas.astro';
+import IlustracionTema from '../../../components/IlustracionTema.astro';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('blog', ({ data }) => isPublished(data))).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -43,22 +44,23 @@ const jsonLd = [
 ];
 ---
 
-<BaseLayout title={`${c.nombre}: guías y artículos`} description={`${c.descripcion} ${posts.length === 1 ? 'Un artículo' : posts.length + ' artículos'} con fuentes oficiales.`} extraJsonLd={jsonLd}>
+<BaseLayout title={`${c.nombre}: guías y artículos`} description={`${c.descripcion} ${posts.length === 1 ? 'Un artículo' : posts.length + ' artículos'} con fuentes oficiales.`} extraJsonLd={jsonLd} contentWidth="wide">
   <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Blog', href: '/blog/' }, { label: c.nombre }]} />
-  <h1 class="mb-3 font-display text-3xl text-ink">{c.nombre}</h1>
+  <div class="mb-6 h-28 overflow-hidden rounded-2xl sm:h-40" aria-hidden="true"><IlustracionTema tema={c.id} /></div>
+  <h1 class="mb-3 font-display text-3xl text-ink sm:text-4xl">{c.nombre}</h1>
   <p class="mb-4 max-w-2xl text-ink-muted">{c.descripcion}</p>
   <p class="mb-10 max-w-2xl text-sm leading-relaxed text-ink-muted">{c.intro}</p>
 
-  <ArticulosEditorial posts={posts} modo="debajo" mostrarTema={false} nivel="h2" />
+  <ListadoTarjetas posts={posts} mostrarTema={false} nivel="h2" />
 
   {herramientas.length > 0 && (
-    <aside class="mt-12 border-t border-border pt-8">
+    <aside class="mt-14 border-t border-border pt-8">
       <h2 class="mb-4 font-display text-xl text-ink">Herramientas de este tema</h2>
       <ul class="grid gap-3 sm:grid-cols-2">
         {herramientas.map((t) => (
           <li>
             <a href={t.href} class="card group block h-full p-4 hover:border-brand/40">
-              <span class="font-display text-base text-ink group-hover:text-brand">{t.name}</span>
+              <span class="font-display text-base text-ink group-hover:text-brand">{t.name} <span class="card-flecha" aria-hidden="true">→</span></span>
               <span class="mt-1 block text-sm text-ink-muted">{t.description}</span>
             </a>
           </li>
@@ -67,5 +69,5 @@ const jsonLd = [
     </aside>
   )}
 
-  <p class="mt-10 text-sm"><a href="/blog/" class="text-brand underline">← Todos los temas del blog</a></p>
+  <p class="mt-10 text-sm"><a href="/blog/" class="enlace-vivo font-medium text-brand">← Todos los temas del blog</a></p>
 </BaseLayout>

@@ -11,6 +11,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { categoriaDe } from '../config/categorias';
 import { minutosDeLectura } from '../lib/briefing';
+import IlustracionTema from './IlustracionTema.astro';
 
 interface Props {
   posts: CollectionEntry<'blog'>[];
@@ -28,6 +29,7 @@ const fechaCorta = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', 
 const items = posts.map((post) => ({
   post,
   tema: categoriaDe(post.data).nombre,
+  temaId: categoriaDe(post.data).id,
   fecha: fechaCorta(post.data.pubDate),
   iso: post.data.pubDate.toISOString().slice(0, 10),
   minutos: minutosDeLectura(post.body ?? ''),
@@ -40,6 +42,9 @@ const [lider, ...siguientes] = items;
     <div class:list={['grid gap-8', modo === 'lado' ? 'lg:grid-cols-12 lg:gap-10' : '']} data-escalona>
       <div class:list={['entra entra-0', modo === 'lado' ? 'lg:col-span-7' : '']}>
         <a href={`/blog/${lider.post.id}/`} class="articulo-lider">
+          <div class="articulo-lider-arte" aria-hidden="true">
+            <IlustracionTema tema={lider.temaId} />
+          </div>
           <p class="articulo-meta text-brand-soft">
             {mostrarTema && <span class="font-semibold">{lider.tema}</span>}
             {mostrarTema && <span aria-hidden="true">·</span>}
@@ -78,6 +83,10 @@ const [lider, ...siguientes] = items;
           {siguientes.map((a, i) => (
             <li class:list={['entra articulo-fila', `entra-${Math.min(i + 1, 4)}`]}>
               <a href={`/blog/${a.post.id}/`} class="articulo-fila-enlace">
+                <div class="articulo-fila-arte" aria-hidden="true">
+                  <IlustracionTema tema={a.temaId} />
+                </div>
+                <div class="min-w-0 flex-1">
                 <p class="articulo-meta text-ink-faint">
                   {mostrarTema && <span class="font-semibold text-brand">{a.tema}</span>}
                   {mostrarTema && <span aria-hidden="true">·</span>}
@@ -89,6 +98,7 @@ const [lider, ...siguientes] = items;
                   {a.post.data.title} <span class="articulo-fila-flecha" aria-hidden="true">→</span>
                 </Titulo>
                 <p class="mt-1.5 line-clamp-2 text-sm text-ink-muted">{a.post.data.description}</p>
+                </div>
               </a>
             </li>
           ))}

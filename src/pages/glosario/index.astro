@@ -45,11 +45,11 @@ const jsonLd = {
     {[...porLetra.entries()].map(([letra, items]) => (
       <section aria-labelledby={`letra-${letra}`}>
         <h2 id={`letra-${letra}`} class="mb-3 border-b border-border pb-1 font-display text-xl text-brand">{letra}</h2>
-        <ul class="grid gap-4">
+        <ul class="grid gap-1">
           {items.map((t) => (
             <li>
-              <a href={`/glosario/${t.id}/`} class="group block">
-                <span class="font-display text-lg text-ink group-hover:text-brand">{t.data.termino}</span>
+              <a href={`/glosario/${t.id}/`} class="fila-viva group">
+                <span class="font-display text-lg text-ink group-hover:text-brand">{t.data.termino} <span class="fila-viva-flecha" aria-hidden="true">→</span></span>
                 <span class="mt-1 block text-sm text-ink-muted">{t.data.description}</span>
               </a>
             </li>

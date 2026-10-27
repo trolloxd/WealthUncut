@@ -5,6 +5,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../../config/site';
 import { CATEGORIAS, categoriaDe } from '../../config/categorias';
 import ArticulosEditorial from '../../components/ArticulosEditorial.astro';
+import ListadoTarjetas from '../../components/ListadoTarjetas.astro';
+import IlustracionTema from '../../components/IlustracionTema.astro';
+import { TOOLS } from '../../config/tools';
 
 const posts = (await getCollection('blog', ({ data }) => isPublished(data))).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -13,54 +16,63 @@ const posts = (await getCollection('blog', ({ data }) => isPublished(data))).sor
 const secciones = CATEGORIAS.map((c) => ({ c, posts: posts.filter((p) => categoriaDe(p.data).id === c.id) })).filter((s) => s.posts.length > 0);
 const ultimos = posts.slice(0, 5);
 const MAX_POR_TEMA = 4;
-const fecha = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+// Cifras del encabezado: recuentos reales de lo publicado (no datos nuevos), que cuentan al entrar en pantalla.
+const cifras = [
+  { n: posts.length, etiqueta: posts.length === 1 ? 'guía publicada' : 'guías publicadas' },
+  { n: secciones.length, etiqueta: secciones.length === 1 ? 'tema' : 'temas' },
+  { n: TOOLS.length, etiqueta: 'calculadoras gratis' },
+];
 ---
 
-<BaseLayout title="Blog de finanzas personales e inversión en España" description={`Artículos de ${SITE.name} sobre fondos indexados, impuestos, vivienda, autónomos y criptomonedas en España, con cifras calculadas y fuentes oficiales, por temas.`}>
-  <h1 class="mb-4 font-display text-3xl text-ink">Blog de finanzas personales e inversión</h1>
+<BaseLayout title="Blog de finanzas personales e inversión en España" description={`Artículos de ${SITE.name} sobre fondos indexados, impuestos, vivienda, autónomos y criptomonedas en España, con cifras calculadas y fuentes oficiales, por temas.`} contentWidth="wide">
+  <h1 class="mb-4 font-display text-3xl text-ink sm:text-4xl">Blog de finanzas personales e inversión</h1>
   <p class="mb-6 max-w-2xl text-ink-muted">
     Guías de finanzas personales en España, ordenadas por tema, con ejemplos calculados y fuentes oficiales citadas en cada artículo. Si quieres ir directo a los
     números, prueba las <a href="/herramientas/" class="text-brand underline decoration-brand/30 hover:decoration-brand">calculadoras</a> o usa el buscador de arriba.
   </p>
 
-  <nav aria-label="Temas del blog" class="mb-10 flex flex-wrap gap-2">
+  <dl class="mb-8 flex flex-wrap gap-x-10 gap-y-3">
+    {cifras.map((c) => (
+      <div>
+        <dt class="text-sm text-ink-faint">{c.etiqueta}</dt>
+        <dd class="font-display text-3xl text-brand tabular-nums" data-cuenta>{c.n}</dd>
+      </div>
+    ))}
+  </dl>
+
+  <nav aria-label="Temas del blog" class="mb-12 flex flex-wrap gap-2">
     {secciones.map(({ c, posts: ps }) => (
-      <a href={`#${c.id}`} class="rounded-full border border-border bg-cream-elevated px-4 py-1.5 text-sm font-medium text-ink-muted hover:border-brand/40 hover:text-ink">
+      <a href={`#${c.id}`} class="chip-tema">
         {c.nombre} <span class="text-ink-faint">({ps.length})</span>
       </a>
     ))}
   </nav>
 
-  <section aria-labelledby="ultimos" class="mb-14">
+  <section aria-labelledby="ultimos" class="mb-16">
     <h2 id="ultimos" class="mb-5 font-display text-2xl text-ink">Lo último</h2>
     <ArticulosEditorial posts={ultimos} modo="lado" />
   </section>
 
   {secciones.map(({ c, posts: ps }) => (
-    <section id={c.id} aria-labelledby={`h-${c.id}`} class="mb-10 scroll-mt-8">
-      <header class="border-b border-brand/30 pb-2">
-        <div class="flex flex-wrap items-baseline justify-between gap-x-4">
-          <h2 id={`h-${c.id}`} class="text-sm font-semibold uppercase tracking-wider text-brand">
-            {c.nombre} <span class="font-normal text-ink-faint">({ps.length})</span>
+    <section id={c.id} aria-labelledby={`h-${c.id}`} class="mb-16 scroll-mt-8">
+      <header class="mb-5 flex items-center gap-4">
+        <div class="h-14 w-14 shrink-0 overflow-hidden rounded-xl sm:h-16 sm:w-16" aria-hidden="true"><IlustracionTema tema={c.id} /></div>
+        <div class="min-w-0 flex-1">
+          <h2 id={`h-${c.id}`} class="font-display text-2xl leading-tight text-ink">
+            {c.nombre} <span class="font-sans text-base font-normal text-ink-faint">({ps.length})</span>
           </h2>
-          <a href={`/blog/tema/${c.id}/`} class="text-xs font-medium text-brand underline decoration-brand/30 hover:decoration-brand">
-            {ps.length > MAX_POR_TEMA ? `Ver los ${ps.length}` : 'Ver el tema'} →
-          </a>
+          <p class="mt-1 hidden max-w-2xl text-sm text-ink-muted sm:block">{c.descripcion}</p>
         </div>
+        <a href={`/blog/tema/${c.id}/`} class="enlace-vivo hidden shrink-0 text-sm font-semibold text-brand sm:inline-block">
+          {ps.length > MAX_POR_TEMA ? `Ver los ${ps.length}` : 'Ver el tema'} →
+        </a>
       </header>
-      <ul class="grid gap-0 pl-3 sm:pl-4">
-        {ps.slice(0, MAX_POR_TEMA).map((post) => (
-          <li class="border-b border-border py-3 last:border-none">
-            <a href={`/blog/${post.id}/`} class="group block">
-              <h3 class="text-base font-medium text-ink group-hover:text-brand">{post.data.title}</h3>
-              <p class="mt-1 text-sm text-ink-muted">{post.data.description}</p>
-              <p class="mt-2 text-xs text-ink-faint">
-                <time datetime={post.data.pubDate.toISOString().slice(0, 10)}>{fecha(post.data.pubDate)}</time>
-              </p>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <ListadoTarjetas posts={ps.slice(0, MAX_POR_TEMA)} mostrarTema={false} />
+      <p class="mt-4 sm:hidden">
+        <a href={`/blog/tema/${c.id}/`} class="enlace-todos">
+          {ps.length > MAX_POR_TEMA ? `Ver los ${ps.length} artículos` : 'Ver el tema'} <span class="enlace-todos-flecha" aria-hidden="true">→</span>
+        </a>
+      </p>
     </section>
   ))}
 </BaseLayout>

@@ -12,6 +12,7 @@ import { categoriaDe } from '../../../config/categorias';
 import { terminosEnTexto } from '../../../lib/glosario-enlaces';
 import NewsletterSignup from '../../../components/NewsletterSignup.astro';
 import IndiceArticulo from '../../../components/IndiceArticulo.astro';
+import ListadoTarjetas from '../../../components/ListadoTarjetas.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => isPublished(data));
@@ -112,19 +113,19 @@ const breadcrumbJsonLd = {
 
   <aside aria-labelledby="herramientas-relacionadas" class="mt-12 border-t border-border pt-8">
     <h2 id="herramientas-relacionadas" class="mb-5 font-display text-xl text-ink">Pruébalo con tus números</h2>
-    <ul class="grid gap-4">
+    <ul class="grid gap-3">
       {herramientas.map((t) => (
         <li>
-          <a href={t.href} class="group block">
-            <span class="font-display text-lg text-ink group-hover:text-brand">{t.name}</span>
+          <a href={t.href} class="card group block p-4 hover:border-brand/40">
+            <span class="font-display text-lg text-ink group-hover:text-brand">{t.name} <span class="card-flecha" aria-hidden="true">→</span></span>
             <span class="mt-1 block text-sm text-ink-muted">{t.description}</span>
           </a>
         </li>
       ))}
       {tags.includes('fondos indexados') && (
         <li>
-          <a href="/carteras/" class="group block">
-            <span class="font-display text-lg text-ink group-hover:text-brand">Simula tu cartera de fondos indexados</span>
+          <a href="/carteras/" class="card group block p-4 hover:border-brand/40">
+            <span class="font-display text-lg text-ink group-hover:text-brand">Simula tu cartera de fondos indexados <span class="card-flecha" aria-hidden="true">→</span></span>
             <span class="mt-1 block text-sm text-ink-muted">Busca fondos, reparte el peso entre ellos y mira cuánto podrías tener.</span>
           </a>
         </li>
@@ -134,12 +135,8 @@ const breadcrumbJsonLd = {
 
   {masDelTema.length > 0 && (
     <aside aria-labelledby="mas-del-tema" class="mt-12 border-t border-border pt-8">
-      <h2 id="mas-del-tema" class="mb-4 font-display text-xl text-ink">Más sobre <a href={`/blog/tema/${categoria.id}/`} class="text-brand underline decoration-brand/30 hover:decoration-brand">{categoria.nombre.toLowerCase()}</a></h2>
-      <ul class="grid gap-2">
-        {masDelTema.map((p) => (
-          <li><a href={`/blog/${p.id}/`} class="font-medium text-ink underline decoration-ink-muted/30 hover:text-brand">{p.data.title}</a></li>
-        ))}
-      </ul>
+      <h2 id="mas-del-tema" class="mb-5 font-display text-xl text-ink">Más sobre <a href={`/blog/tema/${categoria.id}/`} class="enlace-vivo text-brand">{categoria.nombre.toLowerCase()}</a></h2>
+      <ListadoTarjetas posts={masDelTema} destacar={false} mostrarTema={false} columnas={2} />
     </aside>
   )}
 
@@ -148,7 +145,7 @@ const breadcrumbJsonLd = {
       <h2 id="terminos" class="mb-3 font-display text-xl text-ink">Términos de este artículo</h2>
       <ul class="flex flex-wrap gap-2">
         {terminos.map((t) => (
-          <li><a href={`/glosario/${t.id}/`} title={t.description} class="rounded-full border border-border bg-cream-elevated px-3 py-1 text-sm text-ink-muted hover:border-brand/40 hover:text-ink">{t.termino}</a></li>
+          <li><a href={`/glosario/${t.id}/`} title={t.description} class="chip-tema">{t.termino}</a></li>
         ))}
       </ul>
     </aside>
@@ -157,16 +154,7 @@ const breadcrumbJsonLd = {
   {related.length > 0 && (
     <aside aria-labelledby="sigue-leyendo" class="mt-12 border-t border-border pt-8">
       <h2 id="sigue-leyendo" class="mb-5 font-display text-xl text-ink">Sigue leyendo</h2>
-      <ul class="grid gap-5">
-        {related.map((p) => (
-          <li>
-            <a href={`/blog/${p.id}/`} class="group block">
-              <span class="font-display text-lg text-ink group-hover:text-brand">{p.data.title}</span>
-              <span class="mt-1 block text-sm text-ink-muted">{p.data.description}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <ListadoTarjetas posts={related} columnas={2} />
     </aside>
   )}
 </BaseLayout>

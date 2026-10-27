@@ -1,0 +1,49 @@
+---
+/**
+ * Tarjeta de un artículo: ilustración del tema, etiqueta de tema, fecha, minutos de lectura, título, resumen y
+ * "Leer". Estilos en src/styles/tarjetas.css (hover vivo: se eleva, la ilustración se anima y la flecha avanza).
+ *
+ * - `variante="destacada"`: más grande; en pantallas anchas, ilustración a la izquierda y texto a la derecha.
+ * - `variante="compacta"`: en móvil, fila con la ilustración como miniatura (listas largas); en anchas, igual que la normal.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { categoriaDe } from '../config/categorias';
+import { minutosDeLectura } from '../lib/briefing';
+import IlustracionTema from './IlustracionTema.astro';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  variante?: 'normal' | 'destacada' | 'compacta';
+  mostrarTema?: boolean;
+  /** Nivel del título: 'h3' si la tarjeta cuelga de un h2, 'h2' si va justo después del h1. */
+  nivel?: 'h2' | 'h3';
+}
+
+const { post, variante = 'normal', mostrarTema = true, nivel = 'h3' } = Astro.props;
+const Titulo = nivel;
+const cat = categoriaDe(post.data);
+// En UTC, como el atributo datetime (toISOString), para que la fecha visible coincida siempre con él.
+const fecha = post.data.pubDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const iso = post.data.pubDate.toISOString().slice(0, 10);
+const minutos = minutosDeLectura(post.body ?? '');
+---
+
+<a
+  href={`/blog/${post.id}/`}
+  class:list={['tarjeta-articulo', variante === 'destacada' && 'tarjeta-articulo--destacada', variante === 'compacta' && 'tarjeta-articulo--compacta']}
+>
+  <div class="tarjeta-arte" aria-hidden="true"><IlustracionTema tema={cat.id} /></div>
+  <div class="tarjeta-cuerpo">
+    {mostrarTema && <span class="etiqueta-tema">{cat.nombre}</span>}
+    <p class:list={['articulo-meta text-ink-faint', mostrarTema ? 'mt-2' : 'mt-0']}>
+      <time datetime={iso}>{fecha}</time>
+      <span aria-hidden="true">·</span>
+      <span>{minutos} min de lectura</span>
+    </p>
+    <Titulo class="tarjeta-titulo">{post.data.title}</Titulo>
+    <p class:list={['mt-2 text-sm leading-relaxed text-ink-muted', variante === 'destacada' ? 'line-clamp-4 sm:text-base' : 'line-clamp-3']}>
+      {variante === 'destacada' ? (post.data.resumen ?? post.data.description) : post.data.description}
+    </p>
+    <span class="tarjeta-leer">Leer el artículo <span class="tarjeta-leer-flecha" aria-hidden="true">→</span></span>
+  </div>
+</a>

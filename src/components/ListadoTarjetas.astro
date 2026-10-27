@@ -1,0 +1,41 @@
+---
+/**
+ * Listado de artículos en tarjetas: el primero destacado (ancho completo) y el resto en rejilla de 1, 2 o 3 columnas.
+ * Se usa en /blog/ (cada tema), en /blog/tema/<id>/ y en los bloques de artículos relacionados. Las tarjetas
+ * aparecen escalonadas al entrar en pantalla (el script las detecta por ser hijos de ul.grid, animaciones.ts).
+ */
+import type { CollectionEntry } from 'astro:content';
+import TarjetaArticulo from './TarjetaArticulo.astro';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  /** Si el primero va destacado (por defecto sí). */
+  destacar?: boolean;
+  mostrarTema?: boolean;
+  nivel?: 'h2' | 'h3';
+  /** Columnas máximas en pantallas anchas (por defecto 3). */
+  columnas?: 2 | 3;
+}
+
+const { posts, destacar = true, mostrarTema = true, nivel = 'h3', columnas = 3 } = Astro.props;
+const [primero, ...resto] = posts;
+const conDestacado = destacar;
+const tarjetas = conDestacado ? resto : posts;
+---
+
+{
+  posts.length > 0 && (
+    <ul class:list={['grid gap-4 sm:grid-cols-2', columnas === 3 && 'lg:grid-cols-3']}>
+      {conDestacado && (
+        <li class:list={['sm:col-span-2', columnas === 3 && 'lg:col-span-3']}>
+          <TarjetaArticulo post={primero} variante="destacada" mostrarTema={mostrarTema} nivel={nivel} />
+        </li>
+      )}
+      {tarjetas.map((p) => (
+        <li>
+          <TarjetaArticulo post={p} variante="compacta" mostrarTema={mostrarTema} nivel={nivel} />
+        </li>
+      ))}
+    </ul>
+  )
+}

@@ -1,0 +1,142 @@
+---
+/**
+ * Ilustración SVG por tema del blog (las ocho de src/config/categorias.ts), en la paleta de la marca: verde, crema y
+ * terracota. Es decorativa (aria-hidden): el nombre del tema siempre va en texto junto a ella. Estática (sin estilos en
+ * línea ni atributos calculados, así que no choca con la CSP) y rellena la caja que la contiene (slice).
+ *
+ * Con la tarjeta enfocada o con el ratón encima, las piezas con `arte-sube`, `arte-flota` o `arte-gira` se animan
+ * (src/styles/tarjetas.css, solo transform y solo con movimiento permitido).
+ */
+interface Props {
+  tema: string;
+}
+const { tema } = Astro.props;
+const conocidos = ['fondos-indexados', 'impuestos', 'vivienda', 'autonomos', 'criptomonedas', 'jubilacion', 'trabajo', 'ahorro'];
+const id = conocidos.includes(tema) ? tema : 'ahorro';
+---
+
+<svg class="ilustracion-tema" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  {
+    id === 'fondos-indexados' && (
+      <>
+        <rect width="240" height="120" class="fill-brand" />
+        <path d="M0 96H240" class="stroke-cream-elevated/25" stroke-width="1" fill="none" />
+        <rect x="34" y="70" width="20" height="26" rx="3" class="arte-sube fill-cream-elevated/35" />
+        <rect x="64" y="62" width="20" height="34" rx="3" class="arte-sube fill-cream-elevated/45" />
+        <rect x="94" y="54" width="20" height="42" rx="3" class="arte-sube fill-cream-elevated/55" />
+        <rect x="124" y="42" width="20" height="54" rx="3" class="arte-sube fill-cream-elevated/65" />
+        <rect x="154" y="30" width="20" height="66" rx="3" class="arte-sube fill-cream-elevated/80" />
+        <rect x="184" y="16" width="20" height="80" rx="3" class="arte-sube fill-cream-elevated" />
+        <path d="M44 60L74 52L104 44L134 32L164 22L194 10" class="stroke-accent-soft" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        <circle cx="194" cy="10" r="5" class="arte-flota fill-accent" />
+      </>
+    )
+  }
+  {
+    id === 'impuestos' && (
+      <>
+        <rect width="240" height="120" class="fill-accent-soft" />
+        <rect x="36" y="82" width="30" height="24" rx="3" class="arte-sube fill-brand/45" />
+        <rect x="70" y="68" width="30" height="38" rx="3" class="arte-sube fill-brand/60" />
+        <rect x="104" y="54" width="30" height="52" rx="3" class="arte-sube fill-brand/75" />
+        <rect x="138" y="40" width="30" height="66" rx="3" class="arte-sube fill-brand" />
+        <rect x="172" y="22" width="30" height="84" rx="3" class="arte-sube fill-accent" />
+        <path d="M24 106H216" class="stroke-brand/40" stroke-width="1.5" fill="none" />
+        <circle cx="52" cy="30" r="14" class="arte-gira fill-cream-elevated" />
+        <path d="M45 37L59 23" class="stroke-accent" stroke-width="2.5" stroke-linecap="round" fill="none" />
+        <circle cx="46.5" cy="24.5" r="2.4" class="fill-accent" />
+        <circle cx="57.5" cy="35.5" r="2.4" class="fill-accent" />
+      </>
+    )
+  }
+  {
+    id === 'vivienda' && (
+      <>
+        <rect width="240" height="120" class="fill-brand-soft" />
+        <circle cx="196" cy="30" r="14" class="arte-flota fill-accent/80" />
+        <path d="M0 104H240V120H0Z" class="fill-brand/30" />
+        <g class="arte-gira">
+          <rect x="82" y="56" width="76" height="48" class="fill-cream-elevated" />
+          <path d="M72 58L120 20L168 58Z" class="fill-brand" />
+          <rect x="108" y="76" width="22" height="28" rx="2" class="fill-accent" />
+          <rect x="90" y="66" width="14" height="14" rx="2" class="fill-brand/35" />
+          <rect x="136" y="66" width="14" height="14" rx="2" class="fill-brand/35" />
+        </g>
+      </>
+    )
+  }
+  {
+    id === 'autonomos' && (
+      <>
+        <rect width="240" height="120" class="fill-cream" />
+        <rect x="0" y="0" width="240" height="120" class="fill-brand-soft/60" />
+        <g class="arte-gira">
+          <rect x="78" y="14" width="84" height="98" rx="6" class="fill-cream-elevated stroke-brand" stroke-width="2" />
+          <path d="M92 36H148M92 50H148M92 64H128" class="stroke-brand/55" stroke-width="3" stroke-linecap="round" fill="none" />
+          <rect x="92" y="80" width="32" height="14" rx="3" class="fill-brand" />
+        </g>
+        <circle cx="160" cy="92" r="18" class="arte-flota fill-accent" />
+        <path d="M152 92L158 98L169 86" class="stroke-cream-elevated" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      </>
+    )
+  }
+  {
+    id === 'criptomonedas' && (
+      <>
+        <rect width="240" height="120" class="fill-brand-dark" />
+        <path d="M58 60H182" class="stroke-cream-elevated/30" stroke-width="2" stroke-dasharray="3 5" fill="none" />
+        <path d="M58 38L76 48V70L58 80L40 70V48Z" class="fill-none stroke-cream-elevated/70" stroke-width="2.5" stroke-linejoin="round" />
+        <path d="M182 38L200 48V70L182 80L164 70V48Z" class="fill-none stroke-cream-elevated/70" stroke-width="2.5" stroke-linejoin="round" />
+        <path d="M120 22L146 37V67L120 82L94 67V37Z" class="arte-gira fill-brand stroke-cream-elevated" stroke-width="3" stroke-linejoin="round" />
+        <circle cx="120" cy="52" r="10" class="arte-flota fill-accent" />
+        <path d="M0 108H240" class="stroke-cream-elevated/20" stroke-width="1" fill="none" />
+      </>
+    )
+  }
+  {
+    id === 'jubilacion' && (
+      <>
+        <rect width="240" height="120" class="fill-accent-soft" />
+        <circle cx="120" cy="84" r="34" class="arte-flota fill-accent" />
+        <path d="M120 30V38M72 50L78 56M168 50L162 56M54 84H64M176 84H186" class="stroke-accent/70" stroke-width="3" stroke-linecap="round" fill="none" />
+        <path d="M0 84H240V120H0Z" class="fill-brand/85" />
+        <path d="M0 96C50 86 90 100 130 94C170 88 210 98 240 92V120H0Z" class="fill-brand" />
+        <path d="M30 90H210" class="stroke-cream-elevated/40" stroke-width="1.5" stroke-dasharray="2 6" fill="none" />
+      </>
+    )
+  }
+  {
+    id === 'trabajo' && (
+      <>
+        <rect width="240" height="120" class="fill-brand-soft" />
+        <g class="arte-gira">
+          <rect x="52" y="16" width="92" height="88" rx="6" class="fill-cream-elevated stroke-brand" stroke-width="2" />
+          <path d="M66 36H128M66 50H128M66 64H104" class="stroke-brand/50" stroke-width="3" stroke-linecap="round" fill="none" />
+          <path d="M66 84H128" class="stroke-brand" stroke-width="4" stroke-linecap="round" fill="none" />
+        </g>
+        <ellipse cx="178" cy="92" rx="26" ry="8" class="arte-sube fill-brand" />
+        <ellipse cx="178" cy="82" rx="26" ry="8" class="arte-sube fill-brand/80" />
+        <ellipse cx="178" cy="72" rx="26" ry="8" class="arte-sube fill-brand/60" />
+        <circle cx="178" cy="42" r="19" class="arte-flota fill-accent" />
+        <path d="M185 35C176 30 168 35 168 42C168 49 176 54 185 49M164 40H177M164 45H177" class="stroke-cream-elevated" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      </>
+    )
+  }
+  {
+    id === 'ahorro' && (
+      <>
+        <rect width="240" height="120" class="fill-brand" />
+        <rect x="82" y="38" width="76" height="70" rx="14" class="fill-cream-elevated/20 stroke-cream-elevated" stroke-width="2.5" />
+        <rect x="90" y="28" width="60" height="14" rx="5" class="fill-cream-elevated" />
+        <circle cx="104" cy="92" r="11" class="arte-sube fill-cream-elevated/80" />
+        <circle cx="128" cy="95" r="10" class="arte-sube fill-cream-elevated/60" />
+        <circle cx="116" cy="76" r="10" class="arte-sube fill-accent-soft" />
+        <circle cx="140" cy="78" r="9" class="arte-sube fill-cream-elevated/45" />
+        <path d="M184 108C184 90 184 78 184 64" class="stroke-cream-elevated" stroke-width="3" stroke-linecap="round" fill="none" />
+        <path d="M184 76C170 76 164 66 164 56C176 56 184 64 184 76Z" class="arte-gira fill-cream-elevated/80" />
+        <path d="M184 66C196 66 202 56 202 46C190 46 184 54 184 66Z" class="arte-gira fill-cream-elevated" />
+        <path d="M0 108H240" class="stroke-cream-elevated/25" stroke-width="1" fill="none" />
+      </>
+    )
+  }
+</svg>
