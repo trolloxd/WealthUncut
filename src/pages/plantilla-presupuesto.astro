@@ -90,22 +90,6 @@ const jsonLd = [
     '@type': 'FAQPage',
     mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.pregunta, acceptedAnswer: { '@type': 'Answer', text: f.respuesta } })),
   },
-  ...Object.entries({
-    recorrido: 'plantilla-recorrido',
-    gasto: 'plantilla-apuntar-gasto',
-    mes: 'plantilla-cambiar-mes',
-    categoria: 'plantilla-categoria-propia',
-  }).map(([clave, archivoVideo]) => ({
-    '@context': 'https://schema.org',
-    '@type': 'VideoObject',
-    name: videos[clave as keyof typeof videos].nombre,
-    description: videos[clave as keyof typeof videos].desc,
-    thumbnailUrl: `${SITE.url}${img(archivoVideo + '-poster')}`,
-    contentUrl: `${SITE.url}${vid(archivoVideo)}`,
-    uploadDate: pubDate.toISOString(),
-    duration: videos[clave as keyof typeof videos].duracion,
-    inLanguage: SITE.locale,
-  })),
 ];
 
 const hojas = [

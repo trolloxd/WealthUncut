@@ -90,17 +90,6 @@ const jsonLd = [
     '@type': 'FAQPage',
     mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.pregunta, acceptedAnswer: { '@type': 'Answer', text: f.respuesta } })),
   },
-  ...Object.values(videos).map((v) => ({
-    '@context': 'https://schema.org',
-    '@type': 'VideoObject',
-    name: v.nombre,
-    description: v.desc,
-    thumbnailUrl: `${SITE.url}${img(v.archivo + '-poster')}`,
-    contentUrl: `${SITE.url}${vid(v.archivo)}`,
-    uploadDate: pubDate.toISOString(),
-    duration: v.duracion,
-    inLanguage: SITE.locale,
-  })),
 ];
 ---
 
