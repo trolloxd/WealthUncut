@@ -237,6 +237,19 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   oficiales y actualizar `CALENDARIO_REVISADO`**). Los `.ics` (`/herramientas/calendario-fiscal/<perfil>.ics`) son estáticos, generados en el build
   (`[perfil].ics.ts`), con avisos 7 y 1 días antes; la página oculta las fechas ya pasadas con la fecha del build. Pruebas en
   `tests/calendario-fiscal.test.ts`. Acompaña a la guía `/blog/antes-del-31-de-diciembre-decisiones-fiscales/` (cifras de `finance.ts`; revisar cada diciembre).
+- **Escenas 3D, `<Escena3D />`** (2026-10-27, three.js): componente reutilizable `src/components/Escena3D.astro` para artículos MDX
+  (`import Escena3D from '../../components/Escena3D.astro';` y `<Escena3D escena="irpf-ahorro" />` o `escena="interes-compuesto"`). Hay solo
+  dos escenas a propósito: `irpf-ahorro` (los tramos del IRPF del ahorro como escalones, desde `IRPF_AHORRO_BRACKETS` de `finance.ts`) e
+  `interes-compuesto` (aportado e intereses cada 5 años, 150 €/mes, 7 % bruto, TER 0,2 %, los mismos supuestos que el artículo de interés
+  compuesto; es un ejemplo, no una previsión). Los datos se calculan en el servidor (`src/lib/calculos/escena3d.ts`, con pruebas en
+  `tests/escena3d.test.ts`). El HTML lleva siempre una versión 2D con barras y una tabla (`<details>`); es la que ve quien no tiene JavaScript ni
+  WebGL o ha pedido menos movimiento (`prefers-reduced-motion`). Solo cuando la figura entra en pantalla (IntersectionObserver, 200 px de margen)
+  y hay WebGL se descarga `src/scripts/escena3d.ts` con three.js (chunk de ~530 KB, 130 KB comprimido, nunca en la carga inicial) y el 3D
+  sustituye al 2D dentro de la misma caja de altura fija (CLS 0). Reglas para tocarlo: sin estilos en línea (el canvas se dimensiona con clases de
+  Tailwind y `renderer.setSize(w, h, false)`), sin terceros, paleta de la marca, teclado (el canvas recibe foco; flechas giran, `+`/`-` acercan, `Inicio`
+  reinicia) y texto alternativo con los datos. Una escena nueva: añadir su tipo en `escena3d.ts` (datos y prueba), su 2D y su tabla en
+  `Escena3D.astro` y su dibujo en `src/scripts/escena3d.ts`. Comprobado el 2026-10-27 en Edge con WebGL (sin errores de consola ni de CSP) y con
+  movimiento reducido (se queda el 2D y no se descarga three.js).
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se

@@ -18,6 +18,7 @@ draft: false
 
 import IndexFundCalculator from '../../components/IndexFundCalculator';
 import { BotonCompartir } from '../../components/CalculatorUI';
+import Escena3D from '../../components/Escena3D.astro';
 
 "Interés compuesto" es una de esas frases que todo el mundo repite y poca gente calcula de
 verdad. La idea es simple: los intereses que ganas un año se suman al capital, y al año
@@ -55,6 +56,11 @@ de impuestos. Esa diferencia no viene de aportar más dinero. Viene de que esos 
 de aportaciones tienen 10 años más para componerse antes del final. La diferencia entre empezar
 a los 25 y a los 45 es aún mayor: 20 años de aportaciones extra (36.000 € más aportados) se
 traducen en **218.930 € más** netos.
+
+En el gráfico se ve cómo crece el caso de quien empieza a los 25 (40 años, valores brutos antes de impuestos): al principio
+la parte verde, la de los intereses, es pequeña frente a lo aportado, y en los últimos años pasa a ser la mayor.
+
+<Escena3D escena="interes-compuesto" />
 
 ### Y en euros de hoy
 

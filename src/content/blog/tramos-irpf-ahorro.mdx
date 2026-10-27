@@ -17,6 +17,7 @@ draft: false
 ---
 
 import TramosAhorroTabla from '../../components/TramosAhorroTabla.astro';
+import Escena3D from '../../components/Escena3D.astro';
 import { formatEuros } from '../../components/CalculatorUI';
 import { calcularImpuestoAhorro, COMPENSACION_AHORRO } from '../../config/finance';
 
@@ -31,6 +32,10 @@ Esta es la tabla vigente, qué rentas entran y cómo se aplica realmente, con ej
 ## Los tramos del IRPF del ahorro
 
 <TramosAhorroTabla />
+
+Para verlos como escalones: cada columna es un tramo y su altura es el tipo que se aplica a esa parte de la renta.
+
+<Escena3D escena="irpf-ahorro" />
 
 La palabra clave es **marginal**: cada tipo se aplica solo a la parte de la renta que cae dentro de ese tramo, no
 a toda la renta. Quien tiene 60.000 € de ganancia no paga el 23 % sobre los 60.000, sino el 19 % sobre los primeros
