@@ -142,21 +142,29 @@ if (!reducido && 'IntersectionObserver' in window) {
   prepararAparicion();
 
   // Barras que se dibujan: ocultas (escala 0) hasta que entran en pantalla, las de una misma lista una tras otra.
+  // Se observa la pista que las contiene (la barra a escala 0 no tiene área y el observador no la vería).
   const barras = [...document.querySelectorAll<HTMLElement>('[data-barra]')].filter((b) => b.getBoundingClientRect().top > window.innerHeight);
   barras.forEach((b) => b.setAttribute('data-barra', 'espera'));
+  const pistas = new Map<Element, HTMLElement[]>();
+  barras.forEach((b) => {
+    const pista = b.parentElement ?? b;
+    pistas.set(pista, [...(pistas.get(pista) ?? []), b]);
+  });
   const ioBarras = new IntersectionObserver(
     (entradas) => {
       entradas
         .filter((e) => e.isIntersecting)
         .forEach((e, i) => {
           ioBarras.unobserve(e.target);
-          if (i > 0) e.target.setAttribute('data-rv-d', String(Math.min(i, 6)));
-          e.target.setAttribute('data-barra', 'lista');
+          (pistas.get(e.target) ?? []).forEach((b) => {
+            if (i > 0) b.setAttribute('data-rv-d', String(Math.min(i, 6)));
+            b.setAttribute('data-barra', 'lista');
+          });
         });
     },
     { rootMargin: '0px 0px -8% 0px' }
   );
-  barras.forEach((b) => ioBarras.observe(b));
+  pistas.forEach((_, pista) => ioBarras.observe(pista));
 
   // Cifras que cuentan.
   const arranques = new Map<Element, () => void>();

@@ -289,6 +289,8 @@ export async function montar(figura: HTMLElement): Promise<void> {
     e.preventDefault();
     canvas.hidden = true;
     plano.hidden = false;
+    // Las barras de la versión plana pueden haberse quedado ocultas (se dibujan al entrar en pantalla): se muestran ya.
+    plano.querySelectorAll('[data-barra]').forEach((b) => b.setAttribute('data-barra', 'lista'));
   });
   canvas.addEventListener('webglcontextrestored', () => {
     canvas.hidden = false;
