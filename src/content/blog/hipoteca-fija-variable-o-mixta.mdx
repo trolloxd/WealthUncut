@@ -17,6 +17,7 @@ draft: false
 import { simularHipoteca } from '../../components/MortgageCalculator';
 import { formatEuros } from '../../components/CalculatorUI';
 import euribor from '../../data/euribor/ultimo.json';
+import Escena3D from '../../components/Escena3D.astro';
 
 export const base = { capital: 150000, plazoAnios: 25, tipoFijo: 2.8, diferencial: 0.8, euribor: euribor.ultimoValor, aniosFijosMixta: 5 };
 export const fija = simularHipoteca({ ...base, tipoHipoteca: 'fija' });
@@ -72,6 +73,8 @@ mueve. Lo importante es ver **cuánto cambia la cuota variable si sube o baja**:
 
 La simulación aplica el nuevo euríbor a todo el plazo para poder comparar escenarios; en la realidad
 cambiaría año a año. Sirve para medir la sensibilidad, no para predecir.
+
+<Escena3D escena="cuota-euribor" />
 
 ## Cómo decidir sin adivinar el euríbor
 

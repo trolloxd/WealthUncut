@@ -116,6 +116,48 @@ function construirInteres(datos: DatosEscena, grupo: Group): { barras: Barra[]; 
   return { barras, ancho: total, alto: altoMax + 1 };
 }
 
+const COLORES_TONO = [0x6f9a82, VERDE, GRIS, ROJO];
+
+/** Barras agrupadas ('coste-ter' y 'cuota-euribor'): cada grupo es una fila de barras con su etiqueta debajo. */
+function construirGrupos(datos: DatosEscena, grupo: Group): { barras: Barra[]; ancho: number; alto: number } {
+  const grupos = datos.grupos ?? [];
+  const max = Math.max(...grupos.flatMap((g) => g.barras.map((b) => b.valor)), 1);
+  const altoMax = 6;
+  const ancho = 1.15;
+  const hueco = 0.35;
+  const huecoGrupo = 0.7;
+  const anchoDe = (n: number) => n * ancho + (n - 1) * hueco;
+  const total = grupos.reduce((t, g) => t + anchoDe(g.barras.length), 0) + (grupos.length - 1) * huecoGrupo;
+  const barras: Barra[] = [];
+  let x0 = -total / 2;
+  for (const g of grupos) {
+    const anchoGrupo = anchoDe(g.barras.length);
+    g.barras.forEach((b, i) => {
+      const x = x0 + ancho / 2 + i * (ancho + hueco);
+      const alto = Math.max(0.05, (b.valor / max) * altoMax);
+      const malla = caja(ancho, alto, ancho, COLORES_TONO[b.tono], x, 0);
+      const valor = etiqueta([b.texto], 0.7);
+      valor.position.set(x, alto + 0.4, 0);
+      grupo.add(malla, valor);
+      barras.push({ malla, etiqueta: valor, y0: 0, alto });
+    });
+    // Con una sola fila (cuota por euríbor) la etiqueta de cada barra va debajo; con varias, la del grupo.
+    if (grupos.length > 1) {
+      const nombre = etiqueta([g.etiqueta], 0.9);
+      nombre.position.set(x0 + anchoGrupo / 2, -0.4, 0.9);
+      grupo.add(nombre);
+    } else {
+      g.barras.forEach((b, i) => {
+        const nombre = etiqueta([b.etiqueta.replace('Euríbor ', '')], 0.75);
+        nombre.position.set(x0 + ancho / 2 + i * (ancho + hueco), -0.4, 0.9);
+        grupo.add(nombre);
+      });
+    }
+    x0 += anchoGrupo + huecoGrupo;
+  }
+  return { barras, ancho: total, alto: altoMax + 1 };
+}
+
 export async function montar(figura: HTMLElement): Promise<void> {
   const lienzo = figura.querySelector<HTMLElement>('[data-lienzo]');
   const plano = figura.querySelector<HTMLElement>('[data-plano]');
@@ -138,11 +180,12 @@ export async function montar(figura: HTMLElement): Promise<void> {
 
   const grupo = new Group();
   escena.add(grupo);
-  const { barras, ancho, alto } = datos.tipo === 'irpf-ahorro' ? construirIrpf(datos, grupo) : construirInteres(datos, grupo);
+  const { barras, ancho, alto } =
+    datos.tipo === 'irpf-ahorro' ? construirIrpf(datos, grupo) : datos.grupos ? construirGrupos(datos, grupo) : construirInteres(datos, grupo);
 
   const camara = new PerspectiveCamera(32, 1.6, 0.1, 100);
   const objetivo = new Vector3(0, alto / 2.3, 0);
-  const estadoInicial = { yaw: -0.5, pitch: 0.32, zoom: 1 };
+  const estadoInicial = { yaw: -0.5, pitch: 0.32, zoom: datos.grupos ? 0.75 : 1 };
   const estado = { ...estadoInicial };
 
   let pintando = false;
@@ -212,7 +255,7 @@ export async function montar(figura: HTMLElement): Promise<void> {
     else if (e.key === 'ArrowRight') estado.yaw = Math.min(1.45, estado.yaw + paso);
     else if (e.key === 'ArrowUp') estado.pitch = Math.min(1.2, estado.pitch + paso);
     else if (e.key === 'ArrowDown') estado.pitch = Math.max(0.05, estado.pitch - paso);
-    else if (e.key === '+' || e.key === '=') estado.zoom = Math.max(0.7, estado.zoom - 0.1);
+    else if (e.key === '+' || e.key === '=') estado.zoom = Math.max(0.5, estado.zoom - 0.1);
     else if (e.key === '-') estado.zoom = Math.min(1.4, estado.zoom + 0.1);
     else if (e.key === 'Home') Object.assign(estado, estadoInicial);
     else cambio = false;
@@ -234,7 +277,7 @@ export async function montar(figura: HTMLElement): Promise<void> {
     for (const b of barras) {
       b.malla.scale.y = Math.max(0.001, suave);
       b.malla.position.y = b.y0 * suave;
-      if (b.etiqueta) b.etiqueta.position.y = (b.y0 + b.alto) * suave + (datos.tipo === 'irpf-ahorro' ? 0.95 : 0.45);
+      if (b.etiqueta) b.etiqueta.position.y = (b.y0 + b.alto) * suave + (datos.tipo === 'irpf-ahorro' ? 0.95 : datos.grupos ? 0.4 : 0.45);
     }
     pintar();
     if (t < 1) requestAnimationFrame(crecer);

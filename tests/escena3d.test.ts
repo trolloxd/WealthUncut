@@ -4,7 +4,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { IRPF_AHORRO_BRACKETS } from '../src/config/finance.ts';
-import { datosEscena, escalonesIrpfAhorro, serieInteresCompuesto } from '../src/lib/calculos/escena3d.ts';
+import { cuotasPorEuribor, datosEscena, escalonesIrpfAhorro, serieInteresCompuesto, valorConTer } from '../src/lib/calculos/escena3d.ts';
 
 test('los escalones del IRPF del ahorro salen de finance.ts', () => {
   const e = escalonesIrpfAhorro();
@@ -36,7 +36,7 @@ test('los intereses superan lo aportado solo con el tiempo', () => {
 });
 
 test('los textos de las escenas no llevan guiones largos y citan una fuente', () => {
-  for (const t of ['irpf-ahorro', 'interes-compuesto'] as const) {
+  for (const t of ['irpf-ahorro', 'interes-compuesto', 'coste-ter', 'cuota-euribor'] as const) {
     const d = datosEscena(t);
     assert.ok(!/[—–]/.test(JSON.stringify(d)));
     assert.ok(d.fuente.url.length > 5);
@@ -44,4 +44,28 @@ test('los textos de las escenas no llevan guiones largos y citan una fuente', ()
   }
   assert.ok(datosEscena('irpf-ahorro').resumen.includes('19 %'));
   assert.ok(datosEscena('irpf-ahorro').resumen.includes('30 %'));
+});
+
+test('coste del TER: coincide con la tabla del artículo "Qué es el TER" a 30 años', () => {
+  assert.equal(valorConTer(0.002, 30), 71968);
+  assert.equal(valorConTer(0.01, 30), 57435);
+  assert.equal(valorConTer(0.015, 30), 49840);
+  const d = datosEscena('coste-ter');
+  assert.equal(d.grupos?.length, 3);
+  assert.deepEqual(d.grupos?.map((g) => g.etiqueta), ['10 años', '20 años', '30 años']);
+  for (const g of d.grupos!) assert.ok(g.barras[0].valor > g.barras[1].valor && g.barras[1].valor > g.barras[2].valor);
+  assert.ok(d.resumen.includes('71.968 euros') && d.resumen.includes('49.840 euros'));
+});
+
+test('cuota por euríbor: sistema francés, 150.000 euros a 25 años con euríbor + 0,8', () => {
+  const filas = cuotasPorEuribor(3.247);
+  assert.deepEqual(filas.map((f) => f.salto), [-1, 0, 1, 2]);
+  // 4,047 % nominal: cuota = 150000 * i / (1 - (1 + i)^-300), i = 0,04047 / 12
+  const i = 0.04047 / 12;
+  const esperada = (150000 * i) / (1 - Math.pow(1 + i, -300));
+  assert.ok(Math.abs(filas[1].cuota - esperada) < 0.01);
+  for (let k = 1; k < filas.length; k++) assert.ok(filas[k].cuota > filas[k - 1].cuota);
+  const d = datosEscena('cuota-euribor', { euribor: 3.247, euriborMes: 'septiembre de 2026' });
+  assert.equal(d.grupos?.[0].barras.length, 4);
+  assert.ok(!/[—–]/.test(JSON.stringify(d)));
 });

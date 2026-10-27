@@ -97,7 +97,9 @@ const EXCLUIDOS = 'article, .prose, .barra-lectura, [data-escalona], .aparece, .
 
 function prepararAparicion() {
   const altoPantalla = window.innerHeight;
-  const bloques = [...document.querySelectorAll('main > *')].filter((b) => !b.matches(EXCLUIDOS) && !b.querySelector('article, .prose'));
+  // Un div.grid directo de <main> (p. ej. las letras del glosario) cuenta como contenedor: sus hijos son los bloques.
+  const hijosDeMain = [...document.querySelectorAll('main > *')].flatMap((b) => (b.matches('div.grid') ? [...b.children] : [b]));
+  const bloques = hijosDeMain.filter((b) => !b.matches(EXCLUIDOS) && !b.querySelector('article, .prose'));
   const unidades = bloques
     .flatMap(unidadesDe)
     .filter((u) => !u.matches(EXCLUIDOS) && !u.closest('[data-escalona], .aparece') && u.getBoundingClientRect().top > altoPantalla);
