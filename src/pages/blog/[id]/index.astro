@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import { isPublished } from '../../../lib/posts';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { minutosDeLectura } from '../../../lib/briefing';
 import ArticleMeta from '../../../components/ArticleMeta.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import ArticleLink from '../../../components/ArticleLink.astro';
@@ -92,7 +93,7 @@ const breadcrumbJsonLd = {
   <div class="relative">
   <article class="prose max-w-none">
     <h1>{title}</h1>
-    <ArticleMeta author={author} pubDate={pubDate} updatedDate={updatedDate} sources={sources} hasAffiliateLinks={hasAffiliateLinks}>
+    <ArticleMeta author={author} pubDate={pubDate} updatedDate={updatedDate} sources={sources} hasAffiliateLinks={hasAffiliateLinks} minutos={minutosDeLectura(post.body ?? '')}>
       {resumen && (
         <p class="not-prose mb-8 rounded-xl border border-brand/20 bg-cream-elevated p-4 text-base leading-relaxed text-ink">
           <strong class="text-brand">En breve:</strong> {resumen}

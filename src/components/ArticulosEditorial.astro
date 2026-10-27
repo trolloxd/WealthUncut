@@ -1,0 +1,99 @@
+---
+/**
+ * Lista editorial de artículos (mismo estilo que "Últimos artículos" de la portada): el primero como pieza
+ * principal en bloque verde y el resto en filas con tema, fecha y minutos de lectura. Las clases `.articulo-*`
+ * viven en src/styles/global.css. Se usa en /blog/ y en /blog/tema/<id>/.
+ *
+ * - `modo="lado"`: la pieza principal a la izquierda y las filas a la derecha (como en la portada).
+ * - `modo="debajo"`: la pieza principal arriba y las filas en dos columnas debajo (para temas con muchos artículos).
+ * La entrada escalonada usa [data-escalona] (src/scripts/animaciones.ts); sin JS o con movimiento reducido se ve todo.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { categoriaDe } from '../config/categorias';
+import { minutosDeLectura } from '../lib/briefing';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  modo?: 'lado' | 'debajo';
+  /** Muestra el nombre del tema en cada artículo (en la página de un tema no hace falta). */
+  mostrarTema?: boolean;
+  /** Nivel de los títulos: 'h3' si la lista cuelga de un h2, 'h2' si va justo después del h1. */
+  nivel?: 'h2' | 'h3';
+}
+
+const { posts, modo = 'lado', mostrarTema = true, nivel = 'h3' } = Astro.props;
+const Titulo = nivel;
+// En UTC, como el atributo datetime (toISOString), para que la fecha visible coincida siempre con él.
+const fechaCorta = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const items = posts.map((post) => ({
+  post,
+  tema: categoriaDe(post.data).nombre,
+  fecha: fechaCorta(post.data.pubDate),
+  iso: post.data.pubDate.toISOString().slice(0, 10),
+  minutos: minutosDeLectura(post.body ?? ''),
+}));
+const [lider, ...siguientes] = items;
+---
+
+{
+  lider && (
+    <div class:list={['grid gap-8', modo === 'lado' ? 'lg:grid-cols-12 lg:gap-10' : '']} data-escalona>
+      <div class:list={['entra entra-0', modo === 'lado' ? 'lg:col-span-7' : '']}>
+        <a href={`/blog/${lider.post.id}/`} class="articulo-lider">
+          <p class="articulo-meta text-brand-soft">
+            {mostrarTema && <span class="font-semibold">{lider.tema}</span>}
+            {mostrarTema && <span aria-hidden="true">·</span>}
+            <time datetime={lider.iso}>{lider.fecha}</time>
+            <span aria-hidden="true">·</span>
+            <span>{lider.minutos} min de lectura</span>
+          </p>
+          <Titulo class="articulo-lider-titulo">{lider.post.data.title}</Titulo>
+          <p class="mt-4 max-w-prose text-base leading-relaxed text-cream-elevated/85 sm:text-lg">
+            {lider.post.data.resumen ?? lider.post.data.description}
+          </p>
+          <p class="mt-6 text-sm text-brand-soft">
+            Por {lider.post.data.author}
+            {lider.post.data.sources.length > 0 && (
+              <span>
+                {' '}
+                · {lider.post.data.sources.length} {lider.post.data.sources.length === 1 ? 'fuente citada' : 'fuentes citadas'}
+              </span>
+            )}
+          </p>
+          <span class="articulo-lider-leer">
+            Leer el artículo
+            <span class="articulo-lider-circulo" aria-hidden="true">
+              <span class="articulo-lider-flecha">→</span>
+            </span>
+          </span>
+        </a>
+      </div>
+      {siguientes.length > 0 && (
+        <ul
+          class:list={[
+            'grid content-start gap-x-8',
+            modo === 'lado' ? 'sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1' : 'sm:grid-cols-2',
+          ]}
+        >
+          {siguientes.map((a, i) => (
+            <li class:list={['entra articulo-fila', `entra-${Math.min(i + 1, 4)}`]}>
+              <a href={`/blog/${a.post.id}/`} class="articulo-fila-enlace">
+                <p class="articulo-meta text-ink-faint">
+                  {mostrarTema && <span class="font-semibold text-brand">{a.tema}</span>}
+                  {mostrarTema && <span aria-hidden="true">·</span>}
+                  <time datetime={a.iso}>{a.fecha}</time>
+                  <span aria-hidden="true">·</span>
+                  <span>{a.minutos} min</span>
+                </p>
+                <Titulo class="articulo-fila-titulo">
+                  {a.post.data.title} <span class="articulo-fila-flecha" aria-hidden="true">→</span>
+                </Titulo>
+                <p class="mt-1.5 line-clamp-2 text-sm text-ink-muted">{a.post.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}

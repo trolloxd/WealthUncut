@@ -4,13 +4,14 @@ import { isPublished } from '../../lib/posts';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../../config/site';
 import { CATEGORIAS, categoriaDe } from '../../config/categorias';
+import ArticulosEditorial from '../../components/ArticulosEditorial.astro';
 
 const posts = (await getCollection('blog', ({ data }) => isPublished(data))).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
 const secciones = CATEGORIAS.map((c) => ({ c, posts: posts.filter((p) => categoriaDe(p.data).id === c.id) })).filter((s) => s.posts.length > 0);
-const ultimos = posts.slice(0, 3);
+const ultimos = posts.slice(0, 5);
 const MAX_POR_TEMA = 4;
 const fecha = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
@@ -32,17 +33,7 @@ const fecha = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', month
 
   <section aria-labelledby="ultimos" class="mb-14">
     <h2 id="ultimos" class="mb-5 font-display text-2xl text-ink">Lo último</h2>
-    <ul class="grid gap-5 md:grid-cols-3">
-      {ultimos.map((post) => (
-        <li class="card p-5">
-          <a href={`/blog/${post.id}/`} class="group block">
-            <span class="text-xs font-semibold uppercase tracking-wide text-brand">{categoriaDe(post.data).nombre}</span>
-            <span class="mt-1 block font-display text-lg text-ink group-hover:text-brand">{post.data.title}</span>
-            <span class="mt-2 block text-xs text-ink-faint">{fecha(post.data.pubDate)}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
+    <ArticulosEditorial posts={ultimos} modo="lado" />
   </section>
 
   {secciones.map(({ c, posts: ps }) => (

@@ -10,9 +10,11 @@ interface Props {
   updatedDate?: Date;
   sources: Fuente[];
   hasAffiliateLinks: boolean;
+  /** Minutos de lectura (solo artículos del blog). */
+  minutos?: number;
 }
 
-const { author, pubDate, updatedDate, sources, hasAffiliateLinks } = Astro.props;
+const { author, pubDate, updatedDate, sources, hasAffiliateLinks, minutos } = Astro.props;
 
 const fmt = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 const iso = (d: Date) => d.toISOString().slice(0, 10);
@@ -22,6 +24,7 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
   <p>
     Por <a href="/autor/" rel="author" class="font-medium text-ink underline decoration-ink-muted/40">{author}</a>{' '}
     · Publicado el <time datetime={iso(pubDate)}>{fmt(pubDate)}</time>
+    {minutos && <> · {minutos} min de lectura</>}
     {updatedDate && <> · Última actualización: <time datetime={iso(updatedDate)}>{fmt(updatedDate)}</time></>}
   </p>
 </div>
