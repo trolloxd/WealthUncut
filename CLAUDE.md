@@ -231,6 +231,12 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   `ARTICULOS-PROCEDIMIENTO.md`). Cada tema (`categorias.ts`) tiene `intro` propia. Los enlaces entre artículos y glosario se generan solos
   (`src/lib/glosario-enlaces.ts`: "Términos de este artículo" y "Guías donde se explica"; con pruebas). `/herramientas/` agrupa las calculadoras
   por tema; la portada enlaza a los temas. Las consultas reales de Search Console viven en `KEYWORDS.md`: revisarlas cada mes.
+- `/herramientas/calendario-fiscal/` (2026-10-27): calendario por perfil (asalariado, autónomo, inversor) con descarga `.ics`. Las fechas viven en
+  `src/lib/calculos/calendario-fiscal.ts` (`EVENTOS_FISCALES`, con fuente y un estado: `oficial` del Calendario del contribuyente 2026 de la AEAT,
+  `norma` o `previsto`; las de 2027 son previstas hasta que la AEAT publique su calendario, normalmente a final de año: **sustituirlas por las
+  oficiales y actualizar `CALENDARIO_REVISADO`**). Los `.ics` (`/herramientas/calendario-fiscal/<perfil>.ics`) son estáticos, generados en el build
+  (`[perfil].ics.ts`), con avisos 7 y 1 días antes; la página oculta las fechas ya pasadas con la fecha del build. Pruebas en
+  `tests/calendario-fiscal.test.ts`. Acompaña a la guía `/blog/antes-del-31-de-diciembre-decisiones-fiscales/` (cifras de `finance.ts`; revisar cada diciembre).
 - `/empieza-aqui/` (`src/pages/empieza-aqui.astro`): recorrido por objetivos (ahorrar, invertir, impuestos,
   vivienda) con las guías y herramientas en orden. Los pasos son una lista escrita a mano en esa página:
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se

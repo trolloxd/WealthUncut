@@ -53,6 +53,12 @@ export const TOOLS = [
     tags: ['vivienda', 'hipoteca'],
   },
   {
+    href: '/herramientas/calendario-fiscal/',
+    name: 'Calendario fiscal por perfil',
+    description: 'Las fechas fiscales que te tocan como asalariado, autónomo o inversor, con fuente y descarga .ics para tu agenda.',
+    tags: ['impuestos', 'calculadoras'],
+  },
+  {
     href: '/herramientas/plan-pensiones-vs-fondo-indexado/',
     name: 'Plan de pensiones vs fondo indexado',
     description: 'Cuánto te queda neto con la reducción fiscal de la aportación y los impuestos al rescatarlo o venderlo.',

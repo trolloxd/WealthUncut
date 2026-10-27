@@ -1,0 +1,159 @@
+---
+title: "Antes del 31 de diciembre: qué revisar de tus impuestos"
+description: "Qué decisiones fiscales caducan el 31 de diciembre: vender con pérdidas, la regla de los dos meses, el plan de pensiones y la foto de saldos en el extranjero."
+resumen: "Casi todo lo que cuenta para la Renta de un año se decide hasta el 31 de diciembre. Cuatro cosas conviene revisar antes: las ganancias y pérdidas del año, la regla de los dos meses si piensas recomprar, la aportación al plan de pensiones y los saldos en el extranjero."
+pubDate: 2026-10-27
+updatedDate: 2026-10-27
+author: "David Pérez Mitjà"
+tags: ["impuestos", "pensiones", "fondos indexados"]
+categoria: "impuestos"
+sources:
+  - label: "AEAT, Manual práctico de Renta 2025: reglas de integración y compensación de rentas (pérdidas contra ganancias y arrastre)"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c12-integracion-compensacion-rentas/reglas-integracion-compensacion-rentas.html"
+  - label: "AEAT, Manual práctico de Renta 2025: pérdidas patrimoniales que no se computan (recompra de valores homogéneos)"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/ganancias-perdidas-patrimoniales-que-no-bi/perdidas-patrimoniales-que-no-se-tales.html"
+  - label: "AEAT, Manual práctico de Renta 2025: reducciones por aportaciones a sistemas de previsión social"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c13-determinacion-renta-contribuyente-sujeta-gravamen/reducciones-base-imponible-general/reducciones-aportaciones-contribuciones-sistemas-prevision-social/normas-comunes-aplicables-aportaciones-sistemas-social/cuadro-reducciones-aportaciones-contribuciones-sps.html"
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
+  - label: "AEAT, preguntas frecuentes del modelo 720"
+    url: "https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-720-decla_____sobre-bienes-derechos-extranjero_/preguntas-frecuentes.html"
+  - label: "AEAT, Calendario del contribuyente 2026: hasta el 31 de diciembre"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/calendario-contribuyente/calendario-contribuyente-2026/calendario-anual/diciembre/hasta-31-diciembre.html"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { formatEuros } from '../../components/CalculatorUI';
+import { calcularImpuestoAhorro, COMPENSACION_AHORRO, REGLA_RECOMPRA, PLAN_PENSIONES, MODELO_720, MODELO_721, IRPF_AHORRO_BRACKETS } from '../../config/finance';
+
+export const GANANCIA = 3000;
+export const PERDIDA = 1000;
+export const sinCompensar = calcularImpuestoAhorro(GANANCIA);
+export const compensado = calcularImpuestoAhorro(GANANCIA - PERDIDA);
+export const ahorroImpuesto = sinCompensar - compensado;
+export const GANANCIA2 = 8000;
+export const PERDIDA2 = 2500;
+export const sinCompensar2 = calcularImpuestoAhorro(GANANCIA2);
+export const compensado2 = calcularImpuestoAhorro(GANANCIA2 - PERDIDA2);
+export const TIPO_SUPUESTO = 0.3;
+export const pctTxt = (t) => (t * 100).toLocaleString('es-ES');
+export const eur = (n) => n.toLocaleString('es-ES', { useGrouping: 'always' }) + ' €';
+
+El 31 de diciembre es el día en que se cierra tu año fiscal: las ganancias, las pérdidas y las aportaciones que cuentan para la
+Renta de 2026 son las que tengas hechas ese día. Después ya no hay nada que decidir, solo declarar. Por eso este es el mejor momento
+para repasar cuatro cosas: **lo que has ganado o perdido vendiendo inversiones, la regla de los dos meses si piensas recomprar, la
+aportación a un plan de pensiones y los saldos que tengas fuera de España**. Esta guía no te dice qué hacer con tu dinero, solo qué
+puedes revisar y con qué reglas.
+
+Si prefieres verlo en tu agenda, el [calendario fiscal por perfil](/herramientas/calendario-fiscal/) te deja descargar los
+avisos de cada fecha.
+
+## ¿Qué ganancias y pérdidas llevo este año?
+
+Las ganancias y pérdidas de vender fondos, acciones o ETF se cuentan por año natural y se declaran en la base del ahorro. Antes de
+tocar nada, saca de tu broker o gestora el resumen fiscal de lo que has vendido hasta hoy en 2026. Para estimar cuánto te toca pagar,
+usa la [calculadora de impuestos al vender un fondo](/herramientas/calculadora-impuestos-venta-fondos/); y si no recuerdas cómo se
+calcula cada venta, la guía de [cómo declarar ganancias de bolsa](/blog/declarar-ganancias-bolsa-renta/) lo explica paso a paso.
+
+Esto es lo que importa para el cierre del año: las pérdidas patrimoniales de un año se restan primero de las ganancias patrimoniales
+de ese mismo año, y el impuesto se calcula sobre el resultado. Los tramos de la base del ahorro son estos:
+
+<ul>
+  {IRPF_AHORRO_BRACKETS.map((t, i) => (
+    <li>
+      {t.hasta === Infinity ? 'A partir de ' + eur(IRPF_AHORRO_BRACKETS[i - 1].hasta) : 'Hasta ' + eur(t.hasta)}: {pctTxt(t.tipo)} %
+    </li>
+  ))}
+</ul>
+
+### Un ejemplo con números
+
+Supón que en 2026 has vendido un fondo con una ganancia de {eur(GANANCIA)} y otro con una pérdida de {eur(PERDIDA)}. Sin la
+pérdida, el impuesto sería de {formatEuros(sinCompensar)}. Como la pérdida se resta de la ganancia, tributas por {eur(GANANCIA - PERDIDA)}
+y pagas {formatEuros(compensado)}: son {formatEuros(ahorroImpuesto)} menos. Con una ganancia mayor, el efecto cruza tramos: con
+{eur(GANANCIA2)} de ganancia y {eur(PERDIDA2)} de pérdida, el impuesto baja de {formatEuros(sinCompensar2)} a {formatEuros(compensado2)}.
+
+Ojo: la pérdida solo existe si vendes. Una inversión que baja pero que sigues teniendo es una pérdida latente y no cuenta para
+Hacienda. Y las pérdidas que no uses no se pierden del todo: según la AEAT, las que no se compensan este año se pueden arrastrar
+durante {COMPENSACION_AHORRO.aniosArrastre} años (con un límite del {pctTxt(COMPENSACION_AHORRO.limiteCruzado)} % cuando se compensan
+contra rendimientos del capital mobiliario, como dividendos o intereses). Esta información es educativa: que te convenga o no vender
+depende de tu caso y de por qué invertiste.
+
+## ¿Qué dice la regla de los dos meses?
+
+Si vendes con pérdidas y recompras lo mismo, Hacienda no te deja anotar esa pérdida todavía. Es la llamada regla antiaplicación de
+pérdidas: la pérdida **no se computa** si has comprado valores homogéneos dentro de un plazo antes o después de la venta. El plazo
+es de **{REGLA_RECOMPRA.valoresCotizados}** para los valores admitidos a negociación (acciones y ETF) y de **{REGLA_RECOMPRA.valoresNoCotizados}**
+para los que no lo están (los fondos de inversión).
+
+Dos consecuencias prácticas de cara a diciembre:
+
+- **Vender el 30 de diciembre y recomprar en enero no sirve de nada** si el plazo lo cubre: la ventana mira dos meses hacia atrás
+  y dos hacia delante (un año, en un fondo).
+- La pérdida no desaparece: queda aplazada hasta que vendas lo recomprado. Pero llevas el año con una pérdida que no puedes usar.
+
+La comprobación es sencilla: antes de vender con pérdidas, mira si has comprado lo mismo en los dos meses anteriores (o en el
+último año, si es un fondo) y si tienes pensado volver a comprarlo. Si tienes dudas con un caso concreto, consulta a un asesor fiscal.
+
+## ¿Aporto a un plan de pensiones antes de fin de año?
+
+Las aportaciones a planes de pensiones reducen la base imponible general de la Renta del año en que se hacen, así que la fecha
+límite es el 31 de diciembre. Los límites que fija la AEAT en su Manual de Renta 2025:
+
+- **Plan individual:** hasta {eur(PLAN_PENSIONES.limiteIndividual)} al año.
+- **Con aportación de la empresa a un plan de empleo:** el límite sube hasta {eur(PLAN_PENSIONES.limiteAdicionalEmpleo)} adicionales (el cuadro de la AEAT detalla los casos).
+- **Autónomos que aportan a su propio plan de empleo simplificado:** hasta {eur(PLAN_PENSIONES.limiteAdicionalAutonomos)} adicionales.
+
+El ahorro fiscal depende de tu tipo marginal. Con un tipo supuesto del {pctTxt(TIPO_SUPUESTO)} %, aportar {eur(PLAN_PENSIONES.limiteIndividual)}
+reduciría la cuota en {eur(PLAN_PENSIONES.limiteIndividual * TIPO_SUPUESTO)}; con otro tipo, el resultado cambia. No es un dato tuyo,
+solo un ejemplo para ver la mecánica. Además, el dinero queda inmovilizado, y al rescatarlo todo lo cobrado tributa como
+{PLAN_PENSIONES.tributaComo}. Hay también un tope ligado a tus ingresos del trabajo y de actividades, que está en el cuadro de la
+AEAT. Para comparar con invertir esa misma cantidad en un fondo, usa la
+[calculadora de plan de pensiones frente a fondo indexado](/herramientas/plan-pensiones-vs-fondo-indexado/) y lee
+[cuánto desgrava un plan de pensiones](/blog/plan-de-pensiones-cuanto-desgrava/).
+
+## ¿Tengo que mirar mis saldos en el extranjero?
+
+Los modelos 720 y 721 se basan en el saldo a 31 de diciembre, y el plazo para presentarlos va del 1 de enero al 31 de marzo del año
+siguiente. Por eso conviene anotar ese día lo que tienes fuera:
+
+- **Modelo 720** (cuentas, valores o inmuebles en el extranjero): se presenta si un bloque supera {eur(MODELO_720.umbralPorBloque)}.
+- **Modelo 721** (criptomonedas custodiadas en el extranjero): se presenta si el saldo conjunto supera {eur(MODELO_721.umbralConjunto)}.
+- Si ya lo presentaste antes, solo hay que repetirlo cuando el saldo de un bloque ha subido más de {eur(MODELO_720.incrementoParaRepetir)}.
+
+No hace falta tomar ninguna decisión antes del 31 de diciembre, pero sí saber cuánto tienes ese día. La
+[calculadora del modelo 720](/herramientas/calculadora-modelo-720/) te dice bloque a bloque si te toca, y la guía de
+[quién tiene que presentar el modelo 720](/blog/modelo-720-quien-tiene-que-presentarlo/) explica las sanciones. Si tienes
+criptomonedas, mira también [cómo tributan en España](/blog/criptomonedas-hacienda-como-tributan-espana/).
+
+## ¿Y si soy autónomo?
+
+Además de lo anterior, el Calendario del contribuyente de la AEAT señala el 31 de diciembre de 2026 como último día para comunicar,
+con el modelo 036, la renuncia o la revocación de la estimación directa simplificada y de la estimación objetiva para 2027 y
+sucesivos. En enero llegan los pagos del cuarto trimestre (modelos 111, 115, 130 y 303); sus fechas, con su fuente, están en el
+[calendario fiscal](/herramientas/calendario-fiscal/). Para repasar tus cuotas, usa la
+[calculadora de cuota de autónomos](/herramientas/calculadora-cuota-autonomos/).
+
+## Lista rápida antes del 31 de diciembre
+
+1. Saca el resumen de ventas de 2026 y calcula la ganancia o pérdida neta.
+2. Si vas a vender con pérdidas, comprueba la regla de los dos meses (un año en fondos) antes de recomprar.
+3. Decide si encaja una aportación a un plan de pensiones y qué límite te corresponde.
+4. Anota el saldo a 31 de diciembre de lo que tengas fuera de España.
+5. Si eres autónomo, revisa si quieres cambiar de método para 2027.
+
+## Preguntas frecuentes
+
+**¿Puedo vender el 31 de diciembre y recomprar el 2 de enero para registrar la pérdida?**
+Si recompras valores homogéneos dentro del plazo de la regla ({REGLA_RECOMPRA.valoresCotizados} en acciones y ETF, {REGLA_RECOMPRA.valoresNoCotizados} en
+fondos), la pérdida no se computa hasta que vendas lo recomprado.
+
+**¿Las pérdidas de un año se pueden usar al siguiente?**
+Sí, durante {COMPENSACION_AHORRO.aniosArrastre} años, según el Manual de Renta de la AEAT, y con el límite del {pctTxt(COMPENSACION_AHORRO.limiteCruzado)} % cuando se compensan contra rendimientos del capital mobiliario.
+
+**¿Hasta cuándo puedo aportar al plan de pensiones para 2026?**
+Hasta el 31 de diciembre de 2026 para que cuente en la Renta de ese año. El límite individual es de {eur(PLAN_PENSIONES.limiteIndividual)} al año.
+
+**¿Esto es asesoramiento fiscal?**
+No. Son reglas generales con su fuente oficial; tu caso puede tener particularidades (comunidad autónoma, tipo de producto, situación familiar).

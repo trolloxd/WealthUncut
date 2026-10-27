@@ -1,0 +1,88 @@
+---
+import { BotonCompartir } from '../../../components/CalculatorUI';
+import ToolLayout from '../../../layouts/ToolLayout.astro';
+import ArticleLink from '../../../components/ArticleLink.astro';
+import CalendarioFiscal from '../../../components/CalendarioFiscal';
+import {
+  CALENDARIO_REVISADO,
+  EVENTOS_FISCALES,
+  FUENTE_REGLA_DIA_INHABIL,
+} from '../../../lib/calculos/calendario-fiscal';
+
+// Fecha del build en hora de Madrid: el calendario no enseña fechas ya pasadas (el sitio se reconstruye a diario).
+const desde = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Madrid' });
+const fechaLarga = (f: string) =>
+  new Date(`${f}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+const faqs = [
+  {
+    pregunta: '¿Estas fechas son oficiales?',
+    respuesta:
+      'Cada fecha lleva escrito su estado. Las marcadas como oficiales salen del Calendario del contribuyente 2026 de la AEAT; las fijadas por la norma, como el plazo del 1 de enero al 31 de marzo de los modelos 720 y 721, no cambian cada año; y las previstas son las de 2027, que la AEAT aún no ha publicado, calculadas con el mismo plazo del año anterior.',
+  },
+  {
+    pregunta: '¿Qué pasa si el último día cae en fin de semana?',
+    respuesta:
+      'Cuando el último día de un plazo es inhábil, el plazo termina el primer día hábil siguiente. Es lo que ocurre en 2027 con el 30 de enero, que es sábado.',
+  },
+  {
+    pregunta: '¿Cómo añado el calendario a mi móvil o a mi ordenador?',
+    respuesta:
+      'Descarga el archivo .ics de tu perfil y ábrelo: Google Calendar, Apple Calendar y Outlook lo importan como eventos de día completo, con un aviso 7 días y otro 1 día antes de cada fecha. El archivo es una copia de hoy: si cambia una fecha, vuelve a descargarlo.',
+  },
+  {
+    pregunta: '¿Dónde están las fechas de la Renta 2026?',
+    respuesta:
+      'La AEAT anuncia cada campaña poco antes de que empiece. La de la Renta 2025 fue del 8 de abril al 30 de junio de 2026. Cuando se publique la de 2027, se añade aquí.',
+  },
+];
+---
+
+<ToolLayout
+  title="Calendario fiscal por perfil, con descarga para tu agenda"
+  name="Calendario fiscal"
+  description="Las fechas fiscales que te tocan según seas asalariado, autónomo o inversor, con la fuente de cada una y un calendario .ics para tu agenda."
+  pubDate={new Date('2026-10-27')}
+  sources={[
+    { label: 'AEAT: Calendario del contribuyente 2026', url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/calendario-contribuyente/calendario-contribuyente-2026.html' },
+    { label: FUENTE_REGLA_DIA_INHABIL.etiqueta, url: FUENTE_REGLA_DIA_INHABIL.url },
+  ]}
+  faqs={faqs}
+>
+  <p>
+    Elige tu perfil y verás solo las fechas fiscales que te afectan en los próximos meses, cada una con su fuente. Si
+    quieres que te avisen, descarga el calendario y ábrelo en tu agenda: llevará un aviso 7 días y otro 1 día antes.
+    Fechas revisadas el {fechaLarga(CALENDARIO_REVISADO)}.
+  </p>
+
+  <CalendarioFiscal client:load eventos={EVENTOS_FISCALES} desde={desde} />
+
+  <BotonCompartir client:load texto="Compartir este calendario" />
+
+  <h2>Cómo se han preparado las fechas</h2>
+  <p>
+    Las fechas de 2026 salen del Calendario del contribuyente de la AEAT. El de 2027 todavía no se ha publicado, así que las
+    fechas de 2027 marcadas como previstas aplican el mismo plazo que el año anterior, y si el último día cae en inhábil, el
+    primer hábil siguiente. Se sustituirán por las oficiales en cuanto la AEAT las publique. Lo que tienes que hacer en
+    tu caso concreto depende de tu situación: esto es información, no asesoramiento fiscal.
+  </p>
+
+  <h2>Antes de fin de año</h2>
+  <p>
+    Algunas decisiones fiscales de 2026 solo se pueden tomar hasta el 31 de diciembre. Las tienes ordenadas en la guía{' '}
+    <ArticleLink href="/blog/antes-del-31-de-diciembre-decisiones-fiscales/">qué revisar antes del 31 de diciembre</ArticleLink>.
+    Si tienes dinero en el extranjero, comprueba la obligación en la{' '}
+    <a href="/herramientas/calculadora-modelo-720/">calculadora del modelo 720</a>.
+  </p>
+
+  <h2>Preguntas frecuentes</h2>
+  {
+    faqs.map((f) => (
+      <p>
+        <strong>{f.pregunta}</strong>
+        <br />
+        {f.respuesta}
+      </p>
+    ))
+  }
+</ToolLayout>
