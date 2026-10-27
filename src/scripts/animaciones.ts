@@ -99,7 +99,7 @@ function prepararAparicion() {
   const altoPantalla = window.innerHeight;
   // Un div.grid directo de <main> (p. ej. las letras del glosario) cuenta como contenedor: sus hijos son los bloques.
   const hijosDeMain = [...document.querySelectorAll('main > *')].flatMap((b) => (b.matches('div.grid') ? [...b.children] : [b]));
-  const bloques = hijosDeMain.filter((b) => !b.matches(EXCLUIDOS) && !b.querySelector('article, .prose'));
+  const bloques = hijosDeMain.filter((b) => !b.matches(EXCLUIDOS) && !b.querySelector('article, .prose, [data-escalona], .aparece'));
   const unidades = bloques
     .flatMap(unidadesDe)
     .filter((u) => !u.matches(EXCLUIDOS) && !u.closest('[data-escalona], .aparece') && u.getBoundingClientRect().top > altoPantalla);
@@ -127,6 +127,33 @@ function prepararAparicion() {
     { rootMargin: '0px 0px -8% 0px' }
   );
   unidades.forEach((u) => io.observe(u));
+
+  // Plan B por si el observador no dispara (navegadores raros, saltos de scroll): al hacer scroll, y cada segundo y medio
+  // mientras quede algo en espera, se muestra lo que ya esté por encima del borde inferior de la pantalla.
+  let repasando = false;
+  const repaso = () => {
+    repasando = false;
+    const pendientes = [...document.querySelectorAll('[data-rv="espera"]')];
+    pendientes
+      .filter((u) => u.getBoundingClientRect().top < window.innerHeight * 0.92)
+      .sort(orden)
+      .forEach((u, i) => {
+        io.unobserve(u);
+        mostrar(u, i);
+      });
+    if (pendientes.length === 0) {
+      window.removeEventListener('scroll', alHacerScroll);
+      window.clearInterval(reloj);
+    }
+  };
+  const alHacerScroll = () => {
+    if (!repasando) {
+      repasando = true;
+      window.requestAnimationFrame(repaso);
+    }
+  };
+  window.addEventListener('scroll', alHacerScroll, { passive: true });
+  const reloj = window.setInterval(repaso, 1500);
 
   // Quien navega con teclado puede llegar a algo que aún no ha aparecido: se muestra al recibir el foco.
   document.addEventListener('focusin', (e) => {

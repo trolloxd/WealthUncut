@@ -52,7 +52,10 @@ const filas = serie.map((p) => ({
 <figure class="escena3d not-prose my-8" data-escena3d={escena} data-datos={JSON.stringify(datos)}>
   <figcaption class="mb-3 font-display text-lg text-ink">{datos.titulo}</figcaption>
   <div
-    class="relative h-[24rem] w-full overflow-hidden rounded-2xl border border-border bg-brand-soft sm:h-[26rem]"
+    class:list={[
+      'relative w-full overflow-hidden rounded-2xl border border-border bg-brand-soft',
+      escena === 'coste-ter' ? 'h-[30rem]' : 'h-[24rem] sm:h-[26rem]',
+    ]}
     data-lienzo
   >
     <div class="absolute inset-0 overflow-y-auto p-4 sm:p-5" data-plano>
@@ -75,7 +78,7 @@ const filas = serie.map((p) => ({
       }
       {
         grupos.length > 0 && (
-          <div class="grid min-h-full content-center gap-3">
+          <div class="grid min-h-full content-center gap-2.5">
             {gruposPlano.map((g) => (
               <div class="grid gap-1">
                 {gruposPlano.length > 1 && <p class="text-sm font-semibold text-ink">{g.etiqueta}</p>}

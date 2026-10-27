@@ -136,7 +136,7 @@ export function datosEscena(tipo: TipoEscena, opciones: { euribor?: number; euri
         `${euros(g30[0].valor)} con un TER del ${pct(SUPUESTOS_TER.ters[0])}, ${euros(g30[1].valor)} con el ${pct(SUPUESTOS_TER.ters[1])} y ${euros(g30[2].valor)} con el ${pct(SUPUESTOS_TER.ters[2])}. ` +
         'Valores brutos, antes de impuestos; es un ejemplo, no una previsión.',
       nota: `Ejemplo ilustrativo, no una previsión: ${eurosCorto(SUPUESTOS_TER.inversion)} invertidos una sola vez, ${pct(SUPUESTOS_TER.rentabilidadBruta)} de rentabilidad bruta anual con el TER restado de ella; valores brutos, antes de impuestos.`,
-      fuente: { etiqueta: 'Cálculo propio con los mismos supuestos que la tabla de este artículo', url: '/blog/rentabilidad-neta-fondo-indexado/' },
+      fuente: { etiqueta: 'Cálculo propio con los mismos supuestos que la calculadora de rentabilidad neta', url: '/blog/rentabilidad-neta-fondo-indexado/' },
       grupos,
       leyenda: SUPUESTOS_TER.ters.map((ter, i) => ({ tono: tonos[i], texto: `TER ${pct(ter)}` })),
     };

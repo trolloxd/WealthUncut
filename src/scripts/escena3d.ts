@@ -123,8 +123,8 @@ function construirGrupos(datos: DatosEscena, grupo: Group): { barras: Barra[]; a
   const grupos = datos.grupos ?? [];
   const max = Math.max(...grupos.flatMap((g) => g.barras.map((b) => b.valor)), 1);
   const altoMax = 6;
-  const ancho = 1.15;
-  const hueco = 0.35;
+  const ancho = 1.3;
+  const hueco = 0.5;
   const huecoGrupo = 0.7;
   const anchoDe = (n: number) => n * ancho + (n - 1) * hueco;
   const total = grupos.reduce((t, g) => t + anchoDe(g.barras.length), 0) + (grupos.length - 1) * huecoGrupo;
@@ -136,19 +136,19 @@ function construirGrupos(datos: DatosEscena, grupo: Group): { barras: Barra[]; a
       const x = x0 + ancho / 2 + i * (ancho + hueco);
       const alto = Math.max(0.05, (b.valor / max) * altoMax);
       const malla = caja(ancho, alto, ancho, COLORES_TONO[b.tono], x, 0);
-      const valor = etiqueta([b.texto], 0.7);
+      const valor = etiqueta([b.texto], grupos.length > 1 ? 0.8 : 0.9);
       valor.position.set(x, alto + 0.4, 0);
       grupo.add(malla, valor);
       barras.push({ malla, etiqueta: valor, y0: 0, alto });
     });
     // Con una sola fila (cuota por euríbor) la etiqueta de cada barra va debajo; con varias, la del grupo.
     if (grupos.length > 1) {
-      const nombre = etiqueta([g.etiqueta], 0.9);
+      const nombre = etiqueta([g.etiqueta], 1);
       nombre.position.set(x0 + anchoGrupo / 2, -0.4, 0.9);
       grupo.add(nombre);
     } else {
       g.barras.forEach((b, i) => {
-        const nombre = etiqueta([b.etiqueta.replace('Euríbor ', '')], 0.75);
+        const nombre = etiqueta([b.etiqueta.replace('Euríbor ', '')], 0.9);
         nombre.position.set(x0 + ancho / 2 + i * (ancho + hueco), -0.4, 0.9);
         grupo.add(nombre);
       });
@@ -185,7 +185,7 @@ export async function montar(figura: HTMLElement): Promise<void> {
 
   const camara = new PerspectiveCamera(32, 1.6, 0.1, 100);
   const objetivo = new Vector3(0, alto / 2.3, 0);
-  const estadoInicial = { yaw: -0.5, pitch: 0.32, zoom: datos.grupos ? 0.75 : 1 };
+  const estadoInicial = { yaw: -0.5, pitch: 0.32, zoom: datos.grupos ? (lienzo.clientWidth / Math.max(1, lienzo.clientHeight) < 1.2 ? 0.62 : datos.grupos.length > 1 ? 0.72 : 0.9) : 1 };
   const estado = { ...estadoInicial };
 
   let pintando = false;
@@ -255,7 +255,7 @@ export async function montar(figura: HTMLElement): Promise<void> {
     else if (e.key === 'ArrowRight') estado.yaw = Math.min(1.45, estado.yaw + paso);
     else if (e.key === 'ArrowUp') estado.pitch = Math.min(1.2, estado.pitch + paso);
     else if (e.key === 'ArrowDown') estado.pitch = Math.max(0.05, estado.pitch - paso);
-    else if (e.key === '+' || e.key === '=') estado.zoom = Math.max(0.5, estado.zoom - 0.1);
+    else if (e.key === '+' || e.key === '=') estado.zoom = Math.max(0.4, estado.zoom - 0.1);
     else if (e.key === '-') estado.zoom = Math.min(1.4, estado.zoom + 0.1);
     else if (e.key === 'Home') Object.assign(estado, estadoInicial);
     else cambio = false;
