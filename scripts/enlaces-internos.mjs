@@ -100,7 +100,8 @@ function frontmatterDe(slug) {
 }
 
 const STOP = new Set('de la el los las un una y o en a que por con para del al se su es como cuanto cuánto qué cual cuál mas más tu tus 2026 guia guía impuestos impuesto espana españa ejemplo ejemplos calculo calculadora cuentas'.split(' '));
-const palabras = (t) => new Set(t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').split(/[^a-z0-9ñ]+/).filter((w) => w.length > 3 && !STOP.has(w) && !STOP.has(w.replace(/[0300-036f]/g, ''))));
+const sinTildes = (t) => t.normalize('NFD').replace(/[̀-ͯ]/g, '');
+const palabras = (t) => new Set(sinTildes(t.toLowerCase()).split(/[^a-z0-9ñ]+/).filter((w) => w.length > 3 && !STOP.has(w)));
 
 function afinidad(a, b) {
   const comunes = a.tags.filter((t) => b.tags.includes(t)).length;

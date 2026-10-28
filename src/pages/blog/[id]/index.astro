@@ -10,9 +10,12 @@ import { SITE } from '../../../config/site';
 import { herramientasRelacionadas } from '../../../config/tools';
 import { categoriaDe } from '../../../config/categorias';
 import { terminosEnTexto } from '../../../lib/glosario-enlaces';
+import SeccionH2 from '../../../components/SeccionH2.astro';
+import { idH2Medio } from '../../../lib/cta-medio';
 import NewsletterSignup from '../../../components/NewsletterSignup.astro';
 import IndiceArticulo from '../../../components/IndiceArticulo.astro';
 import ListadoTarjetas from '../../../components/ListadoTarjetas.astro';
+import { TEMAS_MEDIBLES, VARIANTES_FINAL, ctaDeTema, variantePara } from '../../../config/cta.mjs';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => isPublished(data));
@@ -27,6 +30,10 @@ const { Content, headings } = await render(post);
 const { title, description, pubDate, updatedDate, author, sources, hasAffiliateLinks, tags, resumen } = post.data;
 const url = `${SITE.url}/blog/${post.id}/`;
 const categoria = categoriaDe(post.data);
+const temaCta = TEMAS_MEDIBLES.includes(categoria.id) ? categoria.id : 'otro';
+const idH2 = idH2Medio(headings);
+(Astro.locals as unknown as Record<string, unknown>).ctaMedio = idH2 ? { idH2, slug: post.id, tema: temaCta } : undefined;
+const varianteFinal = variantePara(post.id, new Date(), VARIANTES_FINAL);
 
 // Artículos relacionados: los que comparten más etiquetas, y a igualdad, los más recientes.
 const related = allPosts
@@ -101,14 +108,14 @@ const breadcrumbJsonLd = {
         </p>
       )}
       <IndiceArticulo headings={headings} lugar="movil" />
-      <Content components={{ a: ArticleLink }} />
+      <Content components={{ a: ArticleLink, h2: SeccionH2 }} />
     </ArticleMeta>
   </article>
   <IndiceArticulo headings={headings} lugar="lateral" />
   </div>
 
   <div class="mx-auto mt-12 max-w-md">
-    <NewsletterSignup compacta />
+    <NewsletterSignup compacta posicion="final" variante={varianteFinal} tema={temaCta} fraseTema={ctaDeTema(temaCta).boletin} />
   </div>
 
   <aside aria-labelledby="herramientas-relacionadas" class="mt-12 border-t border-border pt-8">

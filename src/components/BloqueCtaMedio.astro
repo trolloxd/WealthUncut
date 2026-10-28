@@ -1,0 +1,30 @@
+---
+// Bloque de captación central de un artículo: herramienta gratuita, plantilla/calendario o newsletter, según el tema y la
+// semana (src/config/cta.mjs). HTML estático: sin JavaScript para pintarlo y sin salto de maquetación.
+// La medición (vista y clic) la hace src/scripts/medicion.ts con los atributos data-cta-*.
+import { TEMAS_MEDIBLES, VARIANTES_MEDIO, ctaDeTema, variantePara } from '../config/cta.mjs';
+
+interface Props {
+  slug: string;
+  tema: string;
+}
+const { slug, tema } = Astro.props;
+const temaMedible = TEMAS_MEDIBLES.includes(tema) ? tema : 'otro';
+const cta = ctaDeTema(tema);
+const variante = variantePara(slug, new Date(), VARIANTES_MEDIO);
+const etiqueta = variante === 'boletin' ? 'Newsletter gratuita' : variante === 'recurso' ? 'Recurso gratuito' : 'Herramienta gratuita';
+const r = variante === 'recurso' ? cta.recurso : cta.herramienta;
+const href = variante === 'boletin' ? '#boletin' : r.href;
+const titulo = variante === 'boletin' ? '5 minutos de finanzas' : r.titulo;
+const texto = variante === 'boletin' ? cta.boletin : r.texto;
+const accion = variante === 'boletin' ? 'Quiero recibirla' : variante === 'recurso' ? 'Abrir' : 'Probarla';
+---
+
+<aside class="not-prose card my-8 p-5" aria-label={etiqueta} data-cta data-cta-pos="medio" data-cta-var={variante} data-cta-tema={temaMedible}>
+  <p class="text-xs font-semibold uppercase tracking-wide text-brand">{etiqueta}</p>
+  <a href={href} class="group mt-1 block">
+    <span class="font-display text-lg text-ink group-hover:text-brand">{titulo}</span>
+    <span class="mt-1 block text-sm text-ink-muted">{texto}</span>
+    <span class="mt-2 block text-sm font-medium text-brand">{accion} →</span>
+  </a>
+</aside>

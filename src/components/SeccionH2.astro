@@ -1,0 +1,10 @@
+---
+// Sustituye al `<h2>` de los artículos MDX. Solo añade algo delante del `h2` elegido por `idH2Medio`
+// (lo deja `[id]/index.astro` en `Astro.locals.ctaMedio`): el bloque de captación central. El resto, igual que antes.
+import BloqueCtaMedio from './BloqueCtaMedio.astro';
+const props = Astro.props as Record<string, unknown> & { id?: string };
+const cta = (Astro.locals as { ctaMedio?: { idH2: string; slug: string; tema: string } }).ctaMedio;
+const delante = cta && props.id === cta.idH2;
+---
+{delante && <BloqueCtaMedio slug={cta.slug} tema={cta.tema} />}
+<h2 {...props}><slot /></h2>
