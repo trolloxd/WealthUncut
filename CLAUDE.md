@@ -256,6 +256,24 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   **al añadir una herramienta o guía importante, añadirla también ahí**. Los artículos programados se
   omiten solos hasta su fecha (igual que en los `relacionados` del glosario).
 
+## Crecimiento y captación automáticos (2026-10-28, sin cuentas ni redes)
+
+- **IndexNow**: `scripts/indexnow.mjs` avisa a Bing y compañía (no a Google) de las URLs nuevas o cambiadas del último commit, solo si están en el sitemap;
+  la clave es pública (`public/<clave>.txt`). Los procedimientos de artículos y mercados lo ejecutan tras publicar; los workflows de `.github/` ya avisan
+  por su cuenta de artículos programados y mercados. Un fallo no invalida nada (sale con código 0).
+- **Enlazado interno**: `scripts/enlaces-internos.mjs` (tras `npm run build`) lee el HTML real y lista páginas con pocos enlaces entrantes o, con
+  `--sugerir=<slug>`, a quién enlazar y quién debería enlazar a un artículo nuevo. Solo informa; las rutinas aplican a mano las sugerencias en el cuerpo del MDX.
+  Feeds RSS por tema en `/blog/tema/<tema>/rss.xml` (`<link rel="alternate">` en cada página de tema) y `/llms.txt` agrupado por tema.
+- **Bloques de captación contextuales** (`src/config/cta.mjs`, un recurso por tema): bloque central en cada artículo (`SeccionH2.astro` + `BloqueCtaMedio.astro`,
+  delante del `##` del medio; HTML estático, CLS 0) con tres variantes (herramienta, plantilla o calendario, newsletter) y titular del formulario final
+  (`NewsletterSignup.astro`, genérico o por tema). La variante sale de `variantePara(slug, fecha)` y **rota cada semana ISO** sola con el build diario.
+  Un tema nuevo en `categorias.ts` necesita su entrada en `CTA_POR_TEMA` (lo comprueba `tests/cta.test.ts`).
+- **Medición propia sin cookies** (`src/scripts/medicion.ts`, `src/lib/medicion.ts`, `/api/medir`): solo contadores agregados por día en el KV
+  (`medicion:AAAA-MM-DD`: evento, posición, variante y tema; tope de 600 eventos/día; sin IP, sin identificador). Respeta DNT y Global Privacy Control.
+  Informe semanal sin IA: `scripts/informe-conversion.mjs`, lanzado los lunes por la tarea `wu-conversion-informe` del Control Center, que lo deja en
+  `work/wealthuncut/crecimiento/informes/`. **Antes de que haya tráfico significativo, añadir a `privacidad.astro` una frase sobre estos contadores anónimos (David decide; las páginas legales no se han tocado).**
+- Plan de consultas de cola larga: `work/wealthuncut/crecimiento/plan.md` (Control Center); sus 10 mejores temas están en `KEYWORDS.md` («Cola de temas prioritarios») y la rutina de artículos los toma primero.
+
 ## Correcciones públicas (decisión de David, 2026-09-25)
 
 `/correcciones/` es el registro público de errores encontrados y arreglados en contenido ya

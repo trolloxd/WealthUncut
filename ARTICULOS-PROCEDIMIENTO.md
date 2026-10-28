@@ -32,6 +32,7 @@ que se publique solo. La rutina se ejecuta a diario, pero casi siempre termina s
 
 ## 3. Qué escribir
 
+- **Primero la «Cola de temas prioritarios» de `KEYWORDS.md`** (sección del final, 2026-10-28): toma los temas de esa tabla en su orden mientras no tengan artículo y sus cifras se puedan verificar. Solo cuando se agote, sigue con lo de abajo.
 - Elige temas de `KEYWORDS.md` que **no tengan artículo todavía** (tabla "Qué artículo cubre cada
   keyword" y "Huecos sin artículo"). Prioridad: las herramientas que aún no tienen pieza de blog
   que las desarrolle (simulador de hipoteca y euríbor, amortizar la hipoteca, alquilar o comprar,

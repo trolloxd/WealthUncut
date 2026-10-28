@@ -297,3 +297,23 @@ Google ya nos enseña en estas búsquedas (pocas impresiones todavía, posición
 | diferencia entre etf y fondo indexado / etf vs fondos indexados | 12 / 9 | `/blog/fondo-indexado-vs-etf-diferencias/` | Cubierta |
 
 Revisar esta tabla cada mes con los datos nuevos de Search Console.
+
+
+## Cola de temas prioritarios (2026-10-28)
+
+Salen de un plan de 30 consultas de cola larga (sin volúmenes: orden por autocompletado, competencia y utilidad). La rutina de reposición toma **estos primero**, por este orden, antes que cualquier otro hueco. Cada artículo lleva su tabla o cálculo propio con cifras de `finance.ts` o fuente oficial verificada; los de «tabla» son **una sola página** por consulta, no una por cifra.
+
+| Orden | Tema (consulta principal) | Formato | Qué lo hace útil | Fuente a verificar |
+|---|---|---|---|---|
+| 1 | sueldo neto 30.000 euros brutos (tabla de 20.000 a 50.000) | Artículo con tabla | Neto por tramo de sueldo y comunidad con la calculadora de sueldo neto | Solo `finance.ts` |
+| 2 | cuota de una hipoteca de 100.000 a 250.000 euros hoy | Artículo con tabla | Cuota fija y variable con el euríbor oficial de `src/data/euribor/ultimo.json` | Fórmula de cuota; euríbor del BOE |
+| 3 | finiquito: cómo se calcula (vacaciones no disfrutadas, pagas) | Artículo | Ejemplo calculado paso a paso | Estatuto de los Trabajadores (BOE) |
+| 4 | a qué edad me puedo jubilar en 2027 | Artículo con tabla | Tabla oficial de edad y cotización exigida | Seguridad Social (Ley 27/2011) |
+| 5 | comisión por amortización anticipada de la hipoteca | Artículo | Euros que cuesta amortizar, enlazando con la calculadora | Ley 5/2019 (BOE) |
+| 6 | 14 pagas o 12 pagas: qué cambia en el neto | Artículo | Comparativa con la calculadora de sueldo neto | Solo `finance.ts` |
+| 7 | gastos de formalización de la hipoteca: quién paga qué | Artículo | Quién paga notaría, registro, gestoría y tasación por ley | Ley 5/2019 (BOE) |
+| 8 | letras del Tesoro: cómo tributan y rentabilidad neta | Artículo | Ejemplo neto de impuestos | AEAT; Tesoro (fecha y subasta) |
+| 9 | doble imposición de dividendos extranjeros: cómo declarar | Artículo | Ejemplo con retención en origen y deducción | AEAT; convenio citado |
+| 10 | impuestos al vender una vivienda (ganancia patrimonial y exenciones) | Artículo | Ejemplo con números y los casos de exención | AEAT |
+
+Plan completo (30 consultas, herramientas a construir y cómo medir): `work/wealthuncut/crecimiento/plan.md` del Control Center. Regla: si no puedes verificar una cifra de un tema de esta lista, déjalo para el siguiente lote y escribe el siguiente de la lista; no inventes.
