@@ -2,6 +2,7 @@ import { getCollection } from 'astro:content';
 import { isPublished } from '../lib/posts';
 import { TOOLS } from '../config/tools';
 import { SITE } from '../config/site';
+import { CATEGORIAS, categoriaDe } from '../config/categorias';
 
 // Resumen del sitio para asistentes de IA (convención llms.txt). Se genera en el build con lo publicado.
 export async function GET() {
@@ -15,8 +16,19 @@ export async function GET() {
     '## Herramientas',
     ...TOOLS.map((t) => l(t.name, t.href, t.description)),
     '',
-    '## Guías',
-    ...guias.map((p) => l(p.data.title, `/blog/${p.id}/`, p.data.description)),
+    '## Guías por tema',
+    ...CATEGORIAS.flatMap((c) => {
+      const delTema = guias.filter((p) => categoriaDe(p.data).id === c.id);
+      if (delTema.length === 0) return [];
+      return ['', `### ${c.nombre}`, l('Todas las guías del tema', `/blog/tema/${c.id}/`, c.descripcion), ...delTema.map((p) => l(p.data.title, `/blog/${p.id}/`, p.data.description))];
+    }),
+    '',
+    '## Actualidad y novedades',
+    l('Los datos de hoy', '/hoy/', 'Briefing diario con resumen de mercados, datos oficiales del día y un término del glosario.'),
+    l('Mercados', '/mercados/', 'Una edición diaria con datos oficiales del BCE verificados en dos fuentes.'),
+    l('Boletín 5 minutos de finanzas', '/newsletter/', 'Resumen semanal de lo publicado.'),
+    l('Empieza aquí', '/empieza-aqui/', 'Recorrido por objetivos (ahorrar, invertir, impuestos, vivienda) con las guías y herramientas en orden.'),
+    l('RSS general', '/rss.xml', 'Artículos, ediciones de mercados y boletines. Cada tema tiene además su feed en /blog/tema/<tema>/rss.xml.'),
     '',
     '## Datos y recursos',
     l('Euríbor oficial mes a mes', '/euribor/', 'Euríbor a un año oficial de cada mes publicado en el BOE por el Banco de España, variación y resumen por año.'),
