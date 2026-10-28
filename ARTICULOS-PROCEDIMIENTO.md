@@ -146,6 +146,9 @@ draft: false
 3. Si compila: `git add` solo los archivos nuevos de `src/content/blog/` y `KEYWORDS.md`; commit
    `Artículos programados: <fecha primera> a <fecha última>`; `git pull --rebase origin main`;
    `git push origin main`. No toques ningún otro archivo.
+   Tras el push, avisa a Bing y compañía con `node scripts/indexnow.mjs --desde=HEAD~1` (o `--dry-run` para ver qué enviaría). Solo avisa de URLs
+   que ya están en el sitemap, así que los artículos programados no cuentan hasta su día (de eso se encarga `publicacion-programada.yml`). Si falla, no
+   es un error del lote: sigue y apúntalo en el resumen.
 4. Si el build falla y no puedes arreglarlo, no hagas commit.
 5. Termina con un resumen breve: cuántos programados había, qué artículos has escrito, con qué
    fechas, y qué datos descartaste por no poder verificarlos.
@@ -194,3 +197,11 @@ Cada artículo debe cumplir esto antes del commit (la web crece por búsqueda or
 5. **Partir de consultas reales.** `KEYWORDS.md` recoge las que ya nos muestra Google (Search Console): si una consulta con impresiones no tiene
    guía propia, tiene prioridad sobre un tema nuevo.
 6. Frescura: al cambiar una cifra de un artículo ya publicado, actualiza `updatedDate`.
+
+## Enlazado interno de cada artículo nuevo (añadido el 2026-10-28)
+
+Antes del commit del lote, ejecuta `node scripts/enlaces-internos.mjs --sugerir=<slug>` por cada artículo nuevo (necesita `npm run build` hecho, para
+leer el grafo real de enlaces). Te dice a qué guías y herramientas debería enlazar el artículo y, sobre todo, **qué artículos ya publicados deberían
+enlazar al nuevo** (los de su tema con menos enlaces entrantes). Aplica como mínimo 2 de esas sugerencias de entrada: una frase con el enlace
+(`ArticleLink` o Markdown) en el cuerpo del artículo antiguo, sin tocar sus cifras ni su `updatedDate`. `node scripts/enlaces-internos.mjs --huerfanas`
+lista las páginas con menos de 3 enlaces entrantes desde el contenido.

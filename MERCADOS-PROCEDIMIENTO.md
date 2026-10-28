@@ -44,6 +44,8 @@ como hechos ("el IBEX subirá"); como mucho, qué están esperando los analistas
    `dist/client/mercados/AAAA-MM-DD/index.html` existe.
 9. **Publicar**: commit con el mensaje `Mercados: edición del AAAA-MM-DD` y push a `main`.
    Cloudflare despliega solo. Antes de hacer push, `git pull --rebase` por si hay commits nuevos.
+   Tras el push, `node scripts/indexnow.mjs --desde=HEAD~1` avisa a Bing y compañía (la edición, `/mercados/`, `/hoy/` y la portada). Un fallo ahí no
+   invalida la edición: continúa y no lo trates como error.
 10. **Si no se ha podido verificar lo suficiente** para un artículo fiable, no publicar y terminar
     explicando por qué en el resumen de la sesión. Un día sin edición es mejor que un error.
 
