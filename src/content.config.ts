@@ -9,7 +9,7 @@ const blog = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    author: z.string().default('David Pérez Mitjà'),
+    author: z.string().default('Alex Serra Rodríguez'),
     tags: z.array(z.string()).default([]),
     // Tema del blog (ver src/config/categorias.ts). Si falta, se deduce de las etiquetas.
     categoria: z.string().optional(),
@@ -37,7 +37,7 @@ const mercados = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    author: z.string().default('David Pérez Mitjà'),
+    author: z.string().default('Alex Serra Rodríguez'),
     tags: z.array(z.string()).default([]),
     sources: z
       .array(

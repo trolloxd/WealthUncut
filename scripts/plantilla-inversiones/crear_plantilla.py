@@ -54,7 +54,7 @@ wb = xlsxwriter.Workbook(RUTA)
 wb.set_properties({
     'title': 'Plantilla de seguimiento de inversiones en fondos indexados',
     'subject': 'Cartera, aportaciones, rentabilidad, reequilibrado e impuesto estimado',
-    'author': 'David Pérez Mitjà · WealthUncut',
+    'author': 'Alex Serra Rodríguez · WealthUncut',
     'company': 'WealthUncut',
     'comments': 'Plantilla gratuita de wealthuncut.com. Información educativa, no asesoramiento financiero.',
     'website': 'https://wealthuncut.com/plantilla-seguimiento-inversiones/',
@@ -608,7 +608,7 @@ ws_i.write_url('C35', 'https://wealthuncut.com/herramientas/calculadora-impuesto
 ws_i.write_url('C36', 'https://wealthuncut.com/herramientas/calculadora-interes-compuesto/', f_link, 'Calculadora de interés compuesto')
 ws_i.write_url('C37', 'https://wealthuncut.com/carteras/', f_link, 'Carteras: simula tu cartera de fondos')
 ws_i.write_url('C38', 'https://wealthuncut.com/plantilla-seguimiento-inversiones/', f_link, 'Guía de esta plantilla, con imágenes y vídeos')
-ws_i.merge_range('B40:C41', 'Información educativa, no asesoramiento financiero ni recomendación de inversión. Plantilla de David Pérez Mitjà (WealthUncut), versión 1.0 de octubre de 2026. '
+ws_i.merge_range('B40:C41', 'Información educativa, no asesoramiento financiero ni recomendación de inversión. Plantilla de Alex Serra Rodríguez (WealthUncut), versión 1.0 de octubre de 2026. '
                  'Puedes usarla y modificarla para ti; no la vendas ni la presentes como tuya.', f_nota)
 ws_i.set_landscape()
 ws_i.fit_to_pages(1, 1)

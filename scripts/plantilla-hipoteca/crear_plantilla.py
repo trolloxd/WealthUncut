@@ -53,7 +53,7 @@ wb = xlsxwriter.Workbook(RUTA)
 wb.set_properties({
     'title': 'Plantilla de hipoteca: cuadro de amortización',
     'subject': 'Cuota, intereses, revisiones de tipo y amortizaciones anticipadas',
-    'author': 'David Pérez Mitjà · WealthUncut',
+    'author': 'Alex Serra Rodríguez · WealthUncut',
     'company': 'WealthUncut',
     'comments': 'Plantilla gratuita de wealthuncut.com. Información educativa, no asesoramiento financiero.',
     'website': 'https://wealthuncut.com/plantilla-hipoteca/',

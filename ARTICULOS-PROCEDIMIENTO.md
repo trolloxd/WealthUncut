@@ -90,7 +90,7 @@ title: "..."            # máx. ~70 caracteres, con la keyword principal
 description: "..."      # 140-160 caracteres
 pubDate: AAAA-MM-DD
 updatedDate: AAAA-MM-DD
-author: "David Pérez Mitjà"
+author: "Alex Serra Rodríguez"
 tags: ["...", "..."]
 sources:                # mínimo 2, enlaces reales a fuentes oficiales; compruébalos
   - label: "Organismo: título"

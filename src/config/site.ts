@@ -10,10 +10,10 @@ export const SITE = {
 } as const;
 
 export const AUTHOR = {
-  name: 'David Pérez Mitjà',
-  slug: 'david-perez-mitja',
+  name: 'Alex Serra Rodríguez',
+  slug: 'alex-serra-rodriguez',
   bio:
-    'Formación en International Business y experiencia en finanzas. Escribo sobre cuentas, brokers, fondos indexados e impuestos con datos verificables, no con recomendaciones personalizadas.',
+    'Escribo sobre cuentas, brokers, fondos indexados e impuestos con datos verificables, no con recomendaciones personalizadas.',
   // TODO(david): sustituir por las cuentas reales antes de publicar.
   twitter: '',
   linkedin: '',

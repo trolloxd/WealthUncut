@@ -6,8 +6,7 @@ lista de correo → AdSense (solo con ~25-30 páginas sólidas y tráfico). Es u
 ingresos serio, a tiempo completo, no una web de relleno.
 
 - Dominio: `wealthuncut.com`
-- Autor: David Pérez Mitjà (Barcelona), formación en International Business, experiencia en
-  finanzas. Español, catalán, inglés.
+- Autor: Alex Serra Rodríguez. No añadir formación, experiencia ni ciudad suya sin que lo confirme.
 - Idioma del sitio: solo español (decisión confirmada). El contenido es específico de
   fiscalidad y productos financieros españoles; no tiene sentido traducirlo tal cual.
 

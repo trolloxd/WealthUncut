@@ -56,7 +56,7 @@ wb = xlsxwriter.Workbook(RUTA)
 wb.set_properties({
     'title': 'Plantilla de presupuesto mensual',
     'subject': 'Control de ingresos, gastos, deudas y ahorro',
-    'author': 'David Pérez Mitjà · WealthUncut',
+    'author': 'Alex Serra Rodríguez · WealthUncut',
     'company': 'WealthUncut',
     'comments': 'Plantilla gratuita de wealthuncut.com. Información educativa, no asesoramiento financiero.',
     'website': 'https://wealthuncut.com/plantilla-presupuesto/',
@@ -680,7 +680,7 @@ ws_i.write_url('C33', 'https://wealthuncut.com/herramientas/cuanto-ahorrar-al-me
 ws_i.write_url('C34', 'https://wealthuncut.com/herramientas/calculadora-fondo-de-emergencia/', F(font_color='#0563C1', underline=1), 'Calculadora de fondo de emergencia')
 ws_i.write_url('C35', 'https://wealthuncut.com/herramientas/calculadora-sueldo-neto/', F(font_color='#0563C1', underline=1), 'Calculadora de sueldo neto')
 ws_i.write_url('C36', 'https://wealthuncut.com/plantilla-presupuesto/', F(font_color='#0563C1', underline=1), 'Guía de esta plantilla, con imágenes y vídeos')
-ws_i.merge_range('B38:C39', 'Información educativa, no asesoramiento financiero. Plantilla creada por David Pérez Mitjà (WealthUncut), versión 1.0 de octubre de 2026. '
+ws_i.merge_range('B38:C39', 'Información educativa, no asesoramiento financiero. Plantilla creada por Alex Serra Rodríguez (WealthUncut), versión 1.0 de octubre de 2026. '
                  'Puedes usarla y modificarla para ti; no la vendas ni la presentes como tuya.', f_nota)
 ws_i.set_landscape()
 ws_i.fit_to_pages(1, 1)

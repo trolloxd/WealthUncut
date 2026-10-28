@@ -18,15 +18,12 @@ const profileJsonLd = {
 
 <BaseLayout
   title={`${AUTHOR.name}, autor`}
-  description={`Quién escribe en ${SITE.name}: ${AUTHOR.name}, formación en International Business y experiencia en finanzas, desde Barcelona.`}
+  description={`Quién escribe en ${SITE.name}: ${AUTHOR.name}.`}
   extraJsonLd={[profileJsonLd]}
 >
   <h1 class="mb-6 font-display text-3xl text-ink">{AUTHOR.name}</h1>
   <div class="prose max-w-none">
     <p>{AUTHOR.bio}</p>
-    <p>
-      Vivo en Barcelona. Escribo en español; hablo también catalán e inglés.
-    </p>
     <p>
       <strong>Por qué escribo esto:</strong> quería un sitio de finanzas para gente joven en
       España que no vendiera humo ni recomendaciones genéricas, con herramientas propias,

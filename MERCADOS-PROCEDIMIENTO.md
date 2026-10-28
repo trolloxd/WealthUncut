@@ -95,7 +95,7 @@ Archivo `src/content/mercados/AAAA-MM-DD.mdx`:
 title: "Título concreto de lo más importante del día (máx. 60 caracteres, para que no se corte en Google)"
 description: "Resumen en una frase de 140-160 caracteres."
 pubDate: AAAA-MM-DD
-author: "David Pérez Mitjà"
+author: "Alex Serra Rodríguez"
 tags: ["mercados", "bce", ...]
 sources:
   - label: "Medio o institución: titular o descripción"
