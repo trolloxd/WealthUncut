@@ -269,7 +269,7 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   (`NewsletterSignup.astro`, genérico o por tema). La variante sale de `variantePara(slug, fecha)` y **rota cada semana ISO** sola con el build diario.
   Un tema nuevo en `categorias.ts` necesita su entrada en `CTA_POR_TEMA` (lo comprueba `tests/cta.test.ts`).
 - **Medición propia sin cookies** (`src/scripts/medicion.ts`, `src/lib/medicion.ts`, `/api/medir`): solo contadores agregados por día en el KV
-  (`medicion:AAAA-MM-DD`: evento, posición, variante y tema; tope de 600 eventos/día; sin IP, sin identificador). Respeta DNT y Global Privacy Control.
+  (`medicion:AAAA-MM-DD`: evento, posición, variante y tema; tope de 300 eventos/día (el KV gratuito admite 1.000 escrituras al día y lo comparten el buzón y la newsletter; sin límite por IP); sin IP, sin identificador). Respeta DNT y Global Privacy Control.
   Informe semanal sin IA: `scripts/informe-conversion.mjs`, lanzado los lunes por la tarea `wu-conversion-informe` del Control Center, que lo deja en
   `work/wealthuncut/crecimiento/informes/`. **Antes de que haya tráfico significativo, añadir a `privacidad.astro` una frase sobre estos contadores anónimos (David decide; las páginas legales no se han tocado).**
 - Plan de consultas de cola larga: `work/wealthuncut/crecimiento/plan.md` (Control Center); sus 10 mejores temas están en `KEYWORDS.md` («Cola de temas prioritarios») y la rutina de artículos los toma primero.

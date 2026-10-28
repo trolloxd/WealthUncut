@@ -77,6 +77,7 @@ export function urlsDeArchivo(ruta) {
 }
 
 function git(...a) {
+  if (a.some((x) => x.startsWith('-') && !['--name-only', '--diff-filter=AMR'].includes(x))) throw new Error('Argumento de git no válido');
   return execFileSync('git', a, { cwd: RAIZ, encoding: 'utf8' }).trim();
 }
 
@@ -100,7 +101,7 @@ async function urlsDelSitemap() {
 async function esperar200(url) {
   for (let i = 0; i < 48; i++) {
     try {
-      const r = await fetch(url, { method: 'HEAD', redirect: 'follow' });
+      const r = await fetch(url, { method: 'HEAD', redirect: 'follow', signal: AbortSignal.timeout(15000) });
       if (r.status === 200) return true;
     } catch {
       /* red caída un momento: se reintenta */
@@ -122,7 +123,7 @@ async function main() {
     candidatas = [...new Set(archivos.flatMap((f) => urlsDeArchivo(f)))].map((p) => SITIO + p);
     console.log(`Archivos cambiados desde ${desde}: ${archivos.length}`);
   }
-  const urls = candidatas.filter((u) => sitemap.urls.has(u)).slice(0, MAX_URLS);
+  const urls = candidatas.filter((u) => u.startsWith(`${SITIO}/`) && sitemap.urls.has(u)).slice(0, MAX_URLS);
   const fuera = candidatas.filter((u) => !sitemap.urls.has(u));
   if (fuera.length) console.log(`Omitidas (no están en el sitemap de ${sitemap.origen}, p. ej. programadas): ${fuera.length}`);
   if (!urls.length) return console.log('IndexNow: nada que enviar.');

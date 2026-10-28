@@ -9,8 +9,8 @@
 import { EVENTOS, POSICIONES, TEMAS_MEDIBLES, VARIANTES_FINAL, VARIANTES_MEDIO } from '../config/cta.mjs';
 
 export const CLAVE_MEDICION = 'medicion:';
-/** Tope de eventos contados por día: acota las escrituras en el KV (límite gratuito de Cloudflare) y el efecto de un abuso. */
-export const TOPE_EVENTOS_DIA = 600;
+/** Tope de eventos contados por día: acota las escrituras en el KV (límite gratuito de Cloudflare: 1.000 escrituras al día en todo el KV, que comparten el buzón y la newsletter) y el efecto de un abuso. */
+export const TOPE_EVENTOS_DIA = 300;
 /** Los contadores se conservan 400 días y luego caducan solos. */
 export const MEDICION_TTL_SEGUNDOS = 400 * 24 * 60 * 60;
 

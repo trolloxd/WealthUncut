@@ -301,19 +301,19 @@ Revisar esta tabla cada mes con los datos nuevos de Search Console.
 
 ## Cola de temas prioritarios (2026-10-28)
 
-Salen de un plan de 30 consultas de cola larga (sin volúmenes: orden por autocompletado, competencia y utilidad). La rutina de reposición toma **estos primero**, por este orden, antes que cualquier otro hueco. Cada artículo lleva su tabla o cálculo propio con cifras de `finance.ts` o fuente oficial verificada; los de «tabla» son **una sola página** por consulta, no una por cifra.
+Salen de un plan de 30 consultas de cola larga (sin volúmenes: orden por autocompletado, competencia y utilidad). La rutina de reposición toma **estos primero**, por este orden, antes que cualquier otro hueco. Cada artículo lleva su tabla o cálculo propio con cifras de `finance.ts` o fuente oficial verificada. **Antes de escribir uno, comprueba que `src/content/blog/` no tiene ya un artículo que lo cubra** (la revisión de calidad del 2026-10-28 quitó de aquí los que ya existen: sueldo neto y 12/14 pagas están en `sueldo-neto-de-bruto-a-neto`, los gastos de formalización de la hipoteca en `gastos-comprar-vivienda-segunda-mano` y la doble imposición de dividendos en `impuesto-dividendos-espana`).
 
-| Orden | Tema (consulta principal) | Formato | Qué lo hace útil | Fuente a verificar |
-|---|---|---|---|---|
-| 1 | sueldo neto 30.000 euros brutos (tabla de 20.000 a 50.000) | Artículo con tabla | Neto por tramo de sueldo y comunidad con la calculadora de sueldo neto | Solo `finance.ts` |
-| 2 | cuota de una hipoteca de 100.000 a 250.000 euros hoy | Artículo con tabla | Cuota fija y variable con el euríbor oficial de `src/data/euribor/ultimo.json` | Fórmula de cuota; euríbor del BOE |
-| 3 | finiquito: cómo se calcula (vacaciones no disfrutadas, pagas) | Artículo | Ejemplo calculado paso a paso | Estatuto de los Trabajadores (BOE) |
-| 4 | a qué edad me puedo jubilar en 2027 | Artículo con tabla | Tabla oficial de edad y cotización exigida | Seguridad Social (Ley 27/2011) |
-| 5 | comisión por amortización anticipada de la hipoteca | Artículo | Euros que cuesta amortizar, enlazando con la calculadora | Ley 5/2019 (BOE) |
-| 6 | 14 pagas o 12 pagas: qué cambia en el neto | Artículo | Comparativa con la calculadora de sueldo neto | Solo `finance.ts` |
-| 7 | gastos de formalización de la hipoteca: quién paga qué | Artículo | Quién paga notaría, registro, gestoría y tasación por ley | Ley 5/2019 (BOE) |
-| 8 | letras del Tesoro: cómo tributan y rentabilidad neta | Artículo | Ejemplo neto de impuestos | AEAT; Tesoro (fecha y subasta) |
-| 9 | doble imposición de dividendos extranjeros: cómo declarar | Artículo | Ejemplo con retención en origen y deducción | AEAT; convenio citado |
-| 10 | impuestos al vender una vivienda (ganancia patrimonial y exenciones) | Artículo | Ejemplo con números y los casos de exención | AEAT |
+| Orden | Tema (consulta principal) | Formato | Qué lo hace útil | Fuente a verificar | Enlazar con |
+|---|---|---|---|---|---|
+| 1 | cuota de una hipoteca de 200.000 euros (y de 100.000 a 250.000) hoy | Artículo con tabla | Cuota absoluta fija y variable con el euríbor oficial de `src/data/euribor/ultimo.json` (no la subida por revisión) | Fórmula de cuota; euríbor del BOE | `revision-hipoteca-euribor-cuanto-sube`, `hipoteca-fija-variable-o-mixta` |
+| 2 | finiquito: cómo se calcula (vacaciones no disfrutadas, pagas) | Artículo | Ejemplo calculado paso a paso | Estatuto de los Trabajadores (BOE) | `indemnizacion-despido-como-se-calcula` (y de vuelta) |
+| 3 | a qué edad me puedo jubilar en 2027 | Artículo con tabla | Tabla oficial de edad y cotización exigida | Seguridad Social (Ley 27/2011) | `independencia-financiera-cuanto-dinero-necesitas` |
+| 4 | comisión por cancelar la hipoteca por completo (amortización total) | Artículo | Euros que cuesta cancelar, con la calculadora | Ley 5/2019 (BOE) | `amortizar-hipoteca-reducir-cuota-o-plazo`, `cambiar-hipoteca-variable-a-fija` |
+| 5 | letras del Tesoro: cómo tributan y rentabilidad neta | Artículo | Ejemplo neto de impuestos | AEAT; Tesoro (fecha y subasta) | `intereses-cuenta-remunerada-deposito-hacienda` |
+| 6 | impuestos al vender una vivienda (ganancia patrimonial y exenciones) | Artículo | Ejemplo con números y los casos de exención | AEAT | `gastos-comprar-vivienda-segunda-mano` |
+| 7 | quién está obligado a declarar la renta (límites) | Artículo | Casos por tipo de ingreso | AEAT Manual de Renta | `/herramientas/calendario-fiscal/` |
+| 8 | rescate del plan de pensiones: cuánto tributa | Artículo | Ejemplo con tramos | AEAT, `finance.ts` | `plan-de-pensiones-cuanto-desgrava` |
+| 9 | modelo 721 criptomonedas: quién debe presentarlo | Artículo | Comprobación al estilo del 720 | AEAT, orden del modelo | `criptomonedas-hacienda-como-tributan-espana`, `modelo-720-quien-tiene-que-presentarlo` |
+| 10 | actualización del alquiler con el índice vigente | Artículo | Ejemplo de subida con tope | INE, Ministerio de Vivienda | `zonas-tensionadas-que-cambia-inquilinos-propietarios` |
 
 Plan completo (30 consultas, herramientas a construir y cómo medir): `work/wealthuncut/crecimiento/plan.md` del Control Center. Regla: si no puedes verificar una cifra de un tema de esta lista, déjalo para el siguiente lote y escribe el siguiente de la lista; no inventes.

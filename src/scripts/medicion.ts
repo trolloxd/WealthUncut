@@ -33,10 +33,15 @@ if (!noMedir) {
     );
     bloques.forEach((b) => obs.observe(b));
   }
+  // Un solo clic por bloque y visita; los enlaces de privacidad y baja del formulario no cuentan.
+  const conClic = new WeakSet<Element>();
   document.addEventListener('click', (ev) => {
     const a = (ev.target as Element | null)?.closest('a');
     const bloque = a?.closest<HTMLElement>('[data-cta]');
-    if (a && bloque) enviar(bloque, 'clic');
+    if (!a || !bloque || conClic.has(bloque)) return;
+    if (/^\/(privacidad|newsletter\/baja)\//.test(a.getAttribute('href') ?? '')) return;
+    conClic.add(bloque);
+    enviar(bloque, 'clic');
   });
   document.addEventListener('wu-suscrito', (ev) => {
     const bloque = (ev.target as Element | null)?.closest<HTMLElement>('[data-cta]');

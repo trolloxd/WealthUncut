@@ -42,6 +42,7 @@ function userEnv(nombre) {
 /** Intervalo de Wilson al 95 % de una proporción. */
 export function wilson(exitos, n) {
   if (n === 0) return { p: 0, lo: 0, hi: 0 };
+  exitos = Math.min(exitos, n); // por si un bloque registra más clics que vistas
   const z = 1.96;
   const p = exitos / n;
   const d = 1 + (z * z) / n;
@@ -90,7 +91,7 @@ function informe(dias, desde, hasta) {
   const semana = semanaIso(new Date(`${hasta}T12:00:00Z`));
   const total = sumar(dias);
   const sinDatos = Object.keys(total).length === 0;
-  const topeAlcanzado = dias.filter((d) => d.n >= 600).length;
+  const topeAlcanzado = dias.filter((d) => d.n >= 300).length;
   const L = [];
   L.push(`# Informe de conversión, semana ${semana.anio}-W${String(semana.semana).padStart(2, '0')}`);
   L.push('', `Periodo: ${desde} a ${hasta} (${DIAS} días). Fuente: contadores propios del sitio (sin cookies, sin terceros). Eventos totales contados: ${dias.reduce((s, d) => s + (d.n ?? 0), 0)}.`);
@@ -98,7 +99,7 @@ function informe(dias, desde, hasta) {
     L.push('', 'No hay ningún evento medido en este periodo. Posibles causas: aún no hay tráfico, el despliegue con la medición no está en producción, o los visitantes tienen activado "No rastrear". No hay nada que comparar.');
     return L.join('\n') + '\n';
   }
-  if (topeAlcanzado) L.push('', `Aviso: ${topeAlcanzado} día(s) llegaron al tope de 600 eventos diarios; los datos de esos días están recortados.`);
+  if (topeAlcanzado) L.push('', `Aviso: ${topeAlcanzado} día(s) llegaron al tope de 300 eventos diarios; los datos de esos días están recortados.`);
 
   const porVariante = agrupar(total, 'variante');
   for (const pos of ['medio', 'final', 'herramienta', 'otro']) {

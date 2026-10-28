@@ -2,8 +2,8 @@
  * Bloques de captación contextuales (newsletter, herramientas gratuitas, plantillas y calendario fiscal).
  *
  * Un solo sitio para: qué recurso se ofrece en cada tema, qué variantes se comparan y cómo se reparten.
- * Es `.mjs` para que lo use también `astro.config.mjs` (plugin rehype del bloque central de los artículos)
- * y las pruebas, sin pasos de compilación.
+ * Es `.mjs` para que lo usen también las pruebas y `scripts/informe-conversion.mjs`, sin pasos de compilación.
+ * El bloque central de los artículos lo coloca `SeccionH2.astro`.
  *
  * Reparto de variantes, sin cookies ni almacenamiento en el navegador: la variante de cada artículo sale de
  * una función determinista del slug y de la semana ISO del build (`variantePara`). Como el sitio se
