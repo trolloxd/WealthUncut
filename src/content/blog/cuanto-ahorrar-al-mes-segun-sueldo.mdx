@@ -1,0 +1,165 @@
+---
+title: "Cuánto ahorrar al mes según tu sueldo: regla 50/30/20"
+description: "Cuánto ahorrar al mes según tu sueldo neto, con la regla 50/30/20 en euros, los datos de gasto del INE y qué hacer si el alquiler no te deja llegar al 20 %."
+resumen: "Una referencia habitual es ahorrar el 20 % del sueldo neto: la regla 50/30/20 reparte la mitad para gastos necesarios, un 30 % para gustos y un 20 % para ahorro. No es una norma: si la vivienda se come más de la mitad, lo útil es fijar un porcentaje propio, automatizarlo y subirlo cuando suban los ingresos."
+pubDate: 2026-11-04
+updatedDate: 2026-11-04
+author: "David Pérez Mitjà"
+tags: ["ahorro", "educación financiera", "calculadoras"]
+categoria: "ahorro"
+sources:
+  - label: "INE: Encuesta de Presupuestos Familiares, año 2025 (nota de prensa)"
+    url: "https://www.ine.es/dyngs/Prensa/EPF2025.htm"
+  - label: "INE: Índice de Precios de Consumo, septiembre de 2026 (nota de prensa del 14 de octubre de 2026)"
+    url: "https://www.ine.es/dyngs/Prensa/IPC0926.htm"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { calcularAhorro } from '../../components/SavingsRuleCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import ArticleLink from '../../components/ArticleLink.astro';
+
+export const sueldos = [1200, 1400, 1600, 1800, 2200, 2600];
+export const ej = (rent) => calcularAhorro({ sueldoNeto: 1600, necesidades: 1050, deseos: 310, anios: 10, rentabilidadPct: rent });
+export const pct = (v) => Math.round(v * 1000) / 10;
+
+Una referencia muy extendida es **ahorrar el 20 % de tu sueldo neto**, lo que te ingresan cada mes después de impuestos y
+Seguridad Social. Es la última cifra de la regla 50/30/20: la mitad para lo necesario, un 30 % para gustos y un 20 % para
+ahorro. Con 1.600 € netos, eso son **{formatEuros(1600 * 0.2)} al mes**. No es una ley ni una meta obligatoria: es un punto de
+partida para saber si vas bien o si algo se te está comiendo el sueldo. Abajo tienes la tabla por sueldos, lo que dicen los
+datos de gasto del INE y qué hacer cuando la vivienda no te deja llegar.
+
+## La regla 50/30/20 en euros, según tu sueldo neto
+
+La regla divide el sueldo neto en tres cajas:
+
+- **50 % para necesidades**: vivienda, comida, transporte, suministros, seguros y las cuotas de deudas. Lo que no puedes
+  dejar de pagar.
+- **30 % para gustos**: restaurantes, viajes, ropa que no necesitas, suscripciones, ocio.
+- **20 % para ahorro**: fondo de emergencia, objetivos (la entrada de un piso, un coche) e inversión a largo plazo.
+
+| Sueldo neto al mes | Necesidades (50 %) | Gustos (30 %) | Ahorro (20 %) | Ahorro al año |
+|---|---|---|---|---|
+| {formatEuros(sueldos[0])} | {formatEuros(sueldos[0] * 0.5)} | {formatEuros(sueldos[0] * 0.3)} | **{formatEuros(sueldos[0] * 0.2)}** | {formatEuros(sueldos[0] * 0.2 * 12)} |
+| {formatEuros(sueldos[1])} | {formatEuros(sueldos[1] * 0.5)} | {formatEuros(sueldos[1] * 0.3)} | **{formatEuros(sueldos[1] * 0.2)}** | {formatEuros(sueldos[1] * 0.2 * 12)} |
+| {formatEuros(sueldos[2])} | {formatEuros(sueldos[2] * 0.5)} | {formatEuros(sueldos[2] * 0.3)} | **{formatEuros(sueldos[2] * 0.2)}** | {formatEuros(sueldos[2] * 0.2 * 12)} |
+| {formatEuros(sueldos[3])} | {formatEuros(sueldos[3] * 0.5)} | {formatEuros(sueldos[3] * 0.3)} | **{formatEuros(sueldos[3] * 0.2)}** | {formatEuros(sueldos[3] * 0.2 * 12)} |
+| {formatEuros(sueldos[4])} | {formatEuros(sueldos[4] * 0.5)} | {formatEuros(sueldos[4] * 0.3)} | **{formatEuros(sueldos[4] * 0.2)}** | {formatEuros(sueldos[4] * 0.2 * 12)} |
+| {formatEuros(sueldos[5])} | {formatEuros(sueldos[5] * 0.5)} | {formatEuros(sueldos[5] * 0.3)} | **{formatEuros(sueldos[5] * 0.2)}** | {formatEuros(sueldos[5] * 0.2 * 12)} |
+
+El "ahorro al año" de la tabla son doce meses. Si cobras en catorce pagas, las dos extra son una buena ocasión para ahorrar
+más sin tocar el presupuesto del mes: el sueldo neto que importa aquí es el que ves en la cuenta cada mes.
+
+Si no sabes cuál es tu neto, mira la última nómina (el "líquido a percibir") o el ingreso del banco. Lo que cuenta es lo que
+llega, no el bruto del contrato.
+
+## Qué dicen los datos: la mitad para necesidades es exigente
+
+La regla es sencilla, pero el 50 % para necesidades no es fácil de cumplir en España. Según la **Encuesta de Presupuestos
+Familiares del INE de 2025**, el gasto medio por hogar fue de 35.101 € al año, y de cada 100 € gastados:
+
+| Grupo de gasto (EPF 2025) | Peso en el presupuesto del hogar |
+|---|---|
+| Vivienda, agua, electricidad, gas y otros combustibles | 33,2 % |
+| Alimentos y bebidas no alcohólicas | 16,0 % |
+| Transporte | 11,5 % |
+
+Solo esos tres grupos suman el 60,7 % de lo que gasta un hogar medio. Ojo, son porcentajes **del gasto**, no del sueldo,
+así que no se pueden comparar uno a uno con la regla. Pero dan una pista clara: en los hogares que menos gastan (el 20 % de
+abajo), la vivienda y los suministros más la comida se llevaron el **61,5 % del presupuesto**, según la misma encuesta.
+Cuanto más ajustado es el sueldo, más pesa lo imprescindible y menos margen queda para el ahorro.
+
+A eso se suma la inflación. El IPC subió un **4,9 % en el año hasta septiembre de 2026**, según el INE, el dato más alto
+desde febrero de 2023. Cuando los precios suben más que el sueldo, la caja de necesidades crece sola y el ahorro se encoge
+si no lo proteges.
+
+## Si no llegas al 20 %: un ejemplo con alquiler
+
+Pongamos a alguien con **1.600 € netos** que paga 750 € de alquiler. Con comida, transporte, suministros y móvil, sus
+necesidades suman 1.050 € al mes. Gasta 310 € en ocio y caprichos. Lo que le queda:
+
+- Ahorro al mes: **{formatEuros(ej(0).ahorroMensual)}**, el {pct(ej(0).pctAhorro)} % del sueldo.
+- La regla pediría {formatEuros(ej(0).objetivoAhorro)}: le faltan {formatEuros(-ej(0).diferenciaObjetivo)} al mes.
+- Sus necesidades son el {pct(1050 / 1600)} % del sueldo, no el 50 %.
+
+¿Lo está haciendo mal? No necesariamente. Con el alquiler que tiene, recortar necesidades es difícil a corto plazo (cambiar
+de piso, compartir o mudarse son decisiones grandes), así que el ajuste realista es otro reparto, por ejemplo un **65/20/15**:
+más peso en lo necesario, menos en gustos y un 15 % de ahorro que sí se puede sostener.
+
+Y ese 15 % no es poco. Ahorrando {formatEuros(ej(0).ahorroMensual)} al mes durante 10 años:
+
+| Escenario a 10 años | Resultado |
+|---|---|
+| Guardado sin rentabilidad | {formatEuros(ej(0).aportado)} |
+| Con un 4 % anual supuesto (no es una previsión) | {formatEuros(ej(4).conRentabilidad)} |
+
+La diferencia entre las dos filas es el interés compuesto: el rendimiento que generan los rendimientos anteriores. Lo
+explicamos con más ejemplos en [interés compuesto: qué es, fórmula y ejemplos reales](/blog/interes-compuesto-explicado-con-ejemplos/).
+Con una inflación como la de septiembre de 2026, guardar el dinero sin ninguna rentabilidad tiene un coste: en
+[qué interés necesitas para no perder dinero](/blog/inflacion-que-interes-necesitas-para-no-perder/) están las cuentas.
+
+## Qué porcentaje ahorrar según tu situación
+
+La regla es una sola cifra para todo el mundo, y la realidad no. Algunas pautas razonables para ajustar tu porcentaje:
+
+- **Si aún no tienes fondo de emergencia**, ahorra todo lo que puedas hasta tenerlo, aunque sea a costa de gustos durante
+  unos meses. Es lo que te evita endeudarte ante un imprevisto. Cuánto necesitas lo calculas en
+  [fondo de emergencia: cuánto debe ser y dónde guardarlo](/blog/fondo-de-emergencia-cuanto-necesitas/).
+- **Si tienes deudas caras** (tarjetas revolving, préstamos al consumo con TAE alta), devolverlas antes suele rendir más que
+  ahorrar: cada euro que amortizas deja de pagar ese interés.
+- **Si vives con tus padres o compartes piso**, tus necesidades pesan menos y el 20 % se queda corto: es el momento en que
+  más fácil es ahorrar un 30 % o más.
+- **Si tienes un objetivo con fecha**, como la entrada de una vivienda, el porcentaje lo marca el objetivo: divide lo que
+  necesitas entre los meses que faltan. En
+  [cuánto dinero necesitas para comprar un piso](/blog/cuanto-ahorrar-entrada-piso/) está el cálculo completo.
+- **Si te suben el sueldo**, una regla útil es ahorrar al menos la mitad de la subida. Tu nivel de vida mejora igual y el
+  ahorro crece sin que lo notes.
+
+## Cómo hacer que el ahorro ocurra
+
+El porcentaje importa menos que la constancia. Tres hábitos que funcionan mejor que la fuerza de voluntad:
+
+1. **Págate primero.** Programa una transferencia automática a otra cuenta el día que cobras, no a final de mes con lo que
+   sobre. Lo que sobra a final de mes suele ser cero.
+2. **Separa el dinero por objetivos.** Una cuenta para el colchón de emergencia y otra para lo demás. Si todo está junto, el
+   colchón se gasta sin darte cuenta.
+3. **Revisa los gastos fijos una vez al año.** Seguros, tarifas de móvil y luz, suscripciones. Un recorte en un gasto fijo
+   ahorra todos los meses sin esfuerzo extra.
+
+Para registrar ingresos y gastos por categorías, con la regla 50/30/20 ya montada, tienes la
+[plantilla de presupuesto mensual en Excel](/plantilla-presupuesto/), gratuita.
+
+## Dónde guardar lo que ahorras
+
+Depende de para qué es. El dinero que puedes necesitar pronto (el fondo de emergencia, la entrada de un piso en dos años) va
+en un sitio sin riesgo y disponible: una cuenta remunerada o un depósito. Las ofertas de ahora están en el
+[comparador de cuentas remuneradas y depósitos](/herramientas/comparador-cuentas-remuneradas/), que se actualiza cada
+semana. El que no vas a tocar en muchos años puede invertirse; la diferencia entre una cosa y otra está en
+[diferencia entre ahorrar e invertir](/blog/diferencia-entre-ahorrar-e-invertir/), y si te preguntas qué se consigue con poco,
+en [invertir 100 euros al mes](/blog/invertir-100-euros-al-mes/).
+
+## Calcula cuánto ahorras tú
+
+La calculadora de [cuánto ahorrar al mes](/herramientas/cuanto-ahorrar-al-mes/) hace estas cuentas con tus cifras: pones tu
+sueldo neto, tus gastos necesarios y tus gustos, y te dice qué porcentaje ahorras, cuánto te separa del 20 % y cuánto sumarías
+en los años que elijas, con o sin rentabilidad.
+
+## Preguntas frecuentes
+
+**¿Qué porcentaje del sueldo es normal ahorrar?**
+No hay un porcentaje oficial. El 20 % de la regla 50/30/20 es una referencia popular; un 10 % ya es un buen comienzo si
+partes de cero, y por encima del 30 % se acelera mucho cualquier objetivo. Lo importante es que sea un porcentaje que puedas
+mantener todos los meses.
+
+**¿La regla 50/30/20 se aplica sobre el sueldo bruto o el neto?**
+Sobre el neto, lo que de verdad te ingresan. Los impuestos y las cotizaciones ya están descontados.
+
+**¿El dinero para la hipoteca o un préstamo va en necesidades o en ahorro?**
+La cuota entera va en necesidades, porque es un pago obligatorio. Si haces amortizaciones anticipadas voluntarias, esa parte
+sí puede contarse como ahorro, porque reduce tu deuda.
+
+**¿Y si cobro en catorce pagas?**
+Haz el presupuesto con la nómina mensual y trata las pagas extra aparte. Destinar una parte fija de cada paga extra al
+ahorro es una forma sencilla de superar el 20 % sin apretar el día a día.
+

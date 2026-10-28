@@ -173,6 +173,13 @@ el 2026-09-24; keywords sin validar todavía con autocompletado.
 | declarar alquiler renta, gastos deducibles alquiler, reduccion alquiler irpf | `declarar-alquiler-renta-gastos-reducciones` | Borrador: bloqueado hasta corregir `IRPF_GENERAL_ESTATAL` | Clúster 8 |
 | irpf por comunidad autonoma comparativa, donde se paga menos irpf | `irpf-por-comunidad-autonoma-donde-se-paga-menos` | Borrador: bloqueado hasta corregir `IRPF_GENERAL_ESTATAL` | Clúster 7 |
 | como hacer una factura de autonomo, retencion 15 7 factura | `como-hacer-factura-autonomo` (3/11) | Programado | Autónomos |
+| cuanto ahorrar al mes segun sueldo, regla 50 30 20 | `cuanto-ahorrar-al-mes-segun-sueldo` (4/11) | Programado | Clúster 5 |
+| fondo de garantia de depositos que cubre, fgd 100000 euros cuenta conjunta | `fondo-garantia-depositos-que-cubre` (5/11) | Programado | Clúster 1 |
+| cambiar hipoteca variable a fija, novacion hipoteca, subrogacion hipoteca comision | `cambiar-hipoteca-variable-a-fija` (6/11) | Programado | Clúster 8 |
+| prestamo personal tin tae, cuanto cuesta un prestamo, desistimiento prestamo 14 dias | `prestamo-personal-tin-tae-intereses` (7/11) | Programado | Clúster 5 |
+| subida sueldo ipc, perdida poder adquisitivo, cuanto tiene que subir el sueldo | `subida-sueldo-ipc-poder-adquisitivo` (8/11) | Programado | Clúster 7 |
+| intereses cuenta remunerada hacienda, como tributan los depositos, intereses renta | `intereses-cuenta-remunerada-deposito-hacienda` (9/11) | Programado | Clúster 4 |
+| independencia financiera cuanto dinero necesito, regla del 4, calculadora fire | `independencia-financiera-cuanto-dinero-necesitas` (10/11) | Programado | Clúster 6 |
 
 Herramientas (añadidas el 2026-09-23) que refuerzan clústeres con intención de "calculadora":
 fondo de emergencia (clúster 5), fondo indexado vs ETF (clúster 3), impuestos al vender un fondo

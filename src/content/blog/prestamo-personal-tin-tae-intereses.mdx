@@ -1,0 +1,161 @@
+---
+title: "Préstamo personal: TIN, TAE y cuánto pagas de intereses"
+description: "Cuánto cuesta de verdad un préstamo personal: cuota, intereses y TAE con comisión y seguro, cómo comparar ofertas y tus derechos para desistir o amortizar."
+resumen: "El TIN es el interés que se aplica a lo que debes; la TAE suma además comisiones y seguros obligatorios, y es la cifra que sirve para comparar préstamos. Un préstamo de 12.000 € a 5 años con un 7,5 % de TIN y un 1 % de comisión de apertura cuesta unos 2.550 € y tiene una TAE cercana al 8,2 %. Por ley puedes desistir en 14 días naturales y amortizar antes con una compensación máxima del 1 %."
+pubDate: 2026-11-07
+updatedDate: 2026-11-07
+author: "David Pérez Mitjà"
+tags: ["educación financiera", "ahorro", "calculadoras"]
+categoria: "ahorro"
+sources:
+  - label: "BOE: Ley 16/2011, de 24 de junio, de contratos de crédito al consumo (arts. 6, 10, 28, 30 y 32)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2011-10970"
+  - label: "BOE: Circular 5/2012 del Banco de España, sobre transparencia de los servicios bancarios (norma decimotercera, cálculo de la TAE)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2012-9058"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { calcularPrestamo } from '../../components/LoanTaeCalculator';
+import { formatEuros, formatEuros2 } from '../../components/CalculatorUI';
+
+export const base = { importe: 12000, meses: 60, tinPct: 7.5, comisionAperturaPct: 1, gastoMensual: 0 };
+export const p = (o = {}) => calcularPrestamo({ ...base, ...o });
+export const pct = (v) => (v * 100).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+export const plazos = [36, 60, 84, 96];
+
+Un préstamo personal cuesta los **intereses** que marca el TIN más las **comisiones y los seguros** que te obliguen a
+contratar. La cifra que lo resume todo es la **TAE**, y es la que hay que mirar para comparar. Ejemplo: 12.000 € a 5 años,
+con un TIN del 7,5 % y un 1 % de comisión de apertura, se pagan con una cuota de **{formatEuros2(p().cuota)} al mes**, cuestan
+**{formatEuros(p().costeTotal)}** en total y tienen una **TAE del {pct(p().tae)} %**. Abajo está cómo se calcula, cuánto cambia
+con el plazo y con un seguro, y qué derechos te da la ley de crédito al consumo.
+
+## TIN y TAE: qué es cada uno
+
+- **TIN (tipo de interés nominal)**: el porcentaje anual que se aplica a lo que debes para calcular los intereses. Es el
+  precio "de escaparate" del dinero.
+- **TAE (tasa anual equivalente)**: el coste total del préstamo expresado como porcentaje anual. Según la Ley 16/2011 de
+  crédito al consumo, incluye los intereses, las comisiones, los impuestos y cualquier otro gasto que tengas que pagar y que el
+  banco conozca, salvo la notaría. Y también **los seguros**, cuando el préstamo en esas condiciones depende de contratarlos.
+
+El cálculo de la TAE está fijado por ley: es el tipo que iguala lo que recibes con el valor actual de todo lo que pagas. Por
+eso dos préstamos con el mismo TIN pueden tener TAE muy distintas, y uno con TIN más bajo puede salir más caro.
+
+## El ejemplo, paso a paso
+
+Un préstamo de **12.000 €** a **5 años** (60 cuotas), con un **TIN del 7,5 %** y una **comisión de apertura del 1 %**. Son
+cifras supuestas para ilustrar el cálculo, no una oferta real.
+
+| Concepto | Importe |
+|---|---|
+| Cuota mensual (sistema francés) | {formatEuros2(p().cuota)} |
+| Intereses en 5 años | {formatEuros(p().intereses)} |
+| Comisión de apertura (1 %) | {formatEuros(p().comision)} |
+| **Coste total** | **{formatEuros(p().costeTotal)}** |
+| Total que devuelves | {formatEuros(p().totalPagado)} |
+| TAE | **{pct(p().tae)} %** |
+
+Fíjate en la diferencia entre TIN y TAE. La mayor parte se debe a la comisión: sin ella, la TAE sería del
+{pct(p({ comisionAperturaPct: 0 }).tae)} %. El resto aparece porque los intereses se pagan cada mes y no una vez al año, así
+que la TAE de un préstamo con cuotas mensuales es algo mayor que el TIN aunque no haya ninguna comisión.
+
+## Cuánto cuesta un seguro "obligatorio"
+
+Muchos préstamos ofrecen un tipo más bajo si contratas un seguro (de vida, de protección de pagos) con el banco. Si en el
+ejemplo añades un seguro de 10 € al mes:
+
+| | Sin seguro | Con seguro de 10 €/mes |
+|---|---|---|
+| Pago mensual | {formatEuros2(p().cuota)} | {formatEuros2(p({ gastoMensual: 10 }).cuota + 10)} |
+| Coste total | {formatEuros(p().costeTotal)} | {formatEuros(p({ gastoMensual: 10 }).costeTotal)} |
+| TAE | {pct(p().tae)} % | **{pct(p({ gastoMensual: 10 }).tae)} %** |
+
+Diez euros al mes parecen poco, pero suben la TAE casi dos puntos. Ahora compara dos ofertas para los mismos 12.000 € a 5
+años:
+
+| | Oferta A | Oferta B |
+|---|---|---|
+| TIN | 7,50 % | 6,90 % |
+| Comisión de apertura | 1 % | 2 % |
+| Seguro obligatorio | No | 15 €/mes |
+| Coste total | {formatEuros(p().costeTotal)} | {formatEuros(p({ tinPct: 6.9, comisionAperturaPct: 2, gastoMensual: 15 }).costeTotal)} |
+| **TAE** | **{pct(p().tae)} %** | **{pct(p({ tinPct: 6.9, comisionAperturaPct: 2, gastoMensual: 15 }).tae)} %** |
+
+La oferta B anuncia un interés más bajo y es bastante más cara. Por eso la regla es sencilla: **compara TAE, no TIN**, y
+pregunta siempre qué productos tienes que contratar para obtener ese tipo.
+
+## Más plazo, cuota más baja y más intereses
+
+Alargar el préstamo baja la cuota, pero pagas intereses durante más tiempo. Con los mismos 12.000 €, 7,5 % de TIN y 1 % de
+comisión:
+
+| Plazo | Cuota mensual | Intereses totales | Coste total |
+|---|---|---|---|
+| {plazos[0] / 12} años | {formatEuros2(p({ meses: plazos[0] }).cuota)} | {formatEuros(p({ meses: plazos[0] }).intereses)} | {formatEuros(p({ meses: plazos[0] }).costeTotal)} |
+| {plazos[1] / 12} años | {formatEuros2(p({ meses: plazos[1] }).cuota)} | {formatEuros(p({ meses: plazos[1] }).intereses)} | {formatEuros(p({ meses: plazos[1] }).costeTotal)} |
+| {plazos[2] / 12} años | {formatEuros2(p({ meses: plazos[2] }).cuota)} | {formatEuros(p({ meses: plazos[2] }).intereses)} | {formatEuros(p({ meses: plazos[2] }).costeTotal)} |
+| {plazos[3] / 12} años | {formatEuros2(p({ meses: plazos[3] }).cuota)} | {formatEuros(p({ meses: plazos[3] }).intereses)} | {formatEuros(p({ meses: plazos[3] }).costeTotal)} |
+
+Pasar de 3 a 8 años deja la cuota en menos de la mitad y casi triplica los intereses. Lo razonable es elegir el plazo más
+corto cuya cuota puedas pagar sin apuros, y no alargar un préstamo más allá de lo que dura lo que compras: pagar un viaje
+durante cinco años es pagar intereses por algo que ya terminó.
+
+## Tus derechos por ley
+
+La Ley 16/2011 de contratos de crédito al consumo, vigente cuando se escribió esta guía (octubre de 2026), se aplica a la
+mayoría de los préstamos personales (quedan fuera, entre otros, los de menos de 200 € y los que tienen garantía hipotecaria).
+Te da cuatro derechos que conviene conocer:
+
+1. **Información antes de firmar.** El banco tiene que darte gratis, antes de que te comprometas, la *Información
+   normalizada europea sobre el crédito al consumo*, con el TIN, la TAE, el coste total y el importe total que devolverás.
+   Es el documento para comparar ofertas.
+2. **Desistimiento en 14 días naturales.** Puedes dejar sin efecto el contrato en los catorce días naturales siguientes a
+   firmarlo (o a recibir las condiciones, si llegan después), sin dar motivos y sin penalización. Tienes que devolver el
+   capital y los intereses de los días que lo has tenido, como muy tarde a los treinta días naturales de comunicarlo.
+3. **Amortizar antes cuando quieras.** Puedes devolver todo o parte del préstamo en cualquier momento, y te tienen que
+   descontar los intereses y costes del tiempo que ya no vas a usar el dinero.
+4. **Compensación limitada.** Si el tipo es fijo, el banco puede cobrarte por esa amortización anticipada como mucho el
+   **1 % de lo que amortizas** si quedan más de doce meses para el final, o el **0,5 %** si queda un año o menos. Si el tipo es
+   variable, no puede cobrar compensación en un periodo sin tipo fijado. Solo de forma excepcional, si demuestra pérdidas
+directas mayores, puede reclamar más, y en ningún caso más de los intereses que habrías pagado hasta el final.
+
+Ejemplo del punto 4: si a mitad del préstamo amortizas 5.000 €, la compensación máxima son {formatEuros(5000 * 0.01)}.
+
+## Antes de pedir un préstamo personal
+
+- **Pregúntate si puedes esperar.** Si el gasto se puede aplazar unos meses, ahorrar primero sale gratis. Con 240 € al mes,
+  la cuota del ejemplo, en 5 años juntarías algo más de 14.000 € en vez de devolverlos.
+- **Ten un colchón antes de endeudarte.** Si un imprevisto te obliga a dejar de pagar, los intereses de demora y los
+  ficheros de morosos encarecen todo. Cuánto colchón necesitas lo calculas en la
+  [calculadora del fondo de emergencia](/herramientas/calculadora-fondo-de-emergencia/).
+- **Mira cuánto pesa la cuota en tu sueldo.** Las cuotas de deudas entran en la parte de "necesidades" de tu presupuesto: si
+  ya pasan del 50 % del neto, el préstamo te dejará sin margen. Hazte una idea con
+  [cuánto ahorrar al mes](/herramientas/cuanto-ahorrar-al-mes/).
+- **Desconfía de las cuotas muy bajas.** Una cuota pequeña suele significar un plazo muy largo o un producto revolving, en el
+  que la deuda se renueva y puede no bajar nunca.
+
+## Calcula tu préstamo
+
+La [calculadora de préstamo y TAE](/herramientas/calculadora-prestamo-tae/) hace estas cuentas con tus datos: importe, plazo,
+TIN, comisión de apertura y cualquier cobro mensual como un seguro. Te da la cuota, los intereses, el coste total y la TAE
+real, para que la compares con la que figura en la oferta del banco. Si en lugar de pedir dinero quieres saber cuánto rinde un
+depósito, la misma calculadora tiene un modo para eso. Y si la deuda que te preocupa es la hipoteca, en
+[amortizar hipoteca: ¿reducir cuota o plazo?](/blog/amortizar-hipoteca-reducir-cuota-o-plazo/) están las cuentas.
+
+## Preguntas frecuentes
+
+**¿Qué es mejor, mirar el TIN o la TAE?**
+La TAE, porque incluye las comisiones y los seguros obligatorios además de los intereses. El TIN sirve para calcular la
+cuota, pero no dice cuánto te cuesta de verdad el préstamo.
+
+**¿Puedo cancelar un préstamo personal recién firmado?**
+Sí, en los 14 días naturales siguientes a la firma, sin dar motivos ni pagar penalización. Solo devuelves el capital y los
+intereses de los días transcurridos.
+
+**¿Cuánto me pueden cobrar por amortizar antes un préstamo personal?**
+Con tipo fijo, como máximo el 1 % de lo que adelantas si quedan más de doce meses, o el 0,5 % si queda un año o menos, salvo
+que el banco demuestre pérdidas mayores (un caso excepcional). Nunca más de los intereses que dejarías de pagar.
+
+**¿Por qué la TAE del banco no coincide con la de la calculadora?**
+Porque puede incluir gastos que no has metido, como un seguro, una comisión de estudio o un mantenimiento de cuenta ligado al
+préstamo. La oferta tiene que detallarlos: compárala concepto a concepto.

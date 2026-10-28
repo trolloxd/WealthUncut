@@ -1,0 +1,175 @@
+---
+title: "Cambiar la hipoteca de variable a fija: costes y cálculo"
+description: "Cómo pasar tu hipoteca de variable a fija con tu banco o con otro, qué comisión máxima pueden cobrarte y a partir de qué euríbor compensa, con un ejemplo."
+resumen: "Puedes pasar una hipoteca variable a fija negociando con tu banco (novación) o llevándola a otro banco (subrogación). Por ley, la comisión por ese cambio solo puede cobrarse en los 3 primeros años del préstamo, con un máximo del 0,05 % del capital reembolsado, y después es cero. Compensa si crees que el euríbor más tu diferencial superará de media el tipo fijo que te ofrecen."
+pubDate: 2026-11-06
+updatedDate: 2026-11-06
+author: "David Pérez Mitjà"
+tags: ["hipoteca", "vivienda", "educación financiera"]
+categoria: "vivienda"
+sources:
+  - label: "BOE: Ley 5/2019, de 15 de marzo, reguladora de los contratos de crédito inmobiliario (art. 23.6 y disposición transitoria primera)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814"
+  - label: "BOE: Ley 2/1994, de 30 de marzo, sobre subrogación y modificación de préstamos hipotecarios (art. 2)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-1994-7556"
+  - label: "BOE: tipos oficiales de referencia del mercado hipotecario de septiembre de 2026 (Banco de España, BOE-A-2026-20519)"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20519"
+hasAffiliateLinks: false
+draft: false
+---
+
+import euribor from '../../data/euribor/ultimo.json';
+import { cuotaFrancesa } from '../../lib/calculos/euribor.ts';
+import { formatEuros } from '../../components/CalculatorUI';
+import { COMISION_CAMBIO_A_FIJO as CF } from '../../config/finance';
+
+export const ult = euribor.historico.at(-1);
+export const mesLargo = (m) => new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${m}-01T00:00:00Z`));
+export const n3 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+export const capital = 150000;
+export const meses = 25 * 12;
+export const dif = 0.8;
+export const variable = cuotaFrancesa(capital, ult.valor + dif, meses);
+export const fijos = [3, 3.5, 4, 4.5];
+export const fijo = (t) => cuotaFrancesa(capital, t, meses);
+export const signo = (v) => (v >= 0 ? '+' : '−') + formatEuros(Math.abs(v));
+export const escenario = (d) => cuotaFrancesa(capital, Math.max(0, ult.valor + d) + dif, meses);
+export const comisionMax = (reembolsado) => (reembolsado * CF.limitePct) / 100;
+
+Pasar una hipoteca de variable a fija se puede hacer de dos formas: **negociándolo con tu banco** (una novación) o
+**llevándote la hipoteca a otro banco** que te ofrezca un tipo fijo (una subrogación). La ley limita lo que pueden cobrarte por
+el cambio: durante los **{CF.aniosConLimite} primeros años** del préstamo, como mucho el **{n2(CF.limitePct)} % del capital
+que se reembolse**, y nada si en la novación no amortizas capital; pasados esos años, **ninguna comisión**. La pregunta
+importante no es el coste del trámite, sino si el tipo fijo que te ofrecen te compensa frente a lo que pagas con el
+euríbor. Abajo está el cálculo con el euríbor oficial y una regla sencilla para comparar.
+
+## Cómo está el euríbor y cuánto pagas en variable
+
+El euríbor que usan las hipotecas es la media mensual que el Banco de España publica en el BOE. El último dato oficial es
+el de {mesLargo(ult.mes)}: **{n3(ult.valor)} %**.
+
+Para el ejemplo de toda esta guía, una hipoteca variable con **150.000 € pendientes, 25 años por delante y un diferencial de
+0,8 puntos**. Con el euríbor de {mesLargo(ult.mes)}, el tipo aplicable es el {n3(ult.valor + dif)} % y la cuota queda en
+**{formatEuros(variable)} al mes**. Si quieres ver cómo cambia tu cuota en la próxima revisión, tienes la
+[calculadora de revisión de la hipoteca](/herramientas/calculadora-revision-hipoteca/), y la explicación paso a paso en
+[revisión de la hipoteca: cuánto sube la cuota con el euríbor](/blog/revision-hipoteca-euribor-cuanto-sube/).
+
+## La regla para comparar: tipo fijo frente a euríbor más diferencial
+
+Un tipo fijo y uno variable salen igual cuando el euríbor más tu diferencial es igual al tipo fijo. Es decir, el **euríbor
+de equilibrio** es el tipo fijo menos tu diferencial. Si crees que el euríbor estará de media por encima de esa cifra durante
+los años que te quedan, el fijo te habría salido mejor; si va a estar por debajo, el variable.
+
+Con el ejemplo y varias ofertas de tipo fijo posibles (son supuestos para ilustrar el cálculo, no ofertas reales):
+
+| Tipo fijo ofrecido | Cuota fija | Frente a la variable de hoy | Euríbor de equilibrio |
+|---|---|---|---|
+| {n2(fijos[0])} % | {formatEuros(fijo(fijos[0]))} | {signo(fijo(fijos[0]) - variable)} al mes | {n2(fijos[0] - dif)} % |
+| {n2(fijos[1])} % | {formatEuros(fijo(fijos[1]))} | {signo(fijo(fijos[1]) - variable)} al mes | {n2(fijos[1] - dif)} % |
+| {n2(fijos[2])} % | {formatEuros(fijo(fijos[2]))} | {signo(fijo(fijos[2]) - variable)} al mes | {n2(fijos[2] - dif)} % |
+| {n2(fijos[3])} % | {formatEuros(fijo(fijos[3]))} | {signo(fijo(fijos[3]) - variable)} al mes | {n2(fijos[3] - dif)} % |
+
+La columna "frente a la variable de hoy" compara con la cuota calculada con el euríbor de {mesLargo(ult.mes)}. Un signo
+menos significa que el fijo es más barato hoy. Pero la cuota variable no se queda quieta: se recalcula en cada revisión.
+
+El euríbor de equilibrio es una aproximación útil, no un cálculo exacto: en la realidad el euríbor sube y baja por el
+camino, y no da igual que suba al principio (cuando debes más) que al final. Aun así, sirve para hacerse la pregunta
+correcta: ¿espero que el euríbor esté de media por encima o por debajo de esa cifra en los próximos años? Nadie lo sabe con
+seguridad, y las previsiones fallan a menudo.
+
+## Qué pasa con la cuota variable si el euríbor se mueve
+
+Para hacerse una idea del riesgo que te quitas al pasar a fijo, esta es la cuota variable del ejemplo con distintos niveles
+de euríbor (mismo capital, mismos años):
+
+| Euríbor | Tipo aplicable | Cuota variable |
+|---|---|---|
+| {n3(Math.max(0, ult.valor - 1))} % (un punto menos) | {n3(Math.max(0, ult.valor - 1) + dif)} % | {formatEuros(escenario(-1))} |
+| {n3(ult.valor)} % ({mesLargo(ult.mes)}) | {n3(ult.valor + dif)} % | {formatEuros(variable)} |
+| {n3(ult.valor + 1)} % (un punto más) | {n3(ult.valor + 1 + dif)} % | {formatEuros(escenario(1))} |
+| {n3(ult.valor + 2)} % (dos puntos más) | {n3(ult.valor + 2 + dif)} % | {formatEuros(escenario(2))} |
+
+El tipo fijo te da una cuota que no cambia pase lo que pase. El precio de esa tranquilidad es que, si el euríbor baja, sigues
+pagando lo mismo. Si te preocupa más no poder pagar una subida que ahorrarte algo si baja, el fijo tiene sentido aunque
+cueste un poco más hoy. Lo comparamos con más detalle en
+[hipoteca fija, variable o mixta: cuál elegir con el euríbor](/blog/hipoteca-fija-variable-o-mixta/).
+
+## Opción 1: novación con tu propio banco
+
+La novación es **modificar tu hipoteca actual** con el mismo banco: cambias el tipo de interés, y a veces también el plazo o
+las vinculaciones. Lo que debes saber:
+
+- **El banco no está obligado a aceptar.** Es una negociación. Si no te ofrece nada razonable, te queda la subrogación.
+- **La comisión está limitada por ley** (artículo 23.6 de la Ley 5/2019) cuando el cambio es a un tipo fijo para el resto
+  del préstamo o a uno con un primer periodo fijo de al menos 3 años: en los {CF.aniosConLimite} primeros años del préstamo,
+  no puede superar la pérdida financiera del banco con el límite del {n2(CF.limitePct)} % del capital que amortices en ese
+  momento. **Si no amortizas capital, no pueden cobrarte comisión por el cambio.** Pasados los {CF.aniosConLimite} primeros
+  años, ninguna.
+- **Se aplica también a hipotecas antiguas.** Aunque la Ley 5/2019 en general solo rige para préstamos firmados desde junio de
+  2019, su disposición transitoria primera la extiende a los contratos anteriores que se novan o subrogan después, y garantiza
+  en todos ellos este derecho del artículo 23.6.
+- **Se firma ante notario** y se inscribe en el registro. Pregunta antes quién asume esos gastos y pide la oferta por escrito.
+
+Ejemplo: si en el primer año del préstamo pactas el paso a fijo y aprovechas para amortizar 10.000 €, la comisión por el
+cambio no puede superar los {formatEuros(comisionMax(10000))} ({n2(CF.limitePct)} % de 10.000 €). Si no amortizas nada,
+cero.
+
+## Opción 2: subrogación a otro banco
+
+En la subrogación, **otro banco paga tu hipoteca al banco actual y pasa a ser tu acreedor**, con sus condiciones. La regula la
+Ley 2/1994 y tiene un procedimiento fijado:
+
+1. El banco nuevo te presenta una **oferta vinculante** con las condiciones del préstamo, junto con un documento sobre los
+   gastos de la subrogación, que incluye los límites legales de la comisión del banco actual.
+2. Si la aceptas, el banco nuevo se lo notifica a tu banco, que tiene **siete días naturales** para certificar cuánto debes.
+3. Desde esa certificación, tu banco tiene **quince días naturales para igualar la oferta** firmando contigo una novación (se
+   llama enervar la subrogación). Si no lo hace, la subrogación sigue adelante.
+4. Tu banco no puede negarse a cobrar: la ley dice expresamente que no tiene derecho a rechazar el pago.
+
+No necesitas el permiso de tu banco para subrogarte. Y como en la subrogación se reembolsa todo el capital al banco antiguo,
+si estás en los {CF.aniosConLimite} primeros años la comisión máxima por el paso a fijo sería el {n2(CF.limitePct)} % de lo
+que debes: con los 150.000 € del ejemplo, **{formatEuros(comisionMax(capital))}** como mucho.
+
+Un efecto práctico: muchas veces basta con traer una oferta de otro banco para que el tuyo mejore la suya, porque sabe que
+tiene ese plazo para igualarla.
+
+## Qué mirar en una oferta de tipo fijo
+
+El tipo de interés no es lo único. Antes de firmar, compara:
+
+- **La TAE y las vinculaciones.** Muchos fijos bajos exigen nómina, seguros de vida y hogar del banco u otros productos. Un
+  seguro caro puede comerse la diferencia de tipo: suma a la cuota lo que cuesta cada seguro al año.
+- **La comisión por amortización anticipada del nuevo tramo fijo.** En los préstamos o tramos a tipo fijo, la ley permite
+  compensaciones más altas que en los variables si amortizas antes de tiempo. Si piensas amortizar a menudo, mira cuánto te
+  cobrarían. Las cuentas de amortizar las tienes en
+  [amortizar hipoteca: ¿reducir cuota o plazo?](/blog/amortizar-hipoteca-reducir-cuota-o-plazo/).
+- **Si es fijo de verdad o mixto.** Un préstamo con unos años fijos y después variable también puede entrar en el límite de
+  comisión si el primer periodo fijo es de al menos 3 años, pero después vuelves a depender del euríbor.
+- **El plazo.** Si aprovechas la novación para alargar años, la cuota baja pero pagarás más intereses en total.
+
+## Calcula tu caso
+
+Para ver tu cuota con distintos tipos y plazos, usa el [simulador de hipoteca con el euríbor real](/herramientas/simulador-hipoteca-euribor/).
+Pon el capital que te queda y los años que faltan, prueba con el tipo fijo que te ofrecen y compáralo con tu variable. Si
+además te planteas amortizar o invertir el dinero que te sobra, en
+[amortizar la hipoteca o invertir](/blog/amortizar-hipoteca-o-invertir/) está el cálculo.
+
+## Preguntas frecuentes
+
+**¿Me pueden cobrar comisión por pasar mi hipoteca variable a fija?**
+Solo durante los {CF.aniosConLimite} primeros años del préstamo, con el límite de la pérdida financiera del banco y del
+{n2(CF.limitePct)} % del capital que se reembolse. Si en la novación no amortizas capital, nada. A partir del cuarto año, nada.
+
+**¿Mi banco está obligado a cambiarme a tipo fijo?**
+No. La novación es un acuerdo. Lo que sí es un derecho es llevarte la hipoteca a otro banco mediante subrogación, y tu banco
+solo puede evitarlo igualando la oferta en quince días naturales.
+
+**¿Compensa pasar a fijo con el euríbor actual?**
+Depende del tipo fijo que te ofrezcan y de tu diferencial. Resta tu diferencial al tipo fijo: si crees que el euríbor estará
+de media por encima de esa cifra durante los años que te quedan, el fijo te habría salido mejor. Nadie puede saberlo con
+certeza, así que pesa también cuánto te afectaría una subida.
+
+**¿Esto es una recomendación?**
+No. Es información general para entender las opciones y hacer tus cálculos. Antes de firmar, lee la ficha de información
+precontractual y la oferta vinculante.

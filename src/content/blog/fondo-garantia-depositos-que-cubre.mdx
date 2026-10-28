@@ -1,0 +1,170 @@
+---
+title: "Fondo de Garantía de Depósitos: qué cubre y qué no"
+description: "Qué cubre el Fondo de Garantía de Depósitos: hasta 100.000 € por titular y entidad, cuentas conjuntas, qué pasa con fondos y acciones y cuándo paga."
+resumen: "El Fondo de Garantía de Depósitos (FGD) cubre hasta 100.000 € por titular y por entidad en cuentas, libretas y depósitos a plazo, y paga en 7 días hábiles si el banco no puede devolver el dinero. Las acciones y los fondos tienen una cobertura aparte de otros 100.000 €, pero solo si la entidad no te los devuelve: nunca cubre que pierdan valor."
+pubDate: 2026-11-05
+updatedDate: 2026-11-05
+author: "David Pérez Mitjà"
+tags: ["ahorro", "cuentas", "educación financiera"]
+categoria: "ahorro"
+sources:
+  - label: "FGD: depósitos dinerarios garantizados (tipos de depósito, importe y cuentas con varios titulares)"
+    url: "https://www.fgd.es/informacion-general/que-es-el-fgd/depositos-dinerarios/depositos-dinerarios-garantizados/"
+  - label: "FGD: depósitos dinerarios no garantizados"
+    url: "https://www.fgd.es/informacion-general/que-es-el-fgd/depositos-dinerarios/depositos-dinerarios-no-garantizados/"
+  - label: "FGD: pago de los importes garantizados (plazo de 7 días hábiles)"
+    url: "https://www.fgd.es/informacion-general/que-es-el-fgd/depositos-dinerarios/pago-de-los-importes-garantizados/"
+  - label: "FGD: depósitos por importes superiores al límite garantizado"
+    url: "https://www.fgd.es/informacion-general/que-es-el-fgd/depositos-dinerarios/depositos-por-importes-superiores-al-limite-garantizado/"
+  - label: "FGD: depósitos en valores garantizados (acciones, fondos y otros valores)"
+    url: "https://www.fgd.es/informacion-general/que-es-el-fgd/depositos-en-valores/depositos-en-valores-garantizados/"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { FGD_COBERTURA } from '../../config/finance';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const L = FGD_COBERTURA.importe;
+export const cubierto = (saldo) => Math.min(saldo, L);
+
+El **Fondo de Garantía de Depósitos (FGD)** te devuelve tu dinero si tu banco quiebra o no puede devolverlo, hasta
+**{formatEuros(L)} por titular y por entidad**. Cubre cuentas corrientes, libretas de ahorro, cuentas remuneradas y
+depósitos a plazo, y paga en un máximo de **7 días hábiles**, sin que tengas que pedirlo. Las acciones y los fondos de
+inversión tienen una cobertura aparte, de otros {formatEuros(L)}, pero solo para el caso de que la entidad no te los
+devuelva: **nunca cubre que tu inversión pierda valor**. Abajo está cómo se cuentan esos {formatEuros(L)} con ejemplos, qué
+queda fuera y qué pasa en casos especiales como una cuenta conjunta o el dinero de la venta de un piso.
+
+## Qué cubre el FGD
+
+Según el propio FGD, cubre en general **todos los depósitos en los que el banco garantiza devolverte el 100 % del
+capital**. En la práctica, lo que usa casi todo el mundo:
+
+- Cuentas corrientes y cuentas nómina.
+- Cuentas o libretas de ahorro y cuentas remuneradas.
+- Depósitos a plazo fijo (imposiciones a plazo).
+- Depósitos estructurados, solo si garantizan devolver al vencimiento el 100 % del capital.
+- El dinero en efectivo que tienes en un banco para invertir (por ejemplo, el saldo pendiente de invertir en una cuenta de
+  valores).
+
+Da igual la moneda: un depósito en dólares también está cubierto, por su equivalente en euros al tipo de cambio del día en
+que se activa la garantía.
+
+## Qué no cubre
+
+El FGD deja fuera los productos en los que el banco **no se compromete a devolverte el nominal** o que no son depósitos en
+sentido legal. Entre ellos:
+
+- Los depósitos estructurados que no garantizan el 100 % del capital.
+- Los valores de deuda que emite el propio banco, incluidos los **pagarés**, y las cesiones temporales de activos.
+- Los certificados de depósito al portador.
+- Los depósitos de otras entidades financieras (bancos, aseguradoras, gestoras), que no son de particulares.
+- Los depósitos de titulares sin identificar según la normativa contra el blanqueo de capitales.
+
+Y lo más importante para quien invierte: **las pérdidas de valor**. Si compras un fondo indexado y la bolsa cae un 20 %, eso
+es riesgo de mercado y no lo cubre nadie. La garantía de valores del FGD (más abajo) solo actúa si la entidad no puede
+devolverte tus acciones o participaciones.
+
+## Cómo se cuentan los {formatEuros(L)}: por titular y por entidad
+
+Aquí está la letra pequeña que más confusiones crea. La garantía se aplica **por depositante y por entidad**, sumando
+todos los depósitos que tengas en ese banco, sean del tipo que sean. Y si una cuenta tiene varios titulares, el saldo
+se reparte entre ellos según el contrato o, si no dice nada, a partes iguales.
+
+| Caso | Saldo | Cubierto | Sin cubrir |
+|---|---|---|---|
+| Una persona, cuenta y depósito en el mismo banco (70.000 € + 50.000 €) | {formatEuros(120000)} | {formatEuros(cubierto(120000))} | {formatEuros(120000 - cubierto(120000))} |
+| Una persona, 80.000 € en el banco A y 80.000 € en el banco B | {formatEuros(160000)} | {formatEuros(160000)} | {formatEuros(0)} |
+| Cuenta conjunta de dos titulares, sin más dinero en ese banco | {formatEuros(150000)} | {formatEuros(2 * cubierto(75000))} ({formatEuros(75000)} cada uno) | {formatEuros(0)} |
+| Cuenta conjunta de dos titulares (150.000 €) y uno tiene además 40.000 € propios en el mismo banco | {formatEuros(190000)} | {formatEuros(cubierto(75000) + cubierto(75000 + 40000))} | {formatEuros(75000 + 40000 - cubierto(75000 + 40000))} |
+
+En el último caso, al titular que tiene dinero propio se le suman su mitad de la cuenta conjunta y su cuenta individual
+({formatEuros(115000)}), y solo {formatEuros(L)} están cubiertos.
+
+Dos detalles más:
+
+- **Cuenta por entidad, no por marca.** Si dos marcas comerciales pertenecen a la misma entidad de crédito, para el FGD son
+  un solo banco. El FGD tiene en su web un buscador de entidades adheridas para comprobarlo.
+- **Lo que debes al banco normalmente no se resta.** Las deudas que tengas con la entidad solo se descuentan si ya estaban
+  vencidas en la fecha que toma el FGD como referencia y tu contrato lo prevé. El banco tiene que avisarte de esto antes de
+  firmar.
+
+Lo que pasa de {formatEuros(L)} no se pierde automáticamente, pero ya no lo paga el FGD: hay que reclamarlo en el concurso de
+acreedores de la entidad, con el resto de acreedores, y sin plazo ni importe asegurados.
+
+## Cuándo está cubierto más de {formatEuros(L)}
+
+Hay una excepción pensada para momentos puntuales en los que mucha gente tiene un saldo alto sin buscarlo. Quedan
+cubiertos **sin límite durante tres meses**, desde que se abonan, los depósitos que procedan de:
+
+- La venta de una vivienda particular (transacciones con inmuebles residenciales de carácter privado).
+- Pagos puntuales ligados al matrimonio, el divorcio, la jubilación, **el despido**, la invalidez o el fallecimiento.
+- Prestaciones de seguros o indemnizaciones por daños causados por un delito o un error judicial.
+
+Si vendes tu piso y cobras 250.000 €, ese dinero está cubierto entero durante tres meses. Pasado ese plazo, vuelve a aplicarse
+el límite general. Y si te despiden, la indemnización también entra en esta excepción. Cómo se calcula está en la
+[calculadora de indemnización por despido](/herramientas/calculadora-indemnizacion-despido/).
+
+## Fondos de inversión, acciones y ETF: la otra garantía
+
+El FGD también tiene una garantía para **valores**: acciones, participaciones en fondos de inversión, ETF y otros
+instrumentos financieros que hayas confiado a una entidad de crédito adherida, en España o en cualquier otro país. Funciona
+así:
+
+- Es **independiente** de la de depósitos: hasta otros {formatEuros(L)}, calculados al valor de mercado del día en que se
+  activa.
+- Solo cubre que la entidad **no te devuelva** los valores. El FGD advierte que, en la mayoría de los casos, si una entidad
+  entra en crisis, los valores depositados pueden traspasarse a otra entidad.
+- **No cubre pérdidas del valor** de la inversión ni el riesgo de crédito.
+- El plazo de pago es más largo: hasta tres meses desde que se determina el importe.
+
+Por eso tener un fondo indexado no es lo mismo que tener un depósito, aunque los dos estén "en el banco". El depósito te
+garantiza el capital; el fondo, no. Lo explicamos en
+[diferencia entre ahorrar e invertir](/blog/diferencia-entre-ahorrar-e-invertir/) y, para fondos en concreto, en
+[qué es un fondo indexado y cómo funciona](/blog/que-es-un-fondo-indexado/).
+
+## Cuándo paga el FGD y cómo
+
+La garantía se activa en dos situaciones: cuando la entidad entra en **concurso de acreedores**, o cuando, tras no
+devolver depósitos vencidos, el Banco de España determina que no puede hacerlo ni parece que vaya a poder pronto. El Banco de
+España tiene que resolverlo en un máximo de cinco días hábiles desde que lo comprueba.
+
+A partir de ahí, el FGD paga los depósitos de dinero **en 7 días hábiles**, y lo hace **sin que los clientes lo
+soliciten**: los bancos le pasan los datos de cada depositante. Hay casos en los que el pago puede aplazarse, por ejemplo si
+la cuenta no ha tenido ningún movimiento en los últimos 24 meses o si hay dudas sobre quién es el titular legal.
+
+## Y si tu banco es de otro país
+
+Muchas cuentas remuneradas populares en España son de bancos con licencia de otro país de la Unión Europea. En esos casos,
+quien paga puede ser el sistema de garantía de depósitos del país de origen, no el FGD español; la propia normativa del FGD
+contempla ese supuesto para las sucursales. Antes de abrir la cuenta, la entidad está obligada a informarte del fondo de
+garantía al que está adherida y de sus límites de cobertura, y cada año te lo recuerda en los extractos. Si no lo ves claro,
+pregúntalo antes de ingresar el dinero.
+
+## Qué hacer con esta información
+
+Para la mayoría de la gente joven, la conclusión es tranquilizadora: un fondo de emergencia o los ahorros para la entrada de
+un piso, mientras no pasen de {formatEuros(L)} por banco, están cubiertos. Si un día se acercan a esa cifra, lo habitual es
+repartirlos entre varias entidades para que cada parte quede dentro del límite.
+
+Para elegir dónde guardarlos, el [comparador de cuentas remuneradas y depósitos](/herramientas/comparador-cuentas-remuneradas/)
+recoge las ofertas actuales con su TAE y su importe máximo, y la [calculadora de préstamo y TAE](/herramientas/calculadora-prestamo-tae/)
+te dice cuánto rinde un depósito después de impuestos. Si estás montando el colchón, empieza por
+[fondo de emergencia: cuánto debe ser y dónde guardarlo](/blog/fondo-de-emergencia-cuanto-necesitas/).
+
+## Preguntas frecuentes
+
+**¿El límite de {formatEuros(L)} es por cuenta o por banco?**
+Por titular y por banco. Si tienes varias cuentas y depósitos en la misma entidad, se suman y el límite se aplica al total.
+
+**¿Una cuenta conjunta tiene el doble de cobertura?**
+En la práctica, sí: el saldo se reparte entre los titulares (a partes iguales si el contrato no dice otra cosa) y cada uno
+tiene su propio límite de {formatEuros(L)}, que también incluye lo que tenga a su nombre en ese banco.
+
+**¿Están garantizados los fondos de inversión?**
+No frente a pérdidas. Lo que cubre el FGD, hasta {formatEuros(L)} aparte, es que una entidad de crédito adherida no te
+devuelva tus participaciones o acciones. Si el fondo baja de valor, no hay garantía.
+
+**¿Tengo que reclamar algo si quiebra mi banco?**
+Para los depósitos de dinero, no: el FGD paga de oficio en un máximo de 7 días hábiles con los datos que le pasa la entidad.
+Solo lo que supere el límite hay que reclamarlo en el concurso.

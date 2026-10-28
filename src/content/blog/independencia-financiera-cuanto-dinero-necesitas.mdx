@@ -1,0 +1,158 @@
+---
+title: "Independencia financiera: cuánto dinero necesitas"
+description: "Cuánto dinero necesitas para la independencia financiera según tus gastos, cuántos años tardarías ahorrando cada mes y qué cambian la inflación y los impuestos."
+resumen: "La cifra de independencia financiera se calcula dividiendo los gastos anuales entre la tasa de retirada: con una tasa del 4 %, son 25 veces lo que gastas al año (500.000 € si gastas 20.000 €). El 4 % es una referencia popular, no una garantía. Lo que más acorta el camino no es la rentabilidad, sino el porcentaje de ingresos que ahorras."
+pubDate: 2026-11-10
+updatedDate: 2026-11-10
+author: "David Pérez Mitjà"
+tags: ["educación financiera", "ahorro", "interés compuesto"]
+categoria: "jubilacion"
+sources:
+  - label: "INE: Índice de Precios de Consumo, septiembre de 2026 (nota de prensa del 14 de octubre de 2026)"
+    url: "https://www.ine.es/dyngs/Prensa/IPC0926.htm"
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
+  - label: "INE: Encuesta de Presupuestos Familiares, año 2025 (nota de prensa)"
+    url: "https://www.ine.es/dyngs/Prensa/EPF2025.htm"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { calcularFire } from '../../components/FireCalculator';
+import { formatEuros } from '../../components/CalculatorUI';
+import { calcularImpuestoAhorro } from '../../config/finance';
+import ArticleLink from '../../components/ArticleLink.astro';
+
+export const base = { gastosAnuales: 20000, patrimonio: 0, ahorroMensual: 600, rentabilidadRealPct: 4, tasaRetiradaPct: 4, edad: 25 };
+export const f = (o = {}) => calcularFire({ ...base, ...o });
+export const tiempo = (m) => (m === null ? 'más de 80 años' : `${Math.floor(m / 12)} años${m % 12 ? ` y ${m % 12} ${m % 12 === 1 ? 'mes' : 'meses'}` : ''}`);
+export const gastos = [12000, 18000, 24000, 30000];
+export const tasas = [3, 3.5, 4];
+export const n1 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+export const objetivo = (g, t) => g / (t / 100);
+export const retiradaBruta = (() => { let w = 20000; for (let i = 0; i < 60; i++) w = 20000 + calcularImpuestoAhorro(w * 0.5); return w; })();
+
+La **independencia financiera** es tener un patrimonio que, invertido, te permita cubrir tus gastos sin depender de un
+sueldo. La cifra se calcula con una división: **tus gastos anuales entre la tasa de retirada**, el porcentaje que sacarías
+cada año. Con una tasa del 4 %, la referencia más citada, necesitas **25 veces lo que gastas al año**: si gastas 20.000 €,
+{formatEuros(f().objetivo)}. Ahorrando 600 € al mes desde cero, con una rentabilidad real supuesta del 4 %, tardarías
+**{tiempo(f().meses)}** en llegar. Abajo están las tablas, por qué el ahorro pesa más que la rentabilidad y lo que el cálculo
+simple no cuenta: inflación, impuestos y malas rachas.
+
+## La fórmula: gastos entre tasa de retirada
+
+**Cifra de independencia financiera = gastos anuales ÷ tasa de retirada**
+
+La tasa de retirada es la parte del patrimonio que retiras cada año para vivir. Si el patrimonio rinde, de media, algo más que
+lo que retiras más la inflación, puede durar muchos años. El 4 % es una referencia popular en el movimiento FIRE
+(independencia financiera, retiro temprano), **no una regla oficial ni una garantía**: con tasas más bajas el patrimonio
+necesario es mayor, pero el margen de seguridad también.
+
+| Gastos al año | Con una tasa del {n1(tasas[2])} % | Con una del {n1(tasas[1])} % | Con una del {n1(tasas[0])} % |
+|---|---|---|---|
+| {formatEuros(gastos[0])} | {formatEuros(objetivo(gastos[0], tasas[2]))} | {formatEuros(objetivo(gastos[0], tasas[1]))} | {formatEuros(objetivo(gastos[0], tasas[0]))} |
+| {formatEuros(gastos[1])} | {formatEuros(objetivo(gastos[1], tasas[2]))} | {formatEuros(objetivo(gastos[1], tasas[1]))} | {formatEuros(objetivo(gastos[1], tasas[0]))} |
+| {formatEuros(gastos[2])} | {formatEuros(objetivo(gastos[2], tasas[2]))} | {formatEuros(objetivo(gastos[2], tasas[1]))} | {formatEuros(objetivo(gastos[2], tasas[0]))} |
+| {formatEuros(gastos[3])} | {formatEuros(objetivo(gastos[3], tasas[2]))} | {formatEuros(objetivo(gastos[3], tasas[1]))} | {formatEuros(objetivo(gastos[3], tasas[0]))} |
+
+Como referencia de gasto real, la Encuesta de Presupuestos Familiares del INE situó el gasto medio **por persona** en España en
+14.066 € en 2025 (35.101 € por hogar). Tu cifra es la tuya: lo que gastarías al año ya sin trabajar, con la vivienda
+incluida. Si la vivienda está pagada, la cifra baja mucho; si vas a pagar alquiler toda la vida, sube.
+
+## Cuánto se tarda: el ahorro manda
+
+Supuestos del ejemplo: partes de cero, quieres cubrir 20.000 € al año, tasa de retirada del 4 % (objetivo de
+{formatEuros(f().objetivo)}) y una **rentabilidad real del 4 % anual**, es decir, ya descontada la inflación, para que todo
+quede en euros de hoy. Es un supuesto, no una previsión.
+
+| Ahorro al mes | Tiempo hasta la independencia financiera |
+|---|---|
+| 300 € | {tiempo(f({ ahorroMensual: 300 }).meses)} |
+| 600 € | {tiempo(f({ ahorroMensual: 600 }).meses)} |
+| 900 € | {tiempo(f({ ahorroMensual: 900 }).meses)} |
+| 1.200 € | {tiempo(f({ ahorroMensual: 1200 }).meses)} |
+
+Y con 600 € al mes, cambiando solo la rentabilidad real supuesta:
+
+| Rentabilidad real anual | Tiempo |
+|---|---|
+| 2 % | {tiempo(f({ rentabilidadRealPct: 2 }).meses)} |
+| 3 % | {tiempo(f({ rentabilidadRealPct: 3 }).meses)} |
+| 4 % | {tiempo(f({ rentabilidadRealPct: 4 }).meses)} |
+| 5 % | {tiempo(f({ rentabilidadRealPct: 5 }).meses)} |
+
+Fíjate en la diferencia. Doblar el ahorro de 600 € a 1.200 € recorta el camino en más de diez años. Subir la rentabilidad un
+punto, del 4 % al 5 %, lo recorta en unos tres. Y la rentabilidad no la controlas; el ahorro, en buena parte, sí.
+
+Además, ahorrar más suele significar gastar menos, y eso **también baja la meta**: con 18.000 € de gastos en vez de 20.000 €,
+el objetivo al 4 % pasa de {formatEuros(objetivo(20000, 4))} a {formatEuros(objetivo(18000, 4))}. Por eso lo que más pesa en
+cuánto tardarás es tu **tasa de ahorro**, el porcentaje de lo que ingresas que no gastas. Cómo calcular la tuya está
+en <ArticleLink href="/blog/cuanto-ahorrar-al-mes-segun-sueldo/">cuánto ahorrar al mes según tu sueldo</ArticleLink>.
+
+## Por qué hay que pensar en rentabilidad real
+
+Las cuentas en "euros de hoy" no son un detalle. Según el INE, los precios subieron un **4,9 % en los doce meses hasta
+septiembre de 2026**. Si tus gastos son 20.000 € hoy, dentro de unos años serán bastante más en euros corrientes, y tu
+objetivo crecerá con ellos. Restar la inflación a la rentabilidad (trabajar con rentabilidad real) resuelve el problema: todos
+los importes quedan en euros de hoy.
+
+Eso exige ser prudente con el supuesto. Un 7 % bruto en bolsa, que usamos en otros ejemplos del sitio, no es un 7 % real:
+hay que quitarle la inflación y los costes. Cómo pesan los costes a largo plazo está en
+[qué es el TER de un fondo y por qué importan las décimas](/blog/ter-fondo-que-es/), y el efecto de la inflación en el dinero
+parado, en [qué interés necesitas para no perder dinero](/blog/inflacion-que-interes-necesitas-para-no-perder/).
+
+## Lo que el cálculo simple no cuenta
+
+**Los impuestos al retirar.** Si vives de vender participaciones de fondos, no todo lo que retiras tributa: solo la ganancia
+que contiene cada venta, en la base del ahorro. Ejemplo: si la mitad de lo que retiras es ganancia, para tener 20.000 €
+netos tendrías que vender unos **{formatEuros(retiradaBruta)}** y pagar {formatEuros(calcularImpuestoAhorro(retiradaBruta / 2))}
+de IRPF. Ese extra hay que sumarlo a los gastos al calcular la meta. Los tramos, en
+[tramos del IRPF del ahorro](/blog/tramos-irpf-ahorro/).
+
+**Las malas rachas al principio.** No es lo mismo que la bolsa caiga un 30 % el año en que empiezas a vivir de tu patrimonio
+que dentro de veinte años. Si cae al principio y sigues retirando lo mismo, vendes barato y el patrimonio puede no
+recuperarse. Es el riesgo de secuencia, y por eso mucha gente prefiere tasas por debajo del 4 % o mantener un colchón en
+liquidez para no vender en los años malos.
+
+**La pensión pública y otros ingresos.** Si la independencia financiera llega antes de la edad de jubilación, el patrimonio
+tiene que cubrir esos años sin pensión. Cotizar menos años también puede reducir la pensión futura. Y al revés: cualquier
+ingreso que mantengas (un trabajo a media jornada, proyectos) reduce mucho lo que necesitas.
+
+**La vida cambia.** Hijos, una vivienda, la salud. Por eso es útil pensar en fases: un colchón de emergencia, después
+independencia parcial (cubrir una parte de los gastos) y, si llega, la total.
+
+## Dónde suele invertirse ese patrimonio
+
+El movimiento FIRE se apoya sobre todo en fondos indexados por sus costes bajos y su diversificación, aunque cada persona
+decide su reparto según su tolerancia al riesgo. Para entenderlos, empieza por
+[qué es un fondo indexado y cómo funciona](/blog/que-es-un-fondo-indexado/); para montar una cartera con varios, por
+[cartera de fondos indexados: cómo montarla paso a paso](/blog/como-montar-cartera-fondos-indexados/). Y si dudas entre un
+plan de pensiones y un fondo para el largo plazo, en
+<ArticleLink href="/blog/plan-pensiones-o-fondo-indexado/">plan de pensiones o fondo indexado</ArticleLink> está la
+comparación con números.
+
+## Calcula tu cifra
+
+La [calculadora de independencia financiera](/herramientas/calculadora-independencia-financiera/) hace estas cuentas con tus
+datos: gastos, patrimonio actual, ahorro mensual, edad, rentabilidad real y tasa de retirada. Te da tu cifra objetivo, cuánto
+llevas y a qué edad llegarías, y te enseña cuánto cambia el plazo si ahorras la mitad o el doble. Para ver el efecto del
+interés compuesto con aportaciones, prueba también la
+[calculadora de interés compuesto](/herramientas/calculadora-interes-compuesto/).
+
+## Preguntas frecuentes
+
+**¿Qué es la regla del 4 %?**
+Una referencia popular según la cual retirar cada año el 4 % del patrimonio inicial, ajustado por la inflación, permitiría que
+el dinero durase muchos años. No es una garantía: depende de cómo se comporten los mercados, sobre todo en los primeros años.
+
+**¿Cuánto dinero necesito para vivir de las rentas en España?**
+Depende de tus gastos. Con la regla del 4 %, 25 veces tu gasto anual: 300.000 € para 12.000 € al año, 500.000 € para 20.000 €.
+Con una tasa más prudente, del 3 %, unas 33 veces.
+
+**¿Se tienen en cuenta los impuestos en la regla del 4 %?**
+No directamente. Si tus retiradas incluyen ganancias que tributan, necesitas retirar algo más para cubrir los mismos gastos, así
+que conviene sumar el impuesto estimado a los gastos al calcular tu cifra.
+
+**¿Es realista para alguien joven?**
+Depende sobre todo de cuánto puedas ahorrar. Aunque no llegues a la independencia total, cada año de gastos cubierto da margen:
+para cambiar de trabajo, reducir jornada o afrontar un imprevisto.

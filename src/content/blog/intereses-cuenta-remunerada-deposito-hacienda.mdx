@@ -1,0 +1,175 @@
+---
+title: "Intereses de cuentas y depósitos: cómo tributan en la renta"
+description: "Cómo tributan los intereses de una cuenta remunerada o un depósito: tramos del ahorro, retención, cuándo se declaran y qué cambia frente a un fondo monetario."
+resumen: "Los intereses de cuentas remuneradas y depósitos son rendimientos del capital mobiliario: tributan en la base del ahorro del IRPF, con los mismos tramos que las ganancias de fondos o acciones, en el año en que se cobran. El banco retiene una parte a cuenta, que se descuenta en la declaración. Las pérdidas de inversiones pueden compensar hasta un 25 % de esos intereses."
+pubDate: 2026-11-09
+updatedDate: 2026-11-09
+author: "David Pérez Mitjà"
+tags: ["impuestos", "cuentas", "ahorro"]
+categoria: "impuestos"
+sources:
+  - label: "AEAT, Manual práctico de Renta 2025: rendimientos procedentes de la cesión a terceros de capitales propios"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c05-rendimientos-capital-mobiliario/rendimientos-integrar-base-imponible-ahorro/rendimientos-procedentes-cesion-terceros-capitales-propios.html"
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
+  - label: "AEAT, Manual práctico de Renta 2025: integración y compensación de rentas en la base imponible del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c12-integracion-compensacion-rentas/reglas-integracion-compensacion-rentas/integracion-compensacion-rentas-base-imponible-ahorro.html"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { calcularImpuestoAhorro, IRPF_AHORRO_BRACKETS, COMPENSACION_AHORRO as CMP, RETENCION_REEMBOLSO_FONDOS, FGD_COBERTURA } from '../../config/finance';
+import { formatEuros, formatEuros2 } from '../../components/CalculatorUI';
+import TramosAhorroTabla from '../../components/TramosAhorroTabla.astro';
+
+export const pct = (v) => Math.round(v * 100);
+export const tae = 2.5;
+export const saldos = [10000, 20000, 50000, 100000, 300000];
+export const intereses = (s) => (s * tae) / 100;
+export const efectivo = (s) => (calcularImpuestoAhorro(intereses(s)) / intereses(s)) * 100;
+export const n1 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+export const capital = 20000;
+export const anios = 5;
+export const cuenta = (() => { let v = capital; for (let i = 0; i < anios; i++) { const int = (v * tae) / 100; v += int - calcularImpuestoAhorro(int); } return v; })();
+export const brutoFondo = capital * Math.pow(1 + tae / 100, anios);
+export const netoFondo = brutoFondo - calcularImpuestoAhorro(brutoFondo - capital);
+export const intEj = 1000;
+export const perdidaEj = 2000;
+export const compensado = Math.min(perdidaEj, intEj * CMP.limiteCruzado);
+
+Los intereses de una cuenta remunerada o de un depósito a plazo **tributan en el IRPF como rendimientos del capital
+mobiliario**, dentro de la **base del ahorro**: la misma que las ganancias de fondos, acciones y los dividendos, con los
+tramos del {pct(IRPF_AHORRO_BRACKETS[0].tipo)} % al {pct(IRPF_AHORRO_BRACKETS.at(-1).tipo)} %. Se declaran **el año en que
+se cobran**, aunque no saques el dinero, y el banco ya te retiene una parte a cuenta que luego se descuenta en la renta. Con
+{formatEuros(20000)} al {n1(tae)} % TAE, cobras {formatEuros(intereses(20000))} de intereses al año y pagas
+**{formatEuros(calcularImpuestoAhorro(intereses(20000)))}** de IRPF por ellos. Abajo están los tramos, una tabla con más
+saldos, cómo se compensan con pérdidas y qué cambia frente a un fondo monetario.
+
+## Qué tipo de renta son los intereses
+
+Para Hacienda, cuando dejas tu dinero a un banco a cambio de un interés estás haciendo una **cesión a terceros de capitales
+propios**. Lo que cobras por ello es rendimiento del capital mobiliario, y según el Manual de Renta de la Agencia Tributaria
+incluye las contraprestaciones "de todo tipo, cualquiera que sea su denominación o naturaleza, tanto si son dinerarias como
+en especie". Eso abarca:
+
+- Los intereses de cuentas corrientes, cuentas remuneradas y libretas.
+- Los intereses de depósitos a plazo, se cobren al vencimiento o periódicamente.
+- Los regalos que te dé el banco por depositar dinero, que son rendimiento en especie.
+
+Todo ello va a la base del ahorro, separada de la del sueldo, y tributa con su propia escala.
+
+## Los tramos que se aplican
+
+La escala del ahorro es progresiva: cada parte paga su tipo, no todo al tipo más alto. Se aplica sobre el total de tus
+rentas del ahorro del año, es decir, tus intereses **se suman** a las ganancias de fondos o acciones que vendas y a los
+dividendos.
+
+<TramosAhorroTabla />
+
+## Cuánto pagas según tu saldo
+
+Suponiendo que solo tienes estos intereses como renta del ahorro y una rentabilidad del {n1(tae)} % TAE durante todo el año (un
+supuesto para el ejemplo; las ofertas actuales están en el
+[comparador de cuentas remuneradas y depósitos](/herramientas/comparador-cuentas-remuneradas/)):
+
+| Saldo | Intereses del año | IRPF | Te quedas | Tipo efectivo |
+|---|---|---|---|---|
+| {formatEuros(saldos[0])} | {formatEuros(intereses(saldos[0]))} | {formatEuros2(calcularImpuestoAhorro(intereses(saldos[0])))} | {formatEuros2(intereses(saldos[0]) - calcularImpuestoAhorro(intereses(saldos[0])))} | {n1(efectivo(saldos[0]))} % |
+| {formatEuros(saldos[1])} | {formatEuros(intereses(saldos[1]))} | {formatEuros2(calcularImpuestoAhorro(intereses(saldos[1])))} | {formatEuros2(intereses(saldos[1]) - calcularImpuestoAhorro(intereses(saldos[1])))} | {n1(efectivo(saldos[1]))} % |
+| {formatEuros(saldos[2])} | {formatEuros(intereses(saldos[2]))} | {formatEuros2(calcularImpuestoAhorro(intereses(saldos[2])))} | {formatEuros2(intereses(saldos[2]) - calcularImpuestoAhorro(intereses(saldos[2])))} | {n1(efectivo(saldos[2]))} % |
+| {formatEuros(saldos[3])} | {formatEuros(intereses(saldos[3]))} | {formatEuros2(calcularImpuestoAhorro(intereses(saldos[3])))} | {formatEuros2(intereses(saldos[3]) - calcularImpuestoAhorro(intereses(saldos[3])))} | {n1(efectivo(saldos[3]))} % |
+| {formatEuros(saldos[4])} | {formatEuros(intereses(saldos[4]))} | {formatEuros2(calcularImpuestoAhorro(intereses(saldos[4])))} | {formatEuros2(intereses(saldos[4]) - calcularImpuestoAhorro(intereses(saldos[4])))} | {n1(efectivo(saldos[4]))} % |
+
+Para la mayoría de los ahorros de una persona joven, los intereses caben en el primer tramo, del
+{pct(IRPF_AHORRO_BRACKETS[0].tipo)} %. Así que, en la práctica, de cada 100 € de intereses te quedan
+{formatEuros(100 * (1 - IRPF_AHORRO_BRACKETS[0].tipo))}. Esto importa al comparar ofertas: una cuenta al {n1(tae)} % TAE rinde,
+después de impuestos, un {n2(tae * (1 - IRPF_AHORRO_BRACKETS[0].tipo))} %. Y si la inflación es más alta que eso, el dinero
+sigue perdiendo poder de compra; lo explicamos en
+[qué interés necesitas para no perder dinero](/blog/inflacion-que-interes-necesitas-para-no-perder/).
+
+## La retención: lo que el banco ya ha pagado por ti
+
+Cuando el banco te abona los intereses, no te los ingresa enteros: **retiene una parte** y la ingresa en Hacienda a tu nombre.
+Es un pago a cuenta, no el impuesto definitivo. En la declaración de la renta se calcula el impuesto real con todas tus rentas
+del ahorro y se resta lo que ya te retuvieron.
+
+Por eso, en el extracto o en la app del banco verás dos cifras: los intereses brutos y los netos. Lo que se declara son los
+**brutos**, y la retención aparece aparte como cantidad ya pagada. Ambas cifras figuran en tus datos fiscales y el borrador de
+la renta las incorpora; lo que te toca es comprobar que están todas las cuentas y depósitos que has tenido durante el año.
+
+## Cuándo se declaran: el año en que se cobran
+
+Los intereses tributan en el ejercicio en que se cobran, **aunque los dejes en la cuenta**. Si un depósito a dos años paga
+todos los intereses al vencimiento, tributan entonces, en una sola declaración. Si una cuenta remunerada paga cada mes,
+tributan cada año los de ese año.
+
+## Si has perdido dinero invirtiendo, puedes compensar
+
+Una regla poco conocida: las **pérdidas patrimoniales** (por ejemplo, vender un fondo o unas acciones por menos de lo que te
+costaron) pueden compensar los intereses, con un límite. Primero se compensan con las ganancias patrimoniales del año; si
+sigue sobrando pérdida, puede restarse de los rendimientos del capital mobiliario **hasta el {pct(CMP.limiteCruzado)} %** de
+estos. Lo que no se compense se arrastra a los **{CMP.aniosArrastre} años siguientes**.
+
+Ejemplo: este año has cobrado {formatEuros(intEj)} de intereses y has vendido un fondo con {formatEuros(perdidaEj)} de pérdidas,
+sin ninguna ganancia.
+
+| Concepto | Importe |
+|---|---|
+| Intereses (rendimiento del capital mobiliario) | {formatEuros(intEj)} |
+| Pérdida que puedes restar este año ({pct(CMP.limiteCruzado)} % de los intereses) | −{formatEuros(compensado)} |
+| Intereses que tributan | {formatEuros(intEj - compensado)} |
+| IRPF sin compensar / compensando | {formatEuros2(calcularImpuestoAhorro(intEj))} / **{formatEuros2(calcularImpuestoAhorro(intEj - compensado))}** |
+| Pérdida pendiente para los próximos {CMP.aniosArrastre} años | {formatEuros(perdidaEj - compensado)} |
+
+Ojo con la regla de recompra: si vendes con pérdidas y vuelves a comprar el mismo fondo o las mismas acciones en poco tiempo,
+la pérdida no se puede usar hasta que vendas lo recomprado. Los detalles y más ejemplos están en
+[cómo declarar ganancias de bolsa en la renta](/blog/declarar-ganancias-bolsa-renta/).
+
+## Cuenta remunerada frente a fondo monetario
+
+Mucha gente compara una cuenta remunerada con un **fondo monetario**, que invierte en activos de muy corto plazo y suele
+moverse poco. Fiscalmente funcionan distinto:
+
+| | Cuenta remunerada o depósito | Fondo monetario |
+|---|---|---|
+| Qué es lo que ganas | Intereses (rendimiento del capital mobiliario) | Ganancia patrimonial al reembolsar |
+| Cuándo tributa | Cada año, al cobrar los intereses | Solo cuando reembolsas (vendes) |
+| Retención | La practica el banco al pagar los intereses | {pct(RETENCION_REEMBOLSO_FONDOS)} % de la ganancia, al reembolsar |
+| Traspaso sin tributar | No aplica | Sí, a otro fondo de inversión |
+| Garantía | FGD hasta {formatEuros(FGD_COBERTURA.importe)} por titular y entidad | No garantiza el valor |
+
+¿Cuánto vale no pagar impuestos cada año? Menos de lo que parece con tipos y plazos así. Con {formatEuros(capital)} al
+{n1(tae)} % anual durante {anios} años (mismo rendimiento en los dos casos, un supuesto para comparar solo el efecto fiscal):
+
+- En la cuenta, pagando el IRPF de los intereses cada año, acabas con **{formatEuros(cuenta)}**.
+- En el fondo, pagando todo al final, acabas con **{formatEuros(netoFondo)}**.
+
+La diferencia, unos {formatEuros(netoFondo - cuenta)}, es pequeña. Lo que de verdad distingue una opción de otra no es tanto el
+impuesto como la garantía del FGD, que el fondo no tiene; la comisión del fondo (su TER), que la cuenta no cobra; y que las
+cuentas suelen tener un tope de saldo remunerado o una promoción que dura unos meses. Cómo funciona el traspaso entre fondos sin
+pagar impuestos está en
+[cómo tributan los fondos de inversión en España](/blog/como-tributan-los-fondos-de-inversion-en-espana/).
+
+## Calcula tus intereses netos
+
+La [calculadora de préstamo y TAE](/herramientas/calculadora-prestamo-tae/), en su modo de depósito, convierte el TIN de una
+cuenta o un depósito en TAE y te da los intereses después de impuestos. Para saber si te conviene más guardar el dinero o
+invertirlo, empieza por [diferencia entre ahorrar e invertir](/blog/diferencia-entre-ahorrar-e-invertir/).
+
+## Preguntas frecuentes
+
+**¿Los intereses de una cuenta remunerada tributan?**
+Sí. Son rendimientos del capital mobiliario y van a la base del ahorro del IRPF, con tipos desde el
+{pct(IRPF_AHORRO_BRACKETS[0].tipo)} %. El banco retiene una parte al pagarlos y el resto se ajusta en la declaración.
+
+**¿Tengo que declararlos si los dejo en la cuenta sin sacarlos?**
+Sí. Tributan el año en que se cobran, no cuando retiras el dinero.
+
+**¿Por qué me ingresan menos intereses de los que anuncia el banco?**
+Porque te abonan los intereses netos, ya descontada la retención a cuenta del IRPF. En la renta se declaran los brutos y la
+retención se resta como ya pagada.
+
+**¿Puedo restar a los intereses lo que perdí con un fondo?**
+Sí, con límite: si después de compensar con tus ganancias del año sigue sobrando pérdida, puedes restar hasta el
+{pct(CMP.limiteCruzado)} % de tus rendimientos del capital mobiliario, y el resto se arrastra {CMP.aniosArrastre} años.
