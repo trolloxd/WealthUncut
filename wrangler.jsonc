@@ -11,6 +11,10 @@
     {
       "binding": "SUGERENCIAS",
       "id": "a49a9627f9394c20a9b1216defce90f5"
+    },
+    {
+      "binding": "MEDICION",
+      "id": "875f170fabfe4db296dc944926d858bd"
     }
   ]
 }

@@ -6,7 +6,7 @@ import { MEDICION_TTL_SEGUNDOS, claveDelDia, leerContadores, sumarEvento, valida
 export const prerender = false;
 
 interface Env {
-  SUGERENCIAS: KVNamespace;
+  MEDICION: KVNamespace;
 }
 
 // Cuenta eventos de los bloques de captación (ver src/lib/medicion.ts). Responde 204 siempre que la petición sea
@@ -25,11 +25,11 @@ export const POST: APIRoute = async ({ request }) => {
   const ev = validarEvento(lectura.cuerpo);
   if (!ev) return new Response(null, { status: 204 });
 
-  const { SUGERENCIAS } = env as unknown as Env;
+  const { MEDICION } = env as unknown as Env;
   try {
     const clave = claveDelDia(new Date());
-    const nuevo = sumarEvento(leerContadores(await SUGERENCIAS.get(clave)), ev);
-    if (nuevo) await SUGERENCIAS.put(clave, JSON.stringify(nuevo), { expirationTtl: MEDICION_TTL_SEGUNDOS });
+    const nuevo = sumarEvento(leerContadores(await MEDICION.get(clave)), ev);
+    if (nuevo) await MEDICION.put(clave, JSON.stringify(nuevo), { expirationTtl: MEDICION_TTL_SEGUNDOS });
   } catch {
     // Si el KV falla, la medición se pierde pero la página no se entera.
   }

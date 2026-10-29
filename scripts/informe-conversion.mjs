@@ -131,7 +131,8 @@ async function leerKV() {
   const token = userEnv('CF_KV_READ_TOKEN');
   const cuenta = userEnv('CF_ACCOUNT_ID');
   if (!token || !cuenta) throw new Error('Faltan CF_KV_READ_TOKEN o CF_ACCOUNT_ID en las variables de entorno.');
-  const ns = readFileSync(join(RAIZ, 'wrangler.jsonc'), 'utf8').match(/"id":\s*"([a-f0-9]{32})"/)?.[1];
+  const ns = readFileSync(join(RAIZ, 'wrangler.jsonc'), 'utf8').match(/"binding":\s*"MEDICION",\s*"id":\s*"([a-f0-9]{32})"/)?.[1];
+  if (!ns) throw new Error('No encuentro el espacio KV MEDICION en wrangler.jsonc.');
   const base = `https://api.cloudflare.com/client/v4/accounts/${cuenta}/storage/kv/namespaces/${ns}`;
   const h = { Authorization: `Bearer ${token}` };
   const dias = {};
