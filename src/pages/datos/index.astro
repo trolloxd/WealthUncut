@@ -19,13 +19,15 @@ const jsonLd = [
     inLanguage: SITE.locale,
     isPartOf: { '@id': `${SITE.url}/#website` },
   },
-  ...DATASETS.map((d) => ({
+  // Solo se marcan como Dataset los conjuntos con licencia propia: el euríbor es un dato oficial del BOE sin licencia nuestra
+  // (decisión de David), y un Dataset sin `license` da aviso en Search Console. Sigue visible en la página y descargable.
+  ...DATASETS.filter((d) => d.licenciaPropia !== false).map((d) => ({
     '@context': 'https://schema.org',
     '@type': 'Dataset',
     name: d.titulo,
     description: d.descripcion,
     url: `${url}#${d.id}`,
-    ...(d.licenciaPropia === false ? {} : { license: 'https://creativecommons.org/licenses/by/4.0/' }),
+    license: 'https://creativecommons.org/licenses/by/4.0/',
     isAccessibleForFree: true,
     inLanguage: SITE.locale,
     dateModified: d.revisado,
