@@ -36,7 +36,7 @@ La lista no la decide la rutina: la da el comprobador, sin IA y sin red salvo la
 4. Cada dato actualizado va en **su propio commit** (`Euríbor: actualización de 2026-11`, `IPC: octubre de 2026`, `Cuentas y
    depósitos: actualización del AAAA-MM-DD`...), con las fechas del registro puestas al día en ese commit.
 5. Antes de publicar: `npm test` y `npm run build` sin errores; el build no debe mostrar `[frescura] ERROR` de lo que acabas de
-   arreglar. Comprueba que no hay guiones largos (—) en lo que has escrito.
+   arreglar. Comprueba que no has escrito guiones largos (raya) en nada visible.
 6. `git pull --rebase origin main`; `git push origin HEAD:main`; después `node scripts/indexnow.mjs` (avisa a Bing de las URLs
    cambiadas; un fallo no invalida nada).
 7. Vuelve a ejecutar el comprobador: lo que arreglaste debe haber salido de VENCIDO.
