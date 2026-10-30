@@ -1,9 +1,9 @@
 ---
-title: "Criptomonedas y Hacienda: cómo tributan en España"
-description: "Cómo declarar criptomonedas en el IRPF: ventas, cambios entre cripto, FIFO, tramos del ahorro y modelos 172, 173 y 721. Con ejemplo y fuentes de la AEAT."
-resumen: "Las criptomonedas tributan en el IRPF como ganancias patrimoniales de la base del ahorro, tanto al vender por euros como al cambiar una por otra. La ganancia se calcula por el método FIFO, y quien tenga criptomonedas en custodios extranjeros por encima del umbral de la AEAT debe presentar el modelo 721."
+title: "Criptomonedas y Hacienda: cómo tributan, con ejemplos"
+description: "Qué operaciones con criptomonedas tributan, cómo se calculan FIFO y permutas paso a paso, cómo compensar pérdidas y cuándo toca el modelo 721. Fuentes de la AEAT."
+resumen: "Las criptomonedas tributan en el IRPF como ganancias patrimoniales de la base del ahorro, tanto al vender por euros como al cambiar una por otra. La ganancia se calcula por el método FIFO sobre cada tipo de moneda, y quien tenga criptomonedas en custodios extranjeros por encima del umbral de la AEAT debe presentar el modelo 721."
 pubDate: 2026-10-24
-updatedDate: 2026-10-26
+updatedDate: 2026-10-30
 author: "Alex Serra Rodríguez"
 tags: ["impuestos", "criptomonedas", "educación financiera"]
 categoria: "criptomonedas"
@@ -12,12 +12,18 @@ sources:
     url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/monedas-virtuales/compra-venta-monedas-virtuales-tributacion-inversor.html"
   - label: "AEAT, Manual práctico de Renta 2025: concepto de moneda virtual y obligaciones de información"
     url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/monedas-virtuales/concepto.html"
+  - label: "AEAT, Manual práctico de Renta 2025: integración y compensación de rentas en la base imponible del ahorro (art. 49 de la Ley del IRPF)"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c12-integracion-compensacion-rentas/reglas-integracion-compensacion-rentas/integracion-compensacion-rentas-base-imponible-ahorro.html"
+  - label: "AEAT, Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro"
+    url: "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html"
   - label: "AEAT: preguntas frecuentes del modelo 721, monedas virtuales a las que no se aplica la obligación (umbral de 50.000 €)"
     url: "https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-721-decla-sobre-monedas-extranjero/preguntas-frecuentes-sobre-modelo-721/respecto-que-monedas-virtuales-no-informacion.html"
   - label: "AEAT: preguntas frecuentes del modelo 721, cuándo se entiende una moneda virtual situada en el extranjero"
     url: "https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-721-decla-sobre-monedas-extranjero/preguntas-frecuentes-sobre-modelo-721/cuando-se-entiende-moneda-virtual-extranjero.html"
   - label: "AEAT: plazo de presentación del modelo 721 y obligación de repetirlo"
     url: "https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-721-decla-sobre-monedas-extranjero/preguntas-frecuentes-sobre-modelo-721/plazo-presentacion-modelo-721.html"
+  - label: "BOE: Ley 35/2006, del Impuesto sobre la Renta de las Personas Físicas (arts. 14, 37.1.h, 46 y 49)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2006-20764"
   - label: "DOUE (copia del BOE): Reglamento (UE) 2023/1114, de 31 de mayo de 2023, relativo a los mercados de criptoactivos (MiCA), arts. 143 y 149"
     url: "https://www.boe.es/doue/2023/150/L00040-00205.pdf"
   - label: "CNMV: preguntas y respuestas sobre el Reglamento MiCA (15 de diciembre de 2025), fin del periodo transitorio en España"
@@ -38,60 +44,154 @@ import { formatEuros } from '../../components/CalculatorUI';
 import TramosAhorroTabla from '../../components/TramosAhorroTabla.astro';
 import { COMPENSACION_AHORRO, MODELO_721, calcularImpuestoAhorro } from '../../config/finance';
 
-export const ganancia = 4000;
-export const impuesto = calcularImpuestoAhorro(ganancia);
-export const ganancia2 = 12000;
-export const impuesto2 = calcularImpuestoAhorro(ganancia2);
 export const pctCruzado = (COMPENSACION_AHORRO.limiteCruzado * 100).toLocaleString('es-ES');
+export const pct1 = (v) => (v * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 });
+export const num = (v) => v.toLocaleString('es-ES', { maximumFractionDigits: 2 });
+
+{/* Ejemplo 1: FIFO. Dos compras de la misma moneda y una venta parcial. */}
+export const lotes = [
+  { unidades: 2, precio: 1000 },
+  { unidades: 1, precio: 3000 },
+];
+export const venta = { unidades: 2.5, precio: 4000 };
+export const ingresos = venta.unidades * venta.precio;
+export const consumo = (() => {
+  let resto = venta.unidades;
+  const partes = [];
+  for (const l of lotes) {
+    const u = Math.min(l.unidades, resto);
+    if (u > 0) partes.push({ unidades: u, precio: l.precio, coste: u * l.precio });
+    resto -= u;
+  }
+  return partes;
+})();
+export const costeFifo = consumo.reduce((a, p) => a + p.coste, 0);
+export const gananciaFifo = ingresos - costeFifo;
+export const impuestoFifo = calcularImpuestoAhorro(gananciaFifo);
+export const costeMedio = (lotes.reduce((a, l) => a + l.unidades * l.precio, 0) / lotes.reduce((a, l) => a + l.unidades, 0)) * venta.unidades;
+export const gananciaMedia = ingresos - costeMedio;
+
+{/* Ejemplo 2: permuta. */}
+export const permuta = { costeA: 5000, valorA: 8000, unidadesB: 20, precioB: 400 };
+export const valorRecibido = permuta.unidadesB * permuta.precioB;
+export const valorPermuta = Math.max(permuta.valorA, valorRecibido);
+export const gananciaPermuta = valorPermuta - permuta.costeA;
+export const impuestoPermuta = calcularImpuestoAhorro(gananciaPermuta);
+export const ventaB = 10000;
+export const gananciaB = ventaB - valorPermuta;
+
+{/* Ejemplo 3: pérdidas. */}
+export const perdidaOtra = 2000;
+export const netoAnio = gananciaFifo - perdidaOtra;
+export const impuestoNeto = calcularImpuestoAhorro(netoAnio);
+export const perdidaSola = 3000;
+export const interesesAnio = 1000;
+export const compensable = Math.min(perdidaSola, interesesAnio * COMPENSACION_AHORRO.limiteCruzado);
 
 Las criptomonedas no son dinero a ojos de Hacienda: son un bien que compras y vendes, y lo que ganas al venderlo o al cambiarlo por otra
 criptomoneda se declara en la renta como ganancia del ahorro. Esta guía explica cómo tributan en el IRPF, qué operaciones cuentan (más de las
-que muchos creen), cómo se calcula la ganancia, qué información recibe la Agencia Tributaria sin que tengas que decir nada y qué cambia con
-las normas europeas MiCA y DAC8. Es información general sobre la normativa, no una recomendación de invertir en criptomonedas, que son
-activos de alto riesgo.
+que muchos creen), cómo se calcula la ganancia con tres ejemplos con números (una venta con FIFO, un cambio entre criptomonedas y la
+compensación de pérdidas), qué información recibe la Agencia Tributaria sin que tengas que decir nada y qué cambian las normas europeas
+MiCA y DAC8. Es información general sobre la normativa, no una recomendación de invertir en criptomonedas, que son activos de alto riesgo.
+Los importes de los ejemplos son ilustrativos y los impuestos se calculan con los tramos del ahorro de la AEAT (ejercicio 2025); cómo
+trabajamos con las cifras está en la [metodología](/metodologia/) del sitio.
 
 ## Cómo las trata Hacienda
 
-A efectos fiscales, la AEAT considera las monedas virtuales **bienes inmateriales**, contables por unidades o fracciones. Cada tipo
-(bitcoin, ether, etc.) es un bien distinto. Las ganancias y pérdidas de un inversor particular van a la **base del ahorro**, la misma que los
-fondos y las acciones, con los mismos tramos:
+A efectos fiscales, la AEAT considera las monedas virtuales **bienes inmateriales**, contables por unidades o fracciones, que no son moneda de
+curso legal. Cada tipo (bitcoin, ether, etc.) tiene su propio protocolo y es un bien distinto. Las ganancias y pérdidas de un inversor particular
+van a la **[base del ahorro](/glosario/base-del-ahorro/)**, la misma que los fondos y las acciones, con los mismos tramos:
 
 <TramosAhorroTabla />
 
-Se declaran en la renta (modelo 100), en el apartado de ganancias y pérdidas por transmisión o permuta de monedas virtuales.
+Se declaran en la renta (modelo 100), en el apartado de ganancias y pérdidas derivadas de la transmisión o permuta de monedas virtuales por
+particulares. Cada resultado es una [ganancia o pérdida patrimonial](/glosario/ganancia-patrimonial/).
 
 ## Qué operaciones tributan
 
-- **Vender criptomonedas por euros.** Generas una ganancia o pérdida: lo que recibes menos lo que pagaste, incluidos los gastos de la operación.
-- **Cambiar una criptomoneda por otra** (por ejemplo, bitcoin por ether). Es una permuta y **también genera ganancia o pérdida en ese momento**,
-  aunque no hayas pasado por euros. Es el punto que más sorprende a quien empieza.
-- **Comprar solo no tributa.** Tener criptomonedas sin venderlas ni cambiarlas no genera ganancia que declarar en el IRPF.
-- **Pasar criptomonedas de un monedero a otro tuyo** no es una venta, pero conviene guardar el registro para demostrar el coste original.
+| Operación | ¿Genera ganancia o pérdida? | Cómo se calcula |
+| --- | --- | --- |
+| Comprar criptomonedas con euros | No | Solo guarda el coste y las comisiones |
+| Vender por euros | Sí | Euros recibidos menos coste de adquisición y gastos |
+| Cambiar una criptomoneda por otra (permuta) | Sí, en ese momento | Valor de mercado menos coste de lo que entregas |
+| Pasar criptomonedas entre monederos tuyos | No es una venta | Guarda el registro para demostrar el coste original |
+| Mantener sin vender | No | No hay nada que declarar en el IRPF |
 
-## Cómo se calcula la ganancia: el método FIFO
+Dos matices de la AEAT que se pasan por alto:
 
-Si has comprado la misma criptomoneda en momentos y a precios distintos, Hacienda considera que **vendes primero las que compraste antes** (FIFO,
-primera entrada, primera salida). La ganancia es el valor de lo que recibes menos el coste de esas unidades más antiguas.
-Es la misma lógica que en los fondos de inversión, y por eso puedes usar la
-[calculadora de impuestos al vender un fondo](/herramientas/calculadora-impuestos-venta-fondos/) para hacerte una idea con tus compras, cambiando el
-"valor liquidativo" por el precio de la criptomoneda. Si también vendes acciones o fondos, la guía para
-[declarar las ganancias de bolsa en la renta](/blog/declarar-ganancias-bolsa-renta/) explica cómo se suman en la misma base del ahorro.
+- **La venta se imputa cuando entregas las monedas**, con independencia del momento en que cobres.
+- **El valor de venta no puede ser inferior al de mercado.** Si vendes por menos de su valor normal de mercado en esa fecha, prevalece este último.
 
-## Un ejemplo con números
+Los gastos y tributos de la operación (comisiones de la plataforma, por ejemplo) se tienen en cuenta si guardan relación directa con ella y los
+has pagado tú.
 
-Imagina que compras criptomonedas por 6.000 € y, al venderlas, recibes 10.000 €: la ganancia es de 4.000 €. Con los tramos del ahorro de este ejercicio,
-el impuesto es de **{formatEuros(impuesto)}**, un {(impuesto / ganancia * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 })} % de la ganancia. Si la ganancia
-fuera de {formatEuros(ganancia2)}, el impuesto sería de **{formatEuros(impuesto2)}**, un {(impuesto2 / ganancia2 * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 })} %.
-Como en cualquier base del ahorro, el tipo sube a medida que sube la ganancia total del año, sumando intereses, dividendos y otras ventas.
+## Ejemplo 1: una venta con FIFO, paso a paso
 
-Las **pérdidas** también cuentan: se compensan con ganancias del ahorro del mismo año y, con límites, con otras de los {COMPENSACION_AHORRO.aniosArrastre} años siguientes. Si
-después de compensar ganancias con pérdidas queda un saldo negativo, puede restarse hasta el {pctCruzado} % del saldo positivo de intereses,
-dividendos y demás rendimientos del capital mobiliario del año.
-Una pérdida por cambiar una criptomoneda por otra hay que poder acreditarla si Hacienda lo pide, así que conviene guardar los registros.
+Si has comprado la misma criptomoneda en momentos y a precios distintos, la AEAT considera que **vendes primero las que compraste antes**
+(FIFO, primera entrada, primera salida). El cálculo se hace por cada tipo de moneda. Es el mismo criterio que en los fondos: la
+entrada de [FIFO](/glosario/fifo/) del glosario lo explica y la
+[calculadora de impuestos al vender un fondo](/herramientas/calculadora-impuestos-venta-fondos/) sirve de apoyo si cambias el valor liquidativo
+por el precio de la criptomoneda.
+
+Imagina dos compras de una misma criptomoneda (cifras ilustrativas, sin comisiones para simplificar):
+
+| Compra | Unidades | Precio por unidad | Coste |
+| --- | --- | --- | --- |
+| Primera | {num(lotes[0].unidades)} | {formatEuros(lotes[0].precio)} | {formatEuros(lotes[0].unidades * lotes[0].precio)} |
+| Segunda | {num(lotes[1].unidades)} | {formatEuros(lotes[1].precio)} | {formatEuros(lotes[1].unidades * lotes[1].precio)} |
+
+Más tarde vendes {num(venta.unidades)} unidades a {formatEuros(venta.precio)} cada una, es decir, recibes **{formatEuros(ingresos)}**. Por FIFO se
+venden las {num(consumo[0].unidades)} unidades de la primera compra (coste {formatEuros(consumo[0].coste)}) y {num(consumo[1].unidades)} de la segunda (coste
+{formatEuros(consumo[1].coste)}):
+
+- Coste de lo vendido: {formatEuros(costeFifo)}.
+- Ganancia: {formatEuros(ingresos)} menos {formatEuros(costeFifo)} = **{formatEuros(gananciaFifo)}**.
+- Impuesto con los tramos del ahorro, si es tu única renta del ahorro del año: **{formatEuros(impuestoFifo)}** ({pct1(impuestoFifo / gananciaFifo)} % de la ganancia).
+
+Si hubieras usado el **precio medio** de tus compras, la ganancia saldría de {formatEuros(gananciaMedia)}, menor. Es un error frecuente (y la
+razón de que muchas hojas de cálculo caseras den cifras distintas de las de Hacienda): el criterio de la AEAT es FIFO. Te quedan {num(lotes[1].unidades - consumo[1].unidades)}
+unidades de la segunda compra, con su coste de {formatEuros(lotes[1].precio)} por unidad, para la próxima venta.
+
+## Ejemplo 2: un cambio entre criptomonedas, sin pasar por euros
+
+Es el caso que más sorprende. Cambiar una criptomoneda por otra es una **permuta** y genera ganancia o pérdida en ese momento. La AEAT aplica el
+artículo 37.1.h de la Ley del IRPF: la ganancia es la diferencia entre el coste de lo que entregas y el **mayor** de dos valores, el de mercado
+de lo que entregas o el de mercado de lo que recibes. Y ese valor pasa a ser el coste de adquisición de lo que recibes.
+
+Con cifras ilustrativas: tienes 1 unidad de la criptomoneda A comprada por {formatEuros(permuta.costeA)}. Un día la cambias por {permuta.unidadesB} unidades de la
+criptomoneda B. Ese día, A vale {formatEuros(permuta.valorA)} y B vale {formatEuros(permuta.precioB)} cada una (las {permuta.unidadesB} valen {formatEuros(valorRecibido)}).
+
+- Valor de la permuta: {formatEuros(valorPermuta)} (el mayor de los dos; aquí coinciden).
+- Ganancia: {formatEuros(valorPermuta)} menos {formatEuros(permuta.costeA)} = **{formatEuros(gananciaPermuta)}**, aunque no hayas recibido ni un euro. Con los tramos del ahorro, serían
+  {formatEuros(impuestoPermuta)} de impuesto, que tendrás que pagar con euros de otro sitio.
+- Coste de adquisición de tus {permuta.unidadesB} unidades de B: {formatEuros(valorPermuta)}. Si después las vendes por {formatEuros(ventaB)}, la ganancia de esa venta es de
+  {formatEuros(gananciaB)}.
+
+Si la permuta da pérdida, la AEAT recuerda que debes poder acreditarla si te la piden, con medios de prueba admitidos en derecho: otra razón
+para guardar el historial.
+
+## Ejemplo 3: compensar pérdidas
+
+Las pérdidas de unas criptomonedas compensan las ganancias de otras en la misma base del ahorro. Siguiendo el ejemplo 1, si ese año tuviste
+también una pérdida de {formatEuros(perdidaOtra)} vendiendo otra moneda, el saldo del año es de {formatEuros(netoAnio)} y el impuesto baja a **{formatEuros(impuestoNeto)}**
+(en lugar de {formatEuros(impuestoFifo)}).
+
+Si en cambio el saldo del año fuera una **pérdida neta** de {formatEuros(perdidaSola)}, la ley (art. 49) solo permite restarla hasta el {pctCruzado} % del saldo positivo de los
+intereses, dividendos y demás rendimientos del capital mobiliario del año. Con {formatEuros(interesesAnio)} de intereses, podrías compensar {formatEuros(compensable)} ese
+año. Lo que no se compense se arrastra durante los {COMPENSACION_AHORRO.aniosArrastre} años siguientes. Para planificarlo antes de que acabe el año, mira
+[las decisiones fiscales antes del 31 de diciembre](/blog/antes-del-31-de-diciembre-decisiones-fiscales/) y cómo se suman estas ganancias a las
+de bolsa en la guía para [declarar las ganancias de bolsa en la renta](/blog/declarar-ganancias-bolsa-renta/).
+
+## Lo que esta guía no cubre
+
+Los ejemplos de arriba son los de un inversor que compra, vende y cambia criptomonedas. Operaciones como el **staking**, los préstamos de
+criptomonedas, la minería, los *airdrops*, los NFT o el DeFi pueden tener un tratamiento distinto (rendimientos en lugar de ganancias, por
+ejemplo) y las páginas del manual de la AEAT que citamos no las desarrollan. Si las has hecho, consulta a un asesor fiscal antes de declarar.
 
 ## Qué información recibe Hacienda sin que tú la des
 
-- **Modelos 172 y 173:** las entidades obligadas informan a la AEAT de los **saldos** y de las **operaciones** con monedas virtuales de sus clientes.
+- **Modelos 172 y 173:** las entidades obligadas informan a la AEAT de los **saldos** (172) y de las **operaciones** (173) con monedas virtuales de sus
+  clientes.
 - **Modelo 721:** lo presentas tú, {MODELO_721.plazo}, si tienes criptomonedas custodiadas **en el extranjero** y su saldo conjunto a 31 de
   diciembre supera los {formatEuros(MODELO_721.umbralConjunto)}. El umbral es conjunto: se suman todas las monedas virtuales que tengas fuera, y si se supera
   hay que informar de todas. En los años siguientes solo hay que volver a presentarlo si ese saldo conjunto sube más de
@@ -99,8 +199,9 @@ Una pérdida por cambiar una criptomoneda por otra hay que poder acreditarla si 
 
 En el 721 se informa, para cada moneda, del custodio (nombre, número de identificación fiscal de su país y domicilio o web), de la moneda y
 del saldo a 31 de diciembre en unidades y en euros. Se parece al [modelo 720](/blog/modelo-720-quien-tiene-que-presentarlo/) de bienes en el
-extranjero, pero es una declaración distinta. Si además tienes cuentas, valores o inmuebles fuera, la
-[calculadora del modelo 720](/herramientas/calculadora-modelo-720/) te dice si también te toca ese otro modelo.
+extranjero (en el glosario, [qué es el modelo 720](/glosario/modelo-720/)), pero es una declaración distinta. Si además tienes cuentas, valores o inmuebles fuera, la
+[calculadora del modelo 720](/herramientas/calculadora-modelo-720/) te dice si también te toca ese otro modelo. Las fechas de los modelos 720 y
+721 están en el [calendario fiscal](/herramientas/calendario-fiscal/) del inversor.
 
 ### Cuándo cuenta una plataforma como "extranjera"
 
@@ -111,6 +212,14 @@ de servicios de cambio y custodia de monedas virtuales para consultar dónde est
 
 Las criptomonedas que guardas tú mismo, en un monedero en el que **controlas las claves privadas**, no cuentan para el 721, sea un monedero
 conectado a internet o no.
+
+## Si una plataforma quiebra o no te devuelve las monedas
+
+La AEAT es tajante en que el importe de un crédito no devuelto a su vencimiento **no es de forma automática una pérdida patrimonial**, porque
+sigues teniendo derecho a reclamarlo. Esa renta forma parte de la renta general, no de la base del ahorro, y solo puede imputarse en el
+periodo en que ocurra alguno de estos supuestos: una quita con eficacia en un acuerdo de refinanciación o extrajudicial de pagos; en un concurso,
+un convenio con quita o la conclusión del concurso sin que se haya pagado el crédito; o que pase un año desde el inicio de un procedimiento
+judicial distinto del concursal para cobrarlo sin que se haya cobrado. Si después recuperas algo, se imputa como ganancia patrimonial en ese año.
 
 ## MiCA: qué es y qué cambia para ti
 
@@ -148,29 +257,48 @@ de 2026**: decayó al disolverse las Cortes (Real Decreto 806/2026, publicado en
 noviembre de 2026). Para que salga adelante habrá que volver a presentarlo en la nueva legislatura. Eso no cambia lo que ya existe: las
 entidades obligadas en España siguen informando con los modelos 172 y 173, y tú sigues teniendo que declarar tus ganancias.
 
+## Qué datos guardar de cada operación
+
+La carga de la prueba la tienes tú, así que por cada compra, venta o cambio conviene conservar:
+
+1. La fecha y la hora, y la plataforma o monedero.
+2. El tipo de criptomoneda y las unidades.
+3. El precio en euros (o, si compras con otra divisa, su cambio a euros ese día).
+4. Las comisiones y gastos pagados.
+5. En un cambio entre criptomonedas, el valor de mercado de ambas en ese momento y de dónde sale (la cotización de la plataforma, por ejemplo).
+
 ## Errores frecuentes
 
 1. **No declarar los cambios entre criptomonedas**, pensando que "si no he vendido por euros, no tributo".
-2. **No guardar el historial de compras**, y no poder demostrar el coste de adquisición. Sin él es difícil demostrar cuánta ganancia es real.
-3. **Olvidar el 721** teniendo más de {formatEuros(MODELO_721.umbralConjunto)} en custodios extranjeros, o pensar que el umbral es por cada moneda.
-4. **Dar por perdido lo que está en una plataforma quebrada.** La quiebra no genera automáticamente una pérdida deducible: se trata como un crédito.
-5. **No comprobar la autorización de la plataforma** desde que terminó el periodo transitorio de MiCA.
+2. **Usar el precio medio en lugar de FIFO**, como en el ejemplo 1, y declarar una ganancia distinta de la que calcula la AEAT.
+3. **No guardar el historial de compras**, y no poder demostrar el coste de adquisición. Sin él es difícil demostrar cuánta ganancia es real.
+4. **Olvidar el 721** teniendo más de {formatEuros(MODELO_721.umbralConjunto)} en custodios extranjeros, o pensar que el umbral es por cada moneda.
+5. **Dar por perdido lo que está en una plataforma quebrada.** No es una pérdida automática: se trata como un crédito, en la base general y solo en los supuestos de arriba.
+6. **No comprobar la autorización de la plataforma** desde que terminó el periodo transitorio de MiCA.
 
 ## Qué hacer ahora
 
 1. Descarga el **historial completo** de cada exchange y monedero que uses, antes de que desaparezca o cambien las condiciones.
 2. Calcula tus ganancias con FIFO por criptomoneda, incluyendo los cambios entre ellas.
-3. Compáralo con tu otra renta del ahorro en la [guía de los tramos del ahorro](/blog/tramos-irpf-ahorro/).
+3. Compáralo con tu otra renta del ahorro en la [guía de los tramos del ahorro](/blog/tramos-irpf-ahorro/) y mira, si procede, cómo
+   [tributan los fondos de inversión](/blog/como-tributan-los-fondos-de-inversion-en-espana/) que tengas.
 4. Si tienes saldos en el extranjero, suma todas las monedas a 31 de diciembre y comprueba el umbral del 721 antes del 31 de marzo.
 5. Comprueba en la relación de la CNMV que la plataforma que usas está autorizada para los servicios que te presta.
 
-Con importes grandes o operaciones complejas (decenas de cambios al año, DeFi, minería), conviene un asesor fiscal que conozca el criterio de la AEAT.
+Con importes grandes u operaciones complejas (decenas de cambios al año, DeFi, minería), conviene un asesor fiscal que conozca el criterio de la AEAT.
 
 ## Preguntas frecuentes
 
 **¿Tengo que declarar algo si solo he comprado y no he vendido?**
 En el IRPF, no: comprar y mantener no genera ganancia. Pero si tus criptomonedas están en un custodio extranjero y su saldo conjunto a 31 de
 diciembre supera los {formatEuros(MODELO_721.umbralConjunto)}, tienes que presentar el modelo 721 aunque no hayas vendido nada.
+
+**¿Pagar con criptomonedas o cambiarlas por stablecoins también tributa?**
+Cambiar una criptomoneda por otra, incluidas las *stablecoins*, es una permuta y genera ganancia o pérdida como en el ejemplo 2. Si compras
+bienes o servicios con criptomonedas, la operación también supone entregarlas; consulta el caso concreto con un asesor.
+
+**¿Qué pasa si vendo por menos de lo que valían?**
+La AEAT toma como valor de venta el de mercado si es superior a lo que recibes. No sirve declarar un precio inferior.
 
 **¿Una plataforma con web en español cuenta como custodio en España?**
 No necesariamente. Para la AEAT lo que importa es si quien custodia tus claves está obligado a presentar en España la declaración informativa de
