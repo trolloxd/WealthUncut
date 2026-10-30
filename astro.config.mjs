@@ -9,6 +9,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
 import { adsListos } from './src/config/ads.mjs';
+import { temasFinos } from './src/config/temas.mjs';
 
 // Orígenes de Google que necesita AdSense con su banner de consentimiento. Solo se añaden cuando
 // `adsListos()` es true (src/config/ads.mjs): con la publicidad desactivada la CSP queda como estaba.
@@ -53,6 +54,8 @@ function leerFechasArticulos() {
 }
 
 const fechasArticulos = leerFechasArticulos();
+// Temas con un solo artículo: noindex en su página y fuera del sitemap (ver src/config/temas.mjs).
+const rutasTemasFinos = [...temasFinos()].map((id) => `/blog/tema/${id}/`);
 
 // https://astro.build/config
 export default defineConfig({
@@ -91,7 +94,7 @@ export default defineConfig({
     react(),
     mdx(),
     sitemap({
-      filter: (page) => !page.includes('/404') && !page.includes('/embed/') && !page.includes('/buscar/') && !page.includes('/newsletter/baja'),
+      filter: (page) => !page.includes('/404') && !page.includes('/embed/') && !page.includes('/buscar/') && !page.includes('/newsletter/baja') && !rutasTemasFinos.some((r) => page.endsWith(r)),
       serialize(item) {
         const clave = item.url.match(/\/((?:blog|mercados|herramientas)\/[^/]+)\/$/)?.[1];
         const fecha = clave ? fechasArticulos.get(clave) : undefined;

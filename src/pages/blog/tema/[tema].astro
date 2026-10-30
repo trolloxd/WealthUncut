@@ -8,6 +8,7 @@ import { CATEGORIAS, categoriaDe } from '../../../config/categorias';
 import { TOOLS } from '../../../config/tools';
 import ListadoTarjetas from '../../../components/ListadoTarjetas.astro';
 import IlustracionTema from '../../../components/IlustracionTema.astro';
+import { MIN_ARTICULOS_TEMA } from '../../../config/temas.mjs';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('blog', ({ data }) => isPublished(data))).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -44,7 +45,7 @@ const jsonLd = [
 ];
 ---
 
-<BaseLayout title={`${c.nombre}: guías y artículos`} description={`${c.descripcion} ${posts.length === 1 ? 'Un artículo' : posts.length + ' artículos'} con fuentes oficiales.`} extraJsonLd={jsonLd} contentWidth="wide" rssPropio={{ titulo: `${SITE.name}: ${c.nombre}`, href: `/blog/tema/${c.id}/rss.xml` }}>
+<BaseLayout title={`${c.nombre}: guías y artículos`} description={`${c.descripcion} ${posts.length === 1 ? 'Un artículo' : posts.length + ' artículos'} con fuentes oficiales.`} extraJsonLd={jsonLd} noindex={posts.length < MIN_ARTICULOS_TEMA} contentWidth="wide" rssPropio={{ titulo: `${SITE.name}: ${c.nombre}`, href: `/blog/tema/${c.id}/rss.xml` }}>
   <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Blog', href: '/blog/' }, { label: c.nombre }]} />
   <div class="mb-6 h-28 overflow-hidden rounded-2xl sm:h-40" aria-hidden="true"><IlustracionTema tema={c.id} /></div>
   <h1 class="mb-3 font-display text-3xl text-ink sm:text-4xl">{c.nombre}</h1>
