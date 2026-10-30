@@ -63,6 +63,8 @@ test('anual: vence tras la fecha más una gracia, y varias fechas al año', () =
   assert.equal(evaluar(doble, '2027-02-01', '2027-04-10').nivel, 'ok');
   assert.equal(evaluar(doble, '2027-02-01', '2027-04-16').nivel, 'aviso'); // ahora toca la de abril
   assert.equal(evaluar(doble, '2027-02-01', '2027-04-10').proxima, '2027-04-15');
+  assert.equal(evaluar(doble, '2026-09-24', '2027-04-15').nivel, 'vencido'); // el retraso de enero no se reinicia en abril
+  assert.equal(evaluar(doble, '2027-02-01', '2027-06-01').nivel, 'vencido');
   assert.equal(ultimaOcurrencia('2027-03-01', 4, 15), '2026-04-15');
   assert.equal(proximaOcurrencia('2027-04-15', 4, 15), '2028-04-15');
 });
@@ -105,7 +107,7 @@ test('toda constante de finance.ts está en el registro (una cifra nueva obliga 
   const nombres = [...finance.matchAll(/^export const ([A-Z0-9_]+)/gm)].map((m) => m[1]);
   const donde = registro.entradas.map((e) => e.donde).join(' ');
   assert.deepEqual(
-    nombres.filter((n) => !donde.includes(n)),
+    nombres.filter((n) => !new RegExp(String.raw`\b${n}\b`).test(donde)),
     [],
   );
 });

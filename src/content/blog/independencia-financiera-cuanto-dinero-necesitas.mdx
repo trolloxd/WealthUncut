@@ -20,7 +20,7 @@ draft: false
 
 import { calcularFire } from '../../components/FireCalculator';
 import { formatEuros } from '../../components/CalculatorUI';
-import { calcularImpuestoAhorro } from '../../config/finance';
+import { calcularImpuestoAhorro, IPC_ESPANA } from '../../config/finance';
 import ArticleLink from '../../components/ArticleLink.astro';
 
 export const base = { gastosAnuales: 20000, patrimonio: 0, ahorroMensual: 600, rentabilidadRealPct: 4, tasaRetiradaPct: 4, edad: 25 };
@@ -91,8 +91,8 @@ en <ArticleLink href="/blog/cuanto-ahorrar-al-mes-segun-sueldo/">cuánto ahorrar
 
 ## Por qué hay que pensar en rentabilidad real
 
-Las cuentas en "euros de hoy" no son un detalle. Según el INE, los precios subieron un **4,9 % en los doce meses hasta
-septiembre de 2026**. Si tus gastos son 20.000 € hoy, dentro de unos años serán bastante más en euros corrientes, y tu
+Las cuentas en "euros de hoy" no son un detalle. Según el INE, los precios subieron un **{IPC_ESPANA.general.toLocaleString('es-ES', { minimumFractionDigits: 1 })} % en los doce meses hasta
+{IPC_ESPANA.mesTexto}**. Si tus gastos son 20.000 € hoy, dentro de unos años serán bastante más en euros corrientes, y tu
 objetivo crecerá con ellos. Restar la inflación a la rentabilidad (trabajar con rentabilidad real) resuelve el problema: todos
 los importes quedan en euros de hoy.
 

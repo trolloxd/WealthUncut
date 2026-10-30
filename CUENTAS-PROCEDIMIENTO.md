@@ -23,7 +23,7 @@ sin tocar el repositorio y dilo en el resumen.
 ## 2. Qué cuentas y depósitos incluir
 
 - **Cuentas remuneradas sin vinculación** (sin domiciliar nómina ni otros requisitos fuertes): son
-  las más relevantes para el lector objetivo del sitio (jóvenes). Prioriza 8-12 cuentas de bancos
+  las más relevantes para el lector objetivo del sitio (jóvenes). Prioriza 6-12 cuentas de bancos
   con presencia real en España (incluidos neobancos y bancos accesibles vía plataformas como
   Raisin).
 - Como mucho 2-3 **cuentas con vinculación** (nómina domiciliada u otro requisito fuerte) para que

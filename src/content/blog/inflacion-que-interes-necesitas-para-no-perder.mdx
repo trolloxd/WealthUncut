@@ -70,7 +70,7 @@ te quedas con {pct(1 - TIPO, 2)} €. El interés bruto que necesitas sale de un
 
 > **Interés bruto necesario = inflación ÷ (1 − {pct(TIPO, 2)})**
 
-Con la inflación de septiembre, {pct(IPC)} ÷ {pct(1 - TIPO, 2)} = **{pct(necesario(IPC), 2)} %**. Es la misma fórmula que usa nuestra
+Con la inflación de {IPC_ESPANA.mesTexto}, {pct(IPC)} ÷ {pct(1 - TIPO, 2)} = **{pct(necesario(IPC), 2)} %**. Es la misma fórmula que usa nuestra
 [calculadora de inflación](/herramientas/calculadora-inflacion/).
 
 | Si la inflación es del... | Interés bruto que necesitas para no perder |
@@ -111,7 +111,7 @@ no pasa), {formatEuros(IMPORTE)} acabarían valiendo
 {formatEuros(real(IPC, 1, sinVinculacion.tae).real)} en euros de hoy, después del {pct(TIPO * 100, 0)} % de IRPF sobre los intereses. Es decir, pierdes menos
 que con el dinero parado ({formatEuros(real(IPC, 1, sinVinculacion.tae).perdida)} frente a {formatEuros(real(IPC, 1).perdida)}), pero sigues perdiendo. La TAE más alta de
 toda la tabla, contando cuentas con vinculación y depósitos a varios años, es del {pct(maxTae, 2)} %, frente al {pct(necesario(IPC), 2)} % que
-haría falta con la inflación de septiembre.
+haría falta con la inflación de {IPC_ESPANA.mesTexto}.
 
 Dos matices importantes:
 

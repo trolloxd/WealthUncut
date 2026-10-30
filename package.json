@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node --experimental-strip-types --no-warnings scripts/comprobar-frescura.mjs --solo-registro",
+    "prebuild": "node --experimental-strip-types --no-warnings scripts/avisar-caducidades.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",

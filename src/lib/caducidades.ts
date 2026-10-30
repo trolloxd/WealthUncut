@@ -173,13 +173,19 @@ export function evaluar(e: Entrada, valor: Valor, hoy: string): Evaluacion {
     return fin(nivel, `última verificación el ${ultima}, hace ${n} día(s) (aviso a los ${r.aviso}, vencido a los ${r.error})`, ultima, sumarDias(ultima, r.aviso));
   }
 
-  // anual: una o varias fechas al año ([mes, día]); la última que ya pasó es la revisión que debe estar hecha.
+  // anual: una o varias fechas al año ([mes, día]). El retraso se mide desde la revisión más antigua que sigue sin hacer
+  // (si hubo una en febrero sin hacer, el retraso no se reinicia cuando llega la de abril).
   const fechas: [number, number][] = [[r.mes, r.dia], ...(r.tambien ?? [])];
-  const due = fechas.map(([m, d]) => ultimaOcurrencia(hoy, m, d)).sort().at(-1)!;
   const siguiente = fechas.map(([m, d]) => proximaOcurrencia(hoy, m, d)).sort()[0];
-  if (ultima >= due) {
-    return fin('ok', `verificado el ${ultima}, después de la revisión anual del ${due}`, ultima, siguiente);
+  const ocurrencias: string[] = [];
+  for (let y = Number(ultima.slice(0, 4)); y <= Number(hoy.slice(0, 4)); y++) {
+    for (const [m, d] of fechas) ocurrencias.push(`${y}-${pad(m)}-${pad(d)}`);
   }
+  const pendientes = ocurrencias.filter((o) => o > ultima && o <= hoy).sort();
+  if (!pendientes.length) {
+    return fin('ok', `verificado el ${ultima}; no ha llegado ninguna revisión anual posterior`, ultima, siguiente);
+  }
+  const due = pendientes[0];
   const tarde = diasNaturales(due, hoy);
   const nivel: Nivel = tarde >= r.gracia ? 'vencido' : 'aviso';
   return fin(nivel, `revisión del ${due} sin hacer (última verificación ${ultima}); lleva ${tarde} día(s) de retraso, vence a los ${r.gracia}`, ultima, due);

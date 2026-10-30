@@ -676,12 +676,6 @@
      "producto": "Depósito a 12 meses",
      "plazoMeses": 12,
      "tae": 2.75
-    },
-    {
-     "banco": "Bank B (vía Raisin)",
-     "producto": "Depósito a 7-10 años",
-     "plazoMeses": 90,
-     "tae": 3.75
     }
    ]
   }

@@ -44,7 +44,7 @@
    "notas": "Solo el valor oficial del BOE, nunca la serie del BCE ni de EMMI (decisión de David, 2026-10-26)."
   },
   {
-   "id": "ipc-espana", "descripcion": "IPC de España (general, subyacente, IPCA), último mes", "donde": "src/config/finance.ts, IPC_ESPANA; lo leen inflacion, deposito-a-plazo (glosario) y tres artículos. Textos fijos a revisar: frontmatter y sources de esos artículos, tabla mensual y sección 'Qué ha pasado' de subida-sueldo-ipc-poder-adquisitivo e inflacion-que-interes-necesitas-para-no-perder",
+   "id": "ipc-espana", "descripcion": "IPC de España (general, subyacente, IPCA), último mes", "donde": "src/config/finance.ts, IPC_ESPANA; lo leen inflacion, deposito-a-plazo (glosario) y cuatro artículos (independencia-financiera-cuanto-dinero-necesitas incluido). Textos fijos a revisar cada mes (frases comparativas como 'seis décimas más que en agosto', 'la tasa más alta desde febrero de 2023', 'casi el 5 %', el 10,5 % del transporte, la frase de Eurostat): frontmatter y sources de esos artículos, tabla mensual y sección 'Qué ha pasado' de subida-sueldo-ipc-poder-adquisitivo e inflacion-que-interes-necesitas-para-no-perder",
    "fuente": "INE, nota de prensa mensual del IPC (API de datos: servicios.ine.es, serie IPC290750 para el general)", "fuenteUrl": "https://www.ine.es/dyngs/Prensa/IPC0926.htm", "frecuencia": "mensual",
    "cuando": "el INE publica el definitivo hacia el día 12 a 15 del mes siguiente; desde el día 18 debe estar el del mes anterior",
    "fecha": { "tipo": "regex", "fichero": "src/config/finance.ts", "patron": "IPC_ESPANA = \\{[\\s\\S]*?mes: '(\\d{4}-\\d{2})'" }, "vence": { "tipo": "mes-dato", "dia": 18 }, "critico": true,
@@ -230,7 +230,7 @@
    "responsable": "Rutina diaria de actualización"
   },
   {
-   "id": "ipc-diciembre-calculadora", "descripcion": "Inflación de diciembre a diciembre en la calculadora de inflación (2023, 2024, 2025)", "donde": "src/pages/herramientas/calculadora-inflacion.astro y el artículo diferencia-entre-ahorrar-e-invertir",
+   "id": "ipc-diciembre-calculadora", "descripcion": "Inflación de diciembre a diciembre en la calculadora de inflación (2023, 2024, 2025)", "donde": "src/pages/herramientas/calculadora-inflacion.astro, src/components/InflationCalculator.tsx y el artículo diferencia-entre-ahorrar-e-invertir",
    "fuente": "INE, IPC de diciembre de cada año (API serie IPC251856 hasta 2025, IPC290750 desde 2026)", "fuenteUrl": "https://www.ine.es/dyngs/Prensa/IPC1225.htm", "frecuencia": "anual",
    "cuando": "20 de enero, con el IPC de diciembre; añadir el año nuevo",
    "fecha": { "tipo": "literal", "valor": "2026-10-30" }, "vence": { "tipo": "anual", "mes": 1, "dia": 20, "gracia": 30 }, "critico": false,

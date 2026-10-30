@@ -34,7 +34,8 @@ export const real = (s, pi = ipc) => ((1 + s / 100) / (1 + pi / 100) - 1) * 100;
 export const n1 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).replace('-', '−');
 export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace('-', '−');
 export const fila = (s) => ({ nuevo: sueldo * (1 + s / 100), equivalente: (sueldo * (1 + s / 100)) / (1 + ipc / 100), real: real(s) });
-export const subidas = [0, 2, 3, 4, ipc, 6];
+export const subidas = [0, Math.round(ipc * 0.4), Math.round(ipc * 0.6), Math.round(ipc * 0.8), ipc, Math.round(ipc * 1.2)];
+export const n3 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
 export const acumulado = (anios, s, pi) => (Math.pow((1 + s / 100) / (1 + pi / 100), anios) - 1) * 100;
 
 Para no perder poder adquisitivo, tu sueldo tiene que subir **al menos lo mismo que el IPC** del mismo periodo. Según el
@@ -50,7 +51,7 @@ queda después de descontar la subida de los precios:
 
 **Subida real = (1 + subida del sueldo) ÷ (1 + inflación) − 1**
 
-Con un 2 % de subida y un {n1(ipc)} % de inflación: 1,02 ÷ 1,049 − 1 = **{n2(real(2))} %**. Restar sin más (2 − 4,9 = −2,9)
+Con un 2 % de subida y un {n1(ipc)} % de inflación: 1,02 ÷ {n3(1 + ipc / 100)} − 1 = **{n2(real(2))} %**. Restar sin más (2 − {n1(ipc)} = {n1(2 - ipc)})
 da una aproximación que funciona con inflaciones bajas, pero con cifras como las de 2026 conviene hacer la división.
 
 ## Cuánto pierdes o ganas según tu subida
@@ -90,9 +91,9 @@ La tasa anual del IPC, según el INE, en cada mes de 2026 publicado cuando se es
 | Junio | 3,2 % |
 | Julio | 3,6 % |
 | Agosto | 4,3 % |
-| Septiembre | 4,9 % |
+| Septiembre | {n1(IPC_ESPANA.general)} % |
 
-La inflación pasó de algo más del 2 % a principios de año a casi el 5 % en septiembre. En septiembre, el INE atribuyó buena
+La inflación pasó de algo más del 2 % a principios de año a casi el 5 % en septiembre de 2026. En septiembre, el INE atribuyó buena
 parte de la subida al transporte, cuya tasa anual llegó al 10,5 % por el encarecimiento de los carburantes. La inflación
 subyacente, que deja fuera la energía y los alimentos sin elaborar, fue del {n1(IPC_ESPANA.subyacente)} %: menos que la general, aunque por encima del 3 %.
 
@@ -111,14 +112,14 @@ Dos advertencias para interpretarlo:
 
 - Es una **media de todos los trabajadores**, no tu sueldo. Mezcla subidas de convenio, cambios de puesto, horas extra y
   cambios en el tipo de empleo. Muchas personas tuvieron subidas menores, o ninguna.
-- El salto de la inflación llegó después. Con un IPC del {n1(ipc)} % en septiembre, quien tuvo su subida a principios de
+- El salto de la inflación llegó después. Con un IPC del {n1(ipc)} % en {IPC_ESPANA.mesTexto}, quien tuvo su subida a principios de
   año con una inflación del 2 % o el 3 % ve ahora cómo los precios van por delante.
 
 ## El efecto se acumula con los años
 
 Una diferencia de un punto al año parece pequeña, pero se va sumando. Si durante cinco años tu sueldo sube un 2 % y los
 precios un 3 %, pierdes un **{n1(-acumulado(5, 2, 3))} %** de poder adquisitivo. Si el sueldo sube un 2 % y la inflación es
-del 4,9 % durante tres años, la pérdida llega al **{n1(-acumulado(3, 2, ipc))} %**. Al revés también funciona: un punto por
+del {n1(ipc)} % durante tres años, la pérdida llega al **{n1(-acumulado(3, 2, ipc))} %**. Al revés también funciona: un punto por
 encima de la inflación durante diez años son un **{n1(acumulado(10, 4, 3))} %** más de capacidad de compra.
 
 ## Qué puedes hacer
