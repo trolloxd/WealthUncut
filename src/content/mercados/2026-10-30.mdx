@@ -1,0 +1,158 @@
+---
+title: "Lagarde dejará el BCE en febrero y los tipos no se mueven"
+description: "El BCE mantuvo el tipo de depósito en el 2,50% y Lagarde anunció que se irá el 7 de febrero. El IBEX cedió un 0,14% y el Nasdaq cayó un 1,38%."
+pubDate: 2026-10-30
+author: "Alex Serra Rodríguez"
+tags: ["mercados", "bce", "lagarde", "ibex", "bbva", "wall-street", "alphabet", "pib", "inflacion"]
+sources:
+  - label: "BCE: decisiones de política monetaria del 29 de octubre de 2026"
+    url: "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp261029~9a493adf17.en.html"
+  - label: "BCE: la presidenta Lagarde dejará el cargo el 7 de febrero de 2027 (nota de prensa, 29 de octubre de 2026)"
+    url: "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.pr261029~abbb6dc64b.en.html"
+  - label: "BCE: declaración de política monetaria y rueda de prensa de Christine Lagarde y Boris Vujčić (29 de octubre de 2026)"
+    url: "https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/2026/html/ecb.is261029~5c5ffe99e5.en.html"
+  - label: "Expansión: Lagarde anuncia que deja la presidencia del BCE el 7 de febrero (29 de octubre de 2026)"
+    url: "https://www.expansion.com/mercados/2026/10/29/lagarde-anuncia-deja-presidencia-bce-7-febrero.html"
+  - label: "Expansión: el Ibex, otra vez a la cola de Europa, lastrado por los bancos (crónica de Bolsa, 29 de octubre de 2026)"
+    url: "https://www.expansion.com/mercados/cronica-bolsa/2026/10/29/ibex-desbordado-referencias.html"
+  - label: "Expansión: BBVA gana 9.066 millones, un 13,6% más, con una rentabilidad del 22% (29 de octubre de 2026)"
+    url: "https://www.expansion.com/empresas/banca/2026/10/29/bbva-gana-9-066-millones-13-6-rentabilidad-22.html"
+  - label: "Expansión: Repsol multiplica por cuatro el beneficio y supera por primera vez en su historia los 5.000 millones (29 de octubre de 2026)"
+    url: "https://www.expansion.com/empresas/energia/2026/10/29/repsol-multiplica-cuatro-beneficio-supera-primera-vez-historia-5-000-millones.html"
+  - label: "Expansión: por qué Apple arrasa en Bolsa al resto de los 7 Magníficos (30 de octubre de 2026)"
+    url: "https://www.expansion.com/mercados/el-foco-del-dia/2026/10/30/apple-arrasa-bolsa-resto-7-magnificos.html"
+  - label: "Expansión: el PIB de EE. UU. acelera al 3,4% y la inflación repunta un 3,6% (29 de octubre de 2026)"
+    url: "https://www.expansion.com/economia/2026/10/29/pib-eeuu-acelera-3-4-inflacion-repunta-3-6-puertas-midterm.html"
+  - label: "BEA: PIB de Estados Unidos del tercer trimestre de 2026, estimación de avance"
+    url: "https://www.bea.gov/news/2026/gdp-advance-estimate-3rd-quarter-2026"
+  - label: "BEA: ingresos y gastos personales de septiembre de 2026 (índice de precios PCE)"
+    url: "https://www.bea.gov/news/2026/personal-income-and-outlays-september-2026"
+  - label: "Rankia: cotización del IBEX 35 y de sus valores"
+    url: "https://www.rankia.com/indices-bursatiles/ibex-35-ibex"
+  - label: "Rankia: cotización de BBVA"
+    url: "https://www.rankia.com/acciones/bbva-bbva"
+  - label: "Rankia: índice NASDAQ Composite"
+    url: "https://www.rankia.com/indices-bursatiles/nasdaq-composite-ixic"
+  - label: "Rankia: cotización del Dow Jones Industrial Average"
+    url: "https://www.rankia.com/indices-bursatiles/dow-jones-industrial-average-dji"
+  - label: "BCE: tipo de cambio euro/dólar de referencia (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/EXR/EXR.D.USD.EUR.SP00.A"
+  - label: "INE: calendario semanal de notas de prensa, 26 a 30 de octubre de 2026"
+    url: "https://www.ine.es/daco/daco41/calen_semanal.pdf"
+---
+
+import datos from '../../data/mercados/2026-10-30.json';
+import MarketSnapshot from '../../components/MarketSnapshot.astro';
+import MarketChart from '../../components/MarketChart.astro';
+
+El Banco Central Europeo dejó los tipos de interés como estaban, pero la noticia del día fue otra:
+Christine Lagarde anunció que dejará la presidencia del BCE el 7 de febrero, meses antes de que
+termine su mandato. En Bolsa, el IBEX cerró casi plano, frenado por la banca, y en Wall
+Street el desplome de Alphabet (la matriz de Google) arrastró a las tecnológicas.
+
+## Lo más importante en 30 segundos
+
+- **BCE**: mantuvo por unanimidad el tipo de depósito en el 2,50%. La inflación de la zona euro
+  subió al 3,8% en septiembre, desde el 3,2% de agosto.
+- **Lagarde**: dejará la presidencia del BCE el 7 de febrero de 2027. Su sucesor lo nombrará el
+  Consejo Europeo.
+- **IBEX 35**: cedió un 0,14% el jueves, 25,9 puntos, y cerró en 18.857,6 puntos. BBVA cayó un
+  2,58% tras presentar sus resultados; Repsol subió un 3,05%.
+- **Wall Street**: el Nasdaq perdió un 1,38%, hasta 26.184,72 puntos, y el Dow Jones un 0,25%.
+- **Estados Unidos**: su PIB creció a un ritmo anualizado del 3,4% en el tercer trimestre y la
+  inflación medida por el índice PCE subió al 3,6% en septiembre.
+
+## El BCE espera y Lagarde anuncia su salida
+
+El Consejo de Gobierno del BCE terminó el jueves su reunión sin tocar los tipos: el de depósito,
+el que cobran los bancos por dejarle dinero, sigue en el 2,50%; el de las operaciones principales
+de financiación, en el 2,65%, y el de la facilidad marginal de crédito, en el 2,90%. La decisión
+fue unánime.
+
+El problema sigue siendo la energía. Según el propio BCE, la inflación de la zona euro subió al
+3,8% en septiembre, desde el 3,2% de agosto, y la de la energía pasó del 14,3% al 18,9%. El banco
+central reconoce que los precios de la energía han subido más de lo que preveían sus técnicos en
+septiembre, lo que supone riesgos al alza para la inflación y a la baja para el crecimiento.
+Lagarde insistió en que deciden reunión a reunión y dejó claro que mantener los tipos ahora no
+significa descartar nuevas subidas. La próxima reunión es en diciembre.
+
+Horas antes de la rueda de prensa, el BCE confirmó que Lagarde dejará el cargo el 7 de febrero de
+2027. Su mandato, de ocho años y no renovable, terminaba en octubre de 2027. En la rueda de prensa
+explicó que quiere tener libertad de expresión y libertad para opinar sobre asuntos que no son de
+política monetaria, algo incompatible con la neutralidad que exige el puesto. Su sucesor lo
+nombrará el Consejo Europeo, por el procedimiento que fija el Tratado de Funcionamiento de la UE.
+
+<MarketChart datos={datos} serie="dfr" titulo="Tipo de la facilidad de depósito del BCE (%)" ultimas={400} />
+
+### A qué te afecta
+
+Si tienes una hipoteca variable, al euríbor le importa sobre todo lo que el mercado espera que
+haga el BCE en los próximos meses, y el mensaje de ayer es que la puerta a otra subida sigue
+abierta. Quien cambie al frente del banco no altera eso de inmediato: las decisiones las toma el
+Consejo de Gobierno entero. Si tienes el dinero en una cuenta remunerada o en depósitos, los tipos
+altos siguen jugando a tu favor, aunque con una inflación del 3,8% hay que mirar si lo que te pagan
+la supera. Puedes seguir el dato oficial en la página del [euríbor](/euribor/).
+
+## La banca frena al IBEX y Alphabet hunde al Nasdaq
+
+El IBEX cedió un 0,14% y terminó en 18.857,6 puntos, mientras el resto de grandes Bolsas europeas
+subía. Según Expansión, pesaron dos cosas: la tanda de resultados de los bancos y que Inditex y
+Santander, dos de los valores con más peso del índice, descontaron ese día de su precio el
+dividendo que pagan el 2 de noviembre (es decir, desde ayer la acción ya no da derecho a cobrarlo,
+y su precio baja más o menos en esa cantidad). Santander cerró sin cambios.
+
+BBVA perdió un 2,58% tras presentar sus cuentas hasta septiembre. Según Expansión, el grupo
+volvió a ganar más que un año antes, pero su negocio en España ganó algo menos por el aumento de
+los costes. Le acompañaron a la baja CaixaBank (-1,72%), Unicaja (-1,62%), Bankinter (-1,26%) y,
+con menos intensidad, Sabadell (-0,23%), que también presentó resultados. En el lado contrario,
+Repsol subió un 3,05% después de anunciar un beneficio récord, impulsado por el petróleo caro, y
+una nueva recompra de acciones, e Indra ganó un 3,55%.
+
+En Estados Unidos, el protagonista fue Alphabet. Sus resultados del tercer trimestre decepcionaron
+y la acción llegó a caer alrededor de un 12% durante la sesión, según Expansión, que lo atribuye a
+que la empresa gastó en centros de datos para la inteligencia artificial más dinero del que generó.
+Arrastró a otras tecnológicas: el Nasdaq cayó un 1,38%, hasta 26.184,72 puntos, y el Dow Jones un
+0,25%. Amazon presentó sus cuentas ya con la Bolsa cerrada y, según Expansión,
+también decepcionaron.
+
+Los datos macro de Estados Unidos fueron en la misma línea que su banco central. Según la Oficina
+de Análisis Económico (BEA), el PIB creció en el tercer trimestre a un ritmo anualizado del 3,4%
+(lo que crecería en un año entero a ese ritmo), frente al 2,2% del segundo, gracias sobre todo a la
+inversión empresarial. Y el índice de precios PCE, la medida de inflación que más vigila la Reserva
+Federal, subió un 3,6% en septiembre respecto a un año antes; sin energía ni alimentos, un 3,1%.
+Una economía que crece rápido con la inflación alta mantiene vivo el debate sobre otra subida de
+tipos de la Fed en diciembre.
+
+### A qué te afecta
+
+Si tienes un fondo indexado global, las grandes tecnológicas de Estados Unidos pesan mucho en él,
+así que un día como el de ayer se nota. Pero también reparte el riesgo: mientras Alphabet caía,
+Apple subió, y los bancos españoles bajaban mientras Repsol subía. Y el dividendo de Inditex y
+Santander es un buen recordatorio: cuando una acción descuenta el dividendo, su precio baja, pero el
+accionista no pierde ese dinero, lo cobra en efectivo (y tributa por él).
+
+<MarketSnapshot datos={datos} />
+
+<MarketChart datos={datos} serie="eurusd" titulo="Euro/dólar, tipo de referencia del BCE" ultimas={90} />
+
+El euro apenas se movió frente al dólar: el BCE fijó el cambio del jueves en 1,1130 dólares por euro,
+casi igual que el 1,1133 del miércoles.
+
+## Qué vigilar hoy
+
+Todas las horas son hora peninsular española.
+
+- **9:00**: el INE publica el avance del PIB de España del tercer trimestre y el IPC adelantado de
+  octubre, el primer dato de inflación del mes.
+- **14:30**: abre Wall Street, todavía una hora antes de lo habitual en hora española, porque
+  Estados Unidos no cambia al horario de invierno hasta el domingo 1 de noviembre. Se verá cómo
+  reacciona Amazon a sus resultados.
+- **Martes 3 de noviembre**: elecciones de mitad de mandato en Estados Unidos, que los inversores
+  siguen de cerca por su posible efecto en el conflicto con Irán y en el petróleo.
+
+## Para entenderlo mejor
+
+Si quieres saber por qué un fondo indexado global aguanta mejor un mal día de una sola empresa, lo
+explicamos en [qué es un fondo indexado](/blog/que-es-un-fondo-indexado/). Y si tu hipoteca es
+variable, el [simulador de hipoteca con el euríbor](/herramientas/simulador-hipoteca-euribor/) te
+enseña cuánto cambiaría tu cuota si el euríbor sube o baja.
