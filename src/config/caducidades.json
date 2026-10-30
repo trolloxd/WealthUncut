@@ -1,0 +1,266 @@
+{
+ "descripcion": "Registro de todo dato del sitio que caduca: dónde vive, su fuente oficial, cada cuánto se revisa, de dónde sale su fecha de última verificación y cómo se actualiza. Lo lee scripts/comprobar-frescura.mjs (sin IA) y el aviso del build. Al verificar un dato con fecha 'literal', actualiza aquí esa fecha en el mismo commit. Procedimiento: ACTUALIZACION-PROCEDIMIENTO.md.",
+ "revisado": "2026-10-30",
+ "entradas": [
+  {
+   "id": "bce-tipo-deposito", "descripcion": "Tipo de la facilidad de depósito del BCE", "donde": "src/data/mercados/AAAA-MM-DD.json, serie dfr (portada, /hoy/, /mercados/)",
+   "fuente": "BCE, ECB Data Portal (FM D.U2.EUR.4F.KR.DFR.LEV)", "fuenteUrl": "https://data.ecb.europa.eu/data/datasets/FM", "frecuencia": "diaria",
+   "cuando": "cada día hábil TARGET; aviso con 2 días hábiles sin dato, vencido con 3",
+   "fecha": { "tipo": "mercados-serie", "serie": "dfr" }, "vence": { "tipo": "habiles-target", "aviso": 2, "error": 3 }, "critico": true,
+   "actualizacion": { "modo": "script", "comando": "node scripts/datos-mercados.mjs", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#bce" },
+   "responsable": "Rutina de mercados (cada mañana) y comprobación diaria wu-frescura (rama local)", "resultadoScript": "Tipo de depósito del BCE"
+  },
+  {
+   "id": "bce-eurusd", "descripcion": "Euro / dólar (referencia del BCE)", "donde": "src/data/mercados/AAAA-MM-DD.json, serie eurusd (portada, /hoy/, /mercados/)",
+   "fuente": "BCE, ECB Data Portal (EXR D.USD.EUR.SP00.A)", "fuenteUrl": "https://data.ecb.europa.eu/data/datasets/EXR", "frecuencia": "diaria",
+   "cuando": "cada día hábil TARGET; aviso con 2 días hábiles sin dato, vencido con 3",
+   "fecha": { "tipo": "mercados-serie", "serie": "eurusd" }, "vence": { "tipo": "habiles-target", "aviso": 2, "error": 3 }, "critico": true,
+   "actualizacion": { "modo": "script", "comando": "node scripts/datos-mercados.mjs", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#bce" },
+   "responsable": "Rutina de mercados y comprobación diaria wu-frescura", "resultadoScript": "Euro / dólar"
+  },
+  {
+   "id": "bce-otras-series", "descripcion": "Euro/libra, euro/yen, €STR y rentabilidad a 2 y 10 años (BCE)", "donde": "src/data/mercados/AAAA-MM-DD.json (gráficas de /mercados/)",
+   "fuente": "BCE, ECB Data Portal (EXR, EST, YC)", "fuenteUrl": "https://data.ecb.europa.eu/", "frecuencia": "diaria",
+   "cuando": "cada día hábil TARGET",
+   "fecha": { "tipo": "mercados-serie", "serie": "bono10a" }, "vence": { "tipo": "habiles-target", "aviso": 2, "error": 3 }, "critico": false,
+   "actualizacion": { "modo": "script", "comando": "node scripts/datos-mercados.mjs", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#bce" },
+   "responsable": "Rutina de mercados"
+  },
+  {
+   "id": "mercados-edicion", "descripcion": "Edición diaria de /mercados/ (y, con ella, el briefing de /hoy/)", "donde": "src/content/mercados/AAAA-MM-DD.mdx",
+   "fuente": "BCE + segunda fuente, según MERCADOS-PROCEDIMIENTO.md", "fuenteUrl": null, "frecuencia": "diaria",
+   "cuando": "una edición cada día; aviso a los 2 días sin edición, vencido a los 3",
+   "fecha": { "tipo": "ultimo-fichero", "carpeta": "src/content/mercados", "patron": "^(\\d{4}-\\d{2}-\\d{2})\\.mdx$" }, "vence": { "tipo": "dias", "aviso": 2, "error": 3 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "MERCADOS-PROCEDIMIENTO.md" },
+   "responsable": "Rutina de mercados (nube, cada mañana)"
+  },
+  {
+   "id": "euribor-boe", "descripcion": "Euríbor a un año oficial del BOE", "donde": "src/data/euribor/ultimo.json (portada, /hoy/, /euribor/, escena 3D de la hipoteca, /datos/)",
+   "fuente": "Banco de España, resolución mensual publicada en el BOE", "fuenteUrl": "https://www.boe.es/buscar/boe.php", "frecuencia": "mensual",
+   "cuando": "día 2 a 4 de cada mes sale el del mes anterior; desde el día 4 debe estar",
+   "fecha": { "tipo": "json", "fichero": "src/data/euribor/ultimo.json", "clave": "ultimoMes" }, "vence": { "tipo": "mes-dato", "dia": 4 }, "critico": true,
+   "actualizacion": { "modo": "script", "comando": "node scripts/datos-euribor.mjs", "procedimiento": "MANTENIMIENTO-PROCEDIMIENTO.md#1-euríbor-oficial-mensual y ACTUALIZACION-PROCEDIMIENTO.md#euribor" },
+   "responsable": "Rutina de euríbor (mensual) y comprobación diaria wu-frescura", "resultadoScript": "Euríbor (BOE)",
+   "notas": "Solo el valor oficial del BOE, nunca la serie del BCE ni de EMMI (decisión de David, 2026-10-26)."
+  },
+  {
+   "id": "ipc-espana", "descripcion": "IPC de España (general, subyacente, IPCA), último mes", "donde": "src/config/finance.ts, IPC_ESPANA; lo leen inflacion, deposito-a-plazo (glosario) y tres artículos. Textos fijos a revisar: frontmatter y sources de esos artículos, tabla mensual y sección 'Qué ha pasado' de subida-sueldo-ipc-poder-adquisitivo e inflacion-que-interes-necesitas-para-no-perder",
+   "fuente": "INE, nota de prensa mensual del IPC (API de datos: servicios.ine.es, serie IPC290750 para el general)", "fuenteUrl": "https://www.ine.es/dyngs/Prensa/IPC0926.htm", "frecuencia": "mensual",
+   "cuando": "el INE publica el definitivo hacia el día 12 a 15 del mes siguiente; desde el día 18 debe estar el del mes anterior",
+   "fecha": { "tipo": "regex", "fichero": "src/config/finance.ts", "patron": "IPC_ESPANA = \\{[\\s\\S]*?mes: '(\\d{4}-\\d{2})'" }, "vence": { "tipo": "mes-dato", "dia": 18 }, "critico": true,
+   "actualizacion": { "modo": "investigacion", "comando": "node scripts/datos-ipc.mjs", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#ipc" },
+   "responsable": "Rutina diaria de actualización (nube); el script detecta el dato nuevo, la rutina lo escribe con su fuente",
+   "notas": "scripts/datos-ipc.mjs solo compara el general con la API del INE; subyacente, IPCA y fecha de publicación se leen de la nota de prensa."
+  },
+  {
+   "id": "cuentas-remuneradas", "descripcion": "Comparador de cuentas remuneradas y depósitos (TAE, importes, requisitos)", "donde": "src/data/cuentas-remuneradas/ultimo.json (comparador, portada, /hoy/, artículos de ahorro)",
+   "fuente": "Webs de los bancos y al menos dos comparadores independientes (HelpMyCash, Finect, Rankia, Kelisto, Raisin)", "fuenteUrl": "https://www.helpmycash.com/cuentas/cuentas-remuneradas/", "frecuencia": "semanal",
+   "cuando": "cada 7 días; aviso a los 8, vencido a los 10",
+   "fecha": { "tipo": "json", "fichero": "src/data/cuentas-remuneradas/ultimo.json", "clave": "fecha" }, "vence": { "tipo": "dias", "aviso": 8, "error": 10 }, "critico": true,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "CUENTAS-PROCEDIMIENTO.md y ACTUALIZACION-PROCEDIMIENTO.md#cuentas" },
+   "responsable": "Rutina semanal de cuentas y rutina diaria de actualización", "resultadoScript": "Cuentas remuneradas"
+  },
+  {
+   "id": "cuentas-ofertas-con-fecha", "descripcion": "Ofertas del comparador con fecha límite escrita en el texto ('altas hasta el 22/11/2026')", "donde": "src/data/cuentas-remuneradas/ultimo.json, campos duracion y requisitos",
+   "fuente": "Web de cada banco", "fuenteUrl": null, "frecuencia": "semanal",
+   "cuando": "aviso 14 días antes de la fecha límite; vencido si la fecha ya pasó (no se muestran ofertas que caducan en menos de 2 semanas)",
+   "fecha": { "tipo": "ofertas-en-json", "fichero": "src/data/cuentas-remuneradas/ultimo.json" }, "vence": { "tipo": "ofertas", "avisoDias": 14 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#cuentas" },
+   "responsable": "Rutina diaria de actualización"
+  },
+  {
+   "id": "cuentas-historico", "descripcion": "Histórico de TAE (una instantánea por revisión)", "donde": "src/data/cuentas-remuneradas/historico.json (gráfica del comparador)",
+   "fuente": "El propio ultimo.json en cada fecha", "fuenteUrl": null, "frecuencia": "semanal",
+   "cuando": "una instantánea por revisión del comparador (cada 7 días)",
+   "fecha": { "tipo": "json", "fichero": "src/data/cuentas-remuneradas/historico.json", "clave": "snapshots.-1.fecha" }, "vence": { "tipo": "dias", "aviso": 8, "error": 10 }, "critico": false,
+   "actualizacion": { "modo": "script", "comando": "node scripts/historico-cuentas.mjs", "procedimiento": "CUENTAS-PROCEDIMIENTO.md#6" },
+   "responsable": "Rutina semanal de cuentas"
+  },
+  {
+   "id": "fondos-indexados", "descripcion": "Comparador de fondos indexados (TER, ISIN, índice)", "donde": "src/data/fondos-indexados/ultimo.json (FondosIndexadosTabla)",
+   "fuente": "KIID/KID de la gestora y al menos un comparador independiente (Finect, Rankia, El Economista)", "fuenteUrl": null, "frecuencia": "mensual",
+   "cuando": "cada mes; aviso a los 32 días, vencido a los 40",
+   "fecha": { "tipo": "json", "fichero": "src/data/fondos-indexados/ultimo.json", "clave": "fecha" }, "vence": { "tipo": "dias", "aviso": 32, "error": 40 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "FONDOS-PROCEDIMIENTO.md y ACTUALIZACION-PROCEDIMIENTO.md#fondos" },
+   "responsable": "Rutina mensual de fondos y rutina diaria de actualización"
+  },
+  {
+   "id": "catalogo-carteras", "descripcion": "Catálogo de fondos de MyInvestor para /carteras/", "donde": "src/data/myinvestor-fondos/ultimo.json y catalogo.json",
+   "fuente": "myinvestor.es (sección de fondos) y KID de cada fondo", "fuenteUrl": "https://myinvestor.es/inversion/fondos-inversion/", "frecuencia": "mensual",
+   "cuando": "cada mes; aviso a los 32 días, vencido a los 40",
+   "fecha": { "tipo": "json", "fichero": "src/data/myinvestor-fondos/ultimo.json", "clave": "fecha" }, "vence": { "tipo": "dias", "aviso": 32, "error": 40 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "MYINVESTOR-FONDOS-PROCEDIMIENTO.md y ACTUALIZACION-PROCEDIMIENTO.md#fondos" },
+   "responsable": "Rutina mensual del catálogo de carteras y rutina diaria de actualización"
+  },
+  {
+   "id": "newsletter-semanal", "descripcion": "Número semanal de la newsletter '5 minutos de finanzas'", "donde": "src/content/newsletter/AAAA-MM-DD.mdx",
+   "fuente": "Lo publicado esa semana en el sitio (NEWSLETTER-PROCEDIMIENTO.md)", "fuenteUrl": null, "frecuencia": "semanal",
+   "cuando": "un número cada domingo; aviso a los 8 días, vencido a los 10",
+   "fecha": { "tipo": "ultimo-fichero", "carpeta": "src/content/newsletter", "patron": "^(\\d{4}-\\d{2}-\\d{2})\\.mdx$" }, "vence": { "tipo": "dias", "aviso": 8, "error": 10 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "NEWSLETTER-PROCEDIMIENTO.md" },
+   "responsable": "Rutina semanal de newsletter (nube, domingo)"
+  },
+  {
+   "id": "cola-articulos", "descripcion": "Artículos de /blog/ programados (existencias de la cola)", "donde": "src/content/blog/*.mdx con pubDate futura",
+   "fuente": "ARTICULOS-PROCEDIMIENTO.md", "fuenteUrl": null, "frecuencia": "diaria",
+   "cuando": "debe haber 7 o más programados; aviso con menos de 7, vencido con menos de 2",
+   "fecha": { "tipo": "cola-articulos" }, "vence": { "tipo": "cola", "aviso": 7, "error": 2 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ARTICULOS-PROCEDIMIENTO.md" },
+   "responsable": "Rutina de reposición de artículos (nube, diaria)"
+  },
+  {
+   "id": "articulos-antiguos", "descripcion": "Artículos publicados sin revisar en más de un año (cifras, fuentes y enlaces)", "donde": "src/content/blog/*.mdx, campo updatedDate",
+   "fuente": "La fuente de cada artículo", "fuenteUrl": null, "frecuencia": "anual",
+   "cuando": "ningún artículo publicado con updatedDate de más de 365 días; aviso a los 330",
+   "fecha": { "tipo": "articulo-mas-antiguo" }, "vence": { "tipo": "dias", "aviso": 330, "error": 365 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#antiguos" },
+   "responsable": "Rutina diaria de actualización"
+  },
+  {
+   "id": "keywords-search-console", "descripcion": "Consultas reales de Search Console en KEYWORDS.md", "donde": "KEYWORDS.md",
+   "fuente": "Google Search Console (solo David tiene acceso)", "fuenteUrl": "https://search.google.com/search-console", "frecuencia": "mensual",
+   "cuando": "revisar cada mes; aviso a los 35 días, vencido a los 45",
+   "fecha": { "tipo": "fechas-max", "fichero": "KEYWORDS.md" }, "vence": { "tipo": "dias", "aviso": 35, "error": 45 }, "critico": false,
+   "actualizacion": { "modo": "manual", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#manual" },
+   "responsable": "David (pegar las consultas) y wu-seo-auditor"
+  },
+  {
+   "id": "irpf-ahorro", "descripcion": "Tramos del IRPF del ahorro, retención de fondos, dividendos, compensación, recompra y modelo 720", "donde": "src/config/finance.ts: IRPF_AHORRO_BRACKETS, RETENCION_REEMBOLSO_FONDOS, DIVIDENDOS, COMPENSACION_AHORRO, REGLA_RECOMPRA, MODELO_720, IRPF_AHORRO_FUENTE",
+   "fuente": "AEAT, Manual práctico de Renta (ejercicio vigente) y Ley 35/2006", "fuenteUrl": "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos.html", "frecuencia": "anual",
+   "cuando": "abril, con el nuevo Manual de Renta (campaña); y cuando se apruebe una ley que cambie la escala",
+   "fecha": { "tipo": "regex", "fichero": "src/config/finance.ts", "patron": "IRPF_AHORRO_FUENTE = \\{[\\s\\S]*?fechaRegistro: '(\\d{4}-\\d{2}-\\d{2})'" }, "vence": { "tipo": "anual", "mes": 4, "dia": 15, "gracia": 30 }, "critico": true,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#fiscales" },
+   "responsable": "Rutina diaria de actualización (propone; la revisión anual con nuevo Manual la confirma David)"
+  },
+  {
+   "id": "irpf-general", "descripcion": "IRPF general: escala estatal, escalas autonómicas de las 15 CCAA de régimen común, Ceuta y Melilla, mínimos y reducción por rendimientos del trabajo", "donde": "src/config/finance.ts: IRPF_GENERAL_ESTATAL, IRPF_GENERAL_AUTONOMICO, IRPF_MINIMO_CONTRIBUYENTE, IRPF_GASTO_DEDUCIBLE_TRABAJO, IRPF_REDUCCION_TRABAJO",
+   "fuente": "AEAT, Manual práctico de Renta (gravamen estatal y autonómico) y leyes autonómicas de tributos cedidos", "fuenteUrl": "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos.html", "frecuencia": "anual",
+   "cuando": "enero (leyes autonómicas aprobadas en diciembre) y abril (nuevo Manual de Renta)",
+   "fecha": { "tipo": "literal", "valor": "2026-09-24" }, "vence": { "tipo": "anual", "mes": 1, "dia": 31, "gracia": 30, "tambien": [[4, 15]] }, "critico": true,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#fiscales" },
+   "responsable": "Rutina diaria de actualización y revisión de cifras fiscales (feb/abr/jun, solo informa)"
+  },
+  {
+   "id": "ss-trabajador", "descripcion": "Cotizaciones del trabajador a la Seguridad Social, base máxima y cotización de solidaridad", "donde": "src/config/finance.ts: SS_TRABAJADOR",
+   "fuente": "BOE, orden anual de cotización (2026: Orden PJC/297/2026)", "fuenteUrl": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296", "frecuencia": "anual",
+   "cuando": "febrero (orden de cotización) y abril si la orden se retrasa, como en 2026",
+   "fecha": { "tipo": "literal", "valor": "2026-09-24" }, "vence": { "tipo": "anual", "mes": 2, "dia": 15, "gracia": 45, "tambien": [[4, 15]] }, "critico": true,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#fiscales" },
+   "responsable": "Rutina diaria de actualización"
+  },
+  {
+   "id": "reta-autonomos", "descripcion": "Cuota de autónomos (RETA) por tramos de rendimientos, tarifa plana y tipos", "donde": "src/config/finance.ts: RETA_2026",
+   "fuente": "BOE, orden anual de cotización (art. 18 y cese de actividad)", "fuenteUrl": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296", "frecuencia": "anual",
+   "cuando": "febrero (orden de cotización) y abril si la orden se retrasa",
+   "fecha": { "tipo": "literal", "valor": "2026-10-06" }, "vence": { "tipo": "anual", "mes": 2, "dia": 15, "gracia": 45, "tambien": [[4, 15]] }, "critico": true,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#fiscales" },
+   "responsable": "Rutina diaria de actualización",
+   "notas": "La constante se llama RETA_2026: al cambiar de año, renombrarla en todos los usos."
+  },
+  {
+   "id": "itp-vivienda", "descripcion": "ITP de vivienda usada por comunidad y gastos de notaría, registro y gestoría (estimación 1 %)", "donde": "src/config/finance.ts: ITP_VIVIENDA_USADA, ITP_VIVIENDA_USADA_FUENTES, GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT",
+   "fuente": "Normativa autonómica del ITP, cruzada con dos fuentes especializadas (Guía Fiscal y similares)", "fuenteUrl": null, "frecuencia": "anual",
+   "cuando": "enero (leyes de acompañamiento de las CCAA) y julio",
+   "fecha": { "tipo": "literal", "valor": "2026-10-06" }, "vence": { "tipo": "anual", "mes": 1, "dia": 31, "gracia": 30, "tambien": [[7, 15]] }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#fiscales" },
+   "responsable": "Rutina diaria de actualización"
+  },
+  {
+   "id": "modelo-720-721", "descripcion": "Modelos 720 y 721: umbrales, plazos y criterios", "donde": "src/config/finance.ts: MODELO_720, MODELO_721",
+   "fuente": "AEAT, preguntas frecuentes de los modelos 720 y 721", "fuenteUrl": "https://sede.agenciatributaria.gob.es/Sede/todas-gestiones/impuestos-tasas/declaraciones-informativas/modelo-721-decla-sobre-monedas-extranjero.html", "frecuencia": "anual",
+   "cuando": "enero (antes del plazo de 1 de enero a 31 de marzo)",
+   "fecha": { "tipo": "regex", "fichero": "src/config/finance.ts", "patron": "MODELO_721 = \\{[\\s\\S]*?fechaRegistro: '(\\d{4}-\\d{2}-\\d{2})'" }, "vence": { "tipo": "anual", "mes": 1, "dia": 15, "gracia": 30 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#fiscales" },
+   "responsable": "Rutina diaria de actualización"
+  },
+  {
+   "id": "plan-pensiones", "descripcion": "Límites de aportación a planes de pensiones con reducción en el IRPF", "donde": "src/config/finance.ts: PLAN_PENSIONES",
+   "fuente": "AEAT, Manual práctico de Renta (reducciones por aportaciones a sistemas de previsión social) y Ley de Presupuestos", "fuenteUrl": "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos.html", "frecuencia": "anual",
+   "cuando": "enero (la ley de presupuestos o su prórroga fija los límites)",
+   "fecha": { "tipo": "regex", "fichero": "src/config/finance.ts", "patron": "PLAN_PENSIONES = \\{[\\s\\S]*?fechaRegistro: '(\\d{4}-\\d{2}-\\d{2})'" }, "vence": { "tipo": "anual", "mes": 1, "dia": 31, "gracia": 30 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#fiscales" },
+   "responsable": "Rutina diaria de actualización"
+  },
+  {
+   "id": "fgd-cobertura", "descripcion": "Cobertura del Fondo de Garantía de Depósitos (100.000 € por titular y entidad)", "donde": "src/config/finance.ts: FGD_COBERTURA",
+   "fuente": "Fondo de Garantía de Depósitos de Entidades de Crédito", "fuenteUrl": "https://www.fgd.es/informacion-general/que-es-el-fgd/depositos-dinerarios/", "frecuencia": "anual",
+   "cuando": "enero",
+   "fecha": { "tipo": "literal", "valor": "2026-09-23" }, "vence": { "tipo": "anual", "mes": 1, "dia": 31, "gracia": 60 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#fiscales" },
+   "responsable": "Rutina diaria de actualización"
+  },
+  {
+   "id": "comisiones-hipoteca", "descripcion": "Comisión de amortización anticipada y de cambio a tipo fijo (Ley 5/2019)", "donde": "src/config/finance.ts: COMISION_AMORTIZACION_ANTICIPADA, COMISION_CAMBIO_A_FIJO",
+   "fuente": "BOE, texto consolidado de la Ley 5/2019 reguladora de los contratos de crédito inmobiliario", "fuenteUrl": "https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814", "frecuencia": "anual",
+   "cuando": "enero y julio",
+   "fecha": { "tipo": "regex", "fichero": "src/config/finance.ts", "patron": "COMISION_AMORTIZACION_ANTICIPADA = \\{[\\s\\S]*?fechaRegistro: '(\\d{4}-\\d{2}-\\d{2})'" }, "vence": { "tipo": "anual", "mes": 1, "dia": 31, "gracia": 60, "tambien": [[7, 31]] }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#fiscales" },
+   "responsable": "Rutina diaria de actualización"
+  },
+  {
+   "id": "alquiler-irpf", "descripcion": "IRPF del propietario que alquila: reducciones y amortización", "donde": "src/config/finance.ts: ALQUILER_IRPF (calculadora-irpf-alquiler)",
+   "fuente": "AEAT, Manual práctico de Renta y Ley 35/2006 art. 23", "fuenteUrl": "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos.html", "frecuencia": "anual",
+   "cuando": "abril, con el nuevo Manual de Renta",
+   "fecha": { "tipo": "literal", "valor": "2026-10-08" }, "vence": { "tipo": "anual", "mes": 4, "dia": 15, "gracia": 30 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#fiscales" },
+   "responsable": "Rutina diaria de actualización"
+  },
+  {
+   "id": "alquiler-rdl-29-2026", "descripcion": "Real Decreto-ley 29/2026 (reducción del alquiler y deducción), pendiente de convalidación", "donde": "src/config/finance.ts: ALQUILER_IRPF_RDL_29_2026, DEDUCCION_ALQUILER_RDL_29_2026",
+   "fuente": "BOE (BOE-A-2026-20823) y Congreso de los Diputados (iniciativa 130/000060)", "fuenteUrl": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20823", "frecuencia": "semanal",
+   "cuando": "cada semana hasta que se convalide o derogue (plazo del art. 86.2 de la Constitución); luego pasar la entrada a revisión anual",
+   "fecha": { "tipo": "regex", "fichero": "src/config/finance.ts", "patron": "ALQUILER_IRPF_RDL_29_2026 = \\{[\\s\\S]*?fechaRegistro: '(\\d{4}-\\d{2}-\\d{2})'" }, "vence": { "tipo": "dias", "aviso": 7, "error": 14 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#rdl" },
+   "responsable": "Rutina diaria de actualización; si se deroga, avisar a David antes de quitar las cifras"
+  },
+  {
+   "id": "ayudas-vivienda-jovenes", "descripcion": "Ayudas estatales a la vivienda para jóvenes (Plan Estatal 2026-2030) e IPREM", "donde": "src/config/finance.ts: AYUDAS_VIVIENDA_JOVENES",
+   "fuente": "BOE, Real Decreto 326/2026 (BOE-A-2026-8872) y ley de presupuestos (IPREM)", "fuenteUrl": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-8872", "frecuencia": "anual",
+   "cuando": "enero (IPREM) y julio (convocatorias autonómicas)",
+   "fecha": { "tipo": "literal", "valor": "2026-10-06" }, "vence": { "tipo": "anual", "mes": 1, "dia": 31, "gracia": 60, "tambien": [[7, 15]] }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#fiscales" },
+   "responsable": "Rutina diaria de actualización"
+  },
+  {
+   "id": "calendario-fiscal", "descripcion": "Calendario fiscal por perfil y sus archivos .ics (las fechas de 2027 son previstas)", "donde": "src/lib/calculos/calendario-fiscal.ts: EVENTOS_FISCALES, CALENDARIO_REVISADO",
+   "fuente": "AEAT, Calendario del contribuyente (se publica a final de año)", "fuenteUrl": "https://sede.agenciatributaria.gob.es/Sede/ayuda/calendario-contribuyente.html", "frecuencia": "anual",
+   "cuando": "20 de diciembre (calendario oficial del año siguiente); sustituir las fechas previstas por las oficiales",
+   "fecha": { "tipo": "regex", "fichero": "src/lib/calculos/calendario-fiscal.ts", "patron": "CALENDARIO_REVISADO = '(\\d{4}-\\d{2}-\\d{2})'" }, "vence": { "tipo": "anual", "mes": 12, "dia": 20, "gracia": 45 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#calendario" },
+   "responsable": "Rutina diaria de actualización"
+  },
+  {
+   "id": "ipc-diciembre-calculadora", "descripcion": "Inflación de diciembre a diciembre en la calculadora de inflación (2023, 2024, 2025)", "donde": "src/pages/herramientas/calculadora-inflacion.astro y el artículo diferencia-entre-ahorrar-e-invertir",
+   "fuente": "INE, IPC de diciembre de cada año (API serie IPC251856 hasta 2025, IPC290750 desde 2026)", "fuenteUrl": "https://www.ine.es/dyngs/Prensa/IPC1225.htm", "frecuencia": "anual",
+   "cuando": "20 de enero, con el IPC de diciembre; añadir el año nuevo",
+   "fecha": { "tipo": "literal", "valor": "2026-10-30" }, "vence": { "tipo": "anual", "mes": 1, "dia": 20, "gracia": 30 }, "critico": false,
+   "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#ipc" },
+   "responsable": "Rutina diaria de actualización",
+   "notas": "El 2026-10-30 se comprobó diciembre de 2025 (2,9 %) contra la API del INE; 2023 y 2024 quedan por contrastar en la próxima revisión."
+  },
+  {
+   "id": "lssi-direccion", "descripcion": "Dirección en España exigida por el art. 10.1.a LSSI-CE en el aviso legal (pendiente)", "donde": "src/pages/aviso-legal.astro",
+   "fuente": "BOE, Ley 34/2002 (LSSI-CE)", "fuenteUrl": "https://www.boe.es/buscar/act.php?id=BOE-A-2002-13758", "frecuencia": "puntual",
+   "cuando": "cuando David tenga una dirección (oficina virtual o coworking)",
+   "fecha": { "tipo": "ninguna" }, "vence": { "tipo": "sin-fecha" }, "critico": false,
+   "actualizacion": { "modo": "manual", "procedimiento": "CLAUDE.md, sección Reglas de calidad y cumplimiento" },
+   "responsable": "David (las páginas legales no las toca ninguna rutina)"
+  },
+  {
+   "id": "dependencias-npm", "descripcion": "Seguridad de las dependencias (npm audit)", "donde": "package.json y package-lock.json",
+   "fuente": "npm audit", "fuenteUrl": null, "frecuencia": "semanal",
+   "cuando": "cada semana",
+   "fecha": { "tipo": "ninguna" }, "vence": { "tipo": "sin-fecha" }, "critico": false,
+   "actualizacion": { "modo": "script", "comando": "npm audit", "procedimiento": "MANTENIMIENTO-PROCEDIMIENTO.md#2-seguridad-de-dependencias-semanal" },
+   "responsable": "Rutina semanal de dependencias (nube)"
+  },
+  {
+   "id": "enlaces-externos", "descripcion": "Enlaces externos rotos", "donde": ".github/workflows/enlaces-externos.yml",
+   "fuente": "scripts/comprobar-enlaces.mjs", "fuenteUrl": null, "frecuencia": "semanal",
+   "cuando": "cada lunes (GitHub Actions; avisa por email si falla)",
+   "fecha": { "tipo": "ninguna" }, "vence": { "tipo": "sin-fecha" }, "critico": false,
+   "actualizacion": { "modo": "script", "comando": "node scripts/comprobar-enlaces.mjs", "procedimiento": "MANTENIMIENTO-PROCEDIMIENTO.md#3-salud-del-sitio-semanal-solo-informa" },
+   "responsable": "GitHub Actions"
+  }
+ ]
+}

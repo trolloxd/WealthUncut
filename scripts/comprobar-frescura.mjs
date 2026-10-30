@@ -1,7 +1,13 @@
 // Comprobación diaria de "Los datos de hoy", sin IA y sin créditos: compara lo que hay publicado con su fuente.
 //
-// Uso: node scripts/comprobar-frescura.mjs [--log <carpeta>] [--sin-rama] [--probar-rama]
+// Uso: node scripts/comprobar-frescura.mjs [--log <carpeta>] [--sin-rama] [--probar-rama] [--solo-registro]
 // (--probar-rama: prepara la rama aunque no haya desvío, para probar el mecanismo; no publica nada)
+// (--solo-registro: sin red ni git; solo lee el registro de caducidades del árbol de trabajo y lista lo vencido. Es lo
+//  que corre antes de cada `npm run build`; solo falla con FRESCURA_ESTRICTA=1 o --estricto y algo crítico vencido)
+//
+// Registro de caducidades (src/config/caducidades.json, lógica en src/lib/caducidades.ts): cada dato del sitio que
+// caduca, con su fuente, su regla y cómo se actualiza. Tras las comprobaciones de arriba, el script lista qué está
+// vencido, qué está por vencer y qué toca en los próximos 14 días. Procedimiento: ACTUALIZACION-PROCEDIMIENTO.md.
 //
 // 1. Lee los datos de origin/main (lo que está publicado), no los de la copia local.
 // 2. Fuentes: API de datos del BCE (tipo de depósito y euro/dólar), BOE (euríbor, scripts/lib/euribor-boe.mjs) y
@@ -20,12 +26,16 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buscarEuriborBOE } from './lib/euribor-boe.mjs';
 import { frescuraBCE, frescuraCuentas, frescuraEuribor, peor } from '../src/lib/frescura.ts';
+import { evaluar, peorNivel, sumarDias } from '../src/lib/caducidades.ts';
+import { contextoFs, leerValor } from './lib/caducidades-io.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (n) => (process.argv.includes(n) ? process.argv[process.argv.indexOf(n) + 1] : null);
 const LOG = arg('--log');
 const SIN_RAMA = process.argv.includes('--sin-rama');
 const PROBAR_RAMA = process.argv.includes('--probar-rama');
+const SOLO_REGISTRO = process.argv.includes('--solo-registro');
+const ESTRICTO = process.argv.includes('--estricto') || process.env.FRESCURA_ESTRICTA === '1';
 const hoy = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Madrid' });
 
 const git = (...a) => execFileSync('git', a, { cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
@@ -50,7 +60,63 @@ async function ecb(flow, key) {
 
 const num = (v, d) => v.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
 
+const NIVEL_DE_ESTADO = { ok: 'ok', aviso: 'aviso', error: 'vencido' };
+
+/** Evalúa todo el registro. `resultadosScript` (opcional) aporta el estado ya comprobado contra la API de los datos que lo declaran. */
+function evaluarRegistro(ctx, resultadosScript = []) {
+  const registro = JSON.parse(fs.readFileSync(path.join(REPO, 'src', 'config', 'caducidades.json'), 'utf8'));
+  return registro.entradas.map((e) => {
+    let ev;
+    try {
+      ev = evaluar(e, leerValor(e.fecha, ctx, hoy), hoy);
+    } catch (err) {
+      ev = { ...evaluar({ ...e, vence: { tipo: 'sin-fecha' } }, null, hoy), nivel: 'vencido', detalle: `no se pudo leer: ${err.message.split('\n')[0]}`, informativo: false };
+      ev.bloquea = e.critico;
+    }
+    const rs = e.resultadoScript && resultadosScript.find((r) => r.dato === e.resultadoScript);
+    if (rs) {
+      ev.nivel = NIVEL_DE_ESTADO[rs.estado];
+      ev.detalle = rs.detalle;
+      ev.bloquea = e.critico && ev.nivel === 'vencido';
+    }
+    return ev;
+  });
+}
+
+function imprimirRegistro(evs) {
+  const como = (x) => `${x.modo === 'script' && x.comando ? `script: ${x.comando}` : x.modo}; ${x.procedimiento}`;
+  const grupo = (titulo, lista, linea) => {
+    if (!lista.length) return;
+    console.log(`${titulo} (${lista.length})`);
+    for (const x of lista) console.log(`  - ${linea(x)}`);
+  };
+  const reales = evs.filter((x) => !x.informativo);
+  console.log(`\n== Registro de caducidades (${hoy}) ==`);
+  grupo('VENCIDO', reales.filter((x) => x.nivel === 'vencido'), (x) => `[${x.id}]${x.bloquea ? ' CRÍTICO' : ''} ${x.descripcion}: ${x.detalle}. Cómo: ${como(x)}. Quién: ${x.responsable}`);
+  grupo('POR VENCER', reales.filter((x) => x.nivel === 'aviso'), (x) => `[${x.id}] ${x.descripcion}: ${x.detalle}. Cómo: ${como(x)}`);
+  const limite = sumarDias(hoy, 14);
+  grupo('PRÓXIMOS 14 DÍAS', reales.filter((x) => x.nivel === 'ok' && x.proxima && x.proxima >= hoy && x.proxima <= limite), (x) => `[${x.id}] ${x.descripcion}: toca desde el ${x.proxima}`);
+  const alDia = reales.filter((x) => x.nivel === 'ok');
+  console.log(`AL DÍA (${alDia.length}): ${alDia.map((x) => x.id).join(', ') || 'ninguno'}`);
+  const sinFecha = evs.filter((x) => x.informativo);
+  if (sinFecha.length) console.log(`SIN FECHA COMPROBABLE (${sinFecha.length}): ${sinFecha.map((x) => x.id).join(', ')}`);
+  const bloquean = evs.filter((x) => x.bloquea);
+  console.log(`Registro de caducidades: ${peorNivel(reales).toUpperCase()}${bloquean.length ? `; críticos vencidos: ${bloquean.map((x) => x.id).join(', ')}` : ''}`);
+  return bloquean;
+}
+
+async function soloRegistro() {
+  try {
+    const bloquean = imprimirRegistro(evaluarRegistro(contextoFs(REPO)));
+    process.exit(ESTRICTO && bloquean.length ? 1 : 0);
+  } catch (e) {
+    console.error(`El registro de caducidades no se pudo evaluar: ${e.message}`);
+    process.exit(ESTRICTO ? 2 : 0); // un fallo de esta lista nunca debe parar un build normal
+  }
+}
+
 async function main() {
+  if (SOLO_REGISTRO) return soloRegistro();
   git('fetch', '-q', 'origin', 'main');
   const resultados = [];
   const arreglos = [];
@@ -189,16 +255,30 @@ async function main() {
     }
   }
 
+  // Registro de caducidades: lee de origin/main, como el resto de comprobaciones.
+  let caducidades = [];
+  let bloquean = [];
+  try {
+    const ctxMain = {
+      leer: (ruta) => git('show', `origin/main:${ruta}`),
+      listar: (carpeta) => git('ls-tree', '--name-only', 'origin/main', `${carpeta}/`).split(/\r?\n/).filter(Boolean).map((f) => path.posix.basename(f)),
+    };
+    caducidades = evaluarRegistro(ctxMain, resultados);
+  } catch (e) {
+    resultados.push({ dato: 'Registro de caducidades', estado: 'aviso', detalle: `no se pudo evaluar: ${e.message.split(/\r?\n/)[0]}` });
+  }
+
   const estado = peor(resultados);
-  const informe = { fecha: hoy, generado: new Date().toISOString(), estado, resultados, arreglos };
+  const informe = { fecha: hoy, generado: new Date().toISOString(), estado, resultados, arreglos, caducidades };
   for (const r of resultados) console.log(`${r.estado === 'ok' ? 'OK   ' : r.estado === 'aviso' ? 'AVISO' : 'ERROR'} ${r.dato}: ${r.detalle}`);
   for (const x of arreglos) console.log(`ARREGLO ${x}`);
   console.log(`Frescura de los datos de hoy: ${estado.toUpperCase()}`);
+  if (caducidades.length) bloquean = imprimirRegistro(caducidades);
   if (LOG) {
     fs.mkdirSync(LOG, { recursive: true });
     fs.writeFileSync(path.join(LOG, `${hoy}.json`), JSON.stringify(informe, null, 2) + '\n');
   }
-  process.exit(estado === 'error' ? 1 : 0);
+  process.exit(estado === 'error' || bloquean.length ? 1 : 0);
 }
 
 main().catch((e) => {
