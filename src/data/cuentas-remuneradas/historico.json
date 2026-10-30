@@ -593,6 +593,97 @@
      "tae": 3.75
     }
    ]
+  },
+  {
+   "fecha": "2026-10-30",
+   "cuentas": [
+    {
+     "banco": "Revolut",
+     "producto": "Cuenta Remunerada (Estándar)",
+     "tae": 3.51,
+     "vinculacion": false
+    },
+    {
+     "banco": "Openbank",
+     "producto": "Cuenta Remunerada",
+     "tae": 3.25,
+     "vinculacion": false
+    },
+    {
+     "banco": "Raisin (vía Raisin)",
+     "producto": "Cuenta Bienvenida",
+     "tae": 3.1,
+     "vinculacion": false
+    },
+    {
+     "banco": "Kutxabank",
+     "producto": "Cuenta Remunerada",
+     "tae": 3.1,
+     "vinculacion": false
+    },
+    {
+     "banco": "Trade Republic",
+     "producto": "Cuenta Trade Republic",
+     "tae": 3.04,
+     "vinculacion": false
+    },
+    {
+     "banco": "B100",
+     "producto": "Cuenta Save",
+     "tae": 2.75,
+     "vinculacion": false
+    },
+    {
+     "banco": "Bankinter",
+     "producto": "Cuenta Nómina",
+     "tae": 5,
+     "vinculacion": true
+    },
+    {
+     "banco": "ABANCA",
+     "producto": "Cuenta Remunerada",
+     "tae": 2,
+     "vinculacion": true
+    }
+   ],
+   "depositos": [
+    {
+     "banco": "Deutsche Bank",
+     "producto": "Confianza Más DB",
+     "plazoMeses": 12,
+     "tae": 3.5
+    },
+    {
+     "banco": "Mano Bank (vía Raisin)",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 3.31
+    },
+    {
+     "banco": "EBN",
+     "producto": "Nuevo Ahorro a 12 meses",
+     "plazoMeses": 12,
+     "tae": 3.1
+    },
+    {
+     "banco": "WiZink",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 3
+    },
+    {
+     "banco": "Self Bank",
+     "producto": "Depósito a 12 meses",
+     "plazoMeses": 12,
+     "tae": 2.75
+    },
+    {
+     "banco": "Bank B (vía Raisin)",
+     "producto": "Depósito a 7-10 años",
+     "plazoMeses": 90,
+     "tae": 3.75
+    }
+   ]
   }
  ]
 }

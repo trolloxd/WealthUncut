@@ -25,19 +25,20 @@ draft: false
 ---
 
 import { formatEuros } from '../../components/CalculatorUI';
+import { IPC_ESPANA } from '../../config/finance';
 import ArticleLink from '../../components/ArticleLink.astro';
 
-export const ipc = 4.9;
+export const ipc = IPC_ESPANA.general;
 export const sueldo = 24000;
 export const real = (s, pi = ipc) => ((1 + s / 100) / (1 + pi / 100) - 1) * 100;
 export const n1 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).replace('-', '−');
 export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace('-', '−');
 export const fila = (s) => ({ nuevo: sueldo * (1 + s / 100), equivalente: (sueldo * (1 + s / 100)) / (1 + ipc / 100), real: real(s) });
-export const subidas = [0, 2, 3, 4, 4.9, 6];
+export const subidas = [0, 2, 3, 4, ipc, 6];
 export const acumulado = (anios, s, pi) => (Math.pow((1 + s / 100) / (1 + pi / 100), anios) - 1) * 100;
 
 Para no perder poder adquisitivo, tu sueldo tiene que subir **al menos lo mismo que el IPC** del mismo periodo. Según el
-INE, los precios subieron un **{n1(ipc)} % en el año hasta septiembre de 2026**, la tasa más alta desde febrero de 2023. Con
+INE, los precios subieron un **{n1(ipc)} % en el año hasta {IPC_ESPANA.mesTexto}**, la tasa más alta desde febrero de 2023. Con
 esa [inflación](/glosario/inflacion/), una subida del 2 % no es una mejora: es una pérdida de alrededor del **{n1(-real(2))} %** de lo que puedes
 comprar con tu sueldo. Abajo está la fórmula exacta, una tabla con distintas subidas y lo que dicen los datos de salarios
 de 2026.
@@ -54,7 +55,7 @@ da una aproximación que funciona con inflaciones bajas, pero con cifras como la
 
 ## Cuánto pierdes o ganas según tu subida
 
-Ejemplo con un sueldo bruto de **{formatEuros(sueldo)} al año** y la inflación de septiembre de 2026 ({n1(ipc)} %). La
+Ejemplo con un sueldo bruto de **{formatEuros(sueldo)} al año** y la inflación de {IPC_ESPANA.mesTexto} ({n1(ipc)} %). La
 columna "equivale a" dice cuánto vale tu nuevo sueldo en euros de hace un año, es decir, qué podrías comprar con él a los
 precios de entonces.
 
@@ -93,7 +94,7 @@ La tasa anual del IPC, según el INE, en cada mes de 2026 publicado cuando se es
 
 La inflación pasó de algo más del 2 % a principios de año a casi el 5 % en septiembre. En septiembre, el INE atribuyó buena
 parte de la subida al transporte, cuya tasa anual llegó al 10,5 % por el encarecimiento de los carburantes. La inflación
-subyacente, que deja fuera la energía y los alimentos sin elaborar, fue del 3,1 %: menos que la general, aunque por encima del 3 %.
+subyacente, que deja fuera la energía y los alimentos sin elaborar, fue del {n1(IPC_ESPANA.subyacente)} %: menos que la general, aunque por encima del 3 %.
 
 Para medir tu subida usa la tasa del mismo periodo. Si te suben el sueldo en enero, compárala con la inflación de los doce
 meses anteriores. Para saber cuánto ha subido el IPC entre dos fechas concretas, el INE tiene en su web la herramienta
@@ -117,7 +118,7 @@ Dos advertencias para interpretarlo:
 
 Una diferencia de un punto al año parece pequeña, pero se va sumando. Si durante cinco años tu sueldo sube un 2 % y los
 precios un 3 %, pierdes un **{n1(-acumulado(5, 2, 3))} %** de poder adquisitivo. Si el sueldo sube un 2 % y la inflación es
-del 4,9 % durante tres años, la pérdida llega al **{n1(-acumulado(3, 2, 4.9))} %**. Al revés también funciona: un punto por
+del 4,9 % durante tres años, la pérdida llega al **{n1(-acumulado(3, 2, ipc))} %**. Al revés también funciona: un punto por
 encima de la inflación durante diez años son un **{n1(acumulado(10, 4, 3))} %** más de capacidad de compra.
 
 ## Qué puedes hacer
@@ -140,8 +141,8 @@ correspondería en tu empleo actual.
 ## Preguntas frecuentes
 
 **¿Cuánto tiene que subir mi sueldo para no perder poder adquisitivo?**
-Lo mismo que el IPC del periodo que compares. Si el IPC ha subido un 4,9 % en doce meses, tu sueldo tiene que subir al
-menos un 4,9 % en ese tiempo para comprar lo mismo que antes.
+Lo mismo que el IPC del periodo que compares. Si el IPC ha subido un {n1(ipc)} % en doce meses, tu sueldo tiene que subir al
+menos un {n1(ipc)} % en ese tiempo para comprar lo mismo que antes.
 
 **¿Por qué no basta con restar la inflación a la subida?**
 Restar da una aproximación. La cuenta exacta es (1 + subida) ÷ (1 + inflación) − 1. Con inflaciones bajas la diferencia es

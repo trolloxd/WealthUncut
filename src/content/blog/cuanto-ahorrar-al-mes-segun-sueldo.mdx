@@ -18,6 +18,7 @@ draft: false
 
 import { calcularAhorro } from '../../components/SavingsRuleCalculator';
 import { formatEuros } from '../../components/CalculatorUI';
+import { IPC_ESPANA } from '../../config/finance';
 import ArticleLink from '../../components/ArticleLink.astro';
 
 export const sueldos = [1200, 1400, 1600, 1800, 2200, 2600];
@@ -70,7 +71,7 @@ así que no se pueden comparar uno a uno con la regla. Pero dan una pista clara:
 abajo), la vivienda y los suministros más la comida se llevaron el **61,5 % del presupuesto**, según la misma encuesta.
 Cuanto más ajustado es el sueldo, más pesa lo imprescindible y menos margen queda para el ahorro.
 
-A eso se suma la [inflación](/glosario/inflacion/). El IPC subió un **4,9 % en el año hasta septiembre de 2026**, según el INE, el dato más alto
+A eso se suma la [inflación](/glosario/inflacion/). El IPC subió un **{IPC_ESPANA.general.toLocaleString('es-ES', { minimumFractionDigits: 1 })} % en el año hasta {IPC_ESPANA.mesTexto}**, según el INE, el dato más alto
 desde febrero de 2023. Cuando los precios suben más que el sueldo, la caja de necesidades crece sola y el ahorro se encoge
 si no lo proteges.
 
@@ -96,7 +97,7 @@ Y ese 15 % no es poco. Ahorrando {formatEuros(ej(0).ahorroMensual)} al mes duran
 
 La diferencia entre las dos filas es el interés compuesto: el rendimiento que generan los rendimientos anteriores. Lo
 explicamos con más ejemplos en [interés compuesto: qué es, fórmula y ejemplos reales](/blog/interes-compuesto-explicado-con-ejemplos/).
-Con una inflación como la de septiembre de 2026, guardar el dinero sin ninguna rentabilidad tiene un coste: en
+Con una inflación como la de {IPC_ESPANA.mesTexto}, guardar el dinero sin ninguna rentabilidad tiene un coste: en
 [qué interés necesitas para no perder dinero](/blog/inflacion-que-interes-necesitas-para-no-perder/) están las cuentas.
 
 ## Qué porcentaje ahorrar según tu situación

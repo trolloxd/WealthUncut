@@ -16,10 +16,11 @@ relacionados:
 ---
 
 import { formatEuros } from '../../components/CalculatorUI';
+import { IPC_ESPANA } from '../../config/finance';
 
 export const n1 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-export const ine = 4.9;
+export const ine = IPC_ESPANA.general;
 export const objetivo = 2;
 export const capital = 10000;
 export const poder = (inf, anios) => capital / Math.pow(1 + inf / 100, anios);
@@ -32,8 +33,8 @@ el euro pierde **poder adquisitivo**. Lo contrario, una bajada sostenida de prec
 ## Cómo se mide
 
 En España la mide el INE con el Índice de Precios de Consumo ([IPC](/glosario/ipc/)), que sigue el coste de una cesta de bienes y servicios. La
-tasa que se cita en las noticias es la **interanual**: cuánto más cuesta la cesta que hace doce meses. Según el INE, en septiembre de 2026 la tasa
-anual del IPC general fue del **{n1(ine)} %** (dato publicado el 14 de octubre de 2026). El Banco Central Europeo, por su parte, define su objetivo de
+tasa que se cita en las noticias es la **interanual**: cuánto más cuesta la cesta que hace doce meses. Según el INE, en {IPC_ESPANA.mesTexto} la tasa
+anual del IPC general fue del **{n1(ine)} %** (dato publicado el {IPC_ESPANA.publicadoTexto}). El Banco Central Europeo, por su parte, define su objetivo de
 estabilidad de precios como una inflación del {objetivo} % a medio plazo, medida con el IPC armonizado.
 
 ## Un ejemplo calculado
@@ -71,7 +72,7 @@ es de {n2(real)} %, antes de impuestos: tu dinero crece en euros pero compra men
 ## Preguntas frecuentes
 
 **¿Qué es la inflación subyacente?**
-Es el IPC sin alimentos no elaborados ni productos energéticos, que son los más volátiles. Según el INE, fue del 3,1 % en septiembre de 2026.
+Es el IPC sin alimentos no elaborados ni productos energéticos, que son los más volátiles. Según el INE, fue del {n1(IPC_ESPANA.subyacente)} % en {IPC_ESPANA.mesTexto}.
 
 **¿Quién controla la inflación?**
 Los bancos centrales, como el BCE, influyen sobre ella con los tipos de interés, aunque otros factores (energía, cadenas de suministro) escapan a su control.
@@ -81,5 +82,5 @@ Una inflación baja y estable es compatible con una economía sana; una inflaci�
 
 ## Fuentes
 
-- INE, <a href="https://www.ine.es/dyngs/Prensa/IPC0926.htm">Índice de Precios de Consumo, septiembre de 2026</a> (14 de octubre de 2026): IPC general 4,9 %, subyacente 3,1 %.
+- INE, <a href={IPC_ESPANA.url}>Índice de Precios de Consumo, {IPC_ESPANA.mesTexto}</a> ({IPC_ESPANA.publicadoTexto}): IPC general {n1(IPC_ESPANA.general)} %, subyacente {n1(IPC_ESPANA.subyacente)} %.
 - Banco Central Europeo, <a href="https://www.ecb.europa.eu/mopo/strategy/html/index.es.html">objetivo de estabilidad de precios</a>: inflación del 2 % a medio plazo.

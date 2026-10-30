@@ -15,12 +15,12 @@ relacionados:
     href: "/blog/tema/ahorro/"
 ---
 
-import { calcularImpuestoAhorro, FGD_COBERTURA } from '../../config/finance';
+import { calcularImpuestoAhorro, FGD_COBERTURA, IPC_ESPANA } from '../../config/finance';
 import { formatEuros, formatEuros2 } from '../../components/CalculatorUI';
 
 export const capital = 10000;
 export const interes = 2.5;
-export const inflacion = 4.9;
+export const inflacion = IPC_ESPANA.general;
 export const bruto = (capital * interes) / 100;
 export const impuesto = calcularImpuestoAhorro(bruto);
 export const neto = bruto - impuesto;
@@ -47,7 +47,7 @@ Supón un depósito de {formatEuros(capital)} a 12 meses con un interés anual d
 - IRPF de esos intereses, si es tu única renta del ahorro del año: {formatEuros2(impuesto)} (19 % del primer tramo, con los
   [tramos de la base del ahorro](/blog/tramos-irpf-ahorro/)).
 - Intereses netos: **{formatEuros2(neto)}**, un {n2(netoPct)} % del capital.
-- Frente a una inflación del {n2(inflacion)} % (INE, septiembre de 2026), el rendimiento real queda en torno al **{n2(realPct)} %**: el dinero
+- Frente a una inflación del {n2(inflacion)} % (INE, {IPC_ESPANA.mesTexto}), el rendimiento real queda en torno al **{n2(realPct)} %**: el dinero
   rinde, pero pierde poder de compra.
 
 Con más rentas del ahorro ese mismo año, el tipo sobre los intereses puede subir. La guía de
@@ -95,4 +95,4 @@ más [volatilidad](/glosario/volatilidad/). Más en [diferencia entre ahorrar e 
 
 - Fondo de Garantía de Depósitos, [depósitos dinerarios garantizados](https://www.fgd.es/informacion-general/que-es-el-fgd/depositos-dinerarios/) (100.000 € por titular y entidad).
 - AEAT, [Manual práctico de Renta 2025: gravamen de la base del ahorro](https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html).
-- INE, [IPC de septiembre de 2026](https://www.ine.es/dyngs/Prensa/IPC0926.htm) (publicado el 14 de octubre de 2026).
+- INE, <a href={IPC_ESPANA.url}>IPC de {IPC_ESPANA.mesTexto}</a> (publicado el {IPC_ESPANA.publicadoTexto}).

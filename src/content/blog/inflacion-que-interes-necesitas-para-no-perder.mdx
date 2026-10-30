@@ -22,10 +22,10 @@ draft: false
 
 import { poderAdquisitivo } from '../../components/InflationCalculator';
 import { formatEuros } from '../../components/CalculatorUI';
-import { IRPF_AHORRO_BRACKETS } from '../../config/finance';
+import { IRPF_AHORRO_BRACKETS, IPC_ESPANA } from '../../config/finance';
 import cuentas from '../../data/cuentas-remuneradas/ultimo.json';
 
-export const IPC = 4.9;
+export const IPC = IPC_ESPANA.general;
 export const IMPORTE = 10000;
 export const TIPO = IRPF_AHORRO_BRACKETS[0].tipo;
 export const pct = (n, d = 1) => n.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -35,7 +35,7 @@ export const sinVinculacion = cuentas.cuentas.filter((c) => !c.vinculacion).sort
 export const maxTae = Math.max(...cuentas.cuentas.map((c) => c.tae), ...cuentas.depositos.map((d) => d.tae));
 export const fechaCuentas = new Date(cuentas.fecha + 'T00:00:00Z').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
-Según el INE, los precios en España subieron un **{pct(IPC)} % en septiembre de 2026** respecto al mismo mes de
+Según el INE, los precios en España subieron un **{pct(IPC)} % en {IPC_ESPANA.mesTexto}** respecto al mismo mes de
 2025, la tasa más alta desde febrero de 2023. Para que tu dinero no pierda poder de compra con esa [inflación](/glosario/inflacion/),
 no basta con un interés del {pct(IPC)} %: necesitas en torno a un **{pct(necesario(IPC), 2)} % bruto**, porque Hacienda se queda
 una parte de los intereses. Esta guía explica de dónde sale esa cifra, cuánto pierde el dinero parado y qué
@@ -43,12 +43,12 @@ interés ofrecen hoy las cuentas que seguimos en el sitio.
 
 ## Qué ha pasado con la inflación
 
-Los datos definitivos del INE para septiembre de 2026, publicados el 14 de octubre, fueron estos:
+Los datos definitivos del INE para {IPC_ESPANA.mesTexto}, publicados el {IPC_ESPANA.publicadoTexto}, fueron estos:
 
 - **IPC general: {pct(IPC)} %** interanual, seis décimas más que en agosto.
-- **Inflación subyacente: 3,1 %.** Es el IPC sin alimentos no elaborados ni productos energéticos, los precios
+- **Inflación subyacente: {pct(IPC_ESPANA.subyacente)} %.** Es el IPC sin alimentos no elaborados ni productos energéticos, los precios
   que más saltan de un mes a otro. Sirve para ver si la subida se está extendiendo al resto de la cesta.
-- **IPC armonizado (IPCA): 5,0 %.** Es la versión que se usa para comparar países de la Unión Europea.
+- **IPC armonizado (IPCA): {pct(IPC_ESPANA.armonizado)} %.** Es la versión que se usa para comparar países de la Unión Europea.
 
 Según el INE, lo que más empujó la tasa fueron el transporte (los carburantes subieron, cuando en septiembre de
 2025 habían bajado) y los paquetes turísticos (bajaron menos que un año antes). En el conjunto de la zona euro, Eurostat situó la inflación de
@@ -78,7 +78,7 @@ Con la inflación de septiembre, {pct(IPC)} ÷ {pct(1 - TIPO, 2)} = **{pct(neces
 | 2 % (objetivo del BCE) | {pct(necesario(2), 2)} % |
 | 3 % | {pct(necesario(3), 2)} % |
 | 4 % | {pct(necesario(4), 2)} % |
-| {pct(IPC)} % (IPC de septiembre de 2026) | {pct(necesario(IPC), 2)} % |
+| {pct(IPC)} % (IPC de {IPC_ESPANA.mesTexto}) | {pct(necesario(IPC), 2)} % |
 
 Si tienes más de {formatEuros(IRPF_AHORRO_BRACKETS[0].hasta)} de intereses y ganancias en un año, la parte que pase de ahí tributa a un tipo mayor y el
 interés necesario sube un poco más. Puedes ver todos los tramos en
@@ -142,8 +142,8 @@ Lo que sí puedes hacer hoy es poner tus números: tu saldo, tu interés y la in
 
 **¿Qué diferencia hay entre el IPC y la inflación subyacente?**
 El IPC mide la subida de precios de toda la cesta de la compra. La subyacente quita los alimentos no elaborados y
-la energía, que son los precios más volátiles. En septiembre de 2026 el IPC subió un {pct(IPC)} % y la subyacente un
-3,1 %, así que buena parte de la subida viene de lo que la subyacente deja fuera, sobre todo la energía (el INE
+la energía, que son los precios más volátiles. En {IPC_ESPANA.mesTexto} el IPC subió un {pct(IPC)} % y la subyacente un
+{pct(IPC_ESPANA.subyacente)} %, así que buena parte de la subida viene de lo que la subyacente deja fuera, sobre todo la energía (el INE
 destaca los carburantes).
 
 **¿Por qué no basta con un interés igual a la inflación?**

@@ -847,3 +847,26 @@ export const AYUDAS_VIVIENDA_JOVENES = {
   opcionCompra: { ayudaMaxRentasEImporte: 33600, extra80: 26880, anosMax: 4 },
   url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-8872',
 } as const;
+
+// IPC de España (INE), último dato mensual definitivo. Es el único sitio donde se escribe: los artículos y
+// el glosario que citan la inflación (inflacion-que-interes-necesitas-para-no-perder, subida-sueldo-ipc-poder-adquisitivo,
+// cuanto-ahorrar-al-mes-segun-sueldo, glosario inflacion y deposito-a-plazo) lo leen de aquí. Se actualiza cada
+// mes, hacia el día 12 a 15, tras la nota de prensa del INE (registro en src/config/caducidades.json, id "ipc-espana").
+// Fuente: INE, nota de prensa "Índice de Precios de Consumo" de septiembre de 2026 (14 de octubre de 2026): tasa anual
+// del IPC general 4,9 %, subyacente 3,1 % e IPCA 5,0 %. Verificado el 2026-10-30.
+export const IPC_ESPANA = {
+  /** Mes al que se refiere el dato (AAAA-MM). */
+  mes: '2026-09',
+  mesTexto: 'septiembre de 2026',
+  /** Tasa anual del IPC general, en %. */
+  general: 4.9,
+  /** Tasa anual de la inflación subyacente, en %. */
+  subyacente: 3.1,
+  /** Tasa anual del IPC armonizado (IPCA), en %. */
+  armonizado: 5.0,
+  publicado: '2026-10-14',
+  publicadoTexto: '14 de octubre de 2026',
+  fuente: 'INE, Índice de Precios de Consumo',
+  url: 'https://www.ine.es/dyngs/Prensa/IPC0926.htm',
+  verificado: '2026-10-30',
+} as const;
