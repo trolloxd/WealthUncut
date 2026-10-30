@@ -77,7 +77,10 @@ semanas después). Por eso, antes de redactar cada artículo:
 5. **Mejor importar que copiar**: si el dato está en `src/data/` (euríbor, TAE de cuentas, TER de
    fondos, rentabilidades de MyInvestor), impórtalo en el MDX (`import datos from
    '../../data/.../ultimo.json'`) en vez de escribir la cifra a mano. Así se actualiza solo cada vez
-   que lo refresca su rutina y el artículo no envejece.
+   que lo refresca su rutina y el artículo no envejece. **La inflación (IPC de España) se importa de
+   `IPC_ESPANA` en `src/config/finance.ts`** (`import { IPC_ESPANA } from '../../config/finance'`; mes con
+   `IPC_ESPANA.mesTexto`): nunca escribas a mano el 4,9 % ni el mes. Todo dato nuevo que caduque y no tenga ya
+   entrada en `src/config/caducidades.json` se da de alta ahí en el mismo commit (ver `ACTUALIZACION-PROCEDIMIENTO.md`).
 6. Si el tema no tiene ninguna conexión con la actualidad (un concepto atemporal), no la fuerces,
    pero comprueba igualmente que ninguna cifra del artículo haya cambiado.
 

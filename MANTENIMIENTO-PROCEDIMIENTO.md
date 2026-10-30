@@ -1,5 +1,8 @@
 # Procedimientos de mantenimiento automático
 
+> La revisión diaria de todo dato que caduca (registro `src/config/caducidades.json`) está en `ACTUALIZACION-PROCEDIMIENTO.md`;
+> los apartados de abajo son los procedimientos de cada rutina concreta y siguen vigentes.
+
 Guía de las rutinas de mantenimiento de WealthUncut. Si algo choca con `CLAUDE.md`, manda
 `CLAUDE.md`. Regla común: **si algo no se puede comprobar con garantías, no se toca**, y se avisa
 en el resumen. Todas terminan con un resumen breve de lo hecho y lo descartado.

@@ -337,6 +337,16 @@ actualizaciones" en `metodologia.astro`.
   del Control Center aún no está registrada: la registra David, no usa IA) y, si
   el BCE o el BOE tienen un dato más nuevo, deja el arreglo en una rama local `auto/frescura-AAAA-MM-DD` sin publicar.
   `tests/frescura.test.ts` y el build (`[frescura]` en la salida) avisan, pero no fallan por un dato atrasado.
+- **Registro de caducidades y rutina diaria de actualización** (2026-10-30, decisión de David: nada que caduque se queda sin revisar):
+  `src/config/caducidades.json` lista cada dato que caduca (dónde vive, fuente oficial, frecuencia, regla de revisión, de dónde
+  sale su fecha de verificación, si es crítico y cómo se actualiza); la lógica está en `src/lib/caducidades.ts` y la lectura de
+  fechas en `scripts/lib/caducidades-io.mjs`. `scripts/comprobar-frescura.mjs` (sin IA) lo evalúa y lista VENCIDO, POR VENCER y
+  PRÓXIMOS 14 DÍAS; `--solo-registro` corre antes de cada `npm run build` (`prebuild`) y solo hace fallar el build con
+  `FRESCURA_ESTRICTA=1` si hay algo crítico vencido (por defecto avisa, para que un dato atrasado no pare los artículos
+  programados). Una constante nueva de `finance.ts` sin entrada en el registro rompe `npm test`. El IPC de España vive en
+  `IPC_ESPANA` (`finance.ts`) y los artículos lo importan: nunca escribir el 4,9 % ni el mes a mano. Cómo actualizar cada cosa y
+  la rutina diaria en la nube: `ACTUALIZACION-PROCEDIMIENTO.md`; lo que hace cada ejecución queda en `REGISTRO-ACTUALIZACIONES.md`.
+  `scripts/datos-ipc.mjs` compara el IPC del sitio con la API del INE (solo informa).
 - `src/data/euribor/ultimo.json`, generado por `scripts/datos-euribor.mjs` desde los datos abiertos del BOE
   (resolución mensual del Banco de España; cada mes lleva su `BOE-A-...`, desde 2021-01). Decisión de David
   (2026-10-26): sin licencia de EMMI, así que **solo el valor oficial publicado en el BOE**, nunca la serie del
