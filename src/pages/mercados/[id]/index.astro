@@ -7,6 +7,7 @@ import ArticleLink from '../../../components/ArticleLink.astro';
 import { isPublished } from '../../../lib/posts';
 import { minutosDeLectura } from '../../../lib/briefing';
 import { SITE } from '../../../config/site';
+import { terminosEnTexto } from '../../../lib/glosario-enlaces';
 
 export async function getStaticPaths() {
   const dias = (await getCollection('mercados', ({ data }) => isPublished(data))).sort(
@@ -14,11 +15,15 @@ export async function getStaticPaths() {
   );
   return dias.map((dia, i) => ({
     params: { id: dia.id },
-    props: { dia, anterior: dias[i - 1], siguiente: dias[i + 1] },
+    props: { dia, anterior: dias[i - 1], siguiente: dias[i + 1], cercanas: [i - 3, i - 2, i + 2, i + 3].map((k) => dias[k]).filter(Boolean) },
   }));
 }
 
-const { dia, anterior, siguiente } = Astro.props;
+const { dia, anterior, siguiente, cercanas } = Astro.props;
+// Términos del glosario que aparecen en el texto de la edición (enlaza las entradas del glosario desde el contenido).
+const glosario = (await getCollection('glosario')).map((g) => ({ id: g.id, termino: g.data.termino, description: g.data.description }));
+const terminos = terminosEnTexto(dia.body ?? '', glosario, 5, 1);
+const fechaCorta = (d: Date) => d.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
 const { Content } = await render(dia);
 const { title, description, pubDate, updatedDate, author, sources, tags } = dia.data;
 const url = `${SITE.url}/mercados/${dia.id}/`;
@@ -70,6 +75,17 @@ const breadcrumbJsonLd = {
     </ArticleMeta>
   </article>
 
+  {terminos.length > 0 && (
+    <aside aria-labelledby="terminos-edicion" class="mt-10 border-t border-border pt-6">
+      <h2 id="terminos-edicion" class="mb-3 font-display text-lg text-ink">Términos de esta edición</h2>
+      <ul class="flex flex-wrap gap-2">
+        {terminos.map((t) => (
+          <li><a href={`/glosario/${t.id}/`} title={t.description} class="chip-tema">{t.termino}</a></li>
+        ))}
+      </ul>
+    </aside>
+  )}
+
   <nav aria-label="Otros días" class="mt-12 flex flex-wrap justify-between gap-4 border-t border-border pt-6 text-sm">
     {anterior ? (
       <a href={`/mercados/${anterior.id}/`} class="text-brand underline decoration-brand/30 hover:decoration-brand">← {anterior.data.title}</a>
@@ -78,4 +94,15 @@ const breadcrumbJsonLd = {
       <a href={`/mercados/${siguiente.id}/`} class="text-right text-brand underline decoration-brand/30 hover:decoration-brand">{siguiente.data.title} →</a>
     )}
   </nav>
+
+  {cercanas.length > 0 && (
+    <aside aria-labelledby="ediciones-cercanas" class="mt-8 text-sm">
+      <h2 id="ediciones-cercanas" class="mb-2 font-display text-lg text-ink">Otras ediciones cercanas</h2>
+      <ul class="grid gap-1">
+        {cercanas.map((c) => (
+          <li><a href={`/mercados/${c.id}/`} class="text-brand underline decoration-brand/30 hover:decoration-brand"><time datetime={c.id}>{fechaCorta(c.data.pubDate)}</time>: {c.data.title}</a></li>
+        ))}
+      </ul>
+    </aside>
+  )}
 </BaseLayout>

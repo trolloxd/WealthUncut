@@ -34,11 +34,11 @@ export const subidaPunto = (capital, anios) => cuotaFrancesa(capital, ult.valor 
 export const ultimos = serie.slice(-7);
 
 En la revisión de una hipoteca variable, el banco **recalcula la cuota** con tres datos: el capital que te queda, los
-meses que faltan y el tipo nuevo, que es el euríbor que fije tu escritura más tu diferencial. Si el euríbor ha subido
+meses que faltan y el tipo nuevo, que es el [euríbor](/glosario/euribor/) que fije tu escritura más tu diferencial. Si el euríbor ha subido
 desde la revisión anterior, la cuota sube. Según el último dato oficial publicado en el BOE, el euríbor a un año fue del
 **{n3(ult.valor)} %** en {mesLargo(ult.mes)}, frente al {n3(eur12)} % de {mesLargo(mes12)}. Para una hipoteca con 140.000 €
-pendientes, 22 años por delante y un diferencial de 0,8 puntos, ese cambio supone pasar de {formatEuros(rev.cuotaAnterior)} a
-**{formatEuros(rev.cuotaNueva)} al mes** ({signo(rev.diferenciaMes)}). Abajo está el cálculo y una tabla para otros casos.
+pendientes, 22 años por delante y un [diferencial](/glosario/diferencial/) de 0,8 puntos, ese cambio supone pasar de {formatEuros(rev.cuotaAnterior)} a
+**{formatEuros(rev.cuotaNueva)} al mes** ({signo(rev.diferenciaMes)}). Abajo está el cálculo y una tabla para otros casos. El euríbor es el valor oficial del BOE y las cuotas se calculan con el sistema francés (más detalle en la [metodología](/metodologia/)).
 
 ## Cómo está el euríbor oficial
 
@@ -68,7 +68,7 @@ ahora, usando el euríbor oficial de cada momento.
 
 1. **Tipo anterior.** Euríbor de {mesLargo(mes12)} ({n3(eur12)} %) + 0,8 = {n3(rev.tipoAnterior)} %.
 2. **Tipo nuevo.** Euríbor de {mesLargo(ult.mes)} ({n3(ult.valor)} %) + 0,8 = {n3(rev.tipoNuevo)} %.
-3. **Cuota.** El banco aplica el sistema francés (cuota constante hasta la siguiente revisión) con el capital y los
+3. **Cuota.** El banco aplica el [sistema francés](/glosario/sistema-frances/) (cuota constante hasta la siguiente revisión) con el capital y los
    meses que quedan. Con el tipo anterior saldría {formatEuros(rev.cuotaAnterior)} al mes; con el nuevo, **{formatEuros(rev.cuotaNueva)}**.
 4. **Impacto.** {signo(rev.diferenciaMes)} al mes, unos **{signo(rev.diferenciaPeriodo)} en los 12 meses** hasta la siguiente revisión.
 

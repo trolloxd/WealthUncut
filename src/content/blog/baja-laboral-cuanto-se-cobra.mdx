@@ -31,7 +31,7 @@ export const p = (n) => (n * 100).toLocaleString('es-ES');
 export const DIAS = [3, 10, 20, 30, 60];
 
 Si te das de baja por una enfermedad común o un accidente fuera del trabajo, **los tres primeros días no cobras
-nada** (salvo que tu convenio lo mejore). Del día 4 al 20 cobras el **{p(porcentajeDia('comun', 4))} %** de tu base reguladora y desde el día
+nada** (salvo que tu convenio lo mejore). Del día 4 al 20 cobras el **{p(porcentajeDia('comun', 4))} %** de tu [base reguladora](/glosario/base-reguladora/) y desde el día
 21, el **{p(porcentajeDia('comun', 21))} %**. Si la baja es por un accidente de trabajo o una enfermedad profesional, cobras el
 **{p(porcentajeDia('laboral', 2))} % desde el día siguiente** a la baja, y el primer día lo paga la empresa entero. Con un sueldo de {formatEuros(BRUTO)} brutos
 al año, un mes de baja por enfermedad común son unos {formatEuros(c(30).total)} brutos en lugar de {formatEuros(c(30).normal)}.
@@ -58,7 +58,7 @@ pagador no cambia lo que cobras, que sigue la tabla de arriba.
 
 ## Ejemplo: cuánto cobras con {formatEuros(BRUTO)} brutos
 
-Supongamos un sueldo de {formatEuros(BRUTO)} brutos al año, con las pagas extra incluidas. Como aproximación, su base de cotización
+Supongamos un sueldo de {formatEuros(BRUTO)} brutos al año, con las pagas extra incluidas. Como aproximación, su [base de cotización](/glosario/base-de-cotizacion/)
 mensual es el bruto entre 12: {e2(c(30).baseMensual)}. La base reguladora diaria es esa cifra entre 30: {e2(c(30).baseDiaria)}.
 
 - Días 1 a 3: 0 €.

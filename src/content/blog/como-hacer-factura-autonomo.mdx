@@ -26,7 +26,7 @@ export const f0 = calcularFactura({ base: 1000, ivaPct: 21, retencionPct: 0, pag
 
 Una factura de autónomo tiene que llevar unos datos mínimos que fija el Reglamento de facturación: número, fecha,
 nombre, NIF y domicilio de quien factura y de quien paga, descripción del trabajo con su precio, tipo de IVA y cuota de
-IVA. El total se calcula así: **base + IVA − retención de IRPF**. Por un trabajo de 1.000 € con IVA del 21 % y retención
+IVA. El total se calcula así: **base + IVA − [retención](/glosario/retencion/) de IRPF**. Por un trabajo de 1.000 € con IVA del 21 % y retención
 del 15 %, el cliente te paga **{formatEuros2(f15.total)}**. De ese dinero, los {formatEuros2(f15.iva)} de IVA no son tuyos: los ingresarás a Hacienda.
 Abajo tienes la lista completa, los cálculos con cada retención y cuánto conviene apartar.
 

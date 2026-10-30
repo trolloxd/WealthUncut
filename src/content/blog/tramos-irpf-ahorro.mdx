@@ -25,9 +25,9 @@ export const caso = (g) => ({ g, imp: calcularImpuestoAhorro(g), medio: calcular
 export const casos = [3000, 10000, 30000, 60000, 250000].map(caso);
 export const pct = (n) => `${(n * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 })} %`;
 
-La base del ahorro es la parte de tu declaración de la renta donde van los intereses de las cuentas, los dividendos y las
+La base del ahorro es la parte de tu declaración de la renta donde van los intereses de las cuentas, los [dividendos](/glosario/dividendo/) y las
 ganancias por vender fondos, ETF o acciones. Tributa con **tramos progresivos propios**, distintos de los del sueldo.
-Esta es la tabla vigente, qué rentas entran y cómo se aplica realmente, con ejemplos.
+Esta es la tabla vigente, qué rentas entran y cómo se aplica realmente, con ejemplos. Todas las cifras de esta guía salen del Manual de Renta de la AEAT; el procedimiento para comprobarlas está en la [metodología](/metodologia/).
 
 ## Los tramos del IRPF del ahorro
 
@@ -44,9 +44,9 @@ a toda la renta. Quien tiene 60.000 € de ganancia no paga el 23 % sobre los 60
 ## Qué rentas van a la base del ahorro
 
 - **Intereses** de cuentas remuneradas, depósitos y otros activos de renta fija.
-- **Dividendos** de acciones (con la retención a cuenta que explicamos en
+- **Dividendos** de acciones (con la [retención](/glosario/retencion/) a cuenta que explicamos en
   [cómo tributan los dividendos](/blog/impuesto-dividendos-espana/)).
-- **Ganancias y pérdidas patrimoniales** por vender o reembolsar fondos de inversión, ETF o acciones.
+- **Ganancias y pérdidas patrimoniales** por vender o reembolsar fondos de inversión, ETF o acciones, y también por vender o cambiar criptomonedas (lo explicamos en [criptomonedas y Hacienda](/blog/criptomonedas-hacienda-como-tributan-espana/)).
 
 El sueldo, en cambio, va a la base general con otra escala: puedes ver la diferencia en la
 [calculadora de sueldo neto](/herramientas/calculadora-sueldo-neto/).
@@ -67,7 +67,7 @@ las rentas pequeñas pagan casi todo al 19 %.
 ## Cómo se compensan ganancias y pérdidas
 
 Dentro de la base del ahorro, las pérdidas pueden compensar ganancias. Hay una regla cruzada: las pérdidas
-patrimoniales pueden compensar hasta el {pct(COMPENSACION_AHORRO.limiteCruzado)} de los rendimientos del capital mobiliario
+patrimoniales pueden compensar hasta el {pct(COMPENSACION_AHORRO.limiteCruzado)} de los [rendimientos del capital mobiliario](/glosario/rendimiento-del-capital-mobiliario/)
 (intereses y dividendos) del año, y lo que no se compense puede arrastrarse durante {COMPENSACION_AHORRO.aniosArrastre} años. Entre
 ganancias y pérdidas patrimoniales, la compensación es directa. Lo desarrollamos con ejemplos en
 [cómo tributan los fondos de inversión](/blog/como-tributan-los-fondos-de-inversion-en-espana/).

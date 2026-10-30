@@ -41,10 +41,10 @@ export const ej = calcularCuotaAutonomo({ ingresosAnuales: 30000, gastosAnuales:
 
 Un autónomo no paga una cuota fija: cotiza según sus **rendimientos netos**, es decir, lo que factura menos los gastos
 de su actividad y menos una deducción del {pctT(R.deduccionGastosGenericos)} por gastos genéricos. Con la media mensual de esa cifra se busca un
-**tramo**, que marca una base de cotización mínima y una máxima, y la cuota es la base que elijas multiplicada por el
+**tramo**, que marca una [base de cotización](/glosario/base-de-cotizacion/) mínima y una máxima, y la cuota es la base que elijas multiplicada por el
 **{pctT(R.tipoTotal)}**. En 2026, con la base mínima de cada tramo, la cuota va de {formatEuros2(T[0].baseMin * R.tipoTotal)} al mes a {formatEuros2(T[T.length - 1].baseMin * R.tipoTotal)}.
 Por ejemplo, con un beneficio de 24.000 € al año la cuota mínima es de **{formatEuros2(c24.cuotaMin)} al mes**. Los nuevos
-autónomos pueden pagar una cuota reducida de {R.tarifaPlanaMensual} € durante su primer año.
+autónomos pueden pagar una cuota reducida de {R.tarifaPlanaMensual} € durante su primer año. Los tramos de cotización vienen del BOE, y la forma de comprobarlos está en la [metodología](/metodologia/).
 
 Las tablas son las de la orden de cotización de 2026 publicada en el BOE. Cambian cada año, así que si lees esto más
 adelante comprueba que siguen vigentes. Puedes calcular tu caso en la

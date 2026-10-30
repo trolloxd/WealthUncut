@@ -37,19 +37,19 @@ export const signo = (v) => (v >= 0 ? '+' : '−') + formatEuros(Math.abs(v));
 export const escenario = (d) => cuotaFrancesa(capital, Math.max(0, ult.valor + d) + dif, meses);
 export const comisionMax = (reembolsado) => (reembolsado * CF.limitePct) / 100;
 
-Pasar una hipoteca de variable a fija se puede hacer de dos formas: **negociándolo con tu banco** (una novación) o
-**llevándote la hipoteca a otro banco** que te ofrezca un tipo fijo (una subrogación). La ley limita lo que pueden cobrarte por
+Pasar una hipoteca de variable a fija se puede hacer de dos formas: **negociándolo con tu banco** (una [novación](/glosario/novacion-hipotecaria/)) o
+**llevándote la hipoteca a otro banco** que te ofrezca un tipo fijo (una [subrogación](/glosario/subrogacion-hipotecaria/)). La ley limita lo que pueden cobrarte por
 el cambio: durante los **{CF.aniosConLimite} primeros años** del préstamo, como mucho el **{n2(CF.limitePct)} % del capital
 que se reembolse**, y nada si en la novación no amortizas capital; pasados esos años, **ninguna comisión**. La pregunta
 importante no es el coste del trámite, sino si el tipo fijo que te ofrecen te compensa frente a lo que pagas con el
-euríbor. Abajo está el cálculo con el euríbor oficial y una regla sencilla para comparar.
+[euríbor](/glosario/euribor/). Abajo está el cálculo con el euríbor oficial y una regla sencilla para comparar.
 
 ## Cómo está el euríbor y cuánto pagas en variable
 
 El euríbor que usan las hipotecas es la media mensual que el Banco de España publica en el BOE. El último dato oficial es
 el de {mesLargo(ult.mes)}: **{n3(ult.valor)} %**.
 
-Para el ejemplo de toda esta guía, una hipoteca variable con **150.000 € pendientes, 25 años por delante y un diferencial de
+Para el ejemplo de toda esta guía, una hipoteca variable con **150.000 € pendientes, 25 años por delante y un [diferencial](/glosario/diferencial/) de
 0,8 puntos**. Con el euríbor de {mesLargo(ult.mes)}, el tipo aplicable es el {n3(ult.valor + dif)} % y la cuota queda en
 **{formatEuros(variable)} al mes**. Si quieres ver cómo cambia tu cuota en la próxima revisión, tienes la
 [calculadora de revisión de la hipoteca](/herramientas/calculadora-revision-hipoteca/), y la explicación paso a paso en

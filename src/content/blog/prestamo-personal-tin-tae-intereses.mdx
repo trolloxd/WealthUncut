@@ -24,7 +24,7 @@ export const p = (o = {}) => calcularPrestamo({ ...base, ...o });
 export const pct = (v) => (v * 100).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 export const plazos = [36, 60, 84, 96];
 
-Un préstamo personal cuesta los **intereses** que marca el TIN más las **comisiones y los seguros** que te obliguen a
+Un préstamo personal cuesta los **intereses** que marca el [TIN](/glosario/tin/) más las **comisiones y los seguros** que te obliguen a
 contratar. La cifra que lo resume todo es la **TAE**, y es la que hay que mirar para comparar. Ejemplo: 12.000 € a 5 años,
 con un TIN del 7,5 % y un 1 % de comisión de apertura, se pagan con una cuota de **{formatEuros2(p().cuota)} al mes**, cuestan
 **{formatEuros(p().costeTotal)}** en total y tienen una **TAE del {pct(p().tae)} %**. Abajo está cómo se calcula, cuánto cambia

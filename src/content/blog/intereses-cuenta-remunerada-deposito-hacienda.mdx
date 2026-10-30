@@ -38,13 +38,13 @@ export const intEj = 1000;
 export const perdidaEj = 2000;
 export const compensado = Math.min(perdidaEj, intEj * CMP.limiteCruzado);
 
-Los intereses de una cuenta remunerada o de un depósito a plazo **tributan en el IRPF como rendimientos del capital
-mobiliario**, dentro de la **base del ahorro**: la misma que las ganancias de fondos, acciones y los dividendos, con los
+Los intereses de una cuenta remunerada o de un [depósito a plazo](/glosario/deposito-a-plazo/) **tributan en el IRPF como rendimientos del capital
+mobiliario**, dentro de la **base del ahorro**: la misma que las ganancias de fondos, acciones y los [dividendos](/glosario/dividendo/), con los
 tramos del {pct(IRPF_AHORRO_BRACKETS[0].tipo)} % al {pct(IRPF_AHORRO_BRACKETS.at(-1).tipo)} %. Se declaran **el año en que
 se cobran**, aunque no saques el dinero, y el banco ya te retiene una parte a cuenta que luego se descuenta en la renta. Con
 {formatEuros(20000)} al {n1(tae)} % TAE, cobras {formatEuros(intereses(20000))} de intereses al año y pagas
 **{formatEuros(calcularImpuestoAhorro(intereses(20000)))}** de IRPF por ellos. Abajo están los tramos, una tabla con más
-saldos, cómo se compensan con pérdidas y qué cambia frente a un fondo monetario.
+saldos, cómo se compensan con pérdidas y qué cambia frente a un fondo monetario. Las cifras fiscales de la guía se contrastan con la AEAT antes de publicarse, como cuenta la [metodología](/metodologia/).
 
 ## Qué tipo de renta son los intereses
 
@@ -84,7 +84,7 @@ supuesto para el ejemplo; las ofertas actuales están en el
 Para la mayoría de los ahorros de una persona joven, los intereses caben en el primer tramo, del
 {pct(IRPF_AHORRO_BRACKETS[0].tipo)} %. Así que, en la práctica, de cada 100 € de intereses te quedan
 {formatEuros(100 * (1 - IRPF_AHORRO_BRACKETS[0].tipo))}. Esto importa al comparar ofertas: una cuenta al {n1(tae)} % TAE rinde,
-después de impuestos, un {n2(tae * (1 - IRPF_AHORRO_BRACKETS[0].tipo))} %. Y si la inflación es más alta que eso, el dinero
+después de impuestos, un {n2(tae * (1 - IRPF_AHORRO_BRACKETS[0].tipo))} %. Y si la [inflación](/glosario/inflacion/) es más alta que eso, el dinero
 sigue perdiendo poder de compra; lo explicamos en
 [qué interés necesitas para no perder dinero](/blog/inflacion-que-interes-necesitas-para-no-perder/).
 
@@ -95,7 +95,7 @@ Es un pago a cuenta, no el impuesto definitivo. En la declaración de la renta s
 del ahorro y se resta lo que ya te retuvieron.
 
 Por eso, en el extracto o en la app del banco verás dos cifras: los intereses brutos y los netos. Lo que se declara son los
-**brutos**, y la retención aparece aparte como cantidad ya pagada. Ambas cifras figuran en tus datos fiscales y el borrador de
+**brutos**, y la [retención](/glosario/retencion/) aparece aparte como cantidad ya pagada. Ambas cifras figuran en tus datos fiscales y el borrador de
 la renta las incorpora; lo que te toca es comprobar que están todas las cuentas y depósitos que has tenido durante el año.
 
 ## Cuándo se declaran: el año en que se cobran
