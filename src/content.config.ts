@@ -77,7 +77,7 @@ const correcciones = defineCollection({
   }),
 });
 
-// Glosario de finanzas: una entrada por término (src/content/glosario/<slug>.md). Definiciones
+// Glosario de finanzas: una entrada por término (src/content/glosario/<slug>.md o .mdx; las que llevan ejemplo calculado usan .mdx e importan las cifras de finance.ts). Definiciones
 // cortas y sin cifras que cambian con el tiempo; las herramientas y guías relacionadas se enlazan en
 // "relacionados". Procedimiento para ampliarlo en ARTICULOS-PROCEDIMIENTO.md.
 const glosario = defineCollection({

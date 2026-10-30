@@ -1,0 +1,89 @@
+---
+termino: "Dividendo"
+titulo: "Qué es un dividendo y cómo tributa en España"
+description: "Un dividendo es la parte del beneficio de una empresa que se reparte entre sus accionistas. Cómo se calcula, cómo tributa (retención del 19 %) y un ejemplo."
+relacionados:
+  - label: "Calculadora de impuestos de los dividendos"
+    href: "/herramientas/calculadora-impuesto-dividendos/"
+  - label: "Cómo tributan los dividendos en España"
+    href: "/blog/impuesto-dividendos-espana/"
+  - label: "Cómo tributan los fondos de inversión en España"
+    href: "/blog/como-tributan-los-fondos-de-inversion-en-espana/"
+  - label: "Qué es un fondo indexado (guía)"
+    href: "/blog/que-es-un-fondo-indexado/"
+---
+
+import { calcularDividendos } from '../../components/DividendTaxCalculator';
+import { DIVIDENDOS } from '../../config/finance';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const solo = calcularDividendos({ dividendosEspana: 1000, dividendosExtranjero: 0, retencionOrigenPct: 0, otrasRentasAhorro: 0 });
+export const conOtras = calcularDividendos({ dividendosEspana: 1000, dividendosExtranjero: 0, retencionOrigenPct: 0, otrasRentasAhorro: 20000 });
+export const pct = (v) => Math.round(v * 100);
+export const n1 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+export const precio = 50;
+export const divAccion = 2;
+
+Un dividendo es la parte de los beneficios de una empresa que se reparte entre sus accionistas, normalmente en efectivo y por acción. La
+junta de accionistas decide cuánto reparte y cuánto reinvierte en el negocio. Una empresa no está obligada a pagarlo: las hay que no reparten
+nada y las hay que reparten gran parte de sus beneficios.
+
+## Rentabilidad por dividendo
+
+Para comparar se usa la **rentabilidad por dividendo** (dividend yield): dividendo anual por acción dividido entre el precio de la acción.
+Si una acción cotiza a {formatEuros(precio)} y paga {formatEuros(divAccion)} al año, rinde un {n1((divAccion / precio) * 100)} % por dividendo. No es la
+rentabilidad total, que incluye también lo que sube o baja el precio. Y un porcentaje alto no siempre es buena noticia: puede deberse a que el
+precio ha caído mucho o a que el reparto no es sostenible.
+
+## El precio se ajusta cuando se paga
+
+El día en que la acción empieza a cotizar sin derecho al dividendo (fecha ex-dividendo), su precio tiende a bajar aproximadamente lo que se
+reparte, porque ese dinero sale de la empresa. Cobrar dividendos no es "dinero extra": es una parte del valor de la empresa que pasa a tu
+cuenta, y además tributa.
+
+## Cómo tributa en España
+
+El dividendo bruto se suma a la base del ahorro, con los mismos [tramos que las ganancias de fondos](/blog/tramos-irpf-ahorro/), y quien lo
+paga retiene un {pct(DIVIDENDOS.retencionEspana)} % a cuenta (AEAT, Manual práctico de Renta 2025). La [retención](/glosario/retencion/) no es el impuesto final: se
+regulariza en la renta.
+
+**Ejemplo calculado.** Cobras {formatEuros(1000)} brutos de una empresa española:
+
+- Te retienen {formatEuros(solo.retencionEspana)} y recibes {formatEuros(1000 - solo.retencionEspana)}.
+- Si no tienes otras rentas del ahorro, el impuesto es de {formatEuros(solo.impuestoDividendos)}: ya está pagado con la retención y no
+  queda nada por pagar ni por devolver ({formatEuros(solo.aPagarOaDevolver)}).
+- Si ese año ya tienes {formatEuros(20000)} de otras rentas del ahorro, el dividendo cae en un tramo más alto: el impuesto sube a
+  {formatEuros(conOtras.impuestoDividendos)} y al presentar la renta pagas {formatEuros(conOtras.aPagarOaDevolver)} más.
+
+Con dividendos de empresas extranjeras, el país de origen retiene según su ley o el convenio con España y en España se deduce lo pagado fuera con
+un límite (el menor entre lo pagado fuera y lo que correspondería pagar aquí). La guía
+[cómo tributan los dividendos](/blog/impuesto-dividendos-espana/) lo desarrolla y la
+[calculadora](/herramientas/calculadora-impuesto-dividendos/) lo hace con tus cifras.
+
+## Dividendos y fondos
+
+En un [fondo indexado](/glosario/fondo-indexado/) o un [ETF](/glosario/etf/) de **acumulación**, los dividendos de las empresas se reinvierten dentro del
+fondo y no tributas por ellos hasta que reembolsas, momento en el que tributas la [ganancia patrimonial](/glosario/ganancia-patrimonial/) total. En los de
+**distribución** el fondo te los paga y tributan como [rendimiento del capital mobiliario](/glosario/rendimiento-del-capital-mobiliario/). Esa diferencia fiscal pesa más que el reparto en sí.
+
+## Errores frecuentes
+
+- **Elegir por rentabilidad por dividendo alta**, sin mirar si el negocio puede mantenerla.
+- **Creer que cobrar dividendos es mejor que no cobrarlos.** Con la misma rentabilidad total, reinvertir dentro del fondo aplaza el impuesto.
+- **Olvidar declarar los dividendos extranjeros** o la deducción por doble imposición.
+- **Pensar que la retención es todo el impuesto.**
+
+## Preguntas frecuentes
+
+**¿Hay una cantidad de dividendos exenta?**
+No. Todo dividendo se integra en la base del ahorro desde el primer euro.
+
+**¿Cada cuánto se pagan?**
+Depende de la empresa: anual, semestral o trimestral, según su política.
+
+**¿Los dividendos están garantizados?**
+No. La empresa puede reducirlos o suprimirlos si empeora su negocio.
+
+## Fuentes
+
+- AEAT, <a href={DIVIDENDOS.url}>Manual práctico de Renta 2025: rendimientos obtenidos por la participación en fondos propios de cualquier entidad</a> (retención del 19 %), verificado el 6 de octubre de 2026.

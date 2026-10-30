@@ -7,6 +7,8 @@ relacionados:
     href: "/herramientas/calculadora-impuestos-venta-fondos/"
   - label: "Cómo tributan los fondos de inversión en España (guía)"
     href: "/blog/como-tributan-los-fondos-de-inversion-en-espana/"
+  - label: "Criptomonedas y Hacienda: cómo tributan, con ejemplos"
+    href: "/blog/criptomonedas-hacienda-como-tributan-espana/"
 ---
 
 FIFO son las siglas de First In, First Out. Si has comprado un mismo fondo en varias fechas y vendes solo una parte, se entiende que vendes primero las participaciones que compraste antes.

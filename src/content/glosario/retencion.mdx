@@ -1,0 +1,88 @@
+---
+termino: "Retención"
+titulo: "Qué es una retención en el IRPF y cómo se regulariza"
+description: "La retención es un pago a cuenta del IRPF que descuenta quien te paga (empresa, gestora o banco) y se regulariza en la renta. Ejemplos con fondos y dividendos."
+relacionados:
+  - label: "Impuestos al vender un fondo"
+    href: "/herramientas/calculadora-impuestos-venta-fondos/"
+  - label: "Cómo tributan los fondos de inversión en España"
+    href: "/blog/como-tributan-los-fondos-de-inversion-en-espana/"
+  - label: "Cómo tributan los dividendos en España"
+    href: "/blog/impuesto-dividendos-espana/"
+  - label: "De sueldo bruto a neto"
+    href: "/herramientas/calculadora-sueldo-neto/"
+---
+
+import { calcularImpuestoAhorro, RETENCION_REEMBOLSO_FONDOS, DIVIDENDOS, IRPF_AHORRO_FUENTE } from '../../config/finance';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const pct = (v) => Math.round(v * 100);
+export const casos = [4000, 20000].map((ganancia) => {
+  const retenido = ganancia * RETENCION_REEMBOLSO_FONDOS;
+  const impuesto = calcularImpuestoAhorro(ganancia);
+  return { ganancia, retenido, impuesto, diferencia: impuesto - retenido };
+});
+
+Una retención es un adelanto del impuesto. Quien te paga un ingreso (tu empresa, la gestora de un fondo, un banco, una sociedad que reparte
+dividendos) descuenta un porcentaje y lo ingresa en Hacienda a tu nombre. Tú recibes el resto, y en la declaración de la renta se calcula el
+impuesto real, se resta lo ya retenido y sale **a pagar o a devolver**. La retención es un pago a cuenta, no el impuesto definitivo.
+
+## Dónde te retienen
+
+- **Nómina.** La empresa retiene un porcentaje de tu sueldo que varía según tus ingresos y tu situación personal. Lo estimas con la
+  [calculadora de sueldo neto](/herramientas/calculadora-sueldo-neto/).
+- **Reembolso de fondos con ganancia.** La gestora retiene un {pct(RETENCION_REEMBOLSO_FONDOS)} % de la **ganancia**, no del dinero que recibes.
+- **Dividendos.** Las empresas españolas retienen un {pct(DIVIDENDOS.retencionEspana)} % del dividendo bruto.
+- **Intereses de cuentas y depósitos.** El banco retiene a cuenta, como explica la guía de [intereses](/blog/intereses-cuenta-remunerada-deposito-hacienda/).
+- **Facturas de autónomos.** Un autónomo puede retener IRPF en sus facturas a otras empresas, ver
+  [cómo hacer una factura de autónomo](/blog/como-hacer-factura-autonomo/).
+
+No siempre hay retención: por ejemplo, un [traspaso](/glosario/traspaso/) entre fondos no la lleva porque no hay ganancia que tributar en ese momento.
+
+## Un ejemplo calculado: fondos
+
+Con la retención del {pct(RETENCION_REEMBOLSO_FONDOS)} % sobre la ganancia al reembolsar, y suponiendo que es tu única renta del ahorro del año:
+
+<table>
+  <thead>
+    <tr><th>Ganancia</th><th>Retenido</th><th>Impuesto real (tramos del ahorro)</th><th>Resultado en la renta</th></tr>
+  </thead>
+  <tbody>
+    {casos.map((c) => (
+      <tr>
+        <td>{formatEuros(c.ganancia)}</td>
+        <td>{formatEuros(c.retenido)}</td>
+        <td>{formatEuros(c.impuesto)}</td>
+        <td>{c.diferencia > 0.5 ? `A pagar ${formatEuros(c.diferencia)}` : c.diferencia < -0.5 ? `A devolver ${formatEuros(-c.diferencia)}` : 'Sin diferencia'}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+Con ganancias que superan el primer tramo del ahorro, la retención del {pct(RETENCION_REEMBOLSO_FONDOS)} % se queda corta y hay que pagar la diferencia al declarar. Con pérdidas del
+mismo año que compensan la ganancia, la retención puede ser mayor que el impuesto y te la devuelven. Los
+[tramos del ahorro](/blog/tramos-irpf-ahorro/) y la regla del [FIFO](/glosario/fifo/) determinan el impuesto real; la
+[calculadora de impuestos al vender un fondo](/herramientas/calculadora-impuestos-venta-fondos/) lo hace con tus compras.
+
+## Errores frecuentes
+
+- **Creer que la retención es el impuesto final.** Puede quedarte a pagar o a devolver.
+- **Calcular la retención sobre el total reembolsado.** Se aplica solo sobre la ganancia.
+- **No guardar los certificados de retenciones.** Aparecen en tus datos fiscales, pero conviene contrastarlos con los de la gestora o el banco.
+- **Ignorar la retención del extranjero.** En los dividendos de fuera se aplica la del país de origen y una deducción en España con límite.
+
+## Preguntas frecuentes
+
+**¿Me devuelven la retención si no tengo que declarar?**
+Si las retenciones superan lo que corresponde, presentar la declaración permite recuperar la diferencia. Consulta los límites para estar obligado a declarar en la AEAT.
+
+**¿La retención es siempre del 19 %?**
+No: depende del tipo de renta. El 19 % es el de los fondos y los dividendos; el de la nómina varía.
+
+**¿Quién ingresa la retención?**
+Quien paga el rendimiento, no tú. Tú lo verás reflejado como "retenciones" en tus datos fiscales.
+
+## Fuentes
+
+- AEAT, Manual práctico de Renta 2025: ganancias patrimoniales sujetas a retención (19 % en 2025) y rendimientos por participación en fondos propios de entidades, <a href={DIVIDENDOS.url}>ejemplo de la AEAT</a>. Cifras verificadas el 23 de septiembre y el 6 de octubre de 2026.
+- AEAT, <a href={IRPF_AHORRO_FUENTE.url}>gravamen de la base liquidable del ahorro</a> (tramos).

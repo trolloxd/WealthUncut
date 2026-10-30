@@ -5,6 +5,10 @@ description: "La TAE (tasa anual equivalente) es el rendimiento o coste anual re
 relacionados:
   - label: "Comparador de cuentas remuneradas y depósitos"
     href: "/herramientas/comparador-cuentas-remuneradas/"
+  - label: "Calculadora de préstamo con TAE"
+    href: "/herramientas/calculadora-prestamo-tae/"
+  - label: "Préstamo personal: TIN, TAE e intereses (guía)"
+    href: "/blog/prestamo-personal-tin-tae-intereses/"
 ---
 
 TAE significa tasa anual equivalente. Expresa en un solo número lo que rinde (en una cuenta o un depósito) o cuesta (en un préstamo) un producto durante un año, teniendo en cuenta que los intereses se van sumando al capital.

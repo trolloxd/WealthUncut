@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import ArticleLink from '../../../components/ArticleLink.astro';
 import { SITE } from '../../../config/site';
 import { isPublished } from '../../../lib/posts';
 import { contarTermino, normaliza, textoPlano } from '../../../lib/glosario-enlaces';
@@ -62,7 +63,7 @@ const jsonLd = [
   <article class="prose max-w-none">
     <h1>{titulo}</h1>
     <p class="lead text-lg text-ink">{description}</p>
-    <Content />
+    <Content components={{ a: ArticleLink }} />
   </article>
 
   {relacionados.length > 0 && (

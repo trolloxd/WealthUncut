@@ -157,8 +157,10 @@ draft: false
 ## 7. Glosario: ampliarlo en cada lote
 
 Cada vez que se escribe un lote de artículos (apartado 1), añade también **hasta 4 términos nuevos** al
-glosario (`src/content/glosario/<slug>.md`, páginas en `/glosario/`). Son páginas cortas que captan
-búsquedas de "qué es X" y enlazan a las herramientas y guías del sitio.
+glosario (`src/content/glosario/<slug>.md`, páginas en `/glosario/`). Son páginas que captan
+búsquedas de "qué es X" y enlazan a las herramientas y guías del sitio. Desde el 2026-10-30 las entradas importantes son más largas
+(definición, ejemplo calculado, errores frecuentes, preguntas frecuentes y fuentes con fecha) y van en `.mdx`, importando las cifras de
+`src/config/finance.ts` o de `src/data/` en vez de escribirlas a mano (ver `euribor.mdx` o `retencion.mdx`). Una entrada corta sin cifras sigue siendo válida en `.md`.
 
 - **Qué términos**: conceptos de finanzas personales e inversión en España que aparezcan en los
   artículos, herramientas o noticias del sitio y que aún no tengan entrada (por ejemplo: dividendo,

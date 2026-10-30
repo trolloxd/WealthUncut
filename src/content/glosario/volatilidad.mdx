@@ -1,0 +1,81 @@
+---
+termino: "Volatilidad"
+titulo: "Qué es la volatilidad en inversión y cómo se mide"
+description: "La volatilidad mide cuánto oscila el precio de una inversión: más volatilidad, subidas y caídas mayores. Cómo se mide, un ejemplo calculado y por qué importa."
+relacionados:
+  - label: "Cómo montar una cartera de fondos indexados"
+    href: "/blog/como-montar-cartera-fondos-indexados/"
+  - label: "Simula tu cartera de fondos"
+    href: "/carteras/"
+  - label: "Rentabilidad neta de un fondo indexado"
+    href: "/blog/rentabilidad-neta-fondo-indexado/"
+  - label: "Invertir 100 euros al mes"
+    href: "/blog/invertir-100-euros-al-mes/"
+---
+
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const n1 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+export const rentabilidades = [12, -8, 20, -15, 10];
+export const media = rentabilidades.reduce((a, b) => a + b, 0) / rentabilidades.length;
+export const desviacion = Math.sqrt(rentabilidades.reduce((a, r) => a + (r - media) ** 2, 0) / (rentabilidades.length - 1));
+export const inicio = 10000;
+export const final = (rs) => rs.reduce((v, r) => v * (1 + r / 100), inicio);
+export const constante = final([10, 10]);
+export const oscilante = final([40, -20]);
+
+La volatilidad mide cuánto se mueve el precio de una inversión alrededor de su valor medio. Una inversión muy volátil puede subir un 20 %
+un año y caer un 30 % el siguiente; una poco volátil se mueve poco. **Volatilidad no es lo mismo que perder dinero**: una inversión volátil puede acabar
+ganando, pero el camino es más incómodo y exige aguantar caídas.
+
+## Cómo se mide
+
+La medida habitual es la **desviación típica** de las rentabilidades, normalmente expresada en porcentaje anual. Cuanto mayor, más se dispersan
+los resultados respecto a la media.
+
+**Ejemplo calculado.** Cinco rentabilidades anuales de ejemplo (ilustrativas, no de un fondo real): {rentabilidades.map((r) => `${r} %`).join(', ')}. La
+media es del {n1(media)} % y la desviación típica (muestral) del {n1(desviacion)} %. Con ese dato, una rentabilidad de uno de esos años puede
+estar fácilmente a {n1(desviacion)} puntos por encima o por debajo de la media. Cuando se compara con otros activos, la
+[renta variable](/glosario/renta-variable/) suele tener una volatilidad claramente mayor que la [renta fija](/glosario/renta-fija/) o un
+[fondo monetario](/glosario/fondo-monetario/).
+
+## Por qué las pérdidas pesan más que las ganancias
+
+Las rentabilidades no se suman, se multiplican. Con {formatEuros(inicio)}:
+
+- Dos años seguidos del +10 % dejan {formatEuros(constante)}.
+- Un año del +40 % seguido de otro del -20 % (cuya media aritmética también es del +10 %) deja {formatEuros(oscilante)}.
+
+A igual media, la serie más volátil termina con menos dinero. Además, una caída del 50 % exige una subida del 100 % para recuperarse (y una del
+20 %, una del 25 %). Esa es la razón por la que reducir los grandes vaivenes importa más de lo que parece.
+
+## Qué hacer con la volatilidad
+
+- **Conocer tu horizonte.** Cuanto más tardes en necesitar el dinero, más caídas puedes absorber. Si lo necesitas pronto, la volatilidad es un
+  problema: ver [riesgo de secuencia](/glosario/riesgo-de-secuencia/).
+- **Diversificar.** Repartir entre activos reduce la oscilación del conjunto (ver [diversificación](/glosario/diversificacion/)).
+- **Aportar de forma periódica.** Las [aportaciones periódicas](/glosario/aportaciones-periodicas/) reparten las compras en distintos precios.
+- **Mantener el plan.** Vender en una caída convierte una pérdida latente en real. [Rebalancear](/glosario/rebalanceo/) ayuda a mantener el riesgo elegido.
+
+## Errores frecuentes
+
+- **Usar la volatilidad pasada como previsión.** Cambia con el tiempo y es mayor en las crisis.
+- **Confundirla con el riesgo total.** Hay riesgos que la volatilidad no recoge, como la quiebra de una empresa o la liquidez.
+- **Ignorar la tolerancia emocional.** Una cartera adecuada sobre el papel no sirve si te lleva a vender en pánico.
+- **Fiarse de simulaciones con rentabilidad constante.** Las calculadoras de este sitio, como la de [interés compuesto](/herramientas/calculadora-interes-compuesto/),
+  usan una rentabilidad media fija: no reflejan los altibajos reales.
+
+## Preguntas frecuentes
+
+**¿Es lo mismo volatilidad que riesgo?**
+La volatilidad es una medida del riesgo, no el único: no recoge todo lo que puede salir mal.
+
+**¿Una volatilidad baja es siempre mejor?**
+No necesariamente: suele ir con menor rentabilidad esperada. Lo importante es que encaje con tu plazo y con lo que aguantas.
+
+**¿Dónde veo la volatilidad de un fondo?**
+En el documento de datos fundamentales del fondo (KID), que incluye un indicador resumido de riesgo de 1 a 7.
+
+## Fuentes
+
+Medida estadística estándar (desviación típica muestral de las rentabilidades). Los ejemplos numéricos son cálculos propios con cifras ilustrativas, sin datos de mercado.

@@ -7,6 +7,8 @@ relacionados:
     href: "/herramientas/comparador-cuentas-remuneradas/"
   - label: "Simulador de hipoteca con el euríbor real"
     href: "/herramientas/simulador-hipoteca-euribor/"
+  - label: "Calculadora de préstamo con TAE"
+    href: "/herramientas/calculadora-prestamo-tae/"
 ---
 
 TIN significa tipo de interés nominal. Es el porcentaje base de interés que se anuncia, sin incluir cómo se acumulan los intereses a lo largo del año ni comisiones.

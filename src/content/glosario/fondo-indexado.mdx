@@ -1,0 +1,84 @@
+---
+termino: "Fondo indexado"
+titulo: "Qué es un fondo indexado y cómo funciona en España"
+description: "Un fondo indexado replica un índice (MSCI World, S&P 500) en vez de intentar batirlo. Cómo funciona, por qué cuesta menos, cómo tributa y qué errores evitar."
+relacionados:
+  - label: "Qué es un fondo indexado (guía)"
+    href: "/blog/que-es-un-fondo-indexado/"
+  - label: "Comparador de fondos indexados"
+    href: "/herramientas/comparador-fondos-indexados/"
+  - label: "Simula tu cartera de fondos indexados"
+    href: "/carteras/"
+  - label: "Fondo indexado frente a ETF"
+    href: "/blog/fondo-indexado-vs-etf-diferencias/"
+  - label: "Impuestos al vender un fondo"
+    href: "/herramientas/calculadora-impuestos-venta-fondos/"
+---
+
+import { valorConTer, SUPUESTOS_TER } from '../../lib/calculos/escena3d.ts';
+import { RETENCION_REEMBOLSO_FONDOS } from '../../config/finance';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const anios = 20;
+export const barato = valorConTer(0.002, anios);
+export const caro = valorConTer(0.015, anios);
+export const pct = (v) => (v * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 });
+
+Un fondo indexado es un fondo de inversión que, en vez de intentar batir al mercado, copia un índice: compra los valores que lo componen en la
+misma proporción y obtiene una rentabilidad casi igual a la del índice, menos sus costes. Es **gestión pasiva**: no hay un equipo
+eligiendo qué comprar o vender, solo una regla que replica el [índice bursátil](/glosario/indice-bursatil/) elegido, como el MSCI World (empresas de países
+desarrollados) o el S&P 500 (500 grandes empresas de EE. UU.).
+
+## Por qué cuesta menos
+
+Sin analistas ni apuestas, la [comisión de gestión](/glosario/comision-de-gestion/) y el [TER](/glosario/ter/) (los gastos anuales totales) son mucho
+menores que en un fondo de gestión activa. Parece poco, pero se aplica cada año sobre todo tu dinero y se acumula. Con los supuestos que usa este
+sitio ({formatEuros(SUPUESTOS_TER.inversion)} invertidos una vez, {pct(SUPUESTOS_TER.rentabilidadBruta)} % bruto anual, sin impuestos), tras {anios} años:
+
+- Con un TER del {pct(0.002)} %: {formatEuros(barato)}.
+- Con un TER del {pct(0.015)} %: {formatEuros(caro)}.
+
+La diferencia es de {formatEuros(barato - caro)}. Es un ejemplo de cálculo, no una previsión de rentabilidad; la guía del
+[TER](/blog/ter-fondo-que-es/) lo detalla y el [comparador](/herramientas/comparador-fondos-indexados/) muestra el TER de cada fondo.
+
+## Cómo funciona por dentro
+
+El fondo puede **replicar el índice comprando directamente los valores** (réplica física) o mediante derivados (réplica sintética).
+Siempre hay una pequeña diferencia entre lo que rinde el fondo y lo que rinde el índice (el *tracking difference*), que viene sobre todo de los
+costes. Su precio por participación es el [valor liquidativo](/glosario/valor-liquidativo/), que se calcula una vez al día.
+
+## Cómo tributa en España
+
+Es un fondo de inversión, así que puedes [traspasarlo](/glosario/traspaso/) a otro fondo sin tributar: el impuesto se paga solo al reembolsar, sobre la
+[ganancia patrimonial](/glosario/ganancia-patrimonial/), con los tramos de la base del ahorro y un {pct(RETENCION_REEMBOLSO_FONDOS)} % de
+[retención](/glosario/retencion/) a cuenta. Si vendes parte, se aplica el criterio [FIFO](/glosario/fifo/). Todo en
+[cómo tributan los fondos de inversión](/blog/como-tributan-los-fondos-de-inversion-en-espana/).
+
+## Fondo indexado y ETF
+
+Ambos replican índices. El ETF cotiza en bolsa y se compra con un bróker; el fondo se contrata con una gestora o un banco y permite traspasos con
+ventajas fiscales en España. La comparación completa está en [fondo indexado frente a ETF](/blog/fondo-indexado-vs-etf-diferencias/).
+
+## Errores frecuentes
+
+- **Pensar que es "sin riesgo".** Replica el índice, también cuando baja. La [volatilidad](/glosario/volatilidad/) es la del mercado.
+- **Elegir por rentabilidad pasada**, en vez de por índice, coste y [diversificación](/glosario/diversificacion/).
+- **Comprar varios fondos que replican casi lo mismo.**
+- **No mirar la divisa** (hay versiones con cobertura, ver [euro hedged](/glosario/euro-hedged/)).
+- **Olvidar el plazo.** Las caídas son normales; una inversión a largo plazo se planifica para soportarlas (ver [riesgo de secuencia](/glosario/riesgo-de-secuencia/)).
+
+## Preguntas frecuentes
+
+**¿Qué diferencia hay con un fondo de gestión activa?**
+El activo busca batir al índice con decisiones del gestor y cobra más; el indexado copia el índice y cobra menos.
+
+**¿Puedo aportar cada mes?**
+Sí, con [aportaciones periódicas](/glosario/aportaciones-periodicas/), normalmente con importes bajos. Prueba con el simulador de [rentabilidad neta](/blog/rentabilidad-neta-fondo-indexado/).
+
+**¿Es una recomendación de inversión?**
+No. Esta entrada explica el concepto; la decisión depende de tus objetivos, plazo y tolerancia al riesgo.
+
+## Fuentes
+
+- AEAT, <a href="https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html">Manual práctico de Renta 2025: gravamen de la base liquidable del ahorro</a> y retención del 19 % al reembolsar (verificado el 23 de septiembre de 2026).
+- Ejemplo de coste: cálculo propio con los supuestos del sitio (el TER se resta de la rentabilidad anual), el mismo de la guía del TER.

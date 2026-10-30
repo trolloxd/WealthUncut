@@ -1,0 +1,98 @@
+---
+termino: "Depósito a plazo"
+titulo: "Qué es un depósito a plazo y cuánto te deja de verdad"
+description: "Un depósito a plazo es dinero que dejas en un banco un tiempo pactado a cambio de un interés conocido. Cuánto ganas de verdad, qué cubre el FGD y cómo tributa."
+relacionados:
+  - label: "Comparador de cuentas remuneradas y depósitos"
+    href: "/herramientas/comparador-cuentas-remuneradas/"
+  - label: "Intereses de cuentas y depósitos: cómo tributan"
+    href: "/blog/intereses-cuenta-remunerada-deposito-hacienda/"
+  - label: "Inflación y poder de compra"
+    href: "/herramientas/calculadora-inflacion/"
+  - label: "Qué cubre el Fondo de Garantía de Depósitos"
+    href: "/blog/fondo-garantia-depositos-que-cubre/"
+  - label: "Todas las guías de ahorro"
+    href: "/blog/tema/ahorro/"
+---
+
+import { calcularImpuestoAhorro, FGD_COBERTURA } from '../../config/finance';
+import { formatEuros, formatEuros2 } from '../../components/CalculatorUI';
+
+export const capital = 10000;
+export const interes = 2.5;
+export const inflacion = 4.9;
+export const bruto = (capital * interes) / 100;
+export const impuesto = calcularImpuestoAhorro(bruto);
+export const neto = bruto - impuesto;
+export const netoPct = (neto / capital) * 100;
+export const realPct = ((1 + neto / capital) / (1 + inflacion / 100) - 1) * 100;
+export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+Un depósito a plazo (o imposición a plazo fijo) es un contrato con un banco: le dejas una cantidad durante un periodo acordado, por
+ejemplo 6, 12 o 24 meses, y a cambio te paga un interés conocido desde el primer día. Al llegar el vencimiento recuperas el capital más los
+intereses. No hay sorpresas de precio, que es su principal atractivo, pero a cambio el dinero queda inmovilizado.
+
+## Cómo se calcula lo que ganas
+
+Dos datos del contrato mandan: el [TIN](/glosario/tin/) (interés nominal anual) y la [TAE](/glosario/tae/) (el coste o rendimiento anual
+equivalente, que incluye cuándo se pagan los intereses). Si los intereses se abonan al vencimiento de un depósito a 12 meses, TIN y TAE
+coinciden. Si se abonan cada mes o trimestre, la TAE es algo mayor que el TIN porque esos intereses pueden volver a generar intereses. Para
+comparar productos, usa siempre la TAE.
+
+## Un ejemplo calculado
+
+Supón un depósito de {formatEuros(capital)} a 12 meses con un interés anual del {n2(interes)} % (cifra ilustrativa, no una oferta real):
+
+- Intereses brutos: {formatEuros(bruto)}.
+- IRPF de esos intereses, si es tu única renta del ahorro del año: {formatEuros2(impuesto)} (19 % del primer tramo, con los
+  [tramos de la base del ahorro](/blog/tramos-irpf-ahorro/)).
+- Intereses netos: **{formatEuros2(neto)}**, un {n2(netoPct)} % del capital.
+- Frente a una inflación del {n2(inflacion)} % (INE, septiembre de 2026), el rendimiento real queda en torno al **{n2(realPct)} %**: el dinero
+  rinde, pero pierde poder de compra.
+
+Con más rentas del ahorro ese mismo año, el tipo sobre los intereses puede subir. La guía de
+[intereses de cuentas y depósitos](/blog/intereses-cuenta-remunerada-deposito-hacienda/) lo calcula para varios saldos.
+
+## Cuánto está protegido
+
+Los depósitos en bancos españoles están cubiertos por el [Fondo de Garantía de Depósitos](/glosario/fondo-de-garantia-de-depositos/) hasta
+**{formatEuros(FGD_COBERTURA.importe)} por titular y entidad**. Si tienes más, repartirlo entre entidades distintas amplía la cobertura. El detalle (cuentas
+conjuntas, entidades del mismo grupo) está en la guía de [qué cubre el FGD](/blog/fondo-garantia-depositos-que-cubre/).
+
+## Depósito, cuenta remunerada o fondo monetario
+
+| | Depósito a plazo | Cuenta remunerada | Fondo monetario |
+| --- | --- | --- | --- |
+| Interés | Fijo durante el plazo | Puede cambiar en cualquier momento | Variable |
+| Disponibilidad | Atado hasta el vencimiento (salvo penalización) | Inmediata | Reembolso en pocos días |
+| Garantía FGD | Sí, hasta el límite | Sí, hasta el límite | No (es un fondo de inversión) |
+| Tributa como | Rendimiento del capital mobiliario | Rendimiento del capital mobiliario | Ganancia patrimonial (al reembolsar) |
+
+El [fondo monetario](/glosario/fondo-monetario/) es una inversión, no un depósito: su valor puede variar aunque sea poco.
+
+## Errores frecuentes
+
+- **Fijarse solo en el TIN**, sin mirar la TAE ni cuándo se pagan los intereses.
+- **Olvidar los impuestos**: el interés anunciado es bruto.
+- **Inmovilizar dinero que puedes necesitar.** El [fondo de emergencia](/glosario/fondo-de-emergencia/) debe estar disponible; un depósito a plazo
+  no es el sitio, o hay que asumir la penalización por cancelación anticipada que fije el contrato.
+- **Pasar del límite de garantía** con una sola entidad sin saberlo.
+- **No revisar la renovación.** Algunos depósitos se renuevan solos al vencer, a las condiciones que ofrezca entonces el banco, que pueden ser peores.
+
+## Preguntas frecuentes
+
+**¿Puedo retirar el dinero antes del vencimiento?**
+Depende del contrato. Algunos no lo permiten y otros aplican una penalización sobre los intereses. Léelo antes de firmar.
+
+**¿Los intereses se declaran aunque no los cobre hasta el final?**
+Los rendimientos se imputan al año en que son exigibles, según lo pactado. La guía de intereses explica cuándo se declaran.
+
+**¿Es mejor que invertir?**
+Son cosas distintas: el depósito da certeza y poca rentabilidad; invertir en [renta variable](/glosario/renta-variable/) puede rendir más a largo plazo, con
+más [volatilidad](/glosario/volatilidad/). Más en [diferencia entre ahorrar e invertir](/blog/diferencia-entre-ahorrar-e-invertir/).
+
+## Fuentes
+
+- Fondo de Garantía de Depósitos, [depósitos dinerarios garantizados](https://www.fgd.es/informacion-general/que-es-el-fgd/depositos-dinerarios/) (100.000 € por titular y entidad).
+- AEAT, [Manual práctico de Renta 2025: gravamen de la base del ahorro](https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-ahorro.html).
+- INE, [IPC de septiembre de 2026](https://www.ine.es/dyngs/Prensa/IPC0926.htm) (publicado el 14 de octubre de 2026).

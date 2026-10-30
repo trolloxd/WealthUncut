@@ -1,0 +1,77 @@
+---
+termino: "Diversificación"
+titulo: "Qué es la diversificación y cómo se aplica a tu cartera"
+description: "Diversificar es repartir tu inversión entre activos, sectores y países para no depender de uno solo. Qué reduce, qué no y los errores más comunes al hacerlo."
+relacionados:
+  - label: "Simula tu cartera de fondos indexados"
+    href: "/carteras/"
+  - label: "Cómo montar una cartera de fondos indexados"
+    href: "/blog/como-montar-cartera-fondos-indexados/"
+  - label: "S&P 500 frente a MSCI World"
+    href: "/blog/sp500-vs-msci-world/"
+  - label: "Qué es un fondo indexado (guía)"
+    href: "/blog/que-es-un-fondo-indexado/"
+---
+
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const total = 10000;
+export const posiciones = 10;
+export const porPosicion = total / posiciones;
+export const caida = 0.5;
+export const perdidaUna = total * caida;
+export const perdidaDiv = porPosicion * caida;
+export const recuperar = (c) => (1 / (1 - c) - 1) * 100;
+
+Diversificar es repartir el dinero entre inversiones que no dependen de lo mismo: empresas, sectores, países, divisas y tipos de activo
+([renta variable](/glosario/renta-variable/), [renta fija](/glosario/renta-fija/), efectivo). La idea es que un mal resultado en una parte no
+destruya el conjunto. No busca ganar más, sino que el resultado dependa menos de una sola apuesta.
+
+## Un ejemplo calculado
+
+Tienes {formatEuros(total)} y una de tus inversiones se hunde un {caida * 100} %:
+
+- Si todo estaba en esa inversión, pierdes {formatEuros(perdidaUna)}, un {caida * 100} % de tu dinero.
+- Si estaba repartido a partes iguales en {posiciones} inversiones ({formatEuros(porPosicion)} en cada una), pierdes {formatEuros(perdidaDiv)}, un {(perdidaDiv / total * 100).toLocaleString('es-ES')} % del total.
+
+Además, recuperarse de una caída del {caida * 100} % exige una subida del {recuperar(caida).toLocaleString('es-ES')} %. Cuanto más concentrada está la cartera, más
+probable es un golpe así y más difícil volver.
+
+## Qué reduce y qué no
+
+La diversificación reduce el riesgo propio de una empresa, un sector o un país. No elimina el **riesgo de mercado**: si cae la bolsa
+en su conjunto, caen casi todas las acciones a la vez. Para ese riesgo se usan la combinación de activos (renta variable con renta fija) y el
+plazo. La [volatilidad](/glosario/volatilidad/) de una cartera diversificada suele ser menor que la de sus partes por separado, pero no desaparece.
+
+## Cómo se diversifica en la práctica
+
+Un [fondo indexado](/glosario/fondo-indexado/) a un [índice bursátil](/glosario/indice-bursatil/) mundial reparte el dinero entre miles de empresas de
+decenas de países con una sola compra. Las diferencias entre índices (por ejemplo, el S&P 500 frente al MSCI World) cambian cuánto
+se concentra la cartera en un país o en pocas empresas grandes: la guía [S&P 500 frente a MSCI World](/blog/sp500-vs-msci-world/) las compara. Con el
+tiempo los pesos se desvían de los elegidos y conviene [rebalancear](/glosario/rebalanceo/).
+
+## Errores frecuentes
+
+- **Falsa diversificación.** Tener cinco fondos que replican casi lo mismo no diversifica: se solapan.
+- **Concentrarse sin darse cuenta.** Tu sueldo, tu casa y tus inversiones en la empresa donde trabajas o en un solo país dependen de lo mismo.
+- **Diversificar de más.** Decenas de posiciones pequeñas complican el seguimiento y los impuestos sin reducir mucho más el riesgo.
+- **Fiarse del papel.** En una crisis, activos que parecían distintos pueden caer a la vez; por eso importa el plazo y tener un
+  [fondo de emergencia](/glosario/fondo-de-emergencia/) aparte.
+- **Confundir diversificar con garantizar.** Ninguna cartera diversificada asegura no perder dinero.
+
+## Preguntas frecuentes
+
+**¿Cuántos fondos necesito?**
+No hay una cifra correcta. Con uno o dos fondos amplios ya hay mucha diversificación; lo importante es que cubran cosas distintas. Mira cómo
+queda en el [simulador de carteras](/carteras/).
+
+**¿Diversificar es lo mismo que repartir el dinero entre bancos?**
+No exactamente. Repartir depósitos entre entidades amplía la cobertura del [Fondo de Garantía de Depósitos](/glosario/fondo-de-garantia-de-depositos/); la
+diversificación de inversiones reparte el riesgo de mercado.
+
+**¿Diversificar baja la rentabilidad?**
+Renuncias a la mejor apuesta posible, pero también evitas la peor, y nadie sabe de antemano cuál será cada una.
+
+## Fuentes
+
+Concepto estándar de teoría de carteras (Markowitz, 1952). El ejemplo numérico es un cálculo propio con importes ilustrativos, sin datos de mercado.

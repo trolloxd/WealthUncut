@@ -1,0 +1,85 @@
+---
+termino: "Inflación"
+titulo: "Qué es la inflación y cómo afecta a tus ahorros"
+description: "La inflación es la subida generalizada de los precios: con el mismo dinero compras menos. Cómo se mide con el IPC, un ejemplo calculado y la rentabilidad real."
+relacionados:
+  - label: "Inflación y poder de compra"
+    href: "/herramientas/calculadora-inflacion/"
+  - label: "Qué interés necesitas para no perder frente a la inflación"
+    href: "/blog/inflacion-que-interes-necesitas-para-no-perder/"
+  - label: "La diferencia entre ahorrar e invertir"
+    href: "/blog/diferencia-entre-ahorrar-e-invertir/"
+  - label: "Subida de sueldo frente al IPC"
+    href: "/blog/subida-sueldo-ipc-poder-adquisitivo/"
+  - label: "Todas las guías de ahorro"
+    href: "/blog/tema/ahorro/"
+---
+
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const n1 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+export const ine = 4.9;
+export const objetivo = 2;
+export const capital = 10000;
+export const poder = (inf, anios) => capital / Math.pow(1 + inf / 100, anios);
+export const interes = 2.5;
+export const real = ((1 + interes / 100) / (1 + ine / 100) - 1) * 100;
+
+La inflación es la subida generalizada y sostenida de los precios. Si sube, con la misma cantidad de dinero compras menos cosas:
+el euro pierde **poder adquisitivo**. Lo contrario, una bajada sostenida de precios, se llama deflación.
+
+## Cómo se mide
+
+En España la mide el INE con el Índice de Precios de Consumo ([IPC](/glosario/ipc/)), que sigue el coste de una cesta de bienes y servicios. La
+tasa que se cita en las noticias es la **interanual**: cuánto más cuesta la cesta que hace doce meses. Según el INE, en septiembre de 2026 la tasa
+anual del IPC general fue del **{n1(ine)} %** (dato publicado el 14 de octubre de 2026). El Banco Central Europeo, por su parte, define su objetivo de
+estabilidad de precios como una inflación del {objetivo} % a medio plazo, medida con el IPC armonizado.
+
+## Un ejemplo calculado
+
+Si guardas {formatEuros(capital)} bajo el colchón y los precios suben un {objetivo} % anual (el objetivo del BCE, como supuesto), el poder de compra de
+ese dinero tras 10 años equivale a {formatEuros(poder(objetivo, 10))} de hoy, y tras 20 años, a {formatEuros(poder(objetivo, 20))}. Con una inflación del 4 % la pérdida es mucho mayor:
+{formatEuros(poder(4, 10))} tras 10 años. No son previsiones: muestran cómo actúa la inflación acumulada. Pruébalo con tus cifras en la
+[calculadora de inflación](/herramientas/calculadora-inflacion/).
+
+## Rentabilidad real
+
+Lo que importa no es el interés que te dan sino lo que queda tras restar la inflación. Con una fórmula exacta: rentabilidad real = (1 + interés) /
+(1 + inflación) menos 1. Si un [depósito](/glosario/deposito-a-plazo/) ofrece un {n1(interes)} % bruto y la inflación es del {n1(ine)} %, la rentabilidad real
+es de {n2(real)} %, antes de impuestos: tu dinero crece en euros pero compra menos. Los impuestos agravan la diferencia; la guía
+[qué interés necesitas para no perder](/blog/inflacion-que-interes-necesitas-para-no-perder/) calcula el interés bruto necesario con el
+último dato del INE.
+
+## Por qué importa al invertir y al ahorrar
+
+- Un [fondo de emergencia](/glosario/fondo-de-emergencia/) debe estar disponible, no necesariamente rendir más que la inflación, pero conviene saber cuánto
+  poder de compra pierde.
+- A largo plazo, la [renta variable](/glosario/renta-variable/) ha buscado batir a la inflación, pero con
+  [volatilidad](/glosario/volatilidad/) y sin garantías.
+- Los pagos que no cambian (una hipoteca a tipo fijo) pesan menos con el tiempo si los ingresos suben con los precios; los que se actualizan (un alquiler, una hipoteca a [euríbor](/glosario/euribor/)) los siguen.
+- Una subida de sueldo igual a la inflación deja tu poder adquisitivo igual: ver
+  [subida de sueldo frente al IPC](/blog/subida-sueldo-ipc-poder-adquisitivo/).
+
+## Errores frecuentes
+
+- **Comparar rentabilidades nominales** sin descontar inflación e impuestos.
+- **Creer que la inflación del año pasado se repetirá.** Cambia con los precios de la energía, los alimentos y los tipos de interés.
+- **Confundir la tasa con el nivel de precios.** Que la inflación baje del 4 % al 2 % no hace que los precios bajen: solo que suben más despacio.
+- **Usar la inflación general** cuando tus gastos son distintos (alquiler, hipoteca, carburantes).
+
+## Preguntas frecuentes
+
+**¿Qué es la inflación subyacente?**
+Es el IPC sin alimentos no elaborados ni productos energéticos, que son los más volátiles. Según el INE, fue del 3,1 % en septiembre de 2026.
+
+**¿Quién controla la inflación?**
+Los bancos centrales, como el BCE, influyen sobre ella con los tipos de interés, aunque otros factores (energía, cadenas de suministro) escapan a su control.
+
+**¿La inflación siempre es mala?**
+Una inflación baja y estable es compatible con una economía sana; una inflación alta y volátil daña a quienes ahorran en efectivo.
+
+## Fuentes
+
+- INE, <a href="https://www.ine.es/dyngs/Prensa/IPC0926.htm">Índice de Precios de Consumo, septiembre de 2026</a> (14 de octubre de 2026): IPC general 4,9 %, subyacente 3,1 %.
+- Banco Central Europeo, <a href="https://www.ecb.europa.eu/mopo/strategy/html/index.es.html">objetivo de estabilidad de precios</a>: inflación del 2 % a medio plazo.

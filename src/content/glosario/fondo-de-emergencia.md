@@ -9,6 +9,8 @@ relacionados:
     href: "/blog/fondo-de-emergencia-cuanto-necesitas/"
   - label: "Primeros pasos para invertir en España (guía)"
     href: "/blog/primeros-pasos-para-invertir-en-espana/"
+  - label: "Todas las guías de ahorro"
+    href: "/blog/tema/ahorro/"
 ---
 
 Es el dinero que apartas para afrontar un gasto inesperado o un periodo sin ingresos sin tener que vender inversiones en mal momento. Debe estar en algo que puedas retirar rápido y que no pierda valor de un día para otro, como una cuenta de ahorro.

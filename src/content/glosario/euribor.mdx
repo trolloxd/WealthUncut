@@ -1,0 +1,120 @@
+---
+termino: "Euríbor"
+titulo: "Qué es el euríbor y cómo afecta a tu hipoteca"
+description: "El euríbor es el tipo de referencia de la mayoría de hipotecas variables en España. Qué mide, cómo se suma al diferencial y cuánto cambia tu cuota al revisarse."
+relacionados:
+  - label: "Euríbor oficial de cada mes"
+    href: "/euribor/"
+  - label: "Simulador de hipoteca con el euríbor real"
+    href: "/herramientas/simulador-hipoteca-euribor/"
+  - label: "Calculadora de revisión de la hipoteca"
+    href: "/herramientas/calculadora-revision-hipoteca/"
+  - label: "Amortizar la hipoteca"
+    href: "/herramientas/amortizar-hipoteca-cuanto-ahorras/"
+  - label: "Hipoteca fija, variable o mixta"
+    href: "/blog/hipoteca-fija-variable-o-mixta/"
+---
+
+import euribor from '../../data/euribor/ultimo.json';
+import { cuotaFrancesa, tipoAplicable, valorMes, mesesAtras } from '../../lib/calculos/euribor.ts';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const serie = euribor.historico.map((p) => ({ mes: p.mes, valor: p.valor }));
+export const ult = serie.at(-1);
+export const mes12 = mesesAtras(ult.mes, 12);
+export const eur12 = valorMes(serie, mes12);
+export const mesLargo = (m) => new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${m}-01T00:00:00Z`));
+export const n3 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+export const fechaLarga = (d) => new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${d}T00:00:00Z`));
+export const capital = 150000;
+export const meses = 300;
+export const dif = 0.8;
+export const cuotaCon = (variacion) => cuotaFrancesa(capital, tipoAplicable(ult.valor + variacion, dif), meses);
+export const escenarios = [
+  { texto: 'Euríbor 1 punto más bajo', v: -1 },
+  { texto: 'Euríbor oficial actual', v: 0 },
+  { texto: 'Euríbor 1 punto más alto', v: 1 },
+  { texto: 'Euríbor 2 puntos más alto', v: 2 },
+];
+
+El euríbor (Euro Interbank Offered Rate) es un tipo de interés de referencia del mercado del dinero en euros: refleja, de forma
+aproximada, a qué precio se prestan dinero a corto plazo los bancos de la zona euro. Existe para varios plazos, y el de 12 meses es el
+que más se usa en las hipotecas. Euribor® es una marca registrada de EMMI (European Money Markets Institute), que administra el índice.
+
+La clave para un particular es esta: **el euríbor no es lo que pagas, es la parte variable de lo que pagas.** En una hipoteca variable el
+tipo de interés es el euríbor más un [diferencial](/glosario/diferencial/) fijado en la escritura. Si el euríbor sube, sube el tipo y,
+tras la siguiente revisión, la cuota. Si baja, baja.
+
+## Qué valor usa tu hipoteca
+
+Las hipotecas españolas no usan el dato que ves cada día en las noticias, sino el **valor oficial de cada mes**: el Banco de España publica
+en el BOE los tipos de interés oficiales de referencia del mercado hipotecario, entre ellos el euríbor a un año (media del mes). El último
+publicado es el de **{mesLargo(ult.mes)}: {n3(ult.valor)} %** (resolución publicada el {fechaLarga(euribor.ultimoPublicado)}, {euribor.ultimoBoe}).
+Un año antes, en {mesLargo(mes12)}, fue del {n3(eur12)} %. Esta web actualiza ese dato sola cada mes y conserva el histórico en la
+[página del euríbor oficial](/euribor/).
+
+## Cómo se convierte en tu cuota: un ejemplo calculado
+
+Tomemos una hipoteca de {formatEuros(capital)} pendientes, 25 años por delante (300 cuotas) y un diferencial de {dif.toLocaleString('es-ES')} puntos. La cuota
+se calcula con el [sistema francés](/glosario/sistema-frances/) y el tipo vigente. Con el euríbor oficial de {mesLargo(ult.mes)} y variaciones
+hipotéticas (no son previsiones):
+
+<table>
+  <thead>
+    <tr><th>Escenario</th><th>Euríbor</th><th>Tipo (euríbor + diferencial)</th><th>Cuota mensual</th></tr>
+  </thead>
+  <tbody>
+    {escenarios.map((e) => (
+      <tr>
+        <td>{e.texto}</td>
+        <td>{n3(ult.valor + e.v)} %</td>
+        <td>{n3(tipoAplicable(ult.valor + e.v, dif))} %</td>
+        <td>{formatEuros(cuotaCon(e.v))}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+Cada punto de euríbor mueve la cuota unos {formatEuros(cuotaCon(1) - cuotaCon(0))} al mes en este caso. Con otro capital, otro plazo o otro diferencial las
+cifras cambian: para tu caso concreto usa el [simulador de hipoteca con el euríbor real](/herramientas/simulador-hipoteca-euribor/) o la
+[calculadora de revisión](/herramientas/calculadora-revision-hipoteca/). La guía
+[cuánto sube la cuota con el euríbor](/blog/revision-hipoteca-euribor-cuanto-sube/) repasa más casos.
+
+## Cuándo cambia la cuota
+
+No cambia cada mes. El banco recalcula la cuota solo en cada **revisión**, la fecha que fija tu escritura (normalmente cada seis o doce
+meses), con el capital que queda, los meses que faltan y el euríbor que indique el contrato para esa revisión. Entre revisiones la cuota
+se mantiene. En los préstamos incluidos en la Ley 5/2019 el tipo que se aplica no puede ser negativo (art. 21.4), aunque el euríbor lo sea
+(lo fue durante años, hasta 2022).
+
+## Errores frecuentes
+
+- **Confundir el euríbor con el tipo de tu hipoteca.** Falta el diferencial, y a veces comisiones o productos vinculados que influyen en el coste total
+  (la [TAE](/glosario/tae/) los recoge mejor que el [TIN](/glosario/tin/)).
+- **Mirar el dato diario en vez del oficial.** Las cifras de las noticias pueden diferir del índice que fija tu contrato.
+- **Predecir su evolución.** Depende de lo que espere el mercado sobre los tipos del Banco Central Europeo y los pronósticos fallan a menudo.
+  Lo útil es saber cuánto aguantaría tu presupuesto con un euríbor más alto.
+- **Pensar que es lo mismo que el tipo oficial del BCE.** Están relacionados, pero son tipos distintos.
+
+## Si el euríbor te preocupa
+
+Las opciones habituales son [amortizar parte del capital](/herramientas/amortizar-hipoteca-cuanto-ahorras/), comparar con una
+[hipoteca fija o mixta](/blog/hipoteca-fija-variable-o-mixta/) o estudiar una [novación](/glosario/novacion-hipotecaria/) o una
+[subrogación](/glosario/subrogacion-hipotecaria/). Cada una tiene costes que conviene calcular antes (ver
+[cambiar de hipoteca variable a fija](/blog/cambiar-hipoteca-variable-a-fija/)).
+
+## Preguntas frecuentes
+
+**¿Qué euríbor se usa en una hipoteca?**
+El que figure en tu escritura, casi siempre el de 12 meses. En España se toma el valor oficial mensual que publica el Banco de España en el BOE.
+
+**¿Puede ser negativo el euríbor?**
+Sí, lo fue durante años. Pero en las hipotecas de la Ley 5/2019 el tipo que paga el cliente no baja de cero.
+
+**¿Subir el euríbor sube mi cuota de inmediato?**
+No: la cuota se recalcula en la siguiente fecha de revisión de tu hipoteca.
+
+## Fuentes
+
+- Banco de España, tipos de interés oficiales de referencia del mercado hipotecario, publicados en el BOE (<a href={euribor.fuenteUrl}>{euribor.ultimoBoe}</a>), dato de {mesLargo(ult.mes)}.
+- BOE, [Ley 5/2019, de 15 de marzo, reguladora de los contratos de crédito inmobiliario](https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814) (art. 21).

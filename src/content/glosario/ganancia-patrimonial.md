@@ -7,6 +7,8 @@ relacionados:
     href: "/blog/como-tributan-los-fondos-de-inversion-en-espana/"
   - label: "Impuestos al vender un fondo"
     href: "/herramientas/calculadora-impuestos-venta-fondos/"
+  - label: "Criptomonedas y Hacienda: cómo tributan, con ejemplos"
+    href: "/blog/criptomonedas-hacienda-como-tributan-espana/"
 ---
 
 Si vendes un fondo, una acción o un ETF por más de lo que costó (con los gastos asociados), esa diferencia es una ganancia patrimonial. Si es negativa, es una pérdida patrimonial y puede compensarse en los términos que fija la ley.
