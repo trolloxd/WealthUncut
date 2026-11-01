@@ -1,0 +1,49 @@
+---
+termino: "FIFO"
+titulo: "Qué es el FIFO al vender fondos y acciones"
+description: "FIFO (first in, first out) significa que, si vendes parte de un fondo, Hacienda entiende que vendes primero las participaciones que compraste antes."
+relacionados:
+  - label: "Impuestos al vender un fondo (calculadora con FIFO)"
+    href: "/herramientas/calculadora-impuestos-venta-fondos/"
+  - label: "Cómo tributan los fondos de inversión en España (guía)"
+    href: "/blog/como-tributan-los-fondos-de-inversion-en-espana/"
+  - label: "Declarar ganancias de bolsa en la renta"
+    href: "/blog/declarar-ganancias-bolsa-renta/"
+  - label: "Criptomonedas y Hacienda: cómo tributan, con ejemplos"
+    href: "/blog/criptomonedas-hacienda-como-tributan-espana/"
+---
+
+import { calcularImpuestoAhorro, REGLA_RECOMPRA } from '../../config/finance';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const gananciaFifo = (15 - 10) * 100;
+export const gananciaLoteCaro = (15 - 12) * 100;
+
+FIFO son las siglas de First In, First Out: primero en entrar, primero en salir. Si has comprado un mismo fondo en varias fechas y vendes solo una parte, se entiende que vendes primero las participaciones que compraste antes. No puedes elegir cuáles.
+
+## Un ejemplo con números
+
+Compras 100 participaciones de un fondo a 10 € cada una, y un año después otras 100 a 12 €. Ahora vendes 100 a 15 €:
+
+| | Lote que se vende | Coste | Ganancia | IRPF (primer tramo) |
+|---|---|---|---|---|
+| Con FIFO | El primero, el de 10 € | {formatEuros(1000)} | {formatEuros(gananciaFifo)} | {formatEuros(calcularImpuestoAhorro(gananciaFifo))} |
+| Si pudieras elegir | El segundo, el de 12 € | {formatEuros(1200)} | {formatEuros(gananciaLoteCaro)} | {formatEuros(calcularImpuestoAhorro(gananciaLoteCaro))} |
+
+Con FIFO tributas por {formatEuros(gananciaFifo)} de ganancia, no por {formatEuros(gananciaLoteCaro)}. El impuesto sale de los [tramos del ahorro](/blog/tramos-irpf-ahorro/) y el resto de participaciones conserva su coste: las 100 que quedan siguen valiendo 12 € a efectos fiscales. Es un ejemplo con cifras redondas para ver el mecanismo.
+
+## Cuándo importa en España
+
+- **Es lo que dice la norma.** La Agencia Tributaria explica que, cuando hay valores homogéneos y no se venden todos, se entiende que los transmitidos son los que se adquirieron en primer lugar (Manual práctico de Renta 2025).
+- **Cuanto más compras a plazos, más lotes tienes.** Si haces [aportaciones periódicas](/glosario/aportaciones-periodicas/), cada compra es un lote con su precio. Las primeras ventas de una cartera que ha subido suelen tener la ganancia más grande.
+- **El traspaso mantiene el orden.** En un [traspaso](/glosario/traspaso/) entre fondos las participaciones nuevas conservan el valor y la fecha de adquisición, así que el FIFO sigue contando desde la compra original.
+- **En criptomonedas también se aplica**, como explica [esta guía](/blog/criptomonedas-hacienda-como-tributan-espana/).
+- La [calculadora de impuestos al vender un fondo](/herramientas/calculadora-impuestos-venta-fondos/) aplica este criterio con tus compras reales.
+
+## Error frecuente
+
+Pensar que puedes vender "el lote caro" para pagar menos. No se puede elegir: la ley fija el orden. El otro error es ignorar los lotes y calcular la ganancia con un precio medio, que da otra cifra distinta de la fiscal. Y si vendes con pérdida y recompras lo mismo poco antes o después, la pérdida puede no computarse hasta que vendas lo recomprado: el plazo es de {REGLA_RECOMPRA.valoresCotizados} para valores admitidos a negociación y de {REGLA_RECOMPRA.valoresNoCotizados} para los no admitidos, como detalla la guía de [cómo tributan los fondos](/blog/como-tributan-los-fondos-de-inversion-en-espana/).
+
+## Fuentes
+
+- AEAT, <a href="https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/determinacion-importe-ganancias-perdidas-patrimon-especificas/transmisiones-reembolsos-acciones-iic/regimen-general.html">Manual práctico de Renta 2025: transmisiones o reembolsos de participaciones en IIC (régimen general)</a>, consultado el 1 de noviembre de 2026.

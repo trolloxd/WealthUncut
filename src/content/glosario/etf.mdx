@@ -1,0 +1,43 @@
+---
+termino: "ETF"
+titulo: "Qué es un ETF y cómo tributa en España"
+description: "Un ETF es un fondo cotizado que replica un índice y se compra en bolsa como una acción. Cómo tributa en España y por qué no permite traspaso sin impuestos."
+relacionados:
+  - label: "Fondo indexado o ETF: la diferencia que importa (guía)"
+    href: "/blog/fondo-indexado-vs-etf-diferencias/"
+  - label: "Comparador fondo indexado vs ETF"
+    href: "/herramientas/comparador-fondo-indexado-vs-etf/"
+  - label: "Impuestos al vender un fondo o un ETF"
+    href: "/herramientas/calculadora-impuestos-venta-fondos/"
+  - label: "Modelo 720: quién tiene que presentarlo"
+    href: "/blog/modelo-720-quien-tiene-que-presentarlo/"
+---
+
+import { calcularImpuestoAhorro } from '../../config/finance';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const ganancia = 2000;
+export const impuesto = calcularImpuestoAhorro(ganancia);
+
+ETF significa Exchange Traded Fund, fondo cotizado en bolsa. Se compra y se vende durante la sesión a través de un bróker, igual que una acción, y la mayoría replica un [índice bursátil](/glosario/indice-bursatil/). Tiene un [TER](/glosario/ter/) como cualquier fondo, que se descuenta del valor sin que veas ningún cargo.
+
+## Un ejemplo con números
+
+Compras ETF por {formatEuros(3000)} y valen {formatEuros(5000)}. Quieres cambiar a otro ETF de otro índice. Vendes, y esa venta es una ganancia de {formatEuros(ganancia)} que tributa en la base del ahorro: con el primer tramo, {formatEuros(impuesto)} de IRPF, aunque el dinero lo reinviertas el mismo día. Si fuera un [fondo de inversión](/glosario/fondo-indexado/), un [traspaso](/glosario/traspaso/) a otro fondo no habría generado ese pago: la ganancia se habría aplazado.
+
+## Cuándo importa en España
+
+- **El traspaso sin tributar no aplica a los ETF.** La Agencia Tributaria indica que el régimen de diferimiento no se aplica a las participaciones de fondos de inversión cotizados ni a instituciones análogas cotizadas (Manual práctico de Renta 2025). Cada venta realiza la ganancia o la pérdida.
+- **Si tu bróker es extranjero**, revisa si te afecta el [modelo 720](/herramientas/calculadora-modelo-720/): lo desarrolla [esta guía](/blog/modelo-720-quien-tiene-que-presentarlo/).
+- **Acumulación o distribución.** Muchos ETF existen en dos versiones, con ISIN distinto: una reinvierte los [dividendos](/glosario/dividendo/) y otra los reparte, y el reparto tributa el año en que lo cobras.
+- **Divisa.** Algunos ETF tienen una clase con cobertura de divisa; ver [euro hedged](/glosario/euro-hedged/).
+
+Tienen más pros y contras frente al fondo indexado, que resume la guía [fondo indexado o ETF](/blog/fondo-indexado-vs-etf-diferencias/). Con tus números lo calcula el [comparador](/herramientas/comparador-fondo-indexado-vs-etf/).
+
+## Error frecuente
+
+Creer que cambiar de ETF no tributa porque "no has sacado el dinero". Si vendes un ETF para comprar otro, sí hay venta, y por tanto ganancia o pérdida que declarar. También se olvida que el [ISIN](/glosario/isin/) es lo que identifica la versión exacta: dos ETF del mismo índice pueden tener comisiones y fiscalidad distintas según sean de acumulación o de reparto.
+
+## Fuentes
+
+- AEAT, <a href="https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/determinacion-importe-ganancias-perdidas-patrimon-especificas/transmisiones-reembolsos-acciones-iic/regimen-especial-diferimiento-tributacion.html">Manual práctico de Renta 2025: régimen especial de diferimiento (traspasos entre IIC)</a>, consultado el 1 de noviembre de 2026.

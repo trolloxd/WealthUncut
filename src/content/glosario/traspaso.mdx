@@ -1,0 +1,49 @@
+---
+termino: "Traspaso"
+titulo: "Qué es un traspaso entre fondos y por qué no tributa"
+description: "Un traspaso mueve tu dinero de un fondo a otro sin pasar por tu cuenta y sin tributar: la ganancia se aplaza y conservas la antigüedad. Solo en fondos."
+relacionados:
+  - label: "Cómo tributan los fondos de inversión en España (guía)"
+    href: "/blog/como-tributan-los-fondos-de-inversion-en-espana/"
+  - label: "Impuestos al vender un fondo"
+    href: "/herramientas/calculadora-impuestos-venta-fondos/"
+  - label: "Fondo indexado o ETF: la diferencia que importa"
+    href: "/blog/fondo-indexado-vs-etf-diferencias/"
+  - label: "Antes del 31 de diciembre: qué revisar de tus impuestos"
+    href: "/blog/antes-del-31-de-diciembre-decisiones-fiscales/"
+---
+
+import { calcularImpuestoAhorro, RETENCION_REEMBOLSO_FONDOS } from '../../config/finance';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const valor = 10000;
+export const coste = 7000;
+export const ganancia = valor - coste;
+export const impuesto = calcularImpuestoAhorro(ganancia);
+
+En un traspaso, el dinero pasa directamente de un fondo de inversión a otro sin que lo recibas en tu cuenta. Fiscalmente, no se considera que hayas vendido: la ganancia queda aplazada y las participaciones nuevas conservan el valor y la fecha de adquisición de las anteriores.
+
+## Un ejemplo con números
+
+Tienes un fondo que vale {formatEuros(valor)} y te costó {formatEuros(coste)}: una ganancia pendiente de {formatEuros(ganancia)}.
+
+- **Con traspaso** a otro fondo: no pagas nada ahora. Los {formatEuros(valor)} siguen invertidos, con la ganancia aplazada.
+- **Vendiendo y comprando otro por tu cuenta:** la venta tributa. Con el primer tramo del ahorro, {formatEuros(impuesto)} de IRPF, y la gestora te retiene un {Math.round(RETENCION_REEMBOLSO_FONDOS * 100)} % de la ganancia a cuenta. Reinviertes {formatEuros(valor - impuesto)} y no {formatEuros(valor)}.
+
+El impuesto no desaparece: se paga cuando por fin reembolsas, con los [tramos del ahorro](/blog/tramos-irpf-ahorro/) de ese año. Lo que ganas es seguir invertido el dinero que habrías pagado antes, y la posibilidad de repartir las ventas en el tiempo. Es un ejemplo con cifras redondas.
+
+## Cuándo importa en España
+
+- **Solo se aplica a las instituciones de inversión colectiva.** La Agencia Tributaria lo recoge en el régimen especial de diferimiento: fondos de inversión, y sociedades de inversión con más de 500 socios, entre otros requisitos (Manual práctico de Renta 2025).
+- **No vale para ETF ni acciones.** Ese régimen no se aplica a los fondos cotizados: cada venta de un [ETF](/glosario/etf/) realiza ganancia o pérdida.
+- **El dinero no debe pasar por tu cuenta.** Si la gestora te lo pone a disposición y lo reinviertes tú, es un reembolso normal, no un traspaso.
+- **Es útil para ajustar la cartera**, por ejemplo al hacer [rebalanceo](/glosario/rebalanceo/), o para pasar de un fondo a otro más barato sin pagar por el camino. La [calculadora de impuestos al vender un fondo](/herramientas/calculadora-impuestos-venta-fondos/) muestra qué pagarías si vendieras.
+- **Al traspasar se conserva el orden de compra**, así que el [FIFO](/glosario/fifo/) sigue contando desde la compra original.
+
+## Error frecuente
+
+Creer que vender un fondo y comprar otro "es lo mismo" que traspasar. Si el dinero pasa por tu cuenta, hay venta y hay impuesto. Otro error es pensar que el traspaso perdona la ganancia: solo la aplaza. Y un tercero, intentar traspasar un ETF: no se puede con efecto fiscal.
+
+## Fuentes
+
+- AEAT, <a href="https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c11-ganancias-perdidas-patrimoniales/determinacion-importe-ganancias-perdidas-patrimon-especificas/transmisiones-reembolsos-acciones-iic/regimen-especial-diferimiento-tributacion.html">Manual práctico de Renta 2025: régimen especial de diferimiento (traspasos entre IIC)</a>, consultado el 1 de noviembre de 2026.

@@ -1,0 +1,45 @@
+---
+termino: "Fondo monetario"
+titulo: "Qué es un fondo monetario y cómo tributa en España"
+description: "Un fondo monetario invierte en deuda a muy corto plazo y busca un valor estable. Cómo funciona, qué diferencia hay con un depósito y cómo tributa."
+relacionados:
+  - label: "Comparador de cuentas remuneradas y depósitos"
+    href: "/herramientas/comparador-cuentas-remuneradas/"
+  - label: "Cómo tributan los intereses de cuentas y depósitos (con la comparación con un fondo monetario)"
+    href: "/blog/intereses-cuenta-remunerada-deposito-hacienda/"
+  - label: "Cómo tributan los fondos de inversión en España"
+    href: "/blog/como-tributan-los-fondos-de-inversion-en-espana/"
+  - label: "Simula tu cartera de fondos"
+    href: "/carteras/"
+---
+
+import { calcularImpuestoAhorro, FGD_COBERTURA } from '../../config/finance';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const capital = 10000;
+export const ganancia = 200;
+export const impuesto = calcularImpuestoAhorro(ganancia);
+
+Un fondo monetario es un fondo de inversión que compra deuda a muy corto plazo y de alta calidad, como letras del Tesoro, pagarés o depósitos a pocos meses, y busca que su valor sea muy estable. Su rentabilidad sigue de cerca los tipos de interés a corto plazo: sube cuando suben los tipos y baja cuando bajan.
+
+En la Unión Europea están regulados por el Reglamento (UE) 2017/1131. En los de tipo estándar, la cartera debe tener un vencimiento medio de hasta 6 meses y una vida media de hasta 12 meses, según recogen los folletos de estos fondos.
+
+## Un ejemplo con números
+
+Supón que un fondo monetario rinde un 2 % en un año (cifra ilustrativa, no un dato actual). Con {formatEuros(capital)} ganas {formatEuros(ganancia)}. Al reembolsar, esa ganancia tributa en la base del ahorro: con el primer tramo, {formatEuros(impuesto)} de IRPF, y te quedan {formatEuros(ganancia - impuesto)}, un {((ganancia - impuesto) / capital * 100).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} % neto. Mientras no reembolses, no tributas: el impuesto se aplaza hasta la venta, a diferencia de los intereses de una cuenta, que se declaran cada año.
+
+## Cuándo importa en España
+
+- **No es un depósito.** Una cuenta o un [depósito a plazo](/glosario/deposito-a-plazo/) está cubierto por el [Fondo de Garantía de Depósitos](/glosario/fondo-de-garantia-de-depositos/) hasta {formatEuros(FGD_COBERTURA.importe)} por titular y entidad; un fondo monetario no lo está, y su [valor liquidativo](/glosario/valor-liquidativo/) puede variar, aunque sea poco.
+- **Se puede traspasar sin tributar.** Como cualquier fondo de inversión, permite un [traspaso](/glosario/traspaso/) a otro fondo sin pagar impuestos en ese momento. Por eso se usa para aparcar dinero entre dos inversiones.
+- **Cobra un [TER](/glosario/ter/)**, que una cuenta remunerada no cobra. Mira el de cada fondo en su documento de datos fundamentales.
+- **La comparación fiscal con una cuenta remunerada** está calculada en la guía de [intereses de cuentas y depósitos](/blog/intereses-cuenta-remunerada-deposito-hacienda/); el [comparador de cuentas](/herramientas/comparador-cuentas-remuneradas/) muestra la TAE de las cuentas y depósitos del momento.
+
+## Error frecuente
+
+Dar por hecho que no puede perder valor porque es "el fondo más seguro". Es el de menor riesgo habitual, pero no está garantizado, y en momentos de subida rápida de tipos su valor puede bajar. El otro error es comparar su rentabilidad con la TAE de un depósito sin descontar el TER ni los impuestos de cada caso.
+
+## Fuentes
+
+- Reglamento (UE) 2017/1131 sobre fondos del mercado monetario, <a href="https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:32017R1131">EUR-Lex</a>.
+- Fondo de Garantía de Depósitos, <a href={FGD_COBERTURA.url}>qué cubre</a>.

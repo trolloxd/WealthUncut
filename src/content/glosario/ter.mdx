@@ -1,0 +1,57 @@
+---
+termino: "TER"
+titulo: "Qué es el TER de un fondo"
+description: "El TER es el porcentaje anual del patrimonio de un fondo que paga todos sus gastos y se descuenta del valor liquidativo sin aparecer como cargo."
+relacionados:
+  - label: "Qué es el TER de un fondo y por qué importan las décimas (guía)"
+    href: "/blog/ter-fondo-que-es/"
+  - label: "Comparador de fondos indexados"
+    href: "/herramientas/comparador-fondos-indexados/"
+  - label: "Rentabilidad neta de un fondo indexado"
+    href: "/blog/rentabilidad-neta-fondo-indexado/"
+  - label: "Interés compuesto con aportaciones mensuales"
+    href: "/herramientas/calculadora-interes-compuesto/"
+---
+
+import { valorConTer, SUPUESTOS_TER } from '../../lib/calculos/escena3d';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const pct = (v) => (v * 100).toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+export const bajo = valorConTer(0.002, 30);
+export const alto = valorConTer(0.015, 30);
+
+TER son las siglas de Total Expense Ratio, en español, ratio de gastos totales. Es el porcentaje del patrimonio del fondo que se gasta cada año en gestionarlo: la [comisión de gestión](/glosario/comision-de-gestion/), la de depositaría y otros gastos de funcionamiento. En los documentos oficiales europeos suele aparecer como "costes corrientes" o "gastos corrientes".
+
+No lo ves como un cargo en tu extracto: se descuenta a diario del [valor liquidativo](/glosario/valor-liquidativo/), así que el fondo simplemente rinde algo menos. Como se cobra cada año sobre todo lo que tienes invertido, gane o pierda el fondo, es la variable que más pesa a largo plazo entre fondos que replican lo mismo.
+
+## Un ejemplo con números
+
+Con {formatEuros(SUPUESTOS_TER.inversion)} invertidos, un TER del 0,2 % cuesta unos {formatEuros(SUPUESTOS_TER.inversion * 0.002)} al año y uno del 1,5 %, unos {formatEuros(SUPUESTOS_TER.inversion * 0.015)}. Parece poco, pero se paga todos los años y ese dinero deja de crecer. Si el fondo rinde un {pct(SUPUESTOS_TER.rentabilidadBruta)} % bruto anual durante 30 años, restando el TER de esa rentabilidad:
+
+| TER | Valor tras 30 años (bruto, antes de impuestos) |
+|---|---|
+| 0,2 % | {formatEuros(bajo)} |
+| 1,5 % | {formatEuros(alto)} |
+
+La diferencia, {formatEuros(bajo - alto)}, es dinero que acaba en comisiones. Es un ejemplo ilustrativo con una rentabilidad supuesta, no una previsión. La guía [qué es el TER de un fondo](/blog/ter-fondo-que-es/) lo desarrolla con más plazos y la [calculadora de rentabilidad neta](/blog/rentabilidad-neta-fondo-indexado/) lo hace con tus datos.
+
+## Cuándo importa en España
+
+- **Al elegir entre fondos del mismo índice.** Si dos fondos replican el mismo índice, el de menor TER suele darte más, porque el índice es el mismo. Puedes comparar los de este sitio en el [comparador de fondos indexados](/herramientas/comparador-fondos-indexados/).
+- **Al leer el documento de datos fundamentales.** En él aparecen los costes del fondo, y la [CNMV explica cómo leerlo](https://www.cnmv.es/portal/inversor/fondos-dfi).
+- **Al sumar el broker.** El TER no incluye lo que te cobre tu plataforma por comprar, vender o custodiar, ni los impuestos. Para comparar dos opciones hay que sumar ambos.
+
+## Error frecuente
+
+Mirar solo la comisión de gestión. Es una parte del TER, no el total, y un comparador que solo enseña esa cifra te está enseñando una parte del coste. El otro error habitual es creer que un TER bajo garantiza una rentabilidad mejor: solo asegura que pagas menos por el mismo servicio. Un fondo que replica otro índice puede rendir menos aunque sea más barato.
+
+## Preguntas frecuentes
+
+**¿Qué TER es bueno?**
+Depende del tipo de fondo: se compara con fondos que replican el mismo índice o tienen el mismo objetivo, no con cualquiera. Los fondos de gestión activa suelen cobrar más que los [fondos indexados](/glosario/fondo-indexado/).
+
+**¿El TER se paga aparte de la rentabilidad?**
+No. Se descuenta dentro del valor liquidativo, así que la rentabilidad que ves publicada ya viene después de TER.
+
+**¿Qué diferencia hay con el TER de un ETF?**
+El concepto es el mismo. En un [ETF](/glosario/etf/) además pagas lo que te cobre tu broker por la compra y la venta.
