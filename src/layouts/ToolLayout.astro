@@ -14,6 +14,7 @@ import { TOOLS, herramientasRelacionadas } from '../config/tools';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
 import CodigoIncrustar from '../components/CodigoIncrustar';
 import { EMBED_POR_SLUG } from '../config/embeds';
+import { GUIA_DE_HERRAMIENTA } from '../config/guias-herramienta';
 
 interface Props {
   title: string;
@@ -81,7 +82,11 @@ const rutaActual = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${As
 const etiquetas: string[] = [...(TOOLS.find((t) => t.href === rutaActual)?.tags ?? [])];
 const embed = EMBED_POR_SLUG.get(rutaActual.split('/').filter(Boolean).pop() ?? '');
 const otrasHerramientas = herramientasRelacionadas(etiquetas, rutaActual, 4);
-const guias = (await getCollection('blog', ({ data }) => isPublished(data)))
+const publicados = await getCollection('blog', ({ data }) => isPublished(data));
+// Guía propia de la herramienta: se enlaza dentro del texto (y la guía enlaza de vuelta a la herramienta).
+const idGuia = GUIA_DE_HERRAMIENTA[rutaActual.split('/').filter(Boolean).pop() ?? ''];
+const guiaPrincipal = publicados.find((p) => p.id === idGuia);
+const guias = publicados
   .map((p) => ({ p, shared: p.data.tags.filter((t) => etiquetas.includes(t)).length }))
   .sort((a, b) => b.shared - a.shared || b.p.data.pubDate.valueOf() - a.p.data.pubDate.valueOf())
   .slice(0, 3)
@@ -99,6 +104,11 @@ const guias = (await getCollection('blog', ({ data }) => isPublished(data)))
   <article class="prose max-w-none">
     <h1>{title}</h1>
     <ArticleMeta author={AUTHOR.name} pubDate={pubDate} updatedDate={updatedDate} sources={sources} hasAffiliateLinks={false}>
+      {guiaPrincipal && (
+        <p class="text-sm text-ink-muted">
+          Guía con el cálculo explicado paso a paso: <a href={`/blog/${guiaPrincipal.id}/`}>{guiaPrincipal.data.title}</a>.
+        </p>
+      )}
       <slot />
     </ArticleMeta>
   </article>
