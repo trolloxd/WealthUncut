@@ -94,8 +94,8 @@ Archivo `src/content/mercados/AAAA-MM-DD.mdx`:
 
 ```mdx
 ---
-title: "Título concreto de lo más importante del día (máx. 60 caracteres, para que no se corte en Google)"
-description: "Resumen en una frase de 140-160 caracteres."
+title: "Título concreto de lo más importante del día (máx. 60 caracteres CONTADOS, para que no se corte en Google)"
+description: "Resumen en una frase de 120-155 caracteres."
 pubDate: AAAA-MM-DD
 author: "Alex Serra Rodríguez"
 tags: ["mercados", "bce", ...]

@@ -47,8 +47,8 @@ Si no hay ninguna edición de mercados nueva, ni artículo nuevo, ni herramienta
 ```mdx
 ---
 numero: N
-title: "5 minutos de finanzas #N: <lo más llamativo de la semana>"
-description: "Resumen en una frase de 140-160 caracteres."
+title: "5 minutos de finanzas #N: <lo más llamativo, en unos 30 caracteres>"
+description: "Resumen en una frase de 120-155 caracteres."
 pubDate: AAAA-MM-DD
 ---
 

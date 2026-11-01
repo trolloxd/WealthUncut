@@ -3,6 +3,12 @@
 > La revisión diaria de todo dato que caduca (registro `src/config/caducidades.json`) está en `ACTUALIZACION-PROCEDIMIENTO.md`;
 > los apartados de abajo son los procedimientos de cada rutina concreta y siguen vigentes.
 
+> **SEO (2026-11-01):** toda rutina que cree o toque una página (artículo, glosario, herramienta, revisión mensual) sigue
+> `SEO-PROCEDIMIENTO.md`: mirar la SERP y el tipo de página antes de escribir, título de 60 caracteres con la búsqueda real, descripción de
+> 120 a 155, respuesta directa arriba, al menos 3 enlaces internos dentro del texto en los dos sentidos (artículo y calculadora se enlazan
+> siempre) y enlaces hacia lo nuevo desde artículos ya indexados. En la revisión mensual (apartado 5) no cambies el título de una página
+> que ya se tocó hace menos de 28 días, y si al revisar encuentras una herramienta o guía sin enlace de vuelta, añádelo.
+
 Guía de las rutinas de mantenimiento de WealthUncut. Si algo choca con `CLAUDE.md`, manda
 `CLAUDE.md`. Regla común: **si algo no se puede comprobar con garantías, no se toca**, y se avisa
 en el resumen. Todas terminan con un resumen breve de lo hecho y lo descartado.

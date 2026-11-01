@@ -317,3 +317,48 @@ Salen de un plan de 30 consultas de cola larga (sin volúmenes: orden por autoco
 | 10 | actualización del alquiler con el índice vigente | Artículo | Ejemplo de subida con tope | INE, Ministerio de Vivienda | `zonas-tensionadas-que-cambia-inquilinos-propietarios` |
 
 Plan completo (30 consultas, herramientas a construir y cómo medir): `work/wealthuncut/crecimiento/plan.md` del Control Center. Regla: si no puedes verificar una cifra de un tema de esta lista, déjalo para el siguiente lote y escribe el siguiente de la lista; no inventes.
+
+
+## Consultas reales de Search Console (2026-11-01, 90 días hasta el 30-oct)
+
+Datos: 4 clics, 2.140 impresiones, posición media 57, 128 páginas indexadas. Donde estamos cerca es en **calculadoras y simuladores**; las
+definiciones genéricas las dominan bancos y medios. Regla: cola larga y calculadoras antes que definiciones genéricas. Los títulos de las
+páginas marcadas "retocado" se cambiaron el 2026-11-01: no volver a tocarlos antes del 2026-11-29 (medir primero).
+
+**Cerca de la primera página (posición 5 a 30)**
+
+| Consulta (impr. · pos.) | Página | Estado |
+|---|---|---|
+| calcular hipoteca segun euribor (4 · 6,5), calculo de hipoteca segun euribor (1 · 11), calcular hipoteca euribor (7 · 28,7), simulador hipoteca y euribor (6 · 32,5) | `/herramientas/simulador-hipoteca-euribor/` | Retocado 2026-11-01; enlazar desde artículos de hipoteca |
+| calculadora fondo indexado (6 · 10) | `/blog/rentabilidad-neta-fondo-indexado/` | Cubierta; enlazar desde guías de fondos |
+| ter fondos (2 · 8) | `/blog/ter-fondo-que-es/` | Añadida sección sobre el TER del ETF y entrada de glosario ampliada |
+| calculadora de inflacion españa (2 · 8,5) | `/herramientas/calculadora-inflacion/` | Retocado 2026-11-01 |
+| comparador plazo fijo (2 · 10), comparador de bancos (1 · 21) | `/herramientas/comparador-cuentas-remuneradas/` | Vigilar; título ya contiene "comparador" |
+| tributacion dividendos 2020 (5 · 22,6), tributacion dividendos (40 · 95) | `/blog/impuesto-dividendos-espana/`, `/herramientas/calculadora-impuesto-dividendos/` | Calculadora retocada 2026-11-01 ("tributación de dividendos") |
+| comparador de fondos indexados (3 · 25,3), comparador de fondos (23 · 43) | `/herramientas/comparador-fondos-indexados/` | Retocado 2026-11-01 |
+| comparación de s&p 500 (9 · 34,7) | `/blog/sp500-vs-msci-world/` | Cubierta; reforzar si sube |
+| impuestos al vender fondos / venta de fondos | `/herramientas/calculadora-impuestos-venta-fondos/` (76 impr., pos. 8,6) | Retocado 2026-11-01 (título "Calculadora de impuestos...") |
+
+**Con impresiones y muy lejos (posición 40 a 95): reforzar contenido y enlaces, no escribir otra página**
+
+| Consulta (impr. · pos.) | Página |
+|---|---|
+| que son los fondos monetarios (60 · 86), fondo monetario que es (44 · 86) | `/glosario/fondo-monetario/` (ampliada 2026-11-01) |
+| qué es el ter (45 · 75), que es el ter de un fondo (23 · 75), que es el ter de un etf (22 · 58) | `/blog/ter-fondo-que-es/`, `/glosario/ter/` |
+| renta variable (41 · 94) | `/glosario/renta-variable/` (ampliada 2026-11-01) |
+| cuanto ahorrar de mi sueldo al mes (40 · 91) | `/herramientas/cuanto-ahorrar-al-mes/`, `/blog/cuanto-ahorrar-al-mes-segun-sueldo/` |
+| plan de pensiones o fondo indexado (38 · 81) | `/blog/plan-pensiones-o-fondo-indexado/`, `/herramientas/plan-pensiones-vs-fondo-indexado/` |
+| regla fifo fondos de inversión (27 · 86) | `/glosario/fifo/` (ampliada), `/blog/como-tributan-los-fondos-de-inversion-en-espana/` |
+| tributacion dividendos cuenta propia o empresa (22 · 81) | `/blog/impuesto-dividendos-espana/` (sección nueva sobre dividendos de tu sociedad) |
+| simulador hipotecas euribor (14 · 80) | `/herramientas/simulador-hipoteca-euribor/` |
+| diferencia entre etf y fondo indexado (14 · 92), etf vs fondos indexados (12 · 93) | `/blog/fondo-indexado-vs-etf-diferencias/` |
+
+### Cómo priorizar la cola de temas con estos datos
+
+1. **Primero lo que tiene calculadora o tabla propia** y se parece a una consulta con impresiones: hipoteca y euríbor (tema 1), rescate del plan
+   de pensiones (8, enlaza con "plan de pensiones o fondo indexado"), comisión por cancelar la hipoteca (4), finiquito (2) y actualización del
+   alquiler (10).
+2. **Después** los temas informativos con cifra oficial verificable (3, 5, 6, 7, 9).
+3. **No gastes lotes en definiciones genéricas** ("qué es un ETF", "qué es la inflación"): ya existen en el glosario; si una consulta de
+   definición tiene impresiones, refuerza esa entrada con ejemplo y enlaces (ver `SEO-PROCEDIMIENTO.md`).
+4. Cada artículo nuevo de la cola nace con 3 enlaces entrantes desde páginas ya indexadas (`SEO-PROCEDIMIENTO.md`).

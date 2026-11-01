@@ -186,7 +186,13 @@ La lógica de las calculadoras vive en `src/lib/calculos/*.ts` (con pruebas en `
 (`import { calcularBaja } from '../../lib/calculos/baja.ts';`), no del componente React. Antes de cada commit, `npm run build` y `npm test`.
 
 
-## SEO obligatorio por artículo (añadido el 2026-10-19)
+## SEO obligatorio por artículo (añadido el 2026-10-19; reforzado el 2026-11-01)
+
+**Lee y sigue `SEO-PROCEDIMIENTO.md`** antes de elegir el tema y de escribir. Resumen de lo que exige: mirar la SERP y el tipo de página
+(calculadora, guía, comparador) de la consulta principal; título con la búsqueda real y de 60 caracteres como máximo; respuesta directa
+arriba; **al menos 3 enlaces internos dentro del texto en los dos sentidos** (3 o más desde el artículo hacia guías y herramientas, y 3 o
+más desde artículos ya publicados hacia el nuevo); y la herramienta del tema enlazada y, si la herramienta no tiene guía todavía, esta
+nueva se registra en `src/config/guias-herramienta.ts`. Prioriza cola larga y temas con calculadora antes que definiciones genéricas.
 
 Cada artículo debe cumplir esto antes del commit (la web crece por búsqueda orgánica: es lo que más pesa):
 
@@ -194,7 +200,7 @@ Cada artículo debe cumplir esto antes del commit (la web crece por búsqueda or
    del título con datos que no caduquen. Se muestra arriba como "En breve" y va en el JSON-LD como `abstract`, para fragmentos destacados y
    respuestas de IA. Sin guiones largos y sin cifras que cambien (usa las de `finance.ts` solo si no caducan).
 2. **Título de 60 caracteres como máximo**, con la keyword principal al principio y, si procede, el año ("2026") o "con ejemplo". Descripción de
-   140 a 160 caracteres con un beneficio concreto. No repitas el título de una herramienta o guía que ya existe: busca otro ángulo (evita la
+   120 a 155 caracteres con un beneficio concreto. No repitas el título de una herramienta o guía que ya existe: busca otro ángulo (evita la
    canibalización).
 3. **Enlaces internos mínimos:** al menos 3 a herramientas o guías ya publicadas (con `ArticleLink` si podrían estar programadas) y la herramienta
    del sitio que resuelve la duda. El glosario se enlaza solo: no hace falta a mano.
@@ -208,6 +214,7 @@ Cada artículo debe cumplir esto antes del commit (la web crece por búsqueda or
 
 Antes del commit del lote, ejecuta `node scripts/enlaces-internos.mjs --sugerir=<slug>` por cada artículo nuevo (necesita `npm run build` hecho, para
 leer el grafo real de enlaces). Te dice a qué guías y herramientas debería enlazar el artículo y, sobre todo, **qué artículos ya publicados deberían
-enlazar al nuevo** (los de su tema con menos enlaces entrantes). Aplica como mínimo 2 de esas sugerencias de entrada: una frase con el enlace
-(`ArticleLink` o Markdown) en el cuerpo del artículo antiguo, sin tocar sus cifras ni su `updatedDate`. `node scripts/enlaces-internos.mjs --huerfanas`
+enlazar al nuevo** (los de su tema con menos enlaces entrantes). Aplica como mínimo **3** de esas sugerencias de entrada (añadido el 2026-11-01, antes eran 2): una frase con el enlace
+descriptivo (`ArticleLink` o Markdown) en el cuerpo de artículos antiguos que ya estén indexados y tengan impresiones, y elige primero los
+artículos que ya están en posición 5 a 30 según `KEYWORDS.md`. El enlace va en el cuerpo del artículo antiguo, sin tocar sus cifras ni su `updatedDate`. `node scripts/enlaces-internos.mjs --huerfanas`
 lista las páginas con menos de 3 enlaces entrantes desde el contenido.

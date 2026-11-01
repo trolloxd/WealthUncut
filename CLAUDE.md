@@ -230,6 +230,11 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
   `ARTICULOS-PROCEDIMIENTO.md`). Cada tema (`categorias.ts`) tiene `intro` propia. Los enlaces entre artículos y glosario se generan solos
   (`src/lib/glosario-enlaces.ts`: "Términos de este artículo" y "Guías donde se explica"; con pruebas). `/herramientas/` agrupa las calculadoras
   por tema; la portada enlaza a los temas. Las consultas reales de Search Console viven en `KEYWORDS.md`: revisarlas cada mes.
+- **SEO (2026-11-01): toda rutina y todo agente que cree o toque una página sigue `SEO-PROCEDIMIENTO.md`** (mirar la SERP y el tipo de página
+  antes de escribir, título de 60 caracteres con la búsqueda real, descripción de 120 a 155, respuesta directa arriba, al menos 3 enlaces
+  internos dentro del texto en los dos sentidos, glosario con ejemplo y error frecuente). Artículo y herramienta del mismo tema se enlazan
+  siempre: el mapa está en `src/config/guias-herramienta.ts` (`ToolLayout.astro` pone el enlace a la guía; lo comprueba `npm test`). La
+  etiqueta `<title>` se recorta a 60 caracteres en palabra entera (`src/lib/titulo-seo.ts`, para mercados y newsletter).
 - `/herramientas/calendario-fiscal/` (2026-10-27): calendario por perfil (asalariado, autónomo, inversor) con descarga `.ics`. Las fechas viven en
   `src/lib/calculos/calendario-fiscal.ts` (`EVENTOS_FISCALES`, con fuente y un estado: `oficial` del Calendario del contribuyente 2026 de la AEAT,
   `norma` o `previsto`; las de 2027 son previstas hasta que la AEAT publique su calendario, normalmente a final de año: **sustituirlas por las
