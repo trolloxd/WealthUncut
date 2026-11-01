@@ -3,6 +3,7 @@ import { ADS, adsListos } from '../config/ads.mjs';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE, AUTHOR } from '../config/site';
+import { tituloParaBuscadores } from '../lib/titulo-seo';
 import '../styles/global.css';
 // opsz = eje de peso + tamaño óptico: mismo aspecto que 'full' (los ejes SOFT y WONK no
 // se usan) con casi la mitad de peso de descarga.
@@ -44,7 +45,8 @@ const {
 const canonicalURL = new URL(Astro.url.pathname, SITE.url);
 // Google corta los títulos hacia los 60 caracteres: el sufijo solo se añade si cabe.
 const withSuffix = `${title} · ${SITE.name}`;
-const pageTitle = title === SITE.name || withSuffix.length > 60 ? title : withSuffix;
+// Si el titular de una edición de mercados o de la newsletter pasa de 60, se recorta en una palabra entera.
+const pageTitle = tituloParaBuscadores(title === SITE.name || withSuffix.length > 60 ? title : withSuffix);
 const ogImage = new URL('/og-default.png', SITE.url);
 
 const organizationJsonLd = {
