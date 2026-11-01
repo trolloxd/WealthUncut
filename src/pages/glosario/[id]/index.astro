@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import ArticleLink from '../../../components/ArticleLink.astro';
-import { SITE } from '../../../config/site';
+import { SITE, AUTHOR } from '../../../config/site';
 import { isPublished } from '../../../lib/posts';
 import { contarTermino, normaliza, textoPlano } from '../../../lib/glosario-enlaces';
 
@@ -63,6 +63,10 @@ const jsonLd = [
   <article class="prose max-w-none">
     <h1>{titulo}</h1>
     <p class="lead text-lg text-ink">{description}</p>
+    <p class="not-prose -mt-2 mb-6 text-sm text-ink-muted">
+      Por <a href="/autor/" rel="author" class="font-medium text-ink underline decoration-ink-muted/40">{AUTHOR.name}</a> ·
+      <a href="/metodologia/" class="underline decoration-ink-muted/40 hover:text-ink">así verificamos los datos</a>
+    </p>
     <Content components={{ a: ArticleLink }} />
   </article>
 

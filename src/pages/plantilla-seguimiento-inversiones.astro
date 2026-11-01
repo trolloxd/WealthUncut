@@ -106,9 +106,23 @@ const hojas = [
 ];
 
 const v = (k: keyof typeof videos) => videos[k];
+// Datos estructurados de cada vídeo (para que Google los asocie a esta página y los pueda indexar).
+const videoLd = Object.values(videos).map((v) => ({
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: v.nombre,
+  description: v.desc,
+  thumbnailUrl: [`${SITE.url}${img(v.archivo + '-poster')}`],
+  uploadDate: pubDate.toISOString(),
+  duration: v.duracion,
+  contentUrl: `${SITE.url}${vid(v.archivo)}`,
+  inLanguage: SITE.locale,
+  isFamilyFriendly: true,
+}));
+
 ---
 
-<BaseLayout title={title} description={description} publishedDate={pubDate} extraJsonLd={jsonLd}>
+<BaseLayout title={title} description={description} publishedDate={pubDate} extraJsonLd={[...jsonLd, ...videoLd]}>
   <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Plantilla de seguimiento de inversiones' }]} />
 
   <article class="prose max-w-none">

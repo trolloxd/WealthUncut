@@ -15,10 +15,10 @@ const img = (nombre: string) => `/plantilla/img/${nombre}.webp`;
 const vid = (nombre: string) => `/plantilla/video/${nombre}.mp4`;
 
 const videos = {
-  recorrido: { nombre: 'Recorrido por la plantilla', desc: 'Un recorrido de 25 segundos por las siete hojas de la plantilla de presupuesto mensual.', duracion: 'PT25S' },
-  gasto: { nombre: 'Cómo apuntar un gasto', desc: 'Cómo apuntar un gasto en la plantilla y ver cómo cambian el presupuesto y el resumen del mes.', duracion: 'PT17S' },
-  mes: { nombre: 'Cómo cambiar de mes', desc: 'Cómo cambiar de mes en el Resumen de la plantilla de presupuesto.', duracion: 'PT12S' },
-  categoria: { nombre: 'Cómo crear tu propia categoría', desc: 'Cómo crear una categoría propia y usarla en los movimientos.', duracion: 'PT13S' },
+  recorrido: { archivo: 'plantilla-recorrido', nombre: 'Recorrido por la plantilla', desc: 'Un recorrido de 25 segundos por las siete hojas de la plantilla de presupuesto mensual.', duracion: 'PT25S' },
+  gasto: { archivo: 'plantilla-apuntar-gasto', nombre: 'Cómo apuntar un gasto', desc: 'Cómo apuntar un gasto en la plantilla y ver cómo cambian el presupuesto y el resumen del mes.', duracion: 'PT17S' },
+  mes: { archivo: 'plantilla-cambiar-mes', nombre: 'Cómo cambiar de mes', desc: 'Cómo cambiar de mes en el Resumen de la plantilla de presupuesto.', duracion: 'PT12S' },
+  categoria: { archivo: 'plantilla-categoria-propia', nombre: 'Cómo crear tu propia categoría', desc: 'Cómo crear una categoría propia y usarla en los movimientos.', duracion: 'PT13S' },
 };
 
 const faqs = [
@@ -101,9 +101,23 @@ const hojas = [
   { nombre: 'Objetivos', texto: 'Tus metas de ahorro, con el progreso y cuánto apartar cada mes para llegar a tiempo.' },
   { nombre: 'Deudas', texto: 'Cuánto debes, cuántos meses te faltan para terminar de pagar y cuántos intereses te quedan.' },
 ];
+// Datos estructurados de cada vídeo (para que Google los asocie a esta página y los pueda indexar).
+const videoLd = Object.values(videos).map((v) => ({
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: v.nombre,
+  description: v.desc,
+  thumbnailUrl: [`${SITE.url}${img(v.archivo + '-poster')}`],
+  uploadDate: pubDate.toISOString(),
+  duration: v.duracion,
+  contentUrl: `${SITE.url}${vid(v.archivo)}`,
+  inLanguage: SITE.locale,
+  isFamilyFriendly: true,
+}));
+
 ---
 
-<BaseLayout title={title} description={description} publishedDate={pubDate} extraJsonLd={jsonLd}>
+<BaseLayout title={title} description={description} publishedDate={pubDate} extraJsonLd={[...jsonLd, ...videoLd]}>
   <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Plantilla de presupuesto mensual' }]} />
 
   <article class="prose max-w-none">
