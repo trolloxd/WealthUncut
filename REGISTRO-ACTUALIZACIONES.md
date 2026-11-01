@@ -3,6 +3,12 @@
 Lo escribe la rutina diaria de actualización (`ACTUALIZACION-PROCEDIMIENTO.md`, apartado 4), lo más nuevo arriba. Una entrada por día:
 qué se actualizó (con fuente y commit), qué se verificó sin cambios, qué no pudo verificarse y qué queda para David.
 
+## 2026-11-01
+- Actualizado: nada.
+- No pudo verificarse: `catalogo-carteras` (por vencer, 34 días): sigue sin haber fuente verificable accesible para el lector (la web de MyInvestor carga los fondos por JavaScript, ver 2026-10-31). Se deja `ultimo.json` con fecha 2026-09-28. Vence el 2026-11-07.
+- Pendiente de David: `catalogo-carteras` (revisar a mano o con navegador antes del 2026-11-07); `keywords-search-console`.
+- Estado del registro al terminar: POR VENCER (catalogo-carteras). Frescura de datos de hoy OK. Próximos 14 días: fondos-indexados y RDL 29/2026 (2/11), mercados (3/11), euríbor (4/11), cuentas (7/11).
+
 ## 2026-10-31
 - Actualizado: nada.
 - No pudo verificarse: `catalogo-carteras` (por vencer, 33 días): la página de fondos de MyInvestor carga la lista por JavaScript y el HTML que recibe el lector no contiene ningún fondo ni ISIN (ni los 10 del catálogo actual), así que no hay rentabilidades ni TER que contrastar. Se deja `ultimo.json` con fecha 2026-09-28. Vence el 2026-11-07.
