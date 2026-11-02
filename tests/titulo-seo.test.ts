@@ -22,3 +22,21 @@ test('no deja signos de puntuación antes de los puntos suspensivos', () => {
   assert.ok(!/[,;:.\- ]…$/.test(t));
   assert.ok(t.length <= TITULO_MAX);
 });
+
+test('no termina en preposición, artículo ni conjunción', () => {
+  const casos = [
+    'El Ibex roza los máximos del año tras una semana de subidas fuertes',
+    'La bolsa de EE. UU. marca un récord de cierre mientras el Nasdaq sube con fuerza',
+    'Wall Street cierra con subidas de más del uno por ciento en una sesión tranquila',
+  ];
+  for (const c of casos) {
+    const t = tituloParaBuscadores(c);
+    assert.ok(t.length <= TITULO_MAX, t);
+    assert.ok(!/\s(a|al|con|de|del|desde|el|en|la|las|lo|los|mientras|para|por|que|tras|un|una|y)…$/i.test(t), t);
+  }
+});
+
+test('conserva el punto de EE. UU.', () => {
+  const t = tituloParaBuscadores('Bonos de EE. UU. suben mientras el euro cae frente al dólar hoy');
+  assert.ok(!t.endsWith('EE…'), t);
+});
