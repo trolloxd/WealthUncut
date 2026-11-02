@@ -3,6 +3,13 @@
 Lo escribe la rutina diaria de actualización (`ACTUALIZACION-PROCEDIMIENTO.md`, apartado 4), lo más nuevo arriba. Una entrada por día:
 qué se actualizó (con fuente y commit), qué se verificó sin cambios, qué no pudo verificarse y qué queda para David.
 
+## 2026-11-02
+- Verificado sin cambios: `alquiler-rdl-29-2026`: sigue pendiente de convalidación. Prensa (Moncloa 17/10, Democrata, Maldita) sitúa la votación de la Diputación Permanente el 12/11/2026 (Cortes disueltas, elecciones el 29/11); no hay resultado aún. `fechaRegistro` pasa a 2026-11-02. El Congreso no es accesible desde la rutina (host fuera de la red permitida), así que el estado oficial se contrastó solo con prensa y análisis jurídicos: revisar el 12/11 o 13/11 el resultado y, si se deroga, avisar a David. Hay una discrepancia de numeración entre fuentes sobre qué decreto (28 o 29/2026) lleva la prórroga de alquileres; no afecta a las cifras fiscales del 29/2026.
+- No pudo verificarse: `fondos-indexados` (aviso, 32 días; vence el 2026-11-10) y `catalogo-carteras` (aviso, 35 días; vence el 2026-11-07): no hay dos fuentes accesibles para el lector (MyInvestor carga los fondos por JavaScript). Se dejan con su fecha.
+- Aviso: oferta de Openbank del comparador de cuentas caduca el 2026-11-16; la sacará la revisión de cuentas del 7 al 10/11.
+- Pendiente de David: `catalogo-carteras` (antes del 2026-11-07) y `fondos-indexados` (antes del 2026-11-10), con navegador; `keywords-search-console`.
+- Estado del registro al terminar: POR VENCER (cuentas-ofertas-con-fecha, fondos-indexados, catalogo-carteras). Nada vencido.
+
 ## 2026-11-01
 - Actualizado: nada.
 - No pudo verificarse: `catalogo-carteras` (por vencer, 34 días): sigue sin haber fuente verificable accesible para el lector (la web de MyInvestor carga los fondos por JavaScript, ver 2026-10-31). Se deja `ultimo.json` con fecha 2026-09-28. Vence el 2026-11-07.
