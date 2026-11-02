@@ -1,7 +1,7 @@
 ---
 termino: "Renta variable"
 titulo: "Qué es la renta variable y qué riesgo tiene"
-description: "Renta variable son los activos sin rentabilidad prometida, como las acciones y los fondos de bolsa. Qué riesgo tienen, un ejemplo con caídas y cómo tributan."
+description: "Renta variable son los activos sin rentabilidad prometida, como las acciones y los fondos de bolsa. Qué riesgo tienen, un ejemplo y cómo tributan."
 relacionados:
   - label: "Qué es un fondo indexado (guía)"
     href: "/blog/que-es-un-fondo-indexado/"
