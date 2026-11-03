@@ -1,0 +1,141 @@
+---
+/**
+ * Portada (dirección B): banda verde a todo el ancho con el titular y una escena de tres paneles de calculadora que
+ * flotan a distinta profundidad. El panel de aportación es una calculadora real: al mover la aportación mensual se
+ * recalculan lo aportado, el IRPF del ahorro y el neto (src/lib/calculos/portada.ts, el mismo cálculo en el servidor
+ * y en el navegador).
+ *
+ * - Sin JavaScript se ve todo con la aportación de 150 €/mes (el HTML ya lleva las cifras).
+ * - La escena se inclina hacia el ratón (variables CSS por CSSOM, sin estilos en línea por la CSP) y los paneles
+ *   flotan; todo quieto con movimiento reducido. Estilos en src/styles/direccion-b.css.
+ */
+import { AUTHOR } from '../config/site';
+import { APORTACION_INICIAL, APORTACION_MAX, APORTACION_MIN, APORTACION_PASO, calcularPortada, euros } from '../lib/calculos/portada';
+
+const r = calcularPortada(APORTACION_INICIAL);
+const ALTO = 64;
+const barras = r.porAnio.map((v, i) => {
+  const h = Math.max(2, (v / r.bruto) * ALTO);
+  return { x: i * 10, y: ALTO - h, h, ultima: i === r.porAnio.length - 1 };
+});
+---
+
+<section class="hero-b" aria-labelledby="h-portada">
+  <div class="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-24 pt-12 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:pb-28 lg:pt-16">
+    <div class="hero-b-texto">
+      <p class="inline-flex rounded-full bg-cream-elevated/10 px-3 py-1.5 text-sm font-medium text-brand-soft">Calculadoras con tus impuestos reales</p>
+      <h1 id="h-portada" class="mt-6 font-display text-4xl leading-[1.05] tracking-tight text-cream-elevated sm:text-5xl lg:text-[3.6rem]">
+        Lo que de verdad te queda, antes de decidir.
+      </h1>
+      <p class="mt-6 max-w-md text-lg leading-relaxed text-brand-soft">
+        150 €/mes durante 20 años son 69.630 € netos después del IRPF del ahorro. Pruébalo con tu aportación: cada cifra
+        sale de la normativa vigente y lleva su fuente.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/blog/rentabilidad-neta-fondo-indexado/" class="boton-b boton-b-claro">Calcular mi caso</a>
+        <a href="/herramientas/" class="boton-b boton-b-borde">Ver todas las calculadoras</a>
+      </div>
+      <p class="mt-6 text-sm text-brand-soft">
+        Por <a href="/autor/" class="underline hover:text-cream-elevated">{AUTHOR.name}</a> · sin recomendaciones de inversión personalizadas.
+      </p>
+    </div>
+
+    <div class="hero-b-escena" data-hero-escena>
+      <div class="hero-b-mundo">
+        <div class="panel-b panel-b-aporte">
+          <div class="panel-b-flota panel-b-flota-1 rounded-[1.25rem] bg-[#24594a] p-5 text-cream-elevated">
+            <label for="aporte-portada" class="block text-xs text-brand-soft">Aportación mensual</label>
+            <output for="aporte-portada" class="mt-1 block font-display text-3xl" data-portada="mensual">{euros(r.mensual)}</output>
+            <input
+              id="aporte-portada"
+              type="range"
+              min={APORTACION_MIN}
+              max={APORTACION_MAX}
+              step={APORTACION_PASO}
+              value={APORTACION_INICIAL}
+              class="rango-b mt-4 w-full"
+              data-portada-rango
+            />
+            <p class="mt-3 text-xs text-brand-soft">20 años · 7 % bruto · TER 0,2 %</p>
+          </div>
+        </div>
+
+        <div class="panel-b panel-b-irpf">
+          <div class="panel-b-flota panel-b-flota-2 rounded-[1.1rem] bg-accent p-4 text-cream-elevated">
+            <p class="text-xs text-cream-elevated/85">IRPF del ahorro</p>
+            <p class="mt-1 font-display text-2xl sm:text-3xl" data-portada="impuesto">{euros(r.impuesto)}</p>
+          </div>
+        </div>
+
+        <div class="panel-b panel-b-neto">
+          <div class="panel-b-flota panel-b-flota-3 rounded-[1.35rem] bg-cream-elevated p-5 text-ink sm:p-6">
+            <p class="text-xs text-ink-muted">Te queda después de impuestos</p>
+            <p class="mt-1 font-display text-4xl text-brand sm:text-5xl" data-portada="neto" aria-live="polite">{euros(r.neto)}</p>
+            <svg class="mt-4 block h-16 w-full" viewBox="0 0 200 64" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              {barras.map((b) => <rect x={b.x} y={b.y} width="7.5" height={b.h} rx="1.5" fill={b.ultima ? '#b3402a' : '#1e4a3a'} data-portada-barra />)}
+            </svg>
+            <dl class="mt-4 grid grid-cols-2 gap-2 text-sm">
+              <div class="flex flex-col"><dt class="text-ink-muted">Aportado</dt><dd class="font-semibold" data-portada="aportado">{euros(r.aportado)}</dd></div>
+              <div class="flex flex-col"><dt class="text-ink-muted">Antes de impuestos</dt><dd class="font-semibold" data-portada="bruto">{euros(r.bruto)}</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+      <p class="hero-b-nota">
+        1.000 € iniciales, 7 % de rentabilidad bruta anual constante, TER del 0,2 %, sin comisión de broker y venta al final con
+        los tramos del IRPF del ahorro. Es una simulación, no una previsión.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { calcularPortada, euros } from '../lib/calculos/portada';
+
+  const rango = document.querySelector<HTMLInputElement>('[data-portada-rango]');
+  const campos = new Map([...document.querySelectorAll<HTMLElement>('[data-portada]')].map((el) => [el.dataset.portada!, el]));
+  const barras = [...document.querySelectorAll<SVGRectElement>('[data-portada-barra]')];
+
+  const pintar = () => {
+    if (!rango) return;
+    const r = calcularPortada(Number(rango.value));
+    campos.get('mensual')!.textContent = euros(r.mensual);
+    campos.get('impuesto')!.textContent = euros(r.impuesto);
+    campos.get('neto')!.textContent = euros(r.neto);
+    campos.get('aportado')!.textContent = euros(r.aportado);
+    campos.get('bruto')!.textContent = euros(r.bruto);
+    r.porAnio.forEach((v, i) => {
+      const h = Math.max(2, (v / r.bruto) * 64);
+      barras[i]?.setAttribute('y', String(64 - h));
+      barras[i]?.setAttribute('height', String(h));
+    });
+    rango.setAttribute('aria-valuetext', `${euros(r.mensual)} al mes`);
+  };
+  rango?.addEventListener('input', pintar);
+
+  // La escena se inclina hacia el ratón (solo con ratón y movimiento permitido).
+  const escena = document.querySelector<HTMLElement>('[data-hero-escena]');
+  const permitido =
+    window.matchMedia('(prefers-reduced-motion: no-preference)').matches && window.matchMedia('(pointer: fine)').matches;
+  if (escena && permitido) {
+    let pendiente = 0;
+    let ev: PointerEvent | null = null;
+    const aplicar = () => {
+      pendiente = 0;
+      if (!ev) return;
+      const b = escena.getBoundingClientRect();
+      const x = (ev.clientX - b.left) / b.width - 0.5;
+      const y = (ev.clientY - b.top) / b.height - 0.5;
+      escena.style.setProperty('--ry', `${(x * 18).toFixed(2)}deg`);
+      escena.style.setProperty('--rx', `${(-y * 10).toFixed(2)}deg`);
+    };
+    escena.addEventListener('pointermove', (e) => {
+      ev = e;
+      if (!pendiente) pendiente = requestAnimationFrame(aplicar);
+    });
+    escena.addEventListener('pointerleave', () => {
+      escena.style.removeProperty('--rx');
+      escena.style.removeProperty('--ry');
+    });
+  }
+</script>

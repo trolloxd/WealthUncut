@@ -1,0 +1,86 @@
+---
+/**
+ * Icono de cada tema (las ocho categorías de src/config/categorias.ts) en una rejilla de 64 x 64, sin fondo.
+ * Lo usan IconoTema (pastilla cuadrada) e IlustracionTema (banda de las tarjetas de artículo). Formas planas con volumen
+ * por color, la paleta de la marca y un acento rojo por icono. Las piezas con `arte-flota` se mueven al pasar por la
+ * tarjeta (tarjetas.css). Solo atributos SVG, sin estilos en línea (CSP).
+ */
+interface Props {
+  tema: string;
+}
+const conocidos = ['fondos-indexados', 'impuestos', 'vivienda', 'autonomos', 'criptomonedas', 'jubilacion', 'trabajo', 'ahorro'];
+const id = conocidos.includes(Astro.props.tema) ? Astro.props.tema : 'ahorro';
+---
+
+{
+  id === 'fondos-indexados' && (
+    <g>
+      <path d="M14 44 L26 32 L34 38 L50 20 L50 48 L14 48 Z" fill="#1e4a3a" />
+      <path class="arte-flota" d="M14 44 L26 32 L34 38 L50 20" fill="none" stroke="#b3402a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" />
+    </g>
+  )
+}
+{
+  id === 'impuestos' && (
+    <g>
+      <rect x="18" y="14" width="28" height="36" rx="4" fill="#b3402a" />
+      <rect x="23" y="22" width="18" height="3" rx="1.5" fill="#fffdf8" />
+      <rect x="23" y="30" width="18" height="3" rx="1.5" fill="#fffdf8" />
+      <rect class="arte-flota" x="23" y="38" width="10" height="3" rx="1.5" fill="#fffdf8" />
+    </g>
+  )
+}
+{
+  id === 'vivienda' && (
+    <g>
+      <path d="M14 30 L32 16 L50 30 L50 50 L14 50 Z" fill="#1e4a3a" />
+      <rect class="arte-flota" x="28" y="36" width="8" height="14" fill="#e2735b" />
+    </g>
+  )
+}
+{
+  id === 'autonomos' && (
+    <g>
+      <rect x="12" y="24" width="40" height="26" rx="5" fill="#1e4a3a" />
+      <path d="M24 24 V18 H40 V24" fill="none" stroke="#1e4a3a" stroke-width="4" />
+      <rect class="arte-flota" x="28" y="33" width="8" height="6" rx="1.5" fill="#e2735b" />
+    </g>
+  )
+}
+{
+  id === 'criptomonedas' && (
+    <g>
+      <rect class="arte-flota" x="14" y="14" width="16" height="16" rx="3" fill="#e2735b" />
+      <rect x="34" y="34" width="16" height="16" rx="3" fill="#9fbfae" />
+      <rect x="34" y="14" width="16" height="16" rx="3" fill="none" stroke="#faf6ed" stroke-width="2" />
+      <rect x="14" y="34" width="16" height="16" rx="3" fill="none" stroke="#faf6ed" stroke-width="2" />
+    </g>
+  )
+}
+{
+  id === 'jubilacion' && (
+    <g>
+      <circle cx="32" cy="32" r="18" fill="#1e4a3a" />
+      <path class="arte-flota" d="M32 32 L32 14 A18 18 0 0 1 50 32 Z" fill="#e2735b" />
+    </g>
+  )
+}
+{
+  id === 'trabajo' && (
+    <g>
+      <rect x="14" y="20" width="36" height="8" rx="4" fill="#1e4a3a" />
+      <rect x="14" y="34" width="24" height="8" rx="4" fill="#1e4a3a" />
+      <rect class="arte-flota" x="40" y="34" width="10" height="8" rx="4" fill="#e2735b" />
+    </g>
+  )
+}
+{
+  id === 'ahorro' && (
+    <g>
+      <rect x="14" y="40" width="8" height="10" rx="2" fill="#9fbfae" />
+      <rect x="25" y="32" width="8" height="18" rx="2" fill="#2c6650" />
+      <rect x="36" y="24" width="8" height="26" rx="2" fill="#1e4a3a" />
+      <circle class="arte-flota" cx="47" cy="17" r="4" fill="#e2735b" />
+    </g>
+  )
+}

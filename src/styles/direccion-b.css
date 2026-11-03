@@ -1,0 +1,211 @@
+/*
+ * Dirección de diseño B (2026-11-03): producto con profundidad. Cada sección tiene su propio movimiento:
+ * - Portada (HeroPortada): banda verde, paneles de calculadora que flotan a distinta profundidad y escena que se inclina
+ *   hacia el ratón (--rx, --ry por CSSOM).
+ * - Calculadoras (portada): mosaico; al pasar, las capas internas de cada tarjeta se separan.
+ * - IRPF del ahorro (PilaIrpf): placas apiladas que se abren en 3D.
+ * - Temas: el icono sube y gira un poco.
+ * - Logo: las barras crecen una a una al pasar por él.
+ * Reglas: solo transform y opacity (CLS 0), sin estilos en línea (CSP) y todo quieto con prefers-reduced-motion.
+ */
+
+@layer components {
+/* Las bandas a todo el ancho de la ventana no deben crear scroll horizontal por el ancho de la barra de scroll. */
+html {
+  overflow-x: clip;
+}
+
+/* Logo ------------------------------------------------------------------------------------------------------- */
+.marca-logo .marca-barra {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: transform 450ms var(--ease-salida);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .marca-enlace:hover .marca-barra:nth-child(1) { transform: scaleY(1.12); transition-delay: 0ms; }
+  .marca-enlace:hover .marca-barra:nth-child(2) { transform: scaleY(1.1); transition-delay: 60ms; }
+  .marca-enlace:hover .marca-barra:nth-child(3) { transform: scaleY(1.08); transition-delay: 120ms; }
+  .marca-enlace:hover .marca-barra:nth-child(4) { transform: scaleY(1.06); transition-delay: 180ms; }
+}
+
+/* Portada ---------------------------------------------------------------------------------------------------- */
+.hero-b {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-top: -2.5rem;
+  background:
+    radial-gradient(80% 90% at 85% 10%, rgba(44, 102, 80, 0.55), transparent 60%),
+    var(--color-brand-dark);
+  color: var(--color-cream-elevated);
+}
+.boton-b {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3.1rem;
+  padding: 0 1.6rem;
+  border-radius: 0.9rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: transform 250ms var(--ease-salida), background-color 200ms ease-out;
+}
+.boton-b:focus-visible {
+  outline: 2px solid var(--color-cream-elevated);
+  outline-offset: 3px;
+}
+.boton-b-claro {
+  background-color: var(--color-cream);
+  color: var(--color-brand-dark);
+}
+.boton-b-claro:hover {
+  background-color: var(--color-cream-elevated);
+  transform: translateY(-2px);
+}
+.boton-b-borde {
+  border: 1px solid rgba(255, 253, 248, 0.35);
+  color: var(--color-cream-elevated);
+}
+.boton-b-borde:hover {
+  border-color: var(--color-cream-elevated);
+  transform: translateY(-2px);
+}
+.hero-b-escena {
+  perspective: 1400px;
+}
+.hero-b-mundo {
+  position: relative;
+  height: 25rem;
+  transform-style: preserve-3d;
+  transform: rotateX(calc(6deg + var(--rx, 0deg))) rotateY(calc(-12deg + var(--ry, 0deg)));
+  transition: transform 300ms ease-out;
+}
+.panel-b {
+  position: absolute;
+  transform-style: preserve-3d;
+}
+.panel-b-aporte { left: 0; top: 0; width: 60%; transform: translateZ(-40px); }
+.panel-b-irpf { right: 0; top: 6%; width: 36%; transform: translateZ(90px); }
+.panel-b-neto { left: 16%; top: 40%; width: 80%; transform: translateZ(40px); }
+.panel-b-flota {
+  box-shadow: 0 36px 70px -28px rgba(0, 0, 0, 0.6);
+}
+.hero-b-nota {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--color-brand-soft);
+}
+@keyframes flota-b {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .panel-b-flota-1 { animation: flota-b 7s ease-in-out -2s infinite; }
+  .panel-b-flota-2 { animation: flota-b 8s ease-in-out -4s infinite; }
+  .panel-b-flota-3 { animation: flota-b 6s ease-in-out infinite; }
+  /* Mientras se usa la calculadora, el panel deja de flotar. */
+  .panel-b-flota-1:focus-within,
+  .panel-b-flota-1:hover { animation-play-state: paused; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-b-mundo { transform: none; transition: none; }
+}
+@media (max-width: 639px) {
+  .hero-b-mundo { height: 27rem; transform: rotateX(4deg) rotateY(-6deg); }
+  .panel-b-aporte { width: 64%; }
+  .panel-b-irpf { width: 34%; top: 8%; }
+  .panel-b-neto { left: 4%; top: 42%; width: 96%; }
+}
+.rango-b {
+  accent-color: var(--color-cream-elevated);
+  min-height: 1.75rem;
+  cursor: pointer;
+}
+.rango-b:focus-visible {
+  outline: 2px solid var(--color-cream-elevated);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Calculadoras en mosaico ------------------------------------------------------------------------------------ */
+.caja-b {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 1.6rem;
+  transition: transform 500ms var(--ease-salida);
+}
+.caja-b::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow: 0 40px 60px -30px rgba(20, 51, 41, 0.45);
+  opacity: 0;
+  transition: opacity 500ms var(--ease-salida);
+}
+.caja-b:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+}
+.caja-b .capa-b {
+  transition: transform 500ms var(--ease-salida);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .caja-b:hover,
+  .caja-b:focus-visible { transform: translateY(-6px); }
+  .caja-b:hover::after,
+  .caja-b:focus-visible::after { opacity: 1; }
+  .caja-b:hover .capa-b-1,
+  .caja-b:focus-visible .capa-b-1 { transform: translateY(-8px) scale(1.03); }
+  .caja-b:hover .capa-b-2,
+  .caja-b:focus-visible .capa-b-2 { transform: translateY(-16px) scale(1.05); }
+}
+
+/* Pila del IRPF del ahorro ----------------------------------------------------------------------------------- */
+.pila-b-escena {
+  perspective: 1200px;
+}
+.pila-b-plano {
+  transform-style: preserve-3d;
+  transform: rotateX(60deg) rotateZ(-40deg);
+}
+.pila-b-placa {
+  position: absolute;
+  inset: 0;
+  border-radius: 1.1rem;
+  box-shadow:
+    0 0 0 1px rgba(255, 253, 248, 0.25),
+    0 18px 30px -12px rgba(20, 51, 41, 0.45);
+  transition: transform 650ms var(--ease-salida);
+}
+.pila-b-placa-0 { background-color: #4d7f66; transform: translateZ(0); }
+.pila-b-placa-1 { background-color: #2f6450; transform: translateZ(22px); }
+.pila-b-placa-2 { background-color: #1e4a3a; transform: translateZ(44px); }
+.pila-b-placa-3 { background-color: #a0472f; transform: translateZ(66px); }
+.pila-b-placa-4 { background-color: #b3402a; transform: translateZ(88px); }
+@media (prefers-reduced-motion: no-preference) {
+  .pila-b:hover .pila-b-placa-1 { transform: translateZ(46px); }
+  .pila-b:hover .pila-b-placa-2 { transform: translateZ(92px); }
+  .pila-b:hover .pila-b-placa-3 { transform: translateZ(138px); }
+  .pila-b:hover .pila-b-placa-4 { transform: translateZ(184px); }
+}
+
+/* Temas ------------------------------------------------------------------------------------------------------ */
+.tema-b {
+  transition: border-color 300ms ease-out;
+}
+.tema-b:hover,
+.tema-b:focus-visible {
+  border-color: var(--color-brand);
+}
+.tema-b .icono-tema {
+  transition: transform 450ms var(--ease-salida);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tema-b:hover .icono-tema,
+  .tema-b:focus-visible .icono-tema { transform: translateY(-5px) rotate(-4deg); }
+}
+}

@@ -1,0 +1,52 @@
+---
+/**
+ * Los cinco tramos del IRPF del ahorro (src/config/finance.ts) como placas apiladas en CSS 3D que se separan al pasar
+ * el ratón (estilos en src/styles/direccion-b.css). La pila es decorativa: los tramos van también en una lista de texto.
+ */
+import { escalonesIrpfAhorro } from '../lib/calculos/escena3d';
+import { IRPF_AHORRO_FUENTE } from '../config/finance';
+
+const numero = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const pct = (t: number) => `${String(Math.round(t * 1000) / 10).replace('.', ',')} %`;
+const tramos = escalonesIrpfAhorro().map((e, i) => ({
+  i,
+  tipo: pct(e.tipo),
+  rango: e.hasta === null ? `Más de ${numero(e.desde)} €` : `De ${numero(e.desde)} a ${numero(e.hasta)} €`,
+}));
+---
+
+<section aria-labelledby="h-pila" class="pila-b mt-16 grid items-center gap-10 rounded-[2rem] bg-brand-soft p-6 sm:p-10 lg:grid-cols-2">
+  <div>
+    <h2 id="h-pila" class="font-display text-3xl tracking-tight text-ink sm:text-4xl">Cinco capas de IRPF del ahorro</h2>
+    <p class="mt-4 max-w-md leading-relaxed text-[#3c4a42]">
+      Lo que pagas al vender fondos o acciones con ganancia, o al cobrar dividendos e intereses. Cada tipo solo se aplica a
+      la parte de la ganancia que cae en su tramo.
+    </p>
+    <ul class="mt-6 grid max-w-md gap-1 text-sm text-ink">
+      {
+        tramos.map((t) => (
+          <li class="flex justify-between gap-4 border-t border-brand/15 py-1.5">
+            <span>{t.rango}</span>
+            <span class="font-semibold">{t.tipo}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-4 text-xs text-[#3c4a42]">
+      Fuente: <a href={IRPF_AHORRO_FUENTE.url} class="underline" rel="noopener" target="_blank">Agencia Tributaria</a>
+      <span aria-hidden="true"> · </span>
+      <a href="/herramientas/calculadora-impuestos-venta-fondos/" class="font-semibold text-brand underline">Calcula tu caso</a>
+    </p>
+  </div>
+  <div class="pila-b-escena grid h-72 place-items-center sm:h-80" aria-hidden="true">
+    <div class="pila-b-plano relative h-44 w-64 sm:h-52 sm:w-80">
+      {
+        tramos.map((t) => (
+          <div class={`pila-b-placa pila-b-placa-${t.i}`}>
+            <span class="block px-4 py-3 text-lg font-bold text-cream-elevated">{t.tipo}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,20 @@
+---
+/**
+ * Símbolo de WealthUncut: cuatro barras en perspectiva que crecen como una cartera; la última, en rojo, es la parte que
+ * se lleva Hacienda. `tono="claro"` para fondo crema (barras verdes) y `tono="oscuro"` para fondo verde (barras claras).
+ * Decorativo: el nombre de la marca va siempre en texto al lado.
+ */
+interface Props {
+  tono?: 'claro' | 'oscuro';
+  class?: string;
+}
+const { tono = 'claro', class: clase } = Astro.props;
+const c = tono === 'claro' ? ['#7fa894', '#2c6650', '#1e4a3a', '#b3402a'] : ['#9fbfae', '#e3ece4', '#fffdf8', '#e2735b'];
+---
+
+<svg class:list={['marca-logo', clase]} viewBox="0 0 34 34" aria-hidden="true" focusable="false">
+  <path class="marca-barra" d="M4 24 L10 20 L10 30 L4 34 Z" fill={c[0]} />
+  <path class="marca-barra" d="M12 18 L18 14 L18 30 L12 34 Z" fill={c[1]} />
+  <path class="marca-barra" d="M20 10 L26 6 L26 30 L20 34 Z" fill={c[2]} />
+  <path class="marca-barra" d="M28 2 L34 0 L34 28 L28 32 Z" fill={c[3]} />
+</svg>

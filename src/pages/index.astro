@@ -7,7 +7,9 @@ import { TOOLS } from '../config/tools';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
 import DatosDeHoy from '../components/DatosDeHoy.astro';
 import ArticulosEditorial from '../components/ArticulosEditorial.astro';
-import IlustracionTema from '../components/IlustracionTema.astro';
+import IconoTema from '../components/IconoTema.astro';
+import HeroPortada from '../components/HeroPortada.astro';
+import PilaIrpf from '../components/PilaIrpf.astro';
 import { CATEGORIAS, categoriaDe } from '../config/categorias';
 
 const ultimaEdicion = (await getCollection('mercados', ({ data }) => isPublished(data))).sort(
@@ -26,53 +28,20 @@ const TOP_CALCULADORAS = [
   '/herramientas/alquilar-o-comprar-vivienda/',
   '/herramientas/calculadora-fondo-de-emergencia/',
 ];
+// Etiqueta corta de cada calculadora destacada (el dato que cambias en ella).
+const ETIQUETA_CALC: Record<string, string> = {
+  '/herramientas/calculadora-interes-compuesto/': 'Euros de hoy',
+  '/herramientas/calculadora-sueldo-neto/': 'IRPF de tu comunidad',
+  '/herramientas/simulador-hipoteca-euribor/': 'Fija, variable o mixta',
+  '/herramientas/alquilar-o-comprar-vivienda/': 'Hipoteca o alquiler',
+  '/herramientas/calculadora-fondo-de-emergencia/': 'Según tus gastos',
+};
 const destacadas = TOP_CALCULADORAS.map((href) => TOOLS.find((t) => t.href === href)).filter((t) => t !== undefined);
 const resto = TOOLS.filter((t) => !TOP_CALCULADORAS.includes(t.href));
 ---
 
 <BaseLayout title="Calculadoras y guías de finanzas personales en España" description={SITE.description} contentWidth="wide">
-  <div class="relative isolate">
-  <div class="hero-fondo" aria-hidden="true"></div>
-  <section class="mx-auto max-w-2xl py-10 text-center">
-    <p class="text-xs font-semibold uppercase tracking-widest text-brand">
-      {SITE.name} · Finanzas sin humo
-    </p>
-    <h1 class="mt-5 font-display text-4xl leading-[1.15] tracking-tight text-ink sm:text-5xl">
-      150 €/mes durante 20 años son <span class="text-brand">69.630 € netos</span> en tu
-      bolsillo. Con tus impuestos reales, no una media optimista.
-    </h1>
-    <p class="mx-auto mt-5 max-w-lg text-lg text-ink-muted">{SITE.description}</p>
-
-    <div class="mt-8 flex flex-wrap justify-center gap-3">
-      <a href="/blog/rentabilidad-neta-fondo-indexado/" class="btn-primary">Probar la calculadora</a>
-      <a href="/empieza-aqui/" class="btn-secondary">Por dónde empezar</a>
-    </div>
-
-    <dl class="mx-auto mt-10 flex max-w-md flex-wrap items-center justify-center gap-x-10 gap-y-3 border-t border-border pt-6 text-sm">
-      <div>
-        <dt class="text-ink-faint">Aportado</dt>
-        <dd class="font-display text-lg text-ink" data-cuenta>37.000 €</dd>
-      </div>
-      <div>
-        <dt class="text-ink-faint">Impuesto (IRPF ahorro)</dt>
-        <dd class="font-display text-lg text-accent" data-cuenta>− 8.522 €</dd>
-      </div>
-      <div>
-        <dt class="text-ink-faint">Neto final</dt>
-        <dd class="font-display text-lg text-brand" data-cuenta>69.630 €</dd>
-      </div>
-    </dl>
-    <p class="mx-auto mt-3 max-w-md text-xs text-ink-faint">
-      Supuestos del ejemplo: 1.000 € iniciales, 7% de rentabilidad bruta anual constante, TER del
-      0,2%, sin comisión de broker y venta de todo al final con los tramos del IRPF del ahorro. Es
-      una simulación, no una previsión ni una promesa de rentabilidad.
-    </p>
-
-    <p class="mt-6 text-sm text-ink-faint">
-      Por <a href="/autor/" class="underline hover:text-ink">{AUTHOR.name}</a> · sin recomendaciones de inversión personalizadas.
-    </p>
-  </section>
-  </div>
+  <HeroPortada />
 
   <DatosDeHoy />
 
@@ -110,17 +79,19 @@ const resto = TOOLS.filter((t) => !TOP_CALCULADORAS.includes(t.href));
     )}
   </section>
 
+  <PilaIrpf />
+
   {temas.length > 0 && (
-    <section aria-labelledby="h-temas" class="mx-auto mt-10 max-w-3xl border-t border-border pt-12">
-      <h2 id="h-temas" class="mb-2 font-display text-2xl text-ink">Explora por tema</h2>
+    <section aria-labelledby="h-temas" class="mt-16">
+      <h2 id="h-temas" class="mb-2 font-display text-3xl tracking-tight text-ink sm:text-4xl">Temas</h2>
       <p class="mb-6 max-w-2xl text-sm text-ink-muted">Guías agrupadas por lo que quieres resolver: invertir, impuestos, vivienda, autónomos y más.</p>
-      <ul class="grid gap-3 sm:grid-cols-2">
+      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {temas.map(({ c, n }) => (
           <li class="aparece">
-            <a href={`/blog/tema/${c.id}/`} class="card group flex h-full items-start gap-4 p-4 hover:border-brand/40">
-              <span class="block h-14 w-14 shrink-0 overflow-hidden rounded-xl" aria-hidden="true"><IlustracionTema tema={c.id} /></span>
+            <a href={`/blog/tema/${c.id}/`} class="tema-b group flex h-full items-center gap-4 rounded-[1.4rem] border border-border bg-cream-elevated p-4">
+              <IconoTema tema={c.id} class="h-16 w-16 shrink-0" />
               <span class="block min-w-0">
-                <span class="block font-display text-lg text-ink group-hover:text-brand">{c.nombre} <span class="card-flecha" aria-hidden="true">→</span></span>
+                <span class="block text-base font-bold text-ink">{c.nombre}</span>
                 <span class="mt-1 block text-sm text-ink-muted">{c.descripcion}</span>
                 <span class="mt-2 block text-xs text-ink-faint">{n} {n === 1 ? 'artículo' : 'artículos'}</span>
               </span>
@@ -131,17 +102,37 @@ const resto = TOOLS.filter((t) => !TOP_CALCULADORAS.includes(t.href));
     </section>
   )}
 
-  <section class="mx-auto mt-10 max-w-3xl border-t border-border pt-12">
-    <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
-      <h2 class="font-display text-2xl text-ink">Calculadoras</h2>
-      <a href="/herramientas/" id="ver-todas-calc" aria-controls="calc-resto" aria-expanded="false" data-total={TOOLS.length} class="text-sm font-medium text-brand underline decoration-brand/30 hover:decoration-brand">Ver todas ({TOOLS.length})</a>
+  <section aria-labelledby="h-calcs" class="mt-16">
+    <div class="mb-8 flex flex-wrap items-baseline justify-between gap-2">
+      <h2 id="h-calcs" class="font-display text-3xl tracking-tight text-ink sm:text-4xl">Elige qué quieres calcular</h2>
+      <a href="/herramientas/" id="ver-todas-calc" aria-controls="calc-resto" aria-expanded="false" data-total={TOOLS.length} class="text-sm font-semibold text-brand underline decoration-brand/30 hover:decoration-brand">Ver todas ({TOOLS.length})</a>
     </div>
-    <ul class="grid gap-4 sm:grid-cols-2">
-      {destacadas.map((t) => (
-        <li class="aparece">
-          <a href={t.href} class="card group block h-full p-5 hover:border-brand/40">
-            <span class="font-display text-lg text-ink group-hover:text-brand">{t.name} <span class="card-flecha" aria-hidden="true">→</span></span>
-            <span class="mt-2 block text-sm text-ink-muted">{t.description}</span>
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {destacadas.map((t, i) => i === 0 ? (
+        <li class="sm:col-span-2 lg:row-span-2">
+          <a href={t.href} class="caja-b grid h-full min-h-[16rem] content-center items-center gap-6 bg-brand p-7 text-cream-elevated sm:grid-cols-2 sm:p-8">
+            <span class="block">
+              <span class="block text-sm text-brand-soft">La más usada</span>
+              <span class="mt-2 block font-display text-3xl leading-tight">{t.name}</span>
+              <span class="mt-3 block text-brand-soft">{t.description}</span>
+            </span>
+            <span class="relative block h-40" aria-hidden="true">
+              <span class="capa-b capa-b-1 absolute inset-[1.25rem_2rem_0_0] block rounded-2xl bg-[#2c6650]"></span>
+              <span class="capa-b capa-b-2 absolute inset-[0_0_2rem_2.5rem] block rounded-2xl bg-cream-elevated p-4 text-ink shadow-[0_20px_40px_-20px_rgba(0,0,0,0.5)]">
+                <span class="block text-xs text-ink-muted">Neto a 20 años con 150 €/mes</span>
+                <span class="mt-1 block font-display text-3xl text-brand">69.630 €</span>
+              </span>
+            </span>
+          </a>
+        </li>
+      ) : (
+        <li>
+          <a href={t.href} class="caja-b flex h-full min-h-[12rem] flex-col justify-between gap-6 border border-border bg-cream-elevated p-6 text-ink">
+            <span class:list={['capa-b capa-b-1 self-start rounded-xl px-3.5 py-2 text-sm font-bold', i % 2 ? 'bg-accent-soft text-[#8a3120]' : 'bg-brand-soft text-brand']}>{ETIQUETA_CALC[t.href] ?? 'Calculadora'}</span>
+            <span class="block">
+              <span class="block font-display text-2xl leading-snug">{t.name}</span>
+              <span class="mt-2 block text-sm text-ink-muted">{t.description}</span>
+            </span>
           </a>
         </li>
       ))}

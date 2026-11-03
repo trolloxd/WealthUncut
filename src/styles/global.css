@@ -2,6 +2,7 @@
 @plugin '@tailwindcss/typography';
 @import './movimiento.css';
 @import './tarjetas.css';
+@import './direccion-b.css';
 
 /*
  * Fuentes propias con font-display: optional. Con swap, el navegador pintaba primero la fuente de

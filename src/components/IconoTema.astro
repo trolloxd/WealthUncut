@@ -1,0 +1,16 @@
+---
+/** Pastilla cuadrada con el icono de un tema (GlifoTema) sobre su color de fondo. Decorativa: el nombre va en texto. */
+import GlifoTema from './GlifoTema.astro';
+import { fondoTema } from '../config/iconos-tema';
+
+interface Props {
+  tema: string;
+  class?: string;
+}
+const { tema, class: clase } = Astro.props;
+---
+
+<svg class:list={['icono-tema', clase]} viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+  <rect width="64" height="64" rx="16" fill={fondoTema(tema)} />
+  <GlifoTema tema={tema} />
+</svg>

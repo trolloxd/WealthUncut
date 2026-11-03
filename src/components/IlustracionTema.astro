@@ -1,113 +1,29 @@
 ---
 /**
- * Imagen por tema del blog (las ocho de src/config/categorias.ts): una figura de datos abstracta en la paleta de la marca,
- * sin dibujos literales. Lo importante queda en el centro, porque en las miniaturas cuadradas se recortan los lados (slice).
- * Es decorativa (aria-hidden): el nombre del tema siempre va en texto junto a ella. Estática (sin estilos en línea ni
- * atributos calculados, así que no choca con la CSP).
- *
- * Con la tarjeta enfocada o con el ratón encima, las piezas con `arte-sube` o `arte-flota` se animan
- * (src/styles/tarjetas.css, solo transform y solo con movimiento permitido).
+ * Imagen por tema de las tarjetas de artículo (las ocho categorías de src/config/categorias.ts): el icono del tema
+ * (GlifoTema) en grande sobre su color, con una sombra del mismo icono desplazada que le da volumen. Lo importante queda
+ * en el centro, porque en las miniaturas estrechas se recortan los lados (slice).
+ * Es decorativa (aria-hidden): el nombre del tema siempre va en texto junto a ella. Estática, sin estilos en línea (CSP).
+ * Con la tarjeta enfocada o con el ratón encima, las piezas con `arte-flota` se mueven (src/styles/tarjetas.css).
  */
+import GlifoTema from './GlifoTema.astro';
+import { fondoTema } from '../config/iconos-tema';
+
 interface Props {
   tema: string;
 }
 const { tema } = Astro.props;
-const conocidos = ['fondos-indexados', 'impuestos', 'vivienda', 'autonomos', 'criptomonedas', 'jubilacion', 'trabajo', 'ahorro'];
-const id = conocidos.includes(tema) ? tema : 'ahorro';
+const oscuro = tema === 'criptomonedas';
 ---
 
 <svg class="ilustracion-tema" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-  {
-    id === 'fondos-indexados' && (
-      <>
-        <rect width="240" height="120" class="fill-brand-dark" />
-        <path d="M0 30H240M0 60H240M0 90H240" class="stroke-cream-elevated/10" stroke-width="1" fill="none" />
-        <path d="M0 100L24 96L48 98L72 84L96 88L120 66L144 58L168 38L192 30L240 14V120H0Z" class="fill-cream-elevated/10" />
-        <path d="M0 100L24 96L48 98L72 84L96 88L120 66L144 58L168 38L192 30L240 14" class="stroke-cream-elevated" stroke-width="1.75" stroke-linejoin="round" fill="none" />
-        <circle cx="168" cy="38" r="4" class="arte-flota fill-accent stroke-cream-elevated" stroke-width="1" />
-      </>
-    )
-  }
-  {
-    id === 'impuestos' && (
-      <>
-        <rect width="240" height="120" class="fill-cream-elevated" />
-        <rect x="96" y="20" width="48" height="10" class="arte-sube fill-brand/30" />
-        <rect x="78" y="36" width="84" height="10" class="arte-sube fill-brand/45" />
-        <rect x="58" y="52" width="124" height="10" class="arte-sube fill-brand/65" />
-        <rect x="38" y="68" width="164" height="10" class="arte-sube fill-brand" />
-        <rect x="18" y="84" width="204" height="10" class="arte-sube fill-brand" />
-        <rect x="148" y="84" width="74" height="10" class="arte-sube fill-accent" />
-      </>
-    )
-  }
-  {
-    id === 'vivienda' && (
-      <>
-        <rect width="240" height="120" class="fill-brand-soft" />
-        <path d="M20 100H220" class="stroke-brand/30" stroke-width="1" fill="none" />
-        <path d="M20 24C90 30 150 58 220 92" class="stroke-brand" stroke-width="2" fill="none" />
-        <path d="M20 92C90 86 150 58 220 24" class="stroke-accent" stroke-width="2" fill="none" />
-        <circle cx="120" cy="58" r="4" class="arte-flota fill-brand-soft stroke-brand" stroke-width="2" />
-      </>
-    )
-  }
-  {
-    id === 'autonomos' && (
-      <>
-        <rect width="240" height="120" class="fill-brand" />
-        <path d="M0 100H40V86H80V72H120V58H160V44H200V30H240V120H0Z" class="fill-cream-elevated/10" />
-        <path d="M0 100H40V86H80V72H120V58H160V44H200V30H240" class="stroke-cream-elevated" stroke-width="1.75" fill="none" />
-        <rect x="116" y="54" width="8" height="8" class="arte-flota fill-accent stroke-cream-elevated" stroke-width="1" />
-      </>
-    )
-  }
-  {
-    id === 'criptomonedas' && (
-      <>
-        <rect width="240" height="120" class="fill-brand-dark" />
-        <path d="M28 60H212" class="stroke-cream-elevated/35" stroke-width="1" fill="none" />
-        <g class="fill-brand-dark stroke-cream-elevated/60" stroke-width="1.5">
-          <rect x="16" y="48" width="24" height="24" />
-          <rect x="60" y="48" width="24" height="24" />
-          <rect x="156" y="48" width="24" height="24" />
-          <rect x="200" y="48" width="24" height="24" />
-        </g>
-        <rect x="104" y="44" width="32" height="32" class="arte-flota fill-accent" />
-      </>
-    )
-  }
-  {
-    id === 'jubilacion' && (
-      <>
-        <rect width="240" height="120" class="fill-accent-soft" />
-        <path d="M0 104C60 104 80 30 120 30C160 30 190 76 240 88V120H0Z" class="fill-brand" />
-        <path d="M120 36V120" class="stroke-accent-soft/50" stroke-width="1" stroke-dasharray="3 4" fill="none" />
-        <circle cx="120" cy="30" r="5" class="arte-flota fill-accent" />
-      </>
-    )
-  }
-  {
-    id === 'trabajo' && (
-      <>
-        <rect width="240" height="120" class="fill-cream-elevated" />
-        <rect x="30" y="38" width="180" height="16" class="arte-sube fill-brand" />
-        <rect x="30" y="66" width="128" height="16" class="arte-sube fill-brand" />
-        <rect x="162" y="66" width="48" height="16" class="arte-sube fill-accent" />
-        <path d="M160 28V92" class="stroke-ink/35" stroke-width="1" stroke-dasharray="3 3" fill="none" />
-      </>
-    )
-  }
-  {
-    id === 'ahorro' && (
-      <>
-        <rect width="240" height="120" class="fill-brand" />
-        <g stroke-linecap="round" stroke-width="6" stroke-dasharray="0 16" fill="none">
-          <path d="M24 28H216M24 44H216M24 60H216M24 76H216M24 92H216" class="stroke-cream-elevated/15" />
-          <path d="M24 44H72M24 60H120M24 76H168M24 92H216" class="stroke-cream-elevated" />
-          <path d="M120 60H120.01" class="arte-flota stroke-accent" />
-        </g>
-      </>
-    )
-  }
+  <rect width="240" height="120" fill={fondoTema(tema)} />
+  <g fill={oscuro ? '#faf6ed' : '#1e4a3a'} fill-opacity="0.06">
+    <circle cx="40" cy="96" r="64" />
+    <circle cx="214" cy="18" r="46" />
+  </g>
+  <g transform="translate(82 22) scale(1.18)" opacity="0.18">
+    <g transform="translate(5 5)"><GlifoTema tema={tema} /></g>
+  </g>
+  <g transform="translate(82 22) scale(1.18)"><GlifoTema tema={tema} /></g>
 </svg>
