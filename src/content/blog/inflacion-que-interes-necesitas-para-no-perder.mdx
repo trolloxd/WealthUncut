@@ -20,6 +20,8 @@ hasAffiliateLinks: false
 draft: false
 ---
 
+import ArticleLink from '../../components/ArticleLink.astro';
+
 import { poderAdquisitivo } from '../../components/InflationCalculator';
 import { formatEuros } from '../../components/CalculatorUI';
 import { IRPF_AHORRO_BRACKETS, IPC_ESPANA } from '../../config/finance';
@@ -118,6 +120,9 @@ Dos matices importantes:
 - **Muchas TAE altas son de bienvenida.** Duran unos meses y luego bajan. Fíjate en la columna de duración del
   comparador antes de hacer cuentas a un año.
 - **La TAE ya incluye la frecuencia de pago de intereses**, así que es la cifra correcta para comparar, no el [TIN](/glosario/tin/).
+
+La otra alternativa sin riesgo bancario son las Letras del Tesoro, con el tipo de cada subasta publicado en el BOE: el
+cálculo neto de impuestos y frente a la inflación está en <ArticleLink href="/blog/letras-del-tesoro-como-tributan/">Letras del Tesoro: cómo tributan y cuánto rinden netas</ArticleLink>.
 
 ## Qué hacer con esto (sin recetas)
 

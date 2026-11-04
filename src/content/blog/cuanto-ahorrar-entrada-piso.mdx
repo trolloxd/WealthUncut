@@ -16,6 +16,8 @@ hasAffiliateLinks: false
 draft: false
 ---
 
+import ArticleLink from '../../components/ArticleLink.astro';
+
 import { calcularEntradaPiso } from '../../components/HomeDepositCalculator';
 import { formatEuros } from '../../components/CalculatorUI';
 import { GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT } from '../../config/finance';
@@ -79,7 +81,8 @@ es **antes** de pedir la hipoteca: la cuota la calculas en el
 La herramienta [¿Cuánto ahorrar para la entrada de un piso?](/herramientas/ahorro-entrada-piso/) hace
 estas cuentas con tu precio, tu comunidad y tu ahorro. Ten en cuenta que los tipos de ITP se pueden
 modificar y que hay tipos reducidos para algunos colectivos (jóvenes, familias numerosas...) que dependen
-de cada comunidad: comprueba en la web de la tuya los que te apliquen.
+de cada comunidad: comprueba en la web de la tuya los que te apliquen. Y para saber qué pagarías cada mes después de la
+compra, con el euríbor oficial y varios tipos fijos, mira <ArticleLink href="/blog/cuota-hipoteca-200000-euros/">cuánto se paga al mes por una hipoteca de 200.000 euros</ArticleLink>.
 
 ## Preguntas frecuentes
 

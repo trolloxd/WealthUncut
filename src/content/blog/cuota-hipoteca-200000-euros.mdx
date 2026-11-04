@@ -1,0 +1,166 @@
+---
+title: "Cuota de una hipoteca de 200.000 euros con el euríbor real"
+description: "Cuánto se paga al mes por una hipoteca de 200.000 € (y de 100.000 a 250.000 €) a 25 y 30 años, en variable con el euríbor oficial y en fijo."
+resumen: "La cuota de una hipoteca de 200.000 € depende del tipo de interés y del plazo. Con sistema francés, cada punto de interés más sube la cuota mensual de forma notable, y alargar de 25 a 30 años la baja pero hace pagar más intereses en total. Abajo están las cuotas calculadas con el último euríbor oficial del BOE y con varios tipos fijos de ejemplo."
+pubDate: 2026-11-11
+updatedDate: 2026-11-11
+author: "Alex Serra Rodríguez"
+tags: ["hipoteca", "vivienda", "calculadoras"]
+categoria: "vivienda"
+sources:
+  - label: "BOE: tipos oficiales de referencia del mercado hipotecario de septiembre de 2026 (Banco de España, BOE-A-2026-20519)"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20519"
+  - label: "BOE: Ley 5/2019, de 15 de marzo, reguladora de los contratos de crédito inmobiliario (art. 21.4, el tipo no puede ser negativo)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814"
+hasAffiliateLinks: false
+draft: false
+---
+
+import euribor from '../../data/euribor/ultimo.json';
+import { cuotaFrancesa, tipoAplicable } from '../../lib/calculos/euribor.ts';
+import { formatEuros } from '../../components/CalculatorUI';
+import ArticleLink from '../../components/ArticleLink.astro';
+
+export const ult = euribor.historico.at(-1);
+export const mesLargo = (m) => new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${m}-01T00:00:00Z`));
+export const n3 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+export const dif = 0.8;
+export const tipoVar = tipoAplicable(ult.valor, dif);
+export const cuota = (capital, tipo, anios) => cuotaFrancesa(capital, tipo, anios * 12);
+export const intereses = (capital, tipo, anios) => cuota(capital, tipo, anios) * anios * 12 - capital;
+export const capitales = [100000, 150000, 200000, 250000];
+export const fijos = [2.5, 3, 3.5];
+export const base = 200000;
+export const v25 = cuota(base, tipoVar, 25);
+export const v30 = cuota(base, tipoVar, 30);
+export const ingresos = (c, pct) => c / pct;
+
+Una hipoteca de **200.000 € a 25 años** con el euríbor oficial de {mesLargo(ult.mes)} ({n3(ult.valor)} %) y un
+[diferencial](/glosario/diferencial/) de 0,8 puntos sale a **{formatEuros(v25)} al mes**. A 30 años, la cuota baja a
+**{formatEuros(v30)}**, pero pagas {formatEuros(intereses(base, tipoVar, 30) - intereses(base, tipoVar, 25))} más de
+intereses en total. En tipo fijo, la cuota depende del tipo que te ofrezcan: abajo tienes las cuentas con varios tipos de
+ejemplo y con importes de 100.000 a 250.000 €, todas calculadas con la misma fórmula que usan los bancos.
+
+## Cómo se calcula la cuota de una hipoteca
+
+Casi todas las hipotecas en España usan el [sistema francés](/glosario/sistema-frances/): pagas la misma cuota cada mes
+(hasta la siguiente revisión, si es variable), y dentro de esa cuota la parte de intereses empieza siendo grande y se va
+reduciendo mientras crece la parte que devuelve capital. La cuota depende de tres cosas:
+
+- **El capital** que pides (lo que te presta el banco, no el precio del piso).
+- **El tipo de interés anual.** En una hipoteca variable es el [euríbor](/glosario/euribor/) más el diferencial; en una fija,
+  el tipo pactado. Por ley, en las hipotecas firmadas desde junio de 2019 el tipo variable no puede ser negativo aunque el
+  euríbor lo sea.
+- **El plazo**, en meses.
+
+La fórmula es: cuota = C × i / (1 − (1 + i)<sup>−n</sup>), donde C es el capital, i el tipo anual dividido entre 12 y n el
+número de meses. No hace falta hacerla a mano: el [simulador de hipoteca con el euríbor real](/herramientas/simulador-hipoteca-euribor/)
+la aplica con tus números.
+
+## Cuota de una hipoteca variable con el último euríbor oficial
+
+El euríbor que usan las hipotecas es la media mensual que el Banco de España publica en el BOE. El último dato oficial es el
+de {mesLargo(ult.mes)}: **{n3(ult.valor)} %**. Con un diferencial de 0,8 puntos (un supuesto habitual para el ejemplo; el tuyo
+puede ser distinto), el tipo aplicable es el **{n3(tipoVar)} %**.
+
+| Capital | Cuota a 25 años | Cuota a 30 años | Intereses totales a 25 años | Intereses totales a 30 años |
+|---|---|---|---|---|
+| {formatEuros(capitales[0])} | {formatEuros(cuota(capitales[0], tipoVar, 25))} | {formatEuros(cuota(capitales[0], tipoVar, 30))} | {formatEuros(intereses(capitales[0], tipoVar, 25))} | {formatEuros(intereses(capitales[0], tipoVar, 30))} |
+| {formatEuros(capitales[1])} | {formatEuros(cuota(capitales[1], tipoVar, 25))} | {formatEuros(cuota(capitales[1], tipoVar, 30))} | {formatEuros(intereses(capitales[1], tipoVar, 25))} | {formatEuros(intereses(capitales[1], tipoVar, 30))} |
+| **{formatEuros(capitales[2])}** | **{formatEuros(cuota(capitales[2], tipoVar, 25))}** | **{formatEuros(cuota(capitales[2], tipoVar, 30))}** | {formatEuros(intereses(capitales[2], tipoVar, 25))} | {formatEuros(intereses(capitales[2], tipoVar, 30))} |
+| {formatEuros(capitales[3])} | {formatEuros(cuota(capitales[3], tipoVar, 25))} | {formatEuros(cuota(capitales[3], tipoVar, 30))} | {formatEuros(intereses(capitales[3], tipoVar, 25))} | {formatEuros(intereses(capitales[3], tipoVar, 30))} |
+
+Los intereses totales suponen que el euríbor se quedara igual durante toda la vida del préstamo, algo que no pasará: sirven
+para comparar plazos entre sí, no como previsión. En una hipoteca variable la cuota se recalcula en cada revisión (cada 6 o
+12 meses, según el contrato). Cómo cambia en esa revisión lo explicamos en
+[revisión de la hipoteca: cuánto sube la cuota con el euríbor](/blog/revision-hipoteca-euribor-cuanto-sube/).
+
+## Cuánto cambia la cuota si el euríbor sube o baja
+
+Para una hipoteca de 200.000 € a 25 años y el mismo diferencial de 0,8 puntos:
+
+| Euríbor | Tipo aplicable | Cuota mensual | Diferencia con la actual |
+|---|---|---|---|
+| {n3(Math.max(0, ult.valor - 1))} % (un punto menos) | {n3(tipoAplicable(ult.valor - 1, dif))} % | {formatEuros(cuota(base, tipoAplicable(ult.valor - 1, dif), 25))} | {formatEuros(cuota(base, tipoAplicable(ult.valor - 1, dif), 25) - v25)} |
+| {n3(ult.valor)} % ({mesLargo(ult.mes)}) | {n3(tipoVar)} % | {formatEuros(v25)} | 0 € |
+| {n3(ult.valor + 1)} % (un punto más) | {n3(tipoAplicable(ult.valor + 1, dif))} % | {formatEuros(cuota(base, tipoAplicable(ult.valor + 1, dif), 25))} | +{formatEuros(cuota(base, tipoAplicable(ult.valor + 1, dif), 25) - v25)} |
+| {n3(ult.valor + 2)} % (dos puntos más) | {n3(tipoAplicable(ult.valor + 2, dif))} % | {formatEuros(cuota(base, tipoAplicable(ult.valor + 2, dif), 25))} | +{formatEuros(cuota(base, tipoAplicable(ult.valor + 2, dif), 25) - v25)} |
+
+Con 200.000 € a 25 años, **cada punto de euríbor mueve la cuota algo más de 100 € al mes**. Es la cifra que conviene tener
+en la cabeza antes de firmar una variable: no solo si puedes pagar la cuota de hoy, sino si podrías pagar la de un euríbor uno
+o dos puntos más alto.
+
+## Cuota de una hipoteca fija de 200.000 euros
+
+En tipo fijo la cuota no cambia nunca, así que lo único que importa es el tipo que te ofrezcan. Estos son tipos de ejemplo
+para ver el efecto, **no ofertas reales**:
+
+| Tipo fijo | Cuota a 25 años | Cuota a 30 años | Intereses totales a 25 años | Intereses totales a 30 años |
+|---|---|---|---|---|
+| {n2(fijos[0])} % | {formatEuros(cuota(base, fijos[0], 25))} | {formatEuros(cuota(base, fijos[0], 30))} | {formatEuros(intereses(base, fijos[0], 25))} | {formatEuros(intereses(base, fijos[0], 30))} |
+| {n2(fijos[1])} % | {formatEuros(cuota(base, fijos[1], 25))} | {formatEuros(cuota(base, fijos[1], 30))} | {formatEuros(intereses(base, fijos[1], 25))} | {formatEuros(intereses(base, fijos[1], 30))} |
+| {n2(fijos[2])} % | {formatEuros(cuota(base, fijos[2], 25))} | {formatEuros(cuota(base, fijos[2], 30))} | {formatEuros(intereses(base, fijos[2], 25))} | {formatEuros(intereses(base, fijos[2], 30))} |
+
+Para compararlas con la variable, una regla sencilla: un fijo y un variable salen igual cuando el euríbor más tu diferencial
+coincide con el tipo fijo. Con un diferencial de 0,8, un fijo del {n2(fijos[1])} % equivale a un euríbor medio del
+{n2(fijos[1] - dif)} % durante toda la vida del préstamo. Lo desarrollamos en
+[hipoteca fija, variable o mixta: cuál elegir con el euríbor](/blog/hipoteca-fija-variable-o-mixta/).
+
+## 25 o 30 años: qué cambia de verdad
+
+Alargar el plazo baja la cuota, pero menos de lo que parece, y encarece el préstamo. Con la variable de hoy y 200.000 €:
+
+- A 25 años: {formatEuros(v25)} al mes y {formatEuros(intereses(base, tipoVar, 25))} de intereses.
+- A 30 años: {formatEuros(v30)} al mes ({formatEuros(v25 - v30)} menos) y {formatEuros(intereses(base, tipoVar, 30))} de intereses.
+
+Es decir, ahorras {formatEuros(v25 - v30)} al mes a cambio de pagar {formatEuros(intereses(base, tipoVar, 30) - intereses(base, tipoVar, 25))}
+más en total. Un plazo largo da margen si los ingresos son justos, y siempre puedes acortarlo después amortizando: lo que
+cuesta y lo que ahorras está en [amortizar hipoteca: ¿reducir cuota o plazo?](/blog/amortizar-hipoteca-reducir-cuota-o-plazo/).
+
+## Qué ingresos hacen falta para una cuota así
+
+Una referencia que mucha gente usa para no ahogarse es que la cuota no pase de un 30 % o un 35 % de los ingresos netos del
+hogar. Es un criterio orientativo, no una norma: cada banco hace su propio análisis de solvencia. Con la cuota variable de
+200.000 € a 25 años ({formatEuros(v25)}):
+
+| Si la cuota es este % de tus ingresos netos | Ingresos netos al mes necesarios |
+|---|---|
+| 30 % | {formatEuros(ingresos(v25, 0.3))} |
+| 35 % | {formatEuros(ingresos(v25, 0.35))} |
+
+Para pasar de tu sueldo bruto al neto, usa la [calculadora de sueldo neto](/herramientas/calculadora-sueldo-neto/). Y recuerda
+que antes de la cuota hay que reunir la entrada y los gastos de compra: con un préstamo de 200.000 €, que suele ser como mucho
+el 80 % del valor de tasación, el piso costaría unos 250.000 € y la entrada más los impuestos supone bastante dinero ahorrado.
+Las cuentas completas están en [cuánto dinero necesitas para comprar un piso](/blog/cuanto-ahorrar-entrada-piso/) y en la
+[calculadora de ahorro para la entrada](/herramientas/ahorro-entrada-piso/).
+
+## Lo que no está en la cuota
+
+La cuota es solo el préstamo. A la hora de comparar ofertas, suma también:
+
+- **Las vinculaciones**: seguros de vida y hogar, nómina, tarjetas. Un seguro de vida del banco puede costar cientos de euros
+  al año y comerse la ventaja de un tipo más bajo. La TAE ayuda a comparar porque incluye parte de esos costes.
+- **El seguro de hogar** (al menos de daños, que suele exigirse).
+- **Los gastos de la compra**, que se pagan una sola vez: ver [gastos de comprar vivienda de segunda mano](/blog/gastos-comprar-vivienda-segunda-mano/).
+
+Si ya tienes una variable y te planteas pasarte a fijo, el coste y el procedimiento están en <ArticleLink href="/blog/cambiar-hipoteca-variable-a-fija/">cambiar la hipoteca de variable a fija</ArticleLink>.
+
+## Preguntas frecuentes
+
+**¿Cuánto se paga al mes por una hipoteca de 200.000 euros?**
+Con el euríbor de {mesLargo(ult.mes)} ({n3(ult.valor)} %) más 0,8 puntos, unos {formatEuros(v25)} al mes a 25 años y
+{formatEuros(v30)} a 30 años. En fijo, entre {formatEuros(cuota(base, fijos[2], 25))} y {formatEuros(cuota(base, fijos[0], 25))}
+a 25 años con tipos del {n2(fijos[2])} % al {n2(fijos[0])} %.
+
+**¿Cuánto sube la cuota si el euríbor sube un punto?**
+Para 200.000 € a 25 años, unos {formatEuros(cuota(base, tipoAplicable(ult.valor + 1, dif), 25) - v25)} al mes con los datos de
+este artículo. Cuanto mayor es el capital pendiente y más largo el plazo que queda, mayor es el efecto.
+
+**¿Es mejor pedir la hipoteca a 25 o a 30 años?**
+Depende de tu margen mensual. A 30 años pagas menos cada mes pero más intereses en total. Lo que no conviene es elegir el
+plazo más largo solo para poder pedir más dinero del que podrías devolver con comodidad.
+
+**¿Esto es una oferta o una recomendación?**
+No. Son cálculos con el euríbor oficial y con tipos fijos de ejemplo, para que entiendas el orden de magnitud. La cuota real
+la marca la oferta vinculante del banco.

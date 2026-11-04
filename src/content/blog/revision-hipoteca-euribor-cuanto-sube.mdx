@@ -16,6 +16,8 @@ hasAffiliateLinks: false
 draft: false
 ---
 
+import ArticleLink from '../../components/ArticleLink.astro';
+
 import euribor from '../../data/euribor/ultimo.json';
 import { revisarHipoteca, cuotaFrancesa, valorMes, mesesAtras } from '../../lib/calculos/euribor.ts';
 import { formatEuros } from '../../components/CalculatorUI';
@@ -97,7 +99,7 @@ Funciona igual a la baja: si el euríbor bajara un punto, la cuota bajaría algo
 
 Con tus cifras exactas, usa la [calculadora de revisión de la hipoteca](/herramientas/calculadora-revision-hipoteca/):
 pones capital, meses restantes, diferencial y los dos euríbor, y te dice la cuota nueva y el impacto hasta la siguiente
-revisión.
+revisión. Si lo que buscas es la cuota completa de una hipoteca nueva, de 100.000 a 250.000 € y a 25 o 30 años, la tienes en <ArticleLink href="/blog/cuota-hipoteca-200000-euros/">cuota de una hipoteca de 200.000 euros con el euríbor real</ArticleLink>.
 
 ## Qué euríbor se aplica en tu revisión
 

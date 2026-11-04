@@ -180,6 +180,11 @@ el 2026-09-24; keywords sin validar todavía con autocompletado.
 | subida sueldo ipc, perdida poder adquisitivo, cuanto tiene que subir el sueldo | `subida-sueldo-ipc-poder-adquisitivo` (8/11) | Programado | Clúster 7 |
 | intereses cuenta remunerada hacienda, como tributan los depositos, intereses renta | `intereses-cuenta-remunerada-deposito-hacienda` (9/11) | Programado | Clúster 4 |
 | independencia financiera cuanto dinero necesito, regla del 4, calculadora fire | `independencia-financiera-cuanto-dinero-necesitas` (10/11) | Programado | Clúster 6 |
+| cuota hipoteca 200000 euros, cuanto se paga al mes por una hipoteca de 200.000, cuota hipoteca 150000 25 años | `cuota-hipoteca-200000-euros` (11/11) | Programado | Clúster 8 |
+| finiquito como se calcula, vacaciones no disfrutadas finiquito, finiquito baja voluntaria | `finiquito-como-se-calcula` (12/11) | Programado | Clúster 7 |
+| letras del tesoro como tributan, letras del tesoro hacienda retencion, letras del tesoro renta | `letras-del-tesoro-como-tributan` (13/11) | Programado | Clúster 4 |
+| edad de jubilacion 2027, a que edad me puedo jubilar, años cotizados para el 100% | `edad-jubilacion-2027` (14/11) | Programado | Clúster 6 |
+| comision cancelar hipoteca, cancelacion anticipada hipoteca comision, cancelar hipoteca al vender | `comision-cancelar-hipoteca` (15/11) | Programado | Clúster 8 |
 
 Herramientas (añadidas el 2026-09-23) que refuerzan clústeres con intención de "calculadora":
 fondo de emergencia (clúster 5), fondo indexado vs ETF (clúster 3), impuestos al vender un fondo

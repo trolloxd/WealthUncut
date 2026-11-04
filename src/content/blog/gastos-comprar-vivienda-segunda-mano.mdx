@@ -18,6 +18,8 @@ hasAffiliateLinks: false
 draft: false
 ---
 
+import ArticleLink from '../../components/ArticleLink.astro';
+
 import { calcularEntradaPiso } from '../../components/HomeDepositCalculator';
 import { formatEuros } from '../../components/CalculatorUI';
 import { GASTOS_NOTARIA_REGISTRO_GESTORIA_PCT } from '../../config/finance';
@@ -66,7 +68,8 @@ La Ley 5/2019 reparte los gastos de formalizar el préstamo entre el banco y tú
 
 Si quieres una copia de la escritura, esa copia sí corre de tu cuenta. El impuesto de actos jurídicos documentados de la
 hipoteca se rige por la normativa tributaria. Para planificar, cuenta con la tasación y revisa en la oferta del banco
-(la ficha de información personalizada) qué gastos asume cada parte.
+(la ficha de información personalizada) qué gastos asume cada parte. Mira también la comisión por amortizar o cancelar
+antes de tiempo, que la ley limita: los máximos y un ejemplo están en <ArticleLink href="/blog/comision-cancelar-hipoteca/">comisión por cancelar la hipoteca</ArticleLink>.
 
 ## Otros gastos que se olvidan
 

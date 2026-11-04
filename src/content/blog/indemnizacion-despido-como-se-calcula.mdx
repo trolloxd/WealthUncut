@@ -16,6 +16,8 @@ hasAffiliateLinks: false
 draft: false
 ---
 
+import ArticleLink from '../../components/ArticleLink.astro';
+
 import { calcularIndemnizacion, TIPOS_EXTINCION } from '../../lib/calculos/indemnizacion.ts';
 import { formatEuros } from '../../components/CalculatorUI';
 
@@ -100,7 +102,7 @@ dos tramos, así que si es tu caso, el resultado de la herramienta se quedará c
 Al acabar cualquier contrato, haya indemnización o no, la empresa te debe el **finiquito**: el salario de los días
 trabajados de ese mes que aún no has cobrado, las vacaciones generadas y no disfrutadas, y la parte proporcional de
 las pagas extra si no las cobras prorrateadas. La **indemnización** es otra cosa, una compensación por la pérdida del
-empleo, y solo existe en los casos de la tabla.
+empleo, y solo existe en los casos de la tabla. El cálculo del finiquito paso a paso, con un ejemplo en euros, está en <ArticleLink href="/blog/finiquito-como-se-calcula/">finiquito: cómo se calcula</ArticleLink>.
 
 ## Plazos: 20 días hábiles para reclamar
 

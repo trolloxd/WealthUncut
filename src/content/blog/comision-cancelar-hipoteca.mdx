@@ -1,0 +1,137 @@
+---
+title: "Comisión por cancelar la hipoteca: cuánto cuesta y cuándo"
+description: "Cuánto pueden cobrarte por cancelar la hipoteca antes de tiempo según la Ley 5/2019, en variable y en fija, con ejemplos en euros y los pasos a seguir."
+resumen: "Por cancelar una hipoteca variable firmada desde junio de 2019 solo pueden cobrarte comisión en los 3 o 5 primeros años, como mucho el 0,25 % o el 0,15 % de lo que devuelvas; después, nada. En una hipoteca fija el límite es el 2 % en los 10 primeros años y el 1,5 % después. En todos los casos la comisión no puede superar la pérdida financiera real del banco."
+pubDate: 2026-11-15
+updatedDate: 2026-11-15
+author: "Alex Serra Rodríguez"
+tags: ["hipoteca", "vivienda", "calculadoras"]
+categoria: "vivienda"
+sources:
+  - label: "BOE: Ley 5/2019, de 15 de marzo, reguladora de los contratos de crédito inmobiliario (art. 23 y disposición transitoria primera)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814"
+  - label: "BOE: tipos oficiales de referencia del mercado hipotecario de septiembre de 2026 (Banco de España, BOE-A-2026-20519)"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20519"
+hasAffiliateLinks: false
+draft: false
+---
+
+import euribor from '../../data/euribor/ultimo.json';
+import { cuotaFrancesa, tipoAplicable } from '../../lib/calculos/euribor.ts';
+import { formatEuros } from '../../components/CalculatorUI';
+import { COMISION_AMORTIZACION_ANTICIPADA as CA } from '../../config/finance';
+import ArticleLink from '../../components/ArticleLink.astro';
+
+export const ult = euribor.historico.at(-1);
+export const mesLargo = (m) => new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${m}-01T00:00:00Z`));
+export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+export const n3 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+export const pendiente = 150000;
+export const comision = (pct) => (pendiente * pct) / 100;
+export const V5 = CA.variable.opcionCincoAnios;
+export const V3 = CA.variable.opcionTresAnios;
+export const F = CA.fijo;
+export const dif = 0.8;
+export const tipo = tipoAplicable(ult.valor, dif);
+export const mesesRestantes = 22 * 12;
+export const cuota = cuotaFrancesa(pendiente, tipo, mesesRestantes);
+export const interesesPendientes = cuota * mesesRestantes - pendiente;
+
+Por cancelar la hipoteca entera antes de tiempo, la ley solo permite cobrarte una comisión limitada, y a veces ninguna. En una
+**hipoteca variable** firmada desde el 16 de junio de 2019, el contrato puede fijar una de estas dos opciones: como mucho el
+**{n2(V5.limitePct)} % de lo que devuelvas durante los {V5.anios} primeros años**, o como mucho el **{n2(V3.limitePct)} % durante los
+{V3.anios} primeros años**. Pasado ese plazo, **cero**. En una **hipoteca fija**, el máximo es el **{n2(F.limitePrimerosPct)} % en los
+{F.primerosAnios} primeros años** y el **{n2(F.limiteDespuesPct)} % después**. Y en todos los casos el banco no puede cobrar más que su
+pérdida financiera real. Con 150.000 € pendientes, eso va de 0 € a {formatEuros(comision(F.limitePrimerosPct))} según el tipo de
+hipoteca y los años que lleves.
+
+## Los límites de la ley, en una tabla
+
+Lo regula el artículo 23 de la Ley 5/2019, de contratos de crédito inmobiliario. Los porcentajes se aplican sobre el **capital
+que devuelves** de forma anticipada, no sobre el préstamo inicial:
+
+| Tipo de hipoteca o tramo | Periodo | Comisión máxima |
+|---|---|---|
+| Variable (opción A del contrato) | {V5.anios} primeros años | {n2(V5.limitePct)} % del capital devuelto |
+| Variable (opción B del contrato) | {V3.anios} primeros años | {n2(V3.limitePct)} % del capital devuelto |
+| Variable | Después de ese periodo | Ninguna |
+| Fija | {F.primerosAnios} primeros años (o desde que empieza el tramo fijo) | {n2(F.limitePrimerosPct)} % del capital devuelto |
+| Fija | Resto del préstamo | {n2(F.limiteDespuesPct)} % del capital devuelto |
+
+En las variables, el contrato elige **una** de las dos opciones, no las dos. En una **hipoteca mixta**, cada tramo sigue su regla:
+el tramo fijo, la de las fijas; el variable, la de las variables. La ley prohíbe cualquier otra comisión por amortizar que no sea
+una de estas.
+
+## La comisión no puede superar la pérdida del banco
+
+Los porcentajes son **máximos**. La ley añade un segundo límite: la comisión no puede ser mayor que la **pérdida financiera**
+que sufra el banco por recibir el dinero antes, calculada con una fórmula fijada en la propia ley (compara lo que te queda por
+pagar con el valor de mercado del préstamo hasta la siguiente revisión del tipo). Por eso, en la práctica, lo que te cobren
+puede ser menor que el máximo, o cero, sobre todo en variables. El índice que se usa para ese cálculo tiene que venir
+especificado en tu contrato.
+
+## Ejemplo: cancelar 150.000 euros pendientes
+
+Supón que te quedan **150.000 € por pagar** y quieres cancelar la hipoteca entera, por ejemplo porque vendes el piso:
+
+| Tu caso | Comisión máxima |
+|---|---|
+| Variable, contrato con la opción de {V5.anios} años, estás en el año 3 | {formatEuros(comision(V5.limitePct))} |
+| Variable, contrato con la opción de {V3.anios} años, estás en el año 2 | {formatEuros(comision(V3.limitePct))} |
+| Variable, ya pasado el periodo de comisión | 0 € |
+| Fija, estás en el año 5 | {formatEuros(comision(F.limitePrimerosPct))} |
+| Fija, estás en el año 12 | {formatEuros(comision(F.limiteDespuesPct))} |
+
+Para ponerlo en contexto: si esa hipoteca fuera variable con el euríbor de {mesLargo(ult.mes)} ({n3(ult.valor)} %) más 0,8 puntos
+y le quedaran 22 años, la cuota sería de unos {formatEuros(cuota)} al mes y, si el euríbor no cambiara, aún pagarías unos
+**{formatEuros(interesesPendientes)} de intereses** hasta el final. Frente a eso, incluso la comisión máxima de una variable es
+pequeña. En una fija en sus primeros años, en cambio, el {n2(F.limitePrimerosPct)} % ya es una cantidad que hay que tener en cuenta.
+
+Otra cosa es si te conviene cancelar o invertir ese dinero: depende del tipo de tu hipoteca frente a la rentabilidad que podrías
+obtener, y lo calculamos en [amortizar la hipoteca o invertir](/blog/amortizar-hipoteca-o-invertir/). Si en lugar de cancelar
+entera piensas en amortizar una parte, la duda es otra (reducir cuota o plazo), y está resuelta con números en
+[amortizar hipoteca: ¿reducir cuota o plazo?](/blog/amortizar-hipoteca-reducir-cuota-o-plazo/). La calculadora
+[amortizar la hipoteca: cuánto ahorras](/herramientas/amortizar-hipoteca-cuanto-ahorras/) te da el ahorro de intereses y la
+comisión con tus datos.
+
+## Cómo se cancela la hipoteca, paso a paso
+
+1. **Avisa al banco.** Puedes devolver el préstamo en cualquier momento. El contrato puede exigir un preaviso, pero la ley no
+   permite que sea de más de un mes.
+2. **Pide la información por escrito.** Desde que comunicas que quieres cancelar, el banco tiene **tres días hábiles** para darte,
+   en papel o en otro soporte duradero, lo que cuesta y las consecuencias de hacerlo. Con eso compruebas que la comisión respeta
+   los límites.
+3. **Paga la deuda pendiente.** El banco te emite un certificado de deuda cero.
+4. **Cancela la hipoteca en el Registro.** Pagar la deuda extingue el préstamo, pero la hipoteca sigue inscrita sobre la vivienda
+   hasta que se cancela en el Registro de la Propiedad con una escritura ante notario. Es lo habitual hacerlo, y si vendes el
+   piso el comprador lo exigirá (a menudo se cancela en la misma firma de la venta). Esos gastos de notaría y registro los pagas tú.
+5. **Revisa los seguros vinculados.** Al cancelar, los seguros accesorios que el banco te ofreció junto al préstamo y de los que es
+   beneficiario se extinguen, salvo que pidas mantenerlos con otro beneficiario, y tienes derecho a que te devuelvan la parte de la
+   prima no consumida. Pídela.
+
+## Si tu hipoteca es de antes de junio de 2019
+
+La Ley 5/2019 no se aplica a los préstamos firmados antes de su entrada en vigor, el 16 de junio de 2019 (disposición transitoria
+primera). En esos casos manda lo que diga tu escritura, dentro de la normativa vigente cuando la firmaste. Hay dos excepciones: si tu hipoteca antigua se ha novado o subrogado después de esa fecha, pasa a aplicarse la ley
+nueva; y el derecho a cambiar de variable a fijo con comisión limitada se aplica a todas, sea cual sea la fecha de firma. Este
+último caso lo explicamos en <ArticleLink href="/blog/cambiar-hipoteca-variable-a-fija/">cambiar la hipoteca de variable a fija</ArticleLink>.
+
+Si todavía estás comparando ofertas, mira la comisión por amortización anticipada junto a la cuota: en <ArticleLink href="/blog/cuota-hipoteca-200000-euros/">cuota de una hipoteca de 200.000 euros</ArticleLink> tienes las cuotas con
+el euríbor oficial, y en [hipoteca fija, variable o mixta](/blog/hipoteca-fija-variable-o-mixta/) cómo elegir.
+
+## Preguntas frecuentes
+
+**¿Cuánto cuesta cancelar una hipoteca variable?**
+Si es de junio de 2019 o posterior, como mucho el {n2(V5.limitePct)} % del capital pendiente en los {V5.anios} primeros años o el
+{n2(V3.limitePct)} % en los {V3.anios} primeros, según tu contrato, y nada después. Además, la comisión no puede superar la pérdida
+financiera del banco. A eso se suman los gastos de notaría y registro de la cancelación registral.
+
+**¿Y una hipoteca fija?**
+Como mucho el {n2(F.limitePrimerosPct)} % del capital pendiente en los {F.primerosAnios} primeros años y el {n2(F.limiteDespuesPct)} %
+después, también con el límite de la pérdida financiera del banco.
+
+**¿Pueden cobrarme si vendo el piso y cancelo la hipoteca?**
+Sí, la venta no cambia nada: cancelar por venta es una amortización total, con los mismos límites.
+
+**¿Esto es una recomendación?**
+No. Es información sobre la ley y ejemplos calculados. Lo que te cobren de verdad lo marca tu contrato, dentro de estos límites.

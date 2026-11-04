@@ -1,0 +1,48 @@
+---
+termino: "Amortización anticipada"
+titulo: "Qué es la amortización anticipada de una hipoteca"
+description: "Amortizar anticipadamente es devolver al banco una parte o todo el préstamo antes de lo pactado, para pagar menos intereses. La ley limita la comisión."
+relacionados:
+  - label: "Comisión por cancelar la hipoteca: cuánto cuesta y cuándo"
+    href: "/blog/comision-cancelar-hipoteca/"
+  - label: "Amortizar la hipoteca: cuánto ahorras"
+    href: "/herramientas/amortizar-hipoteca-cuanto-ahorras/"
+  - label: "Amortizar hipoteca: ¿reducir cuota o plazo?"
+    href: "/blog/amortizar-hipoteca-reducir-cuota-o-plazo/"
+---
+
+import { COMISION_AMORTIZACION_ANTICIPADA as CA } from '../../config/finance';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+export const ejemplo = 10000;
+
+La amortización anticipada es **devolver al banco dinero del préstamo antes de lo que marca el calendario de cuotas**. Puede ser
+**parcial** (entregas una cantidad y sigues con la hipoteca) o **total** (cancelas toda la deuda, por ejemplo al vender el piso).
+Como los intereses se calculan sobre lo que debes, cada euro que adelantas deja de generar intereses el resto de la vida del préstamo.
+
+En una amortización parcial eliges entre dos efectos: **reducir la cuota** (pagas menos cada mes durante el mismo plazo) o **reducir
+el plazo** (sigues pagando lo mismo y terminas antes). Reducir el plazo suele ahorrar más intereses; reducir la cuota da más margen
+cada mes.
+
+## Ejemplo
+
+Si amortizas {formatEuros(ejemplo)} en una hipoteca fija en sus {CA.fijo.primerosAnios} primeros años, la comisión máxima permitida
+sería el {n2(CA.fijo.limitePrimerosPct)} % de esa cantidad, {formatEuros((ejemplo * CA.fijo.limitePrimerosPct) / 100)}. En una variable
+firmada con la opción de comisión de {CA.variable.opcionTresAnios.anios} años, como mucho {formatEuros((ejemplo * CA.variable.opcionTresAnios.limitePct) / 100)}
+durante esos años, y nada después. A cambio, esos {formatEuros(ejemplo)} dejan de pagar intereses: la
+[calculadora de amortización](/herramientas/amortizar-hipoteca-cuanto-ahorras/) te dice cuánto ahorras con tus datos.
+
+## Cuándo importa en España
+
+En las hipotecas firmadas desde el 16 de junio de 2019, la Ley 5/2019 (artículo 23) reconoce el derecho a amortizar en cualquier
+momento y limita la comisión: en variables, como mucho el {n2(CA.variable.opcionCincoAnios.limitePct)} % en los
+{CA.variable.opcionCincoAnios.anios} primeros años o el {n2(CA.variable.opcionTresAnios.limitePct)} % en los
+{CA.variable.opcionTresAnios.anios} primeros, según el contrato, y después nada; en fijas, el {n2(CA.fijo.limitePrimerosPct)} % en los
+{CA.fijo.primerosAnios} primeros años y el {n2(CA.fijo.limiteDespuesPct)} % después. Además, nunca más que la pérdida financiera del banco.
+
+## Error frecuente
+
+Amortizar todo el dinero disponible sin dejar un colchón. El dinero que entregas al banco ya no vuelve: si después surge un gasto
+imprevisto, tendrías que pedir otro préstamo, probablemente más caro. Antes de amortizar conviene tener cubierto el
+[fondo de emergencia](/glosario/fondo-de-emergencia/), y comparar el tipo de la hipoteca con lo que podrías obtener invertiendo.

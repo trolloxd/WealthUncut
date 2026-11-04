@@ -20,6 +20,8 @@ hasAffiliateLinks: false
 draft: false
 ---
 
+import ArticleLink from '../../components/ArticleLink.astro';
+
 import { RETA_2026 as R } from '../../config/finance';
 import { calcularCuotaAutonomo } from '../../lib/calculos/autonomo.ts';
 import { formatEuros, formatEuros2 } from '../../components/CalculatorUI';
@@ -119,7 +121,8 @@ beneficio, la cuota mínima anual equivale a un {((c12.cuotaMin * 12) / 12000 * 
 Dentro de tu tramo puedes elegir cualquier base. Cotizar por la mínima deja más dinero cada mes, pero las prestaciones
 (baja por enfermedad, cese de actividad, jubilación) se calculan con lo que cotizas: una base más alta significa más
 cuota hoy y más protección después. No hay una opción correcta para todo el mundo; depende de cuánto valores esa
-protección frente a tener el dinero ahora y, por ejemplo, invertirlo por tu cuenta.
+protección frente a tener el dinero ahora y, por ejemplo, invertirlo por tu cuenta. Cómo pesan los años cotizados en la
+pensión de jubilación lo explicamos en <ArticleLink href="/blog/edad-jubilacion-2027/">edad de jubilación en 2027</ArticleLink>.
 
 Puedes cambiar de base **hasta seis veces al año**. El cambio tiene efectos el 1 de marzo, mayo, julio, septiembre o
 noviembre, o el 1 de enero del año siguiente, según cuándo lo pidas (artículo 45 del Reglamento general de cotización).

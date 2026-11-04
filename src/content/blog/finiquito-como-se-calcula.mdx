@@ -1,0 +1,155 @@
+---
+title: "Finiquito: cómo se calcula, paso a paso y con ejemplo"
+description: "Qué incluye el finiquito (días del mes, vacaciones no disfrutadas y pagas extra), cómo se calcula con un ejemplo en euros y qué revisar antes de firmarlo."
+resumen: "El finiquito es la liquidación de lo que la empresa te debe al acabar el contrato, sea por despido, dimisión o fin de contrato: el salario de los días trabajados que no has cobrado, las vacaciones generadas y no disfrutadas y la parte proporcional de las pagas extra si no las cobras prorrateadas. Es distinto de la indemnización, que solo existe en algunos casos."
+pubDate: 2026-11-12
+updatedDate: 2026-11-12
+author: "Alex Serra Rodríguez"
+tags: ["nómina", "calculadoras", "educación financiera"]
+categoria: "trabajo"
+sources:
+  - label: "BOE: Estatuto de los Trabajadores (arts. 31, 38, 49.1.d, 49.2 y 59)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2015-11430"
+  - label: "DOUE (vía BOE): Directiva 2003/88/CE, art. 7.2, las vacaciones solo se compensan en dinero al terminar la relación laboral"
+    url: "https://www.boe.es/doue/2003/299/L00009-00019.pdf"
+  - label: "BOE: Ley General de la Seguridad Social (art. 147, cotización de las vacaciones no disfrutadas)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2015-11724"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: 'always' });
+export const e2 = (v) => n2(v) + ' €';
+export const mensual = 1500;
+export const pagas = 2;
+export const anual = mensual * (12 + pagas);
+export const diasMes = 20;
+export const diasAnio = 31 + 28 + diasMes;
+export const salarioMes = (mensual / 30) * diasMes;
+export const diasVac = (30 * diasAnio) / 365;
+export const valorDiaVac = mensual / 30;
+export const vacaciones = diasVac * valorDiaVac;
+export const extras = pagas * mensual * (diasAnio / 365);
+export const total = salarioMes + vacaciones + extras;
+export const totalProrrata = salarioMes * (14 / 12) + vacaciones;
+
+El **finiquito** es el documento en el que la empresa liquida todo lo que te debe cuando se acaba el contrato, por la causa que
+sea: despido, dimisión, fin de un contrato temporal o mutuo acuerdo. Incluye tres cosas: **el salario de los días trabajados
+que aún no has cobrado**, **las vacaciones generadas y no disfrutadas** y **la parte proporcional de las pagas extra** si no
+las cobras prorrateadas. Con un sueldo de {formatEuros(mensual)} brutos al mes en 14 pagas y un contrato que termina el 20 de
+marzo, el finiquito bruto sale en torno a **{formatEuros(total)}**. Abajo está el cálculo paso a paso.
+
+## Finiquito e indemnización no son lo mismo
+
+Es la confusión más común. Al terminar cualquier contrato hay finiquito, porque es dinero que ya has generado trabajando. La
+indemnización, en cambio, es una compensación extra que solo existe en algunos casos: despido improcedente, despido objetivo o
+fin de un contrato temporal, entre otros. Si te vas por tu cuenta, cobras el finiquito pero no hay indemnización.
+
+| | Finiquito | Indemnización |
+|---|---|---|
+| Cuándo se cobra | Siempre que acaba el contrato | Solo en algunos despidos y al acabar contratos temporales |
+| Qué es | Salario ya generado (días, vacaciones, pagas) | Compensación por perder el empleo |
+| IRPF | Tributa como salario | Exenta hasta el mínimo legal obligatorio |
+| Cómo se calcula | Este artículo | [Indemnización por despido: cómo se calcula](/blog/indemnizacion-despido-como-se-calcula/) |
+
+La [calculadora de indemnización por despido](/herramientas/calculadora-indemnizacion-despido/) calcula las dos cosas a la vez:
+pon los días de vacaciones pendientes y los días trabajados del último mes y te da también el finiquito.
+
+## Qué incluye el finiquito
+
+1. **Salario de los días trabajados del último mes.** Si el contrato acaba a mitad de mes y la nómina de ese mes aún no se ha
+   pagado, se liquidan los días trabajados. También cualquier complemento, horas extra o comisión pendiente.
+2. **Vacaciones generadas y no disfrutadas.** El Estatuto de los Trabajadores fija un mínimo de **30 días naturales de
+   vacaciones al año** (art. 38) y prohíbe cambiarlas por dinero mientras el contrato sigue vivo. La única excepción es el final
+   de la relación laboral: la Directiva europea de tiempo de trabajo (art. 7.2) permite compensarlas en dinero precisamente
+   entonces. Se generan en proporción al tiempo trabajado en el año.
+3. **Parte proporcional de las pagas extraordinarias.** La ley reconoce dos pagas extra al año (art. 31 ET), una en Navidad y
+   otra cuando fije el convenio. Si las cobras prorrateadas en cada nómina, ya están pagadas. Si no, el finiquito incluye la
+   parte generada desde el último cobro de cada una.
+4. **Si te vas sin el preaviso de tu convenio**, la empresa puede descontar los días que falten, cuando el convenio lo prevé. Al
+   revés, en un contrato temporal de más de un año la parte que lo termina debe avisar con al menos quince días (art. 49.1.c ET).
+
+## Ejemplo calculado
+
+Supuestos del ejemplo (inventados, para ver el método):
+
+- Sueldo de **{formatEuros(mensual)} brutos al mes en 14 pagas** ({formatEuros(anual)} al año), sin pagas prorrateadas.
+- Las dos pagas extra se generan a lo largo del año natural (de enero a diciembre). Muchos convenios usan otros periodos, por
+  ejemplo de julio a junio para la paga de verano: mira el tuyo.
+- El contrato termina el **20 de marzo** de un año no bisiesto. Del 1 de enero al 20 de marzo van **{diasAnio} días**.
+- No has disfrutado ningún día de vacaciones ese año y la nómina de marzo no se ha pagado.
+
+**Paso 1. Días trabajados de marzo.** Con el criterio habitual de mes de 30 días: {formatEuros(mensual)} / 30 × {diasMes} días =
+**{e2(salarioMes)}**.
+
+**Paso 2. Vacaciones no disfrutadas.** Días generados: 30 × {diasAnio} / 365 = {n2(diasVac)} días. Valor de cada día (salario
+mensual / 30): {e2(valorDiaVac)}. Total: {n2(diasVac)} × {e2(valorDiaVac)} = **{e2(vacaciones)}**.
+
+**Paso 3. Parte proporcional de las pagas extra.** Cada paga es de {formatEuros(mensual)} y se ha generado durante {diasAnio}
+de 365 días: 2 × {formatEuros(mensual)} × {diasAnio} / 365 = **{e2(extras)}**.
+
+| Concepto | Importe bruto |
+|---|---|
+| Salario de 20 días de marzo | {e2(salarioMes)} |
+| {n2(diasVac)} días de vacaciones no disfrutadas | {e2(vacaciones)} |
+| Parte proporcional de las dos pagas extra | {e2(extras)} |
+| **Finiquito bruto** | **{e2(total)}** |
+
+Si en lugar de 14 pagas cobraras las extra prorrateadas (12 nóminas de {formatEuros(anual / 12)}), el paso 3 desaparece porque ya
+las has cobrado, y el finiquito quedaría en unos {formatEuros(totalProrrata)}: los días de marzo con la nómina prorrateada más
+las vacaciones.
+
+Dos detalles que cambian el resultado y dependen de tu convenio o de tu empresa: cuántos días de vacaciones tienes (30 naturales
+es el mínimo, hay convenios con más o que los cuentan en días laborables) y con qué valor se paga cada día de vacaciones (si se
+incluyen ciertos complementos). El método, en cambio, es siempre el mismo.
+
+## Del bruto al neto: impuestos y cotización
+
+El finiquito es salario, así que lleva **retención de IRPF y cotización a la Seguridad Social** como una nómina normal. Las
+vacaciones no disfrutadas tienen una regla propia: la ley obliga a cotizar por ellas como si las disfrutaras justo después del
+último día, aunque eso caiga en el mes siguiente (art. 147 de la Ley General de la Seguridad Social). Por eso esos días cuentan
+también como cotizados.
+
+Si quieres una idea del neto, la [calculadora de sueldo neto](/herramientas/calculadora-sueldo-neto/) te da tu porcentaje
+aproximado de retención y cotización; aplícalo al bruto del finiquito. La retención exacta la decide la empresa con tus datos
+del año, y en la declaración de la renta se ajusta lo que falte o sobre.
+
+## Antes de firmar el finiquito
+
+- **La propuesta llega con el aviso.** La ley obliga a la empresa a acompañar la comunicación del fin del contrato (o el preaviso)
+  con una propuesta del documento de liquidación (art. 49.2 ET). Tienes tiempo de revisarla.
+- **Puedes firmar con un representante delante.** Si en tu empresa hay representantes legales de los trabajadores, puedes pedir
+  que uno esté presente en la firma, y debe constar en el recibo si estuvo o si no lo pediste.
+- **Revisa cada línea**: días de vacaciones que te quedaban según tus registros, pagas pendientes, horas o comisiones, y si te
+  han descontado preaviso que no tocaba.
+- **Si no estás de acuerdo, dilo por escrito.** Es habitual firmar indicando que no estás conforme para dejar constancia de que
+  solo acreditas lo que recibes. Y si se trata de un despido que quieres impugnar, el plazo es muy corto: **20 días hábiles**
+  (art. 59.3 ET), así que no lo dejes para más adelante.
+- **Para reclamar cantidades** (por ejemplo, vacaciones mal calculadas) hay un plazo general de **un año** desde que termina el
+  contrato (art. 59.1 y 2 ET).
+
+## Ejemplo con baja voluntaria
+
+Si te vas por tu cuenta con el mismo sueldo y la misma fecha, el finiquito es exactamente el del ejemplo ({formatEuros(total)}
+brutos) menos lo que se descuente por preaviso si no lo has respetado y tu convenio lo prevé. No hay indemnización. Antes de
+dimitir, revisa también qué pasa con el paro: dejar el trabajo por voluntad propia no da derecho a la prestación por desempleo
+en general, así que conviene tener un [fondo de emergencia](/blog/fondo-de-emergencia-cuanto-necesitas/) para cubrir el hueco.
+
+## Preguntas frecuentes
+
+**¿Me tienen que pagar el finiquito si me voy yo?**
+Sí. El finiquito es lo ya generado (días trabajados, vacaciones pendientes y parte de las pagas), así que se paga cualquiera que
+sea la causa del fin del contrato. Lo que no hay en una baja voluntaria es indemnización.
+
+**¿Se pagan las vacaciones no disfrutadas?**
+Sí, al terminar el contrato. Mientras trabajas no pueden cambiarse por dinero; al acabar, las que hayas generado y no disfrutado
+se pagan en el finiquito y cotizan a la Seguridad Social.
+
+**¿El finiquito paga IRPF?**
+Sí, como cualquier salario. Solo la indemnización por despido, hasta el importe obligatorio por ley, está exenta.
+
+**¿Esto sustituye a revisar mi convenio?**
+No. El método es general, pero los días de vacaciones, el preaviso y el reparto de las pagas los concreta tu convenio. Ante una
+discrepancia importante, consulta con un representante sindical o un graduado social.

@@ -16,6 +16,8 @@ hasAffiliateLinks: false
 draft: false
 ---
 
+import ArticleLink from '../../components/ArticleLink.astro';
+
 import { calcularAmortizacion } from '../../components/AmortizacionHipotecaCalculator';
 import { formatEuros } from '../../components/CalculatorUI';
 import { COMISION_AMORTIZACION_ANTICIPADA as COM } from '../../config/finance';
@@ -76,7 +78,8 @@ La Ley 5/2019 limita la comisión por reembolso anticipado, que se calcula sobre
 
 Son máximos, no tarifas: la comisión tampoco puede superar la pérdida financiera real del banco. Mira
 el contrato o pide a tu banco el importe exacto antes de decidir, porque puede cambiar el resultado
-si tu amortización es pequeña.
+si tu amortización es pequeña. Si lo que quieres es cancelar la hipoteca entera, por ejemplo al vender el piso, los pasos
+y un ejemplo en euros están en <ArticleLink href="/blog/comision-cancelar-hipoteca/">comisión por cancelar la hipoteca</ArticleLink>.
 
 ## ¿Amortizar o invertir ese dinero?
 

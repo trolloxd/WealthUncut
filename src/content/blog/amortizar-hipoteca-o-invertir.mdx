@@ -16,6 +16,8 @@ hasAffiliateLinks: false
 draft: false
 ---
 
+import ArticleLink from '../../components/ArticleLink.astro';
+
 import { simular } from '../../components/IndexFundCalculator';
 import { formatEuros } from '../../components/CalculatorUI';
 import { COMISION_AMORTIZACION_ANTICIPADA as COM } from '../../config/finance';
@@ -78,7 +80,7 @@ hipoteca; si te quedan menos, la comparación cambia.
 - **Tipo variable.** Si tu hipoteca es variable, "lo que ahorras" cambia con el [euríbor](/glosario/euribor/). Mira cómo en
   [hipoteca fija, variable o mixta](/blog/hipoteca-fija-variable-o-mixta/).
 - **Comisión por amortizar.** La ley fija máximos: {COM.variable.opcionCincoAnios.limitePct.toLocaleString('es-ES')} % en los primeros {COM.variable.opcionCincoAnios.anios} años o {COM.variable.opcionTresAnios.limitePct.toLocaleString('es-ES')} % en los
-  primeros {COM.variable.opcionTresAnios.anios} (según contrato) en préstamos variables, y {COM.fijo.limitePrimerosPct.toLocaleString('es-ES')} % en los primeros {COM.fijo.primerosAnios} años en los fijos. Pueden ser menos.
+  primeros {COM.variable.opcionTresAnios.anios} (según contrato) en préstamos variables, y {COM.fijo.limitePrimerosPct.toLocaleString('es-ES')} % en los primeros {COM.fijo.primerosAnios} años en los fijos. Pueden ser menos. Para una cancelación total, con ejemplos, ver <ArticleLink href="/blog/comision-cancelar-hipoteca/">comisión por cancelar la hipoteca: cuánto cuesta y cuándo</ArticleLink>.
 - **Psicología.** Muchas personas valoran dormir sin deuda más que unas décimas de rentabilidad esperada, y es una
   razón legítima.
 

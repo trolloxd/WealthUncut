@@ -1,0 +1,146 @@
+---
+title: "Letras del Tesoro: cómo tributan y cuánto rinden netas"
+description: "Cómo tributan las Letras del Tesoro en la renta, por qué no tienen retención, en qué año se declaran y cuánto queda neto con la última subasta a 12 meses."
+resumen: "La ganancia de una Letra del Tesoro (la diferencia entre lo que pagas y los 1.000 € por letra que te devuelven) es un rendimiento del capital mobiliario y tributa en la base del ahorro del IRPF. No tiene retención, así que todo el impuesto se paga en la declaración de la renta del año en que la letra vence o la vendes."
+pubDate: 2026-11-13
+updatedDate: 2026-11-13
+author: "Alex Serra Rodríguez"
+tags: ["impuestos", "ahorro", "cuentas"]
+categoria: "impuestos"
+sources:
+  - label: "BOE: resultados de las subastas de Letras del Tesoro a seis y doce meses del 6 de octubre de 2026 (BOE-A-2026-21773)"
+    url: "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21773"
+  - label: "BOE: Orden ECM/2/2026, de creación de Deuda del Estado en 2026 (Letras al descuento, amortización a la par, mínimo de 1.000 €)"
+    url: "https://www.boe.es/buscar/doc.php?id=BOE-A-2026-678"
+  - label: "BOE: Ley 35/2006 del IRPF (art. 14.1.a, imputación temporal, y art. 25.2, rendimientos por cesión de capitales propios)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2006-20764"
+  - label: "BOE: Reglamento del IRPF, art. 75.3.b (los rendimientos de las Letras del Tesoro no tienen retención)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2007-6820"
+hasAffiliateLinks: false
+draft: false
+---
+
+import { calcularImpuestoAhorro, IRPF_AHORRO_BRACKETS, COMPENSACION_AHORRO, IPC_ESPANA } from '../../config/finance';
+import { formatEuros } from '../../components/CalculatorUI';
+import TramosAhorroTabla from '../../components/TramosAhorroTabla.astro';
+import ArticleLink from '../../components/ArticleLink.astro';
+
+export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: 'always' });
+export const n3 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+export const e2 = (v) => n2(v) + ' €';
+export const pct = (v) => Math.round(v * 100);
+export const precio = 97.057;
+export const tipo = 2.999;
+export const nominal = 10000;
+export const pagado = (nominal * precio) / 100;
+export const rendimiento = nominal - pagado;
+export const impuesto = calcularImpuestoAhorro(rendimiento);
+export const neto = rendimiento - impuesto;
+export const netoPct = (neto / pagado) * 100;
+export const otrasRentas = 6000;
+export const impConOtras = calcularImpuestoAhorro(otrasRentas + rendimiento) - calcularImpuestoAhorro(otrasRentas);
+
+Una Letra del Tesoro tributa así: la diferencia entre lo que pagas por ella y los **1.000 € por letra** que te devuelve el
+Estado al vencer es un **rendimiento del capital mobiliario**, y se suma a tu [base del ahorro](/glosario/base-del-ahorro/) del
+IRPF (del {pct(IRPF_AHORRO_BRACKETS[0].tipo)} % al {pct(IRPF_AHORRO_BRACKETS.at(-1).tipo)} % según el total). A diferencia de
+una cuenta o un depósito, **no tiene retención**: cobras el rendimiento entero y pagas todo el impuesto en la declaración de la
+renta del año en que la letra vence. Con el resultado de la subasta a 12 meses del 6 de octubre de 2026, por cada 10.000 € de
+nominal ganas {e2(rendimiento)} brutos y te quedan unos {e2(neto)} después de impuestos.
+
+## Qué es una Letra del Tesoro
+
+Es deuda del Estado español a corto plazo, de hasta 24 meses (en la práctica se emiten a 3, 6, 9 y 12 meses). Funciona **al
+descuento**: no paga intereses cada mes ni al final, sino que la compras por menos de lo que vale y al vencer te devuelven el
+valor completo (se dice que amortiza "a la par"). Cada letra vale 1.000 € al vencimiento, y es también la compra mínima.
+
+El precio sale de una subasta pública, y los resultados se publican en el BOE. En la subasta a **12 meses** del 6 de octubre de
+2026 (emisión del 9 de octubre de 2026, vencimiento el 8 de octubre de 2027), el **tipo de interés medio fue el {n3(tipo)} %**,
+equivalente a un **precio medio del {n3(precio)} %**. Es decir, por cada letra de 1.000 € se pagaron unos {e2(precio * 10)}.
+
+Los tipos cambian en cada subasta (hay subastas de letras dos veces al mes), así que tómalo como un ejemplo con fecha, no como el
+tipo de hoy.
+
+## Cómo tributan, paso a paso
+
+1. **Qué se grava.** El rendimiento es la diferencia entre lo que te devuelven al vencer (o lo que te pagan si la vendes antes) y
+   lo que pagaste al comprarla. Las comisiones de compra y venta que puedas justificar se restan (art. 25.2.b de la Ley del IRPF).
+2. **Dónde va.** Es un rendimiento del capital mobiliario por cesión de capitales propios, igual que los intereses de un
+   depósito, así que tributa en la base del ahorro con estos tramos:
+
+<TramosAhorroTabla />
+
+3. **Sin retención.** El Reglamento del IRPF exime expresamente de retención los rendimientos de las Letras del Tesoro (art.
+   75.3.b). Nadie te adelanta el impuesto a Hacienda: lo pagas tú, entero, en la renta.
+4. **En qué declaración.** Los rendimientos del capital se imputan al año en que son exigibles (art. 14.1.a), que en una letra es
+   cuando vence. La letra a 12 meses del ejemplo, comprada en octubre de 2026 y con vencimiento en octubre de 2027, se declara en la
+   renta de **2027**, aunque la compraras en 2026.
+
+## Ejemplo: 10.000 euros en Letras a 12 meses
+
+Compras 10 letras (10.000 € de nominal) en la subasta del 6 de octubre de 2026 al precio medio, sin comisiones:
+
+| Concepto | Importe |
+|---|---|
+| Pagas al comprar (10.000 € × {n3(precio)} %) | {e2(pagado)} |
+| Recibes al vencer | {e2(nominal)} |
+| Rendimiento bruto | {e2(rendimiento)} |
+| IRPF del ahorro (si no tienes otras rentas del ahorro ese año) | {e2(impuesto)} |
+| **Rendimiento neto** | **{e2(neto)}** |
+| Rentabilidad neta sobre lo invertido | {n2(netoPct)} % |
+
+Lo importante es que el impuesto depende de **todo** lo que sumes en la base del ahorro ese año, no solo de la letra. Si además
+tuvieras {formatEuros(otrasRentas)} de intereses, dividendos o ganancias de fondos, el primer tramo ya estaría lleno y el
+rendimiento de la letra pagaría {e2(impConOtras)} en lugar de {e2(impuesto)}. Puedes ver el cálculo de los tramos con más
+ejemplos en [tramos del IRPF del ahorro](/blog/tramos-irpf-ahorro/).
+
+## Letras del Tesoro frente a un depósito o una cuenta remunerada
+
+Fiscalmente tributan igual: los dos son rendimientos del capital mobiliario en la base del ahorro. Las diferencias son otras:
+
+| | Letras del Tesoro | Depósito o cuenta remunerada |
+|---|---|---|
+| Quién debe el dinero | El Estado español | El banco (con la garantía del Fondo de Garantía de Depósitos) |
+| Retención | No | Sí, el banco retiene a cuenta |
+| Cuándo tributa | Al vencer o vender la letra | Cuando te abonan los intereses |
+| Liquidez | Hasta el vencimiento, o venta en el mercado secundario al precio de ese día | Depende del producto |
+| Rentabilidad | La de la subasta, fija hasta el vencimiento | La que ofrezca el banco |
+
+Que no haya retención no significa que pagues menos: el impuesto final es el mismo. Solo cambia cuándo lo pagas. Si tu
+declaración suele salir a devolver gracias a las retenciones de la nómina, una letra puede hacer que te devuelvan menos o que
+salga a pagar. Cómo tributan los intereses de cuentas y depósitos, con su retención, lo explicamos en <ArticleLink href="/blog/intereses-cuenta-remunerada-deposito-hacienda/">intereses de cuentas y depósitos: cómo tributan en la renta</ArticleLink>.
+Para comparar con lo que pagan hoy los bancos, tienes el [comparador de cuentas remuneradas y depósitos](/herramientas/comparador-cuentas-remuneradas/),
+y la garantía de los depósitos está explicada en <ArticleLink href="/blog/fondo-garantia-depositos-que-cubre/">Fondo de Garantía de Depósitos: qué cubre y qué no</ArticleLink>.
+
+## Rentabilidad real: después de impuestos e inflación
+
+Una rentabilidad neta del {n2(netoPct)} % hay que compararla con la inflación. Según el INE, el IPC general subió
+un **{IPC_ESPANA.general.toLocaleString('es-ES')} %** en el año hasta {IPC_ESPANA.mesTexto}. Si la inflación de los próximos doce meses fuera
+parecida, el dinero de la letra perdería poder de compra aunque gane en euros. No es un motivo para no comprarlas (protegen
+mejor que tener el dinero parado en una cuenta sin interés), pero sí para no confundir "seguro" con "gano dinero de verdad". Lo
+puedes calcular con tus cifras en la [calculadora de inflación](/herramientas/calculadora-inflacion/) y lo desarrollamos en
+[inflación: qué interés necesitas para no perder dinero](/blog/inflacion-que-interes-necesitas-para-no-perder/).
+
+## Si vendes antes de que venza o la reinviertes
+
+- **Venta antes del vencimiento.** Puedes vender la letra en el mercado secundario. El rendimiento es el precio de venta menos el
+  de compra, y puede ser negativo si los tipos han subido mucho desde que la compraste. Se declara en el año de la venta.
+- **Rendimiento negativo.** Si pierdes, se compensa primero con otros rendimientos del capital mobiliario del mismo año, y lo que
+  sobre, con ganancias patrimoniales con un límite del {pct(COMPENSACION_AHORRO.limiteCruzado)} %. Lo que no puedas compensar se
+  arrastra {COMPENSACION_AHORRO.aniosArrastre} años.
+- **Reinversión automática.** Si al vencer la letra se reinvierte en otra, la primera se ha amortizado igualmente: su rendimiento
+  se declara en el año en que venció, aunque no hayas visto el dinero en tu cuenta.
+
+## Preguntas frecuentes
+
+**¿Las Letras del Tesoro tienen retención?**
+No. El Reglamento del IRPF las excluye de retención, así que cobras el rendimiento completo y lo declaras tú en la renta.
+
+**¿En qué casilla o apartado van?**
+En los rendimientos del capital mobiliario de la base del ahorro, junto a los intereses de cuentas y depósitos. Revisa que el
+borrador los incluya: al no haber retención, conviene comprobarlo con tus propios justificantes.
+
+**¿Tengo que declarar una letra que compré este año pero vence el que viene?**
+No en el año de compra. Se declara en el año en que vence (o en que la vendas), que es cuando el rendimiento es exigible.
+
+**¿Es una recomendación de compra?**
+No. Es información fiscal con un ejemplo calculado. Antes de invertir, compara plazos, liquidez y alternativas con tu situación.

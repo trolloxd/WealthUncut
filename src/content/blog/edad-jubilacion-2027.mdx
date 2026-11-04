@@ -1,0 +1,155 @@
+---
+title: "Edad de jubilación en 2027: a qué edad te puedes jubilar"
+description: "Desde 2027 la edad ordinaria de jubilación es 67 años, o 65 con 38 años y 6 meses cotizados. Tabla oficial, anticipada y cuánto cobras según lo cotizado."
+resumen: "A partir de 2027, la edad ordinaria de jubilación en España es de 67 años, o de 65 si se acreditan al menos 38 años y 6 meses cotizados. Hacen falta 15 años cotizados como mínimo para cobrar pensión, que entonces es el 50 % de la base reguladora, y 37 años para llegar al 100 %."
+pubDate: 2026-11-14
+updatedDate: 2026-11-14
+author: "Alex Serra Rodríguez"
+tags: ["pensiones", "educación financiera", "ahorro"]
+categoria: "jubilacion"
+sources:
+  - label: "BOE: Ley General de la Seguridad Social (arts. 205, 207, 208, 210 y disposiciones transitorias séptima y novena)"
+    url: "https://www.boe.es/buscar/act.php?id=BOE-A-2015-11724"
+  - label: "Seguridad Social: pensión de jubilación ordinaria, requisitos y cuadro de aplicación gradual de la edad"
+    url: "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/10963/28393/28396/28472"
+hasAffiliateLinks: false
+draft: false
+---
+
+import ArticleLink from '../../components/ArticleLink.astro';
+import { formatEuros } from '../../components/CalculatorUI';
+
+export const n2 = (v) => v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+export const porcentaje = (anios) => {
+  if (anios < 15) return 0;
+  const meses = Math.round((anios - 15) * 12);
+  const tramo1 = Math.min(meses, 248);
+  const tramo2 = Math.min(Math.max(meses - 248, 0), 16);
+  return Math.min(100, 50 + tramo1 * 0.19 + tramo2 * 0.18);
+};
+export const filas = [15, 20, 25, 30, 35, 36, 37];
+export const pension = 1500;
+
+Desde el **1 de enero de 2027**, la edad ordinaria de jubilación en España es de **67 años**, o de **65 años** si has cotizado
+al menos **38 años y 6 meses**. Es el final del calendario gradual que empezó en 2013. Para cobrar pensión de jubilación hacen
+falta como mínimo **15 años cotizados** (dos de ellos en los últimos quince), y con eso la pensión es el 50 % de la base
+reguladora; para llegar al 100 % hacen falta **37 años**. Abajo están la tabla oficial, la jubilación anticipada y qué significa
+todo esto si hoy tienes 25 o 30 años.
+
+## La tabla oficial de edad de jubilación
+
+La Ley General de la Seguridad Social fija la edad en función de lo cotizado, con un calendario que fue subiendo cada año:
+
+| Año | Si has cotizado... | Te jubilas con... | Si no, la edad es |
+|---|---|---|---|
+| 2025 | 38 años y 3 meses o más | 65 años | 66 años y 8 meses |
+| 2026 | 38 años y 3 meses o más | 65 años | 66 años y 10 meses |
+| **Desde 2027** | **38 años y 6 meses o más** | **65 años** | **67 años** |
+
+Dos detalles de la ley que importan al contar:
+
+- Se cuentan **años y meses completos** de cotización; las fracciones no suman.
+- **No cuentan las pagas extra prorrateadas** como tiempo cotizado: lo que importa son los días en alta, no el dinero.
+
+Hay excepciones que adelantan la edad, por ejemplo para profesiones especialmente penosas o personas con discapacidad, y casos
+de trabajadores que siguen con la legislación anterior a 2013. Si crees que estás en uno, consúltalo con la Seguridad Social.
+
+## Cuánto cobras según los años cotizados
+
+La pensión es un porcentaje de tu **base reguladora**, que es una media de tus bases de cotización de los últimos años. Desde
+2027, ese porcentaje se calcula así (art. 210 y disposición transitoria novena de la ley):
+
+- Por los primeros **15 años**: el **50 %**.
+- A partir de ahí, cada mes adicional suma un **0,19 %** durante 248 meses, y un **0,18 %** los 16 meses siguientes.
+- El máximo es el **100 %**, que se alcanza con **37 años** cotizados.
+
+| Años cotizados | Porcentaje de la base reguladora |
+|---|---|
+| Menos de {filas[0]} | Sin pensión contributiva de jubilación |
+| {filas[0]} | {n2(porcentaje(filas[0]))} % |
+| {filas[1]} | {n2(porcentaje(filas[1]))} % |
+| {filas[2]} | {n2(porcentaje(filas[2]))} % |
+| {filas[3]} | {n2(porcentaje(filas[3]))} % |
+| {filas[4]} | {n2(porcentaje(filas[4]))} % |
+| {filas[5]} | {n2(porcentaje(filas[5]))} % |
+| {filas[6]} o más | {n2(porcentaje(filas[6]))} % |
+
+Fíjate en el efecto de los huecos: entre 30 y 35 años cotizados hay más de 11 puntos de diferencia en la pensión. Los años
+sin cotizar (paro sin prestación, trabajos sin contrato, temporadas fuera) no solo retrasan la edad: también bajan el
+porcentaje.
+
+## Qué significa si hoy tienes 25 o 30 años
+
+Con las reglas actuales, la cuenta para alguien joven es sencilla:
+
+- **Si empiezas a cotizar a los 25 y no tienes huecos**, a los 63 años y 6 meses llevarías 38 años y 6 meses cotizados, y podrías
+  jubilarte a los 65 con la pensión ordinaria. Si te faltara algo, la edad sería 67.
+- **Si empiezas a los 30**, a los 65 llevarías como mucho 35 años: la edad ordinaria sería 67, y llegarías al 100 % (37 años) a los
+  67.
+
+Las reglas pueden cambiar de aquí a que te jubiles (lo han hecho varias veces en los últimos quince años), así que tómalo como
+una foto de la ley de hoy, no como una promesa. Lo que no cambia es el fondo: cuantos más años cotizados y más altas las bases,
+mejor pensión. Y cuanto antes empieces a ahorrar por tu cuenta, menos dependerás de esas reglas. En <ArticleLink href="/blog/independencia-financiera-cuanto-dinero-necesitas/">independencia financiera: cuánto dinero necesitas</ArticleLink>
+está la cuenta del capital que haría falta para no depender de una fecha, y con la
+[calculadora de independencia financiera](/herramientas/calculadora-independencia-financiera/) la haces con tus números.
+
+## Jubilación anticipada: cuándo y con cuánto recorte
+
+La ley permite adelantar la jubilación en dos casos generales, siempre con una reducción de la pensión:
+
+| Tipo | Cuánto antes como máximo | Años cotizados exigidos | Otros requisitos |
+|---|---|---|---|
+| Voluntaria | 2 años antes de tu edad ordinaria | 35 años | Que la pensión resultante supere la mínima que te correspondería a los 65 |
+| Involuntaria (despido colectivo u objetivo, entre otras causas) | 4 años antes de tu edad ordinaria | 33 años | Estar inscrito como demandante de empleo al menos 6 meses antes de pedirla |
+
+En la **voluntaria**, la pensión se reduce por cada mes que adelantas. Con el máximo, 24 meses, el recorte es del **21 %** si has
+cotizado menos de 38 años y 6 meses, y baja al 19 %, 17 % o 13 % cuanto más hayas cotizado. Adelantando solo 12 meses, el recorte
+va del 5,50 % al 4,75 %. Ese recorte es para toda la vida de la pensión, así que pesa mucho.
+
+En la otra dirección, si **retrasas la jubilación** más allá de tu edad ordinaria, la ley premia cada año completo cotizado con un 4 %
+adicional de pensión (o con un pago único, o una combinación de los dos, a elegir).
+
+## Ejemplo en euros: adelantar o retrasar dos años
+
+Supón una pensión que, a la edad ordinaria, sería de **{formatEuros(pension)} al mes** en 14 pagas (una cifra redonda para el
+ejemplo). Con menos de 38 años y 6 meses cotizados:
+
+| Opción | Cambio | Pensión al mes | Al año (14 pagas) |
+|---|---|---|---|
+| Anticipada voluntaria, 24 meses antes | −21 % | {formatEuros(pension * (1 - 0.21))} | {formatEuros(pension * (1 - 0.21) * 14)} |
+| Anticipada voluntaria, 12 meses antes | −5,50 % | {formatEuros(pension * (1 - 0.055))} | {formatEuros(pension * (1 - 0.055) * 14)} |
+| Edad ordinaria | | {formatEuros(pension)} | {formatEuros(pension * 14)} |
+| Retrasar 2 años completos, cotizando | +8 % | {formatEuros(pension * 1.08)} | {formatEuros(pension * 1.08 * 14)} |
+
+Adelantar dos años cuesta en este ejemplo {formatEuros(pension * 0.21)} al mes **para siempre**, unos
+{formatEuros(pension * 0.21 * 14)} al año. Por eso, si alguien quiere dejar de trabajar antes de la edad ordinaria, suele salir más a
+cuenta tener ahorros propios que le cubran esos años que adelantar la pensión pública. El recorte real depende de tu caso: los
+coeficientes cambian con los años cotizados y con los meses que adelantes.
+
+## Y el ahorro privado
+
+La pensión pública es la base, pero muy pocas personas llegan al 100 % con bases altas. Para complementar hay dos vías habituales
+con fiscalidad distinta: el plan de pensiones, que desgrava al aportar pero tributa entero al rescatarlo, y los fondos
+indexados, que no desgravan pero tributan solo por la ganancia y en la base del ahorro. Las comparamos con números en
+[plan de pensiones o fondo indexado](/blog/plan-pensiones-o-fondo-indexado/) y en
+[plan de pensiones: cuánto desgrava y cuándo compensa](/blog/plan-de-pensiones-cuanto-desgrava/), y puedes probar tu caso con el
+[comparador de plan de pensiones y fondo indexado](/herramientas/plan-pensiones-vs-fondo-indexado/).
+
+Para saber cuántos años llevas cotizados, el dato está en tu informe de vida laboral, que se descarga en la sede electrónica de
+la Seguridad Social.
+
+## Preguntas frecuentes
+
+**¿A qué edad me puedo jubilar en 2027?**
+A los 65 años si acreditas al menos 38 años y 6 meses cotizados; si no, a los 67. Es la edad ordinaria; la anticipada puede ser
+antes, con recorte.
+
+**¿Cuántos años hay que cotizar para cobrar la jubilación?**
+Un mínimo de 15, con al menos 2 dentro de los últimos 15 años antes de jubilarte. Con 15 años cobras el 50 % de la base reguladora.
+
+**¿Cuántos años hay que cotizar para cobrar el 100 %?**
+37 años, desde 2027. Hasta 2026 eran 36 años y 6 meses.
+
+**¿Esto es asesoramiento sobre mi jubilación?**
+No. Es un resumen de la ley vigente con ejemplos. Para tu caso concreto, la Seguridad Social ofrece un simulador de pensión con
+tus datos reales de cotización.

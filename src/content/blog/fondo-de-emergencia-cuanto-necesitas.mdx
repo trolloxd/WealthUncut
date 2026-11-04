@@ -16,6 +16,8 @@ hasAffiliateLinks: false
 draft: false
 ---
 
+import ArticleLink from '../../components/ArticleLink.astro';
+
 import { FGD_COBERTURA } from '../../config/finance';
 
 export const euros = (n) => `${new Intl.NumberFormat('es-ES', { useGrouping: 'always' }).format(n)} €`;
@@ -84,7 +86,8 @@ Más cerca de 6 meses (o más) si:
 
 - Eres autónomo o tienes ingresos variables.
 - Eres la única fuente de ingresos de tu hogar, o tienes personas a tu cargo.
-- Tu sector es lento para encontrar trabajo, o tu contrato es temporal.
+- Tu sector es lento para encontrar trabajo, o tu contrato es temporal. Al acabar un contrato cobras el finiquito (y a veces
+  indemnización), pero no es un colchón: es salario ya generado, como explica <ArticleLink href="/blog/finiquito-como-se-calcula/">finiquito: cómo se calcula</ArticleLink>.
 - Tienes coche, vivienda en propiedad u otras cosas que pueden generar gastos grandes de golpe.
 
 **Si tienes deudas caras** (tarjetas revolving, préstamos al consumo con intereses altos), el orden
@@ -130,7 +133,8 @@ que valga el mercado ese día. Opciones razonables:
 
 Las cuentas y depósitos en entidades adheridas al Fondo de Garantía de Depósitos están cubiertos
 hasta {euros(FGD_COBERTURA.importe)} por titular y entidad si la entidad quiebra, muy por
-encima de lo que necesita casi cualquier colchón.
+encima de lo que necesita casi cualquier colchón. Las Letras del Tesoro son deuda del Estado y no un depósito: solo se
+recuperan al vencer o vendiéndolas al precio de ese día, y su fiscalidad está en <ArticleLink href="/blog/letras-del-tesoro-como-tributan/">Letras del Tesoro: cómo tributan</ArticleLink>.
 
 Dónde no: en bolsa, en [fondos indexados](/glosario/fondo-indexado/) o en criptomonedas. No porque sean malas inversiones, sino
 porque pueden caer un 30% justo el mes en que te hace falta el dinero. Eso es exactamente lo que el

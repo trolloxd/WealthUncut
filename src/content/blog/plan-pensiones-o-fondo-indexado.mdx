@@ -16,6 +16,8 @@ hasAffiliateLinks: false
 draft: false
 ---
 
+import ArticleLink from '../../components/ArticleLink.astro';
+
 import { compararPensionVsFondo } from '../../components/PensionVsFundCalculator';
 import { formatEuros } from '../../components/CalculatorUI';
 import { PLAN_PENSIONES as PP } from '../../config/finance';
@@ -106,7 +108,8 @@ Tres lecturas de las tablas:
 
 - **El tipo al rescatar no es fijo.** El rescate tributa como rendimiento del trabajo, sumado a tu pensión pública y a
   tus otras rentas. Si rescatas todo de golpe en un año, una parte puede saltar a tramos más altos que los de la tabla.
-  Repartirlo en varios años suele reducir ese efecto.
+  Repartirlo en varios años suele reducir ese efecto. Cuánto será esa pensión pública depende de los años cotizados, como
+  explica <ArticleLink href="/blog/edad-jubilacion-2027/">edad de jubilación en 2027: a qué edad te puedes jubilar</ArticleLink>.
 - **Liquidez.** El dinero del plan queda bloqueado hasta la jubilación, salvo supuestos concretos que fija la ley. El
   fondo indexado lo puedes vender cuando quieras, y mientras tanto lo puedes traspasar a otro fondo sin pagar impuestos.
 - **Las reglas cambian.** El límite de aportación ya se redujo en el pasado y puede volver a cambiar. Con un horizonte de
