@@ -73,6 +73,8 @@ piezas pero buenas. Ritmo de artículos: uno al día (decisión de David, 2026-1
 
 ## Sección /mercados/ (decisión de David, 2026-09-24)
 
+**Indexación (decisión de David, 2026-11-04):** cada edición diaria se indexa 14 días; después lleva `noindex, follow` y sale del sitemap (sigue publicada y enlazada). Los resúmenes semanales (etiqueta `resumen semanal`) se indexan siempre. Regla en `src/config/mercados-indice.mjs`, pruebas en `tests/mercados-indice.test.ts`. Motivo: eran la mitad de las URL sin indexar en Search Console y muchas páginas efímeras en serie restan confianza.
+
 David decidió publicar cada día un artículo de mercados escrito y publicado automáticamente, sin
 revisión humana previa, sabiendo que choca con la regla de "pocas piezas" y que Google puede
 penalizar contenido automatizado. La condición es cero errores: el procedimiento completo, con la

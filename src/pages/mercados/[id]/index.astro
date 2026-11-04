@@ -8,6 +8,7 @@ import { isPublished } from '../../../lib/posts';
 import { minutosDeLectura } from '../../../lib/briefing';
 import { SITE } from '../../../config/site';
 import { terminosEnTexto } from '../../../lib/glosario-enlaces';
+import { edicionIndexable } from '../../../config/mercados-indice.mjs';
 
 export async function getStaticPaths() {
   const dias = (await getCollection('mercados', ({ data }) => isPublished(data))).sort(
@@ -28,6 +29,8 @@ const { Content } = await render(dia);
 const { title, description, pubDate, updatedDate, author, sources, tags } = dia.data;
 const url = `${SITE.url}/mercados/${dia.id}/`;
 const minutos = minutosDeLectura(dia.body ?? '');
+// Pasados 14 días, las ediciones diarias (no los resúmenes semanales) salen del índice: src/config/mercados-indice.mjs.
+const noindex = !edicionIndexable(pubDate, tags);
 
 const articleJsonLd = {
   '@context': 'https://schema.org',
@@ -64,6 +67,7 @@ const breadcrumbJsonLd = {
   publishedDate={pubDate}
   updatedDate={updatedDate}
   extraJsonLd={[articleJsonLd, breadcrumbJsonLd]}
+  noindex={noindex}
 >
   <div class="barra-lectura" aria-hidden="true"></div>
   <Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Noticias', href: '/mercados/' }, { label: title }]} />
