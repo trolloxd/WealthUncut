@@ -3,6 +3,13 @@
 Lo escribe la rutina diaria de actualización (`ACTUALIZACION-PROCEDIMIENTO.md`, apartado 4), lo más nuevo arriba. Una entrada por día:
 qué se actualizó (con fuente y commit), qué se verificó sin cambios, qué no pudo verificarse y qué queda para David.
 
+## 2026-11-05
+- Actualizado: `euribor-boe`: euríbor oficial de 2026-10 = 3,239 % (BOE-A-2026-23168, publicado el 2026-11-04), con `node scripts/datos-euribor.mjs` y comprobado en el texto del BOE (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23168, «Un año» 3,239). `npm test` y build sin errores. Commit `Euríbor: actualización de 2026-10`.
+- No pudo verificarse: `fondos-indexados` (35 días, vence el 2026-11-10) y `catalogo-carteras` (38 días, vence el 2026-11-07): siguen sin dos fuentes accesibles para el lector (ver 2026-11-02). No se tocan.
+- Aviso: oferta de Openbank (hasta el 2026-11-16) la resolverá la revisión de cuentas del 7 al 10/11.
+- Pendiente de David: `catalogo-carteras` (antes del 2026-11-07) y `fondos-indexados` (antes del 2026-11-10), con navegador; `keywords-search-console`.
+- Estado del registro al terminar: POR VENCER (cuentas-ofertas-con-fecha, fondos-indexados, catalogo-carteras). Nada vencido.
+
 ## 2026-11-04
 - Actualizado: `bce-otras-series`: instantánea `src/data/mercados/2026-11-04.json` con `node scripts/datos-mercados.mjs` (BCE Data Portal; dfr 2,50 de 2026-11-04, euro/dólar 1,1179 de 2026-11-03, €STR y bonos de 2026-11-02).
 - No pudo verificarse: `euribor-boe` (crítico, vencido): `node scripts/datos-euribor.mjs` dice que el euríbor de 2026-10 aún no está en el BOE; se reintentará mañana, no se toca el dato. `fondos-indexados` (34 días, vence el 2026-11-10) y `catalogo-carteras` (37 días, vence el 2026-11-07): siguen sin dos fuentes accesibles para el lector (ver 2026-11-02). `datos-ipc.mjs`: la API del INE no respondió (el IPC no toca hasta el 2026-11-18).
