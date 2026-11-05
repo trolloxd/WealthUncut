@@ -1,0 +1,79 @@
+---
+title: "Las bolsas se disparan tras las elecciones y cae el petróleo"
+description: "Wall Street y el IBEX 35 subieron con fuerza el miércoles tras las elecciones de EE. UU., con el petróleo a la baja. Hoy decide el Banco de Inglaterra."
+pubDate: 2026-11-05
+author: "Alex Serra Rodríguez"
+tags: ["mercados", "wall-street", "ibex-35", "petroleo", "banco-de-inglaterra", "bce"]
+sources:
+  - label: "CNBC: qué hay detrás del rally del miércoles, Trump asume los resultados"
+    url: "https://www.cnbc.com/2026/11/04/stock-market-rally-trump-midterms.html"
+  - label: "CNBC: resultados de las elecciones de mitad de mandato de 2026"
+    url: "https://www.cnbc.com/2026/11/03/midterm-elections-2026-live-updates.html"
+  - label: "CNBC: mercado de valores, sesión del 4 de noviembre de 2026"
+    url: "https://www.cnbc.com/2026/11/04/stock-market-today-live-updates.html"
+  - label: "Banco de Inglaterra: próximas fechas del Comité de Política Monetaria"
+    url: "https://www.bankofengland.co.uk/monetary-policy/upcoming-mpc-dates"
+  - label: "BLS: calendario de publicación del informe de empleo (Employment Situation)"
+    url: "https://www.bls.gov/schedule/news_release/empsit.htm"
+  - label: "BCE: tipo de cambio euro/dólar de referencia (ECB Data Portal)"
+    url: "https://data.ecb.europa.eu/data/datasets/EXR/EXR.D.USD.EUR.SP00.A"
+---
+
+import datos from '../../data/mercados/2026-11-05.json';
+import MarketSnapshot from '../../components/MarketSnapshot.astro';
+import MarketChart from '../../components/MarketChart.astro';
+
+Las bolsas vivieron el miércoles una jornada de fuertes subidas: Wall Street y el IBEX 35 subieron con fuerza después de las elecciones de mitad de mandato en Estados Unidos, y el petróleo cayó con fuerza. Hoy toca el Banco de Inglaterra y mañana, el informe de empleo estadounidense.
+
+## Lo más importante en 30 segundos
+
+- **Wall Street**: el Dow Jones subió más de 1.500 puntos (cerca de un 3%) y el S&P 500 avanzó alrededor de un 1,6% el miércoles 4 de noviembre.
+- **IBEX 35**: subió en torno a un 3% en la sesión, con la banca entre los valores que más tiraron.
+- **Petróleo**: el crudo estadounidense (WTI) bajó más de un 8% en el día.
+- **Elecciones**: según las proyecciones de AP y CNBC, los demócratas controlarán la Cámara de Representantes y el Senado.
+- **Tipo de depósito del BCE**: sigue en el 2,50%, según el Portal de Datos del BCE.
+
+## Las bolsas celebran el fin de la incertidumbre electoral
+
+El martes se votó en Estados Unidos y, según las proyecciones de la agencia AP y del equipo electoral de CNBC, los demócratas se harán con el control de las dos cámaras del Congreso. Son proyecciones, no un resultado certificado, y algún escaño seguía sin decidirse.
+
+Los mercados reaccionaron bien por dos motivos que citan los analistas. El primero: de madrugada, el presidente Trump dijo a The New York Times y The Wall Street Journal que acepta los resultados y que trabajará con los demócratas. Eso alivió el miedo a una disputa larga sobre el recuento, que habría alargado la incertidumbre. El segundo: que Trump acepte los resultados podría, según George Saravelos, de Deutsche Bank, "actuar como freno a resultados políticos extremos", siempre que mantenga esa postura.
+
+Con ese telón de fondo, el Dow Jones registró su mejor día desde abril de 2025 y el S&P 500 sumó alrededor de un 1,6%. En España, el IBEX 35 se apuntó en torno a un 3% en la sesión.
+
+No todo fue subida: según CNBC, las empresas ligadas a la inteligencia artificial y a los centros de datos, como CoreWeave, quedaron rezagadas por el temor a una posible reacción política contra el sector. Y algunos analistas avisan de que el rally "podría ser temporal" y de que puede haber más volatilidad.
+
+### A qué te afecta
+
+Si inviertes en un fondo indexado a la bolsa estadounidense o mundial, un día de subida del 1,6% no cambia tu plan: la rentabilidad se construye durante años, y las subidas y bajadas bruscas de un día suelen compensarse con el tiempo. Lo que sí conviene es mirar cuánto te queda neto después de comisiones e impuestos, algo que puedes calcular en la guía de
+[rentabilidad neta de un fondo indexado](/blog/rentabilidad-neta-fondo-indexado/).
+
+## El petróleo se hunde más de un 8%
+
+El WTI, el crudo de referencia en Estados Unidos, cayó más de un 8% el miércoles, según CNBC. CNBC cita esa caída entre los motivos del rally en bolsa. Al mismo tiempo, algunos analistas siguen vigilando el riesgo de inflación por unos precios de la energía ligados al conflicto de Oriente Próximo.
+
+### A qué te afecta
+
+El petróleo pesa en los precios de la gasolina, el transporte y, por tanto, en la inflación. Si el crudo se mantuviera más barato, la presión sobre los precios sería menor, y eso importa para el euríbor y las hipotecas variables. Pero un solo día no es una tendencia. Para ver cuánto cambiaría tu cuota si el euríbor se mueve, tienes la guía sobre
+[cuánto sube la hipoteca en la revisión del euríbor](/blog/revision-hipoteca-euribor-cuanto-sube/).
+
+## El euro frente al dólar y los tipos
+
+Según el BCE, el euro cerró el miércoles en 1,1267 dólares, frente a 1,1179 del martes. El tipo de depósito del BCE (el que cobra la banca por dejar dinero en el banco central y que sirve de referencia para el resto) se mantiene en el 2,50%.
+
+<MarketSnapshot datos={datos} />
+
+<MarketChart datos={datos} serie="eurusd" titulo="Euro/dólar, tipo de referencia del BCE" ultimas={90} />
+
+## Qué vigilar hoy
+
+Todas las horas son hora peninsular española.
+
+- **Jueves 5 de noviembre**: decisión del Comité de Política Monetaria del Banco de Inglaterra, que además publica su informe de política monetaria de noviembre.
+- **Viernes 6 de noviembre, 14:30**: informe de empleo de octubre en Estados Unidos (8:30 en Nueva York), según el calendario del BLS.
+- **Resto de noviembre**: sin reuniones de la Reserva Federal ni del BCE, que se reúnen de nuevo en diciembre.
+
+## Para entenderlo mejor
+
+Si quieres saber qué interés necesitas para que tus ahorros no pierdan frente a los precios, mira la guía sobre
+[qué interés necesitas para no perder frente a la inflación](/blog/inflacion-que-interes-necesitas-para-no-perder/).
