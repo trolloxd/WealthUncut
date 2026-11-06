@@ -139,15 +139,17 @@ export const PLAN_PENSIONES = {
 
 // Escala general del IRPF (estatal), aplicable a los rendimientos del trabajo entre otros. Vigente
 // desde 2021 (Ley 11/2020). Fuente: AEAT, Manual práctico de Renta 2025, "Gravamen estatal".
-// Verificado el 2026-09-24.
+// Es solo la mitad estatal: el tipo total sale de sumarle la escala autonómica de cada comunidad.
+// Corregido el 2026-11-06: hasta entonces aquí estaban los tipos combinados (19 %, 24 %, 30 %...) y, al
+// sumarles la autonómica, el IRPF salía casi el doble. Verificado el 2026-11-06 contra la AEAT (art. 63.1 Ley IRPF).
 export const IRPF_GENERAL_ESTATAL = {
   brackets: [
-    { hasta: 12450, tipo: 0.19 },
-    { hasta: 20200, tipo: 0.24 },
-    { hasta: 35200, tipo: 0.3 },
-    { hasta: 60000, tipo: 0.37 },
-    { hasta: 300000, tipo: 0.45 },
-    { hasta: Infinity, tipo: 0.47 },
+    { hasta: 12450, tipo: 0.095 },
+    { hasta: 20200, tipo: 0.12 },
+    { hasta: 35200, tipo: 0.15 },
+    { hasta: 60000, tipo: 0.185 },
+    { hasta: 300000, tipo: 0.225 },
+    { hasta: Infinity, tipo: 0.245 },
   ],
   url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-general/gravamen-estatal.html',
 } as const;
@@ -158,8 +160,8 @@ export const IRPF_GENERAL_ESTATAL = {
  * final es la escala estatal más la autonómica de donde resida el contribuyente a 31 de diciembre.
  * No incluye País Vasco ni Navarra: tienen un sistema foral propio (Diputaciones Forales y
  * Hacienda Foral de Navarra), con normativa e importes distintos que no siguen este esquema.
- * Ceuta y Melilla no tienen comunidad autónoma propia: el art. 65 de la Ley del IRPF les aplica la
- * misma escala general estatal también como escala "autonómica".
+ * Ceuta y Melilla no tienen comunidad autónoma propia: la DA 32.ª de la Ley del IRPF les aplica la
+ * escala del art. 65 (igual a la estatal hasta 60.000 euros, 22,5 % por encima) como escala "autonómica".
  *
  * Fuente: AEAT, Manual práctico de Renta 2025, páginas de "Gravamen autonómico" de cada comunidad
  * (una URL por comunidad, más abajo). Cada tramo se ha reconstruido a partir de la cuota íntegra
@@ -364,14 +366,14 @@ export const IRPF_GENERAL_AUTONOMICO = {
   },
   ceutaMelilla: {
     nombre: 'Ceuta y Melilla',
-    // Art. 65 Ley IRPF: se aplica la misma escala general estatal también como escala "autonómica".
+    // DA 32.ª Ley IRPF: escala del art. 65 (9,5 % a 22,5 %) como escala "autonómica". Verificado el 2026-11-06 en la AEAT.
+    // No se modela la deducción del 60 % por rentas obtenidas en Ceuta o Melilla (art. 68.4), que reduce mucho la cuota.
     brackets: [
-      { hasta: 12450, tipo: 0.19 },
-      { hasta: 20200, tipo: 0.24 },
-      { hasta: 35200, tipo: 0.3 },
-      { hasta: 60000, tipo: 0.37 },
-      { hasta: 300000, tipo: 0.45 },
-      { hasta: Infinity, tipo: 0.47 },
+      { hasta: 12450, tipo: 0.095 },
+      { hasta: 20200, tipo: 0.12 },
+      { hasta: 35200, tipo: 0.15 },
+      { hasta: 60000, tipo: 0.185 },
+      { hasta: Infinity, tipo: 0.225 },
     ],
     url: 'https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-general/gravamen-autonomico/especialidad-escala-autonomica-contribuyentes.html',
   },

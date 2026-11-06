@@ -13,6 +13,7 @@ import {
   RETA_2026,
 } from '../config/finance';
 import euribor from '../data/euribor/ultimo.json';
+import { filasSueldoNeto } from './calculos/sueldo';
 
 export interface Dataset {
   id: string;
@@ -61,7 +62,7 @@ export const DATASETS: Dataset[] = [
     descripcion: 'Tramos de la base liquidable general (sueldos, autónomos, alquileres). El tipo final es la escala estatal más la autonómica.',
     fuente: 'AEAT, Manual práctico de Renta 2025, gravamen estatal y autonómico',
     fuenteUrl: IRPF_GENERAL_ESTATAL.url,
-    revisado: '2026-09-24',
+    revisado: '2026-11-06',
     columnas: ['ambito', 'base_desde_eur', 'base_hasta_eur', 'tipo_pct'],
     filas: [
       ...escala('Estatal', IRPF_GENERAL_ESTATAL.brackets),
@@ -95,6 +96,17 @@ export const DATASETS: Dataset[] = [
       Math.round(t.baseMin * RETA_2026.tipoTotal * 100) / 100,
       Math.round(t.baseMax * RETA_2026.tipoTotal * 100) / 100,
     ]),
+  },
+  {
+    id: 'sueldo-neto-comunidades-2026',
+    titulo: 'Sueldo neto 2026 por comunidad autónoma y sueldo bruto',
+    descripcion:
+      'Cuánto queda neto de 15 sueldos brutos anuales (de 20.000 a 100.000 €) en cada una de las 15 comunidades de régimen común (sin País Vasco ni Navarra, que tienen IRPF foral, ni Ceuta y Melilla, con una deducción del 60 % que no se modela): Seguridad Social, IRPF anual, neto anual, neto mensual en 14 y en 12 pagas y tipo efectivo de IRPF. Cálculo propio con la misma fórmula que la calculadora de sueldo neto. Supuestos: trabajador por cuenta ajena con contrato indefinido, menor de 65 años, sin hijos ni otras rentas, mínimo personal general y todo el año en la misma comunidad. Es el IRPF del año, no la retención mensual de la nómina.',
+    fuente: 'Cálculo de WealthUncut con las escalas del IRPF de la AEAT (Manual práctico de Renta 2025) y las cotizaciones del trabajador de la Orden PJC/297/2026 (BOE)',
+    fuenteUrl: IRPF_GENERAL_ESTATAL.url,
+    revisado: '2026-11-06',
+    columnas: ['comunidad', 'bruto_anual_eur', 'seguridad_social_anual_eur', 'irpf_anual_eur', 'neto_anual_eur', 'neto_mensual_14_pagas_eur', 'neto_mensual_12_pagas_eur', 'tipo_efectivo_irpf_pct'],
+    filas: filasSueldoNeto(),
   },
   {
     id: 'euribor-12m',

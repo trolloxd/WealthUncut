@@ -107,7 +107,7 @@ test('IRPF del alquiler: más reducción, menos impuesto; sin impuesto negativo'
   const r50 = calcularAlquiler({ ...caso, reduccionPct: 0.5 });
   cerca(r50.netoPrevio, 6800); // 12.000 - 2.500 - 2.700 de amortización
   cerca(r50.netoReducido, 3400);
-  cerca(r50.irpfExtra, 1455, 1);
+  cerca(r50.irpfExtra, 945.2, 1); // 3.400 x (15 % estatal + 12,8 % de Madrid); hasta el 2026-11-06 la escala estatal estaba mal (1.455)
   const r0 = calcularAlquiler({ ...caso, reduccionPct: 0 });
   const r90 = calcularAlquiler({ ...caso, reduccionPct: 0.9 });
   assert.ok(r0.irpfExtra > r50.irpfExtra && r50.irpfExtra > r90.irpfExtra);

@@ -1,76 +1,10 @@
 import { useMemo } from 'react';
-import {
-  IRPF_GENERAL_AUTONOMICO,
-  IRPF_GENERAL_ESTATAL,
-  IRPF_GASTO_DEDUCIBLE_TRABAJO,
-  IRPF_MINIMO_CONTRIBUYENTE,
-  calcularCotizacionSSMensual,
-  calcularProgresivo,
-  calcularReduccionTrabajo,
-} from '../config/finance';
+import { IRPF_GENERAL_AUTONOMICO } from '../config/finance';
 import { Campo, CampoNumero, NotaCalculo, PanelResultados, Resumen, formatEuros, formatPct, useEstadoUrl } from './CalculatorUI';
 
-export type ComunidadId = keyof typeof IRPF_GENERAL_AUTONOMICO;
-
-export interface ParamsSueldoNeto {
-  brutoAnual: number;
-  comunidad: ComunidadId;
-  pagas: number;
-}
-
-export interface ResultadoSueldoNeto {
-  cotizacionSSAnual: number;
-  rendimientoNeto: number;
-  reduccionTrabajo: number;
-  baseLiquidable: number;
-  cuotaEstatal: number;
-  cuotaAutonomica: number;
-  irpfAnual: number;
-  netoAnual: number;
-  netoMensual: number;
-  tipoEfectivo: number;
-}
-
-/**
- * Estimación del sueldo neto de un trabajador por cuenta ajena, residente todo el año en la misma
- * comunidad, menor de 65 años, sin hijos ni ascendientes a cargo, sin otras rentas y sin
- * retribución en especie. Con esas circunstancias, el resultado debería acercarse bastante al IRPF
- * real del año (no a la retención mes a mes, que sigue otro procedimiento y se regulariza en la
- * declaración).
- */
-export function calcularSueldoNeto(p: ParamsSueldoNeto): ResultadoSueldoNeto {
-  const brutoMensual = p.brutoAnual / 12;
-  const cotizacionSSAnual = calcularCotizacionSSMensual(brutoMensual) * 12;
-
-  const rendimientoNeto = Math.max(0, p.brutoAnual - cotizacionSSAnual - IRPF_GASTO_DEDUCIBLE_TRABAJO);
-  const reduccionTrabajo = calcularReduccionTrabajo(rendimientoNeto);
-  const baseLiquidable = Math.max(0, rendimientoNeto - reduccionTrabajo);
-
-  const minimo = IRPF_MINIMO_CONTRIBUYENTE.general;
-  const escalaAutonomica = IRPF_GENERAL_AUTONOMICO[p.comunidad].brackets;
-
-  const cuotaEstatal = Math.max(
-    0,
-    calcularProgresivo(baseLiquidable, IRPF_GENERAL_ESTATAL.brackets) - calcularProgresivo(minimo, IRPF_GENERAL_ESTATAL.brackets)
-  );
-  const cuotaAutonomica = Math.max(0, calcularProgresivo(baseLiquidable, escalaAutonomica) - calcularProgresivo(minimo, escalaAutonomica));
-
-  const irpfAnual = cuotaEstatal + cuotaAutonomica;
-  const netoAnual = p.brutoAnual - cotizacionSSAnual - irpfAnual;
-
-  return {
-    cotizacionSSAnual,
-    rendimientoNeto,
-    reduccionTrabajo,
-    baseLiquidable,
-    cuotaEstatal,
-    cuotaAutonomica,
-    irpfAnual,
-    netoAnual,
-    netoMensual: netoAnual / p.pagas,
-    tipoEfectivo: p.brutoAnual > 0 ? irpfAnual / p.brutoAnual : 0,
-  };
-}
+export { calcularSueldoNeto } from '../lib/calculos/sueldo';
+export type { ComunidadId, ParamsSueldoNeto, ResultadoSueldoNeto } from '../lib/calculos/sueldo';
+import { calcularSueldoNeto, type ComunidadId } from '../lib/calculos/sueldo';
 
 const COMUNIDADES = Object.entries(IRPF_GENERAL_AUTONOMICO)
   .map(([id, c]) => ({ id: id as ComunidadId, nombre: c.nombre }))
