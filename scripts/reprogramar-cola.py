@@ -1,4 +1,4 @@
-"""Reprograma la cola de artículos: un artículo por día a partir de mañana.
+"""Reprograma la cola de artículos: dos por semana, martes y viernes (decisión de David, 2026-11-07), a partir de mañana.
 
 Orden: primero lo que ya estaba programado (por fecha), después los artículos nuevos que se indican.
 Uso: python scripts/reprogramar-cola.py AAAA-MM-DD [slug-nuevo ...]
@@ -27,7 +27,16 @@ for slug in nuevos:
     if f not in cola:
         cola.append(f)
 
-dia = datetime.date.fromisoformat(hoy) + datetime.timedelta(days=1)
+DIAS_PUBLICACION = (1, 4)  # martes y viernes (lunes = 0)
+
+
+def siguiente(d):
+    while d.weekday() not in DIAS_PUBLICACION:
+        d += datetime.timedelta(days=1)
+    return d
+
+
+dia = siguiente(datetime.date.fromisoformat(hoy) + datetime.timedelta(days=1))
 for f in cola:
     t = open(f, encoding='utf8').read()
     s = dia.isoformat()
@@ -35,4 +44,4 @@ for f in cola:
     t = re.sub(r'^updatedDate: \S+', 'updatedDate: ' + s, t, count=1, flags=re.M)
     open(f, 'w', encoding='utf8', newline='').write(t)
     print(s, os.path.basename(f))
-    dia += datetime.timedelta(days=1)
+    dia = siguiente(dia + datetime.timedelta(days=1))

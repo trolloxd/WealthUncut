@@ -3,26 +3,28 @@
 Guía que sigue el agente automático que mantiene la cola de artículos de `/blog/`. Si algo de aquí
 choca con `CLAUDE.md`, manda `CLAUDE.md`.
 
-Decisión de David (2026-10-08): **un artículo cada día**. La cola se mantiene con al menos una semana
-de margen: cuando quede menos de una semana programada, escribir un lote y dejarlo programado para
-que se publique solo. La rutina se ejecuta a diario, pero casi siempre termina sin hacer nada.
+Decisión de David (2026-11-07): **dos artículos por semana, martes y viernes** (antes, uno al día desde el
+2026-10-08). Motivo: la web duplicó su tamaño en tres semanas con contenido automático y, desde el 1 de
+noviembre, Google le enseña un 90 % menos de impresiones aunque todo sigue indexado; menos piezas y mejores.
+La cola se mantiene con dos semanas de margen. La rutina se ejecuta una vez por semana (lunes) y casi siempre
+termina sin hacer nada.
 
 ## 1. Cuándo actuar
 
 1. Calcula la fecha de hoy en Europe/Madrid (`TZ=Europe/Madrid date +%F`).
 2. Cuenta los archivos de `src/content/blog/` con `draft: false` y `pubDate` **posterior a hoy**
    (son los programados; uno con `pubDate` de hoy ya cuenta como publicado).
-3. Si hay **7 o más**, termina sin tocar nada y dilo en el resumen.
-4. Si hay menos de 7, escribe un lote de **7 artículos** (los que hagan falta para llegar a 14 como máximo).
-   Mejor 3 buenos que 7 flojos: si no hay temas con valor real, escribe solo los que lo tengan y dilo en el resumen.
+3. Si hay **4 o más**, termina sin tocar nada y dilo en el resumen.
+4. Si hay menos de 4, escribe los artículos que hagan falta para llegar a **4 programados** (como máximo 4 en un lote).
+   Mejor 1 bueno que 4 flojos: si no hay temas con valor real, escribe solo los que lo tengan y dilo en el resumen.
 
 ## 2. Calendario
 
-- Los artículos se publican **todos los días** (el workflow `.github/workflows/publicacion-programada.yml`
-  reconstruye el sitio cada día). Ritmo del proyecto desde el 2026-10-08: un artículo diario, nunca dos
-  en la misma fecha. Los artículos nuevos van siempre **al final de la cola**.
-- La primera fecha del lote es el día siguiente a la `pubDate` del último artículo ya programado (o
-  mañana si no hay ninguno). Las siguientes, un día más cada una.
+- Los artículos se publican **los martes y los viernes** (el workflow `.github/workflows/publicacion-programada.yml`
+  reconstruye el sitio cada día y publica lo que tenga `pubDate` de hoy). Ritmo desde el 2026-11-07: dos por
+  semana, nunca dos en la misma fecha ni en otro día de la semana. Los artículos nuevos van siempre **al final de la cola**.
+- La primera fecha del lote es el primer martes o viernes posterior a la `pubDate` del último artículo ya
+  programado (o el próximo martes o viernes si no hay ninguno). Las siguientes, el siguiente martes o viernes.
 - Para reordenar o recolocar la cola entera: `python scripts/reprogramar-cola.py AAAA-MM-DD [slug-nuevo ...]`.
 - **Frontmatter obligatorio nuevo: `categoria`**, justo después de `tags`. Valores válidos (`src/config/categorias.ts`):
   `fondos-indexados`, `impuestos`, `vivienda`, `autonomos`, `criptomonedas`, `jubilacion`, `ahorro`. Si un tema
@@ -157,9 +159,13 @@ draft: false
 5. Termina con un resumen breve: cuántos programados había, qué artículos has escrito, con qué
    fechas, y qué datos descartaste por no poder verificarlos.
 
-## 7. Glosario: ampliarlo en cada lote
+## 7. Glosario: EN PAUSA (decisión de David, 2026-11-07)
 
-Cada vez que se escribe un lote de artículos (apartado 1), añade también **hasta 4 términos nuevos** al
+**No se añaden términos nuevos al glosario** hasta que David lo reactive: tiene 47 entradas, 29 de ellas
+de las últimas tres semanas. Mientras tanto se puede mejorar una entrada existente (más ejemplo, fuentes)
+si un artículo del lote la necesita. Lo de abajo describe cómo se hacía, para cuando se reactive.
+
+Antes, cada vez que se escribía un lote de artículos (apartado 1), se añadían también **hasta 4 términos nuevos** al
 glosario (`src/content/glosario/<slug>.md`, páginas en `/glosario/`). Son páginas que captan
 búsquedas de "qué es X" y enlazan a las herramientas y guías del sitio. Desde el 2026-10-30 las entradas importantes son más largas
 (definición, ejemplo calculado, errores frecuentes, preguntas frecuentes y fuentes con fecha) y van en `.mdx`, importando las cifras de

@@ -114,9 +114,11 @@ qué se guarda o cuánto, actualizar `privacidad.astro` antes de publicarlo.
 
 ## Reposición automática de artículos (decisión de David, 2026-10-04)
 
-Los artículos de `/blog/` se publican **uno cada día** (decisión de David, 2026-10-08) con `pubDate` futura (ver
-`publicacion-programada.yml`). Cuando quedan **menos de 7 programados**, una rutina en la nube (cada día,
-la comprobación casi siempre termina sin hacer nada) escribe un lote de 7 y los deja al final de la cola. Cada
+Los artículos de `/blog/` se publican **dos por semana, martes y viernes** (decisión de David, 2026-11-07; antes
+uno al día) con `pubDate` futura (ver `publicacion-programada.yml`). Cuando quedan **menos de 4 programados**, una
+rutina en la nube (los lunes; casi siempre termina sin hacer nada) escribe los que falten hasta 4 y los deja al
+final de la cola. El glosario está en pausa: no se añaden términos nuevos. Reprogramar la cola:
+`python scripts/reprogramar-cola.py AAAA-MM-DD`. Cada
 artículo lleva `categoria` en el frontmatter (`src/config/categorias.ts`): `/blog/` los agrupa por tema y
 hay una página por tema en `/blog/tema/<id>/`. Procedimiento, reglas de calidad y verificación en
 `ARTICULOS-PROCEDIMIENTO.md`; mismas reglas de este documento (cifras fiscales solo de
