@@ -7,6 +7,22 @@ import euriborData from '../../data/euribor/ultimo.json';
 import { COMISION_AMORTIZACION_ANTICIPADA as COM } from '../../config/finance';
 
 const euriborInicial: number = euriborData.ultimoValor;
+
+// Las mismas preguntas se ven en la página y van al FAQPage del JSON-LD.
+const preguntas = [
+  {
+    pregunta: '¿Es mejor reducir el plazo o reducir la cuota?',
+    respuesta: 'Reducir el plazo suele ahorrar más intereses porque pagas el capital antes. Reducir la cuota te da más holgura cada mes pero ahorra menos intereses en total. Cuál conviene depende de tu situación, y esta calculadora te enseña las dos con tus números.',
+  },
+  {
+    pregunta: '¿Cuánto me puede cobrar el banco por amortizar?',
+    respuesta: 'La ley fija máximos: en préstamos variables, el 0,15% del capital amortizado durante los 5 primeros años o el 0,25% durante los 3 primeros (según lo que diga el contrato), y en préstamos fijos, el 2% durante los 10 primeros años y el 1,5% después. Además nunca puede superar la pérdida financiera real del banco, así que muchas veces es menos o nada. Revisa tu contrato.',
+  },
+  {
+    pregunta: '¿Por qué no coincide exactamente con lo que me dice mi banco?',
+    respuesta: 'Porque esta calculadora supone un tipo de interés constante para lo que queda de préstamo y no incluye seguros vinculados, bonificaciones ni el calendario exacto de revisiones de tu hipoteca. Úsala como estimación y pide a tu banco la simulación oficial, que está obligado a darte.',
+  },
+];
 ---
 
 <ToolLayout
@@ -18,20 +34,7 @@ const euriborInicial: number = euriborData.ultimoValor;
     { label: 'BOE: Ley 5/2019 reguladora de los contratos de crédito inmobiliario, artículo 23 (reembolso anticipado)', url: COM.url },
     { label: `Banco de España en el BOE: euríbor a un año oficial (${euriborData.ultimoBoe})`, url: euriborData.fuenteUrl },
   ]}
-  faqs={[
-    {
-      pregunta: '¿Es mejor reducir el plazo o reducir la cuota?',
-      respuesta: 'Reducir el plazo suele ahorrar más intereses porque pagas el capital antes. Reducir la cuota te da más holgura cada mes pero ahorra menos intereses en total. Cuál conviene depende de tu situación, y esta calculadora te enseña las dos con tus números.',
-    },
-    {
-      pregunta: '¿Cuánto me puede cobrar el banco por amortizar?',
-      respuesta: 'La ley fija máximos: en préstamos variables, el 0,15% del capital amortizado durante los 5 primeros años o el 0,25% durante los 3 primeros (según lo que diga el contrato), y en préstamos fijos, el 2% durante los 10 primeros años y el 1,5% después. Además nunca puede superar la pérdida financiera real del banco, así que muchas veces es menos o nada. Revisa tu contrato.',
-    },
-    {
-      pregunta: '¿Por qué no coincide exactamente con lo que me dice mi banco?',
-      respuesta: 'Porque esta calculadora supone un tipo de interés constante para lo que queda de préstamo y no incluye seguros vinculados, bonificaciones ni el calendario exacto de revisiones de tu hipoteca. Úsala como estimación y pide a tu banco la simulación oficial, que está obligado a darte.',
-    },
-  ]}
+  faqs={preguntas}
 >
   <p>
     Amortizar parte de la hipoteca antes de tiempo reduce los intereses que te quedan por pagar. Esta
@@ -68,4 +71,10 @@ const euriborInicial: number = euriborData.ultimoValor;
     y comparar el ahorro de intereses con lo que ese dinero podría rendir en otro sitio. Esta
     herramienta no te dice qué hacer: te da los números para que decidas tú.
   </p>
+
+  <h2>Preguntas frecuentes</h2>
+  {preguntas.map((f) => (
+    <p><strong>{f.pregunta}</strong><br />
+      {f.respuesta}</p>
+  ))}
 </ToolLayout>

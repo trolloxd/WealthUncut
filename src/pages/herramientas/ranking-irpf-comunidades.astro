@@ -10,6 +10,22 @@ const ejemplo = calcularRanking(30000);
 const mejor = ejemplo[0];
 const peor = ejemplo[ejemplo.length - 1];
 const diferencia = mejor.netoAnual - peor.netoAnual;
+
+// Las mismas preguntas se ven en la página y van al FAQPage del JSON-LD.
+const preguntas = [
+  {
+    pregunta: '¿Por qué el mismo sueldo da un neto distinto según la comunidad?',
+    respuesta: 'Porque el IRPF tiene una parte autonómica que cada comunidad fija por su cuenta: mismo bruto, misma Seguridad Social, pero un tramo del impuesto distinto según dónde resides a 31 de diciembre.',
+  },
+  {
+    pregunta: '¿Este ranking cambia con el sueldo?',
+    respuesta: 'Sí: al ser tramos progresivos, el orden y sobre todo la diferencia en euros varían según el bruto. Con sueldos bajos la diferencia suele ser pequeña; con sueldos altos puede ser de varios miles de euros al año. Cambia el número de la calculadora para verlo con el tuyo.',
+  },
+  {
+    pregunta: '¿Debería mudarme a la comunidad con menos IRPF?',
+    respuesta: 'El IRPF es un factor entre muchos: coste de la vivienda, oportunidades laborales, cercanía a tu entorno y otros impuestos autonómicos (sucesiones, patrimonio) pesan tanto o más. Esta herramienta aísla solo la variable del IRPF, no es una recomendación de dónde vivir.',
+  },
+];
 ---
 
 <ToolLayout
@@ -20,20 +36,7 @@ const diferencia = mejor.netoAnual - peor.netoAnual;
   sources={[
     { label: 'Agencia Tributaria: Manual práctico de Renta 2025, gravamen estatal y autonómico', url: IRPF_GENERAL_ESTATAL.url },
   ]}
-  faqs={[
-    {
-      pregunta: '¿Por qué el mismo sueldo da un neto distinto según la comunidad?',
-      respuesta: 'Porque el IRPF tiene una parte autonómica que cada comunidad fija por su cuenta: mismo bruto, misma Seguridad Social, pero un tramo del impuesto distinto según dónde resides a 31 de diciembre.',
-    },
-    {
-      pregunta: '¿Este ranking cambia con el sueldo?',
-      respuesta: 'Sí: al ser tramos progresivos, el orden y sobre todo la diferencia en euros varían según el bruto. Con sueldos bajos la diferencia suele ser pequeña; con sueldos altos puede ser de varios miles de euros al año. Cambia el número de la calculadora para verlo con el tuyo.',
-    },
-    {
-      pregunta: '¿Debería mudarme a la comunidad con menos IRPF?',
-      respuesta: 'El IRPF es un factor entre muchos: coste de la vivienda, oportunidades laborales, cercanía a tu entorno y otros impuestos autonómicos (sucesiones, patrimonio) pesan tanto o más. Esta herramienta aísla solo la variable del IRPF, no es una recomendación de dónde vivir.',
-    },
-  ]}
+  faqs={preguntas}
 >
   <p>
     Con el mismo sueldo bruto, dos personas en dos comunidades autónomas distintas no se llevan lo
@@ -74,4 +77,10 @@ const diferencia = mejor.netoAnual - peor.netoAnual;
     trabajo, mínimo del contribuyente), está en la{' '}
     <ArticleLink href="/herramientas/calculadora-sueldo-neto/">calculadora de sueldo neto por comunidad autónoma</ArticleLink>.
   </p>
+
+  <h2>Preguntas frecuentes</h2>
+  {preguntas.map((f) => (
+    <p><strong>{f.pregunta}</strong><br />
+      {f.respuesta}</p>
+  ))}
 </ToolLayout>

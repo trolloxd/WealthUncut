@@ -6,6 +6,22 @@ import AlquilerVsCompraCalculator from '../../components/AlquilerVsCompraCalcula
 import euriborData from '../../data/euribor/ultimo.json';
 
 const euriborInicial: number = euriborData.ultimoValor;
+
+// Las mismas preguntas se ven en la página y van al FAQPage del JSON-LD.
+const preguntas = [
+  {
+    pregunta: '¿Qué es mejor, alquilar o comprar?',
+    respuesta: 'Depende de los números de cada caso: el precio de la vivienda frente al alquiler, el tipo de la hipoteca, cuánto se revalorice la vivienda, lo que rinda lo que inviertas si alquilas y cuántos años te quedes. Esta calculadora compara las dos opciones con tus supuestos, pero no decide por ti.',
+  },
+  {
+    pregunta: '¿Cómo calcula la comparación?',
+    respuesta: 'Supone que en las dos opciones se gasta lo mismo cada mes: quien paga menos invierte la diferencia. Quien alquila empieza invirtiendo también la entrada y los gastos de compra. Al final compara el patrimonio de cada uno: la vivienda menos la deuda pendiente y los costes de venta, más lo invertido, frente a lo invertido con el alquiler.',
+  },
+  {
+    pregunta: '¿Qué no incluye?',
+    respuesta: 'No incluye impuestos sobre la venta de la vivienda, bonificaciones fiscales ni seguros vinculados a la hipoteca, y supone rentabilidades y revalorización constantes, cuando en la realidad cambian cada año. Por eso conviene probar varios escenarios.',
+  },
+];
 ---
 
 <ToolLayout
@@ -17,20 +33,7 @@ const euriborInicial: number = euriborData.ultimoValor;
   sources={[
     { label: `Banco de España en el BOE: euríbor a un año oficial (${euriborData.ultimoBoe})`, url: euriborData.fuenteUrl },
   ]}
-  faqs={[
-    {
-      pregunta: '¿Qué es mejor, alquilar o comprar?',
-      respuesta: 'Depende de los números de cada caso: el precio de la vivienda frente al alquiler, el tipo de la hipoteca, cuánto se revalorice la vivienda, lo que rinda lo que inviertas si alquilas y cuántos años te quedes. Esta calculadora compara las dos opciones con tus supuestos, pero no decide por ti.',
-    },
-    {
-      pregunta: '¿Cómo calcula la comparación?',
-      respuesta: 'Supone que en las dos opciones se gasta lo mismo cada mes: quien paga menos invierte la diferencia. Quien alquila empieza invirtiendo también la entrada y los gastos de compra. Al final compara el patrimonio de cada uno: la vivienda menos la deuda pendiente y los costes de venta, más lo invertido, frente a lo invertido con el alquiler.',
-    },
-    {
-      pregunta: '¿Qué no incluye?',
-      respuesta: 'No incluye impuestos sobre la venta de la vivienda, bonificaciones fiscales ni seguros vinculados a la hipoteca, y supone rentabilidades y revalorización constantes, cuando en la realidad cambian cada año. Por eso conviene probar varios escenarios.',
-    },
-  ]}
+  faqs={preguntas}
 >
   <p>
     Comprar con hipoteca o alquilar e invertir lo que ahorras no es una cuestión de opinión sino de
@@ -57,4 +60,10 @@ const euriborInicial: number = euriborData.ultimoValor;
     Si ya tienes hipoteca y dudas entre amortizar o no, usa la{' '}
     <ArticleLink href="/herramientas/amortizar-hipoteca-cuanto-ahorras/">calculadora de amortización de hipoteca</ArticleLink>.
   </p>
+
+  <h2>Preguntas frecuentes</h2>
+  {preguntas.map((f) => (
+    <p><strong>{f.pregunta}</strong><br />
+      {f.respuesta}</p>
+  ))}
 </ToolLayout>
