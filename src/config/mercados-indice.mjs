@@ -25,6 +25,19 @@ export function edicionIndexable(fecha, tags, ahora = Date.now()) {
   return (ahora - t) / 864e5 <= DIAS_INDEXADA;
 }
 
+/**
+ * Etiquetas del frontmatter, en línea (`tags: ["a", "b"]`) o en bloque (`tags:` y una línea `- a` por etiqueta).
+ * @param {string} fm
+ */
+export function tagsDelFrontmatter(fm) {
+  /** @param {string} s */
+  const limpiar = (s) => s.trim().replace(/^["']|["']$/g, '');
+  const enLinea = fm.match(/^tags:\s*\[(.*)\]/m)?.[1];
+  if (enLinea !== undefined) return enLinea.split(',').map(limpiar).filter(Boolean);
+  const bloque = fm.match(/^tags:[ \t]*\r?\n((?:[ \t]*-.*(?:\r?\n|$))+)/m)?.[1] ?? '';
+  return bloque.split(/\r?\n/).map((l) => l.replace(/^\s*-\s*/, '')).map(limpiar).filter(Boolean);
+}
+
 /** @returns {Set<string>} ids (AAAA-MM-DD) de las ediciones que llevan noindex hoy. */
 export function edicionesNoIndexables(dir = './src/content/mercados', ahora = Date.now()) {
   const fuera = new Set();
@@ -33,7 +46,7 @@ export function edicionesNoIndexables(dir = './src/content/mercados', ahora = Da
     if (!/\.mdx?$/.test(file)) continue;
     const fm = fs.readFileSync(path.join(dir, file), 'utf8').match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
     const fecha = fm.match(/^pubDate:\s*(.+)$/m)?.[1]?.trim();
-    const tags = (fm.match(/^tags:\s*\[(.*)\]/m)?.[1] ?? '').split(',').map((s) => s.trim().replace(/^["']|["']$/g, ''));
+    const tags = tagsDelFrontmatter(fm);
     if (fecha && !edicionIndexable(fecha, tags, ahora)) fuera.add(file.replace(/\.mdx?$/, ''));
   }
   return fuera;
