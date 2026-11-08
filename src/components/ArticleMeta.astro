@@ -14,7 +14,12 @@ interface Props {
   minutos?: number;
 }
 
-const { author, pubDate, updatedDate, sources, hasAffiliateLinks, minutos } = Astro.props;
+import euribor from '../data/euribor/ultimo.json';
+import { fuentesConEuriborVigente } from '../lib/fuentes-euribor';
+
+const { author, pubDate, updatedDate, hasAffiliateLinks, minutos } = Astro.props;
+// Una fuente que enlaza el euríbor de un mes anterior en el BOE pasa a la del último mes publicado.
+const sources = fuentesConEuriborVigente(Astro.props.sources, euribor);
 
 const fmt = (d: Date) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 const iso = (d: Date) => d.toISOString().slice(0, 10);
