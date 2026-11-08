@@ -97,7 +97,7 @@ export default defineConfig({
     react(),
     mdx(),
     sitemap({
-      filter: (page) => !page.includes('/404') && !page.includes('/embed/') && !page.includes('/buscar/') && !page.includes('/newsletter/baja') && !rutasTemasFinos.some((r) => page.endsWith(r)) && !rutasMercadosFuera.some((r) => page.endsWith(r)),
+      filter: (page) => !page.includes('/404') && !page.includes('/embed/') && !page.includes('/buscar/') && !page.includes('/newsletter/baja') && !/\/newsletter\/\d{4}-\d{2}-\d{2}\/$/.test(page) && !rutasTemasFinos.some((r) => page.endsWith(r)) && !rutasMercadosFuera.some((r) => page.endsWith(r)),
       serialize(item) {
         const clave = item.url.match(/\/((?:blog|mercados|herramientas)\/[^/]+)\/$/)?.[1];
         const fecha = clave ? fechasArticulos.get(clave) : undefined;
