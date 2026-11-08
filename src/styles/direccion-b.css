@@ -86,7 +86,7 @@ html {
 }
 .panel-b-aporte { left: 0; top: 0; width: 60%; transform: translateZ(-40px); }
 .panel-b-irpf { right: 0; top: 6%; width: 36%; transform: translateZ(90px); }
-.panel-b-neto { left: 16%; top: 47%; width: 80%; transform: translateZ(40px); }
+.panel-b-neto { left: 16%; top: 43%; width: 80%; transform: translateZ(40px); }
 .panel-b-flota {
   box-shadow: 0 36px 70px -28px rgba(0, 0, 0, 0.6);
 }
