@@ -6,7 +6,7 @@ import { leerClave, urlsDeArchivo } from '../scripts/indexnow.mjs';
 
 test('urlsDeArchivo: mercados, newsletter, glosario y páginas', () => {
   assert.deepEqual(urlsDeArchivo('src/content/mercados/2026-10-28.mdx').sort(), ['/', '/hoy/', '/mercados/', '/mercados/2026-10-28/'].sort());
-  assert.deepEqual(urlsDeArchivo('src/content/newsletter/2026-11-01.mdx').sort(), ['/newsletter/', '/newsletter/2026-11-01/']);
+  assert.deepEqual(urlsDeArchivo('src/content/newsletter/2026-11-01.mdx').sort(), ['/newsletter/']);
   assert.ok(urlsDeArchivo('src/content/glosario/ter.mdx').includes('/glosario/ter/'));
   assert.deepEqual(urlsDeArchivo('src/pages/euribor.astro'), ['/euribor/']);
   assert.deepEqual(urlsDeArchivo('src/pages/herramientas/index.astro'), ['/herramientas/']);

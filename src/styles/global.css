@@ -681,7 +681,7 @@
   color: var(--color-brand);
 }
 .indice-movil[open] summary::after {
-  content: '2';
+  content: '\2212';
 }
 .prose :where(h2[id]) {
   scroll-margin-top: 1.5rem;

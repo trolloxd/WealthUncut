@@ -62,7 +62,7 @@ export function urlsDeArchivo(ruta) {
   } else if ((m = r.match(/^src\/content\/mercados\/(.+)\.mdx?$/))) {
     u.add(`/mercados/${m[1]}/`).add('/mercados/').add('/hoy/').add('/');
   } else if ((m = r.match(/^src\/content\/newsletter\/(.+)\.mdx?$/))) {
-    u.add(`/newsletter/${m[1]}/`).add('/newsletter/');
+    u.add('/newsletter/'); // cada número va en noindex y fuera del sitemap: solo se avisa del índice
   } else if ((m = r.match(/^src\/content\/glosario\/(.+)\.mdx?$/))) {
     u.add(`/glosario/${m[1]}/`).add('/glosario/');
   } else if ((m = r.match(/^src\/pages\/(.+)\.astro$/)) && !/\[|^api\/|^embed\//.test(m[1])) {
