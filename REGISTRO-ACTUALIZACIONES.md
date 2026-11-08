@@ -3,6 +3,12 @@
 Lo escribe la rutina diaria de actualización (`ACTUALIZACION-PROCEDIMIENTO.md`, apartado 4), lo más nuevo arriba. Una entrada por día:
 qué se actualizó (con fuente y commit), qué se verificó sin cambios, qué no pudo verificarse y qué queda para David.
 
+## 2026-11-08
+- Actualizado: nada. Comprobador: BCE, euríbor (2026-10), cuentas (revisadas el 2026-11-02) y portada al día.
+- No pudo verificarse: `catalogo-carteras` (VENCIDO, 41 días) y `fondos-indexados` (38 días, vence el 2026-11-10): HelpMyCash devuelve 404 y las fichas de fondos de Finect devuelven 404 al lector; sin dos fuentes accesibles no se toca el dato. `cuentas-ofertas-con-fecha`: Openbank (hasta el 2026-11-16, openbank.es inaccesible) y Kutxabank (hasta el 2026-11-22) sin verificar; la revisión de cuentas del 2026-11-10 las resolverá.
+- Pendiente de David: `catalogo-carteras` (vencido) y `fondos-indexados` (antes del 2026-11-10), con navegador; `keywords-search-console`. Revisar el 12 o 13/11 el resultado de la votación sobre el RDL 29/2026.
+- Estado del registro al terminar: VENCIDO (catalogo-carteras); POR VENCER (cuentas-ofertas-con-fecha, fondos-indexados).
+
 ## 2026-11-07
 - Actualizado: nada. El comprobador no encontró dato nuevo que aplicar (BCE al día, euríbor 2026-10 al día, cuentas revisadas el 2026-11-02, portada correcta).
 - No pudo verificarse: `catalogo-carteras` (VENCIDO desde hoy, 40 días) y `fondos-indexados` (37 días, vence el 2026-11-10): MyInvestor no responde al lector (conexión bloqueada) y HelpMyCash y Finect devuelven 404 en las URLs de partida; sin dos fuentes accesibles no se toca el dato. `cuentas-ofertas-con-fecha`: oferta de Openbank (hasta el 2026-11-16) sin verificar por la misma razón (openbank.es inaccesible); la revisión de cuentas del 2026-11-10 la resolverá.
