@@ -34,9 +34,9 @@ const legalLinks = [
         ¿De qué quieres que hable el próximo artículo? Sugiérelo aquí →
       </a>
     </p>
-    <nav class="flex flex-wrap gap-x-5 gap-y-2">
+    <nav class="flex flex-wrap gap-x-5 gap-y-0">
       {legalLinks.map((item) => (
-        <a href={item.href} class="enlace-vivo hover:text-ink">
+        <a href={item.href} class="enlace-vivo inline-block py-3 hover:text-ink">
           {item.label}
         </a>
       ))}

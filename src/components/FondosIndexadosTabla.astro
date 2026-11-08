@@ -28,12 +28,13 @@ const maxTer = Math.max(...fondos.map((f) => f.ter), 0.01);
 const fecha = new Date(`${datos.fecha}T12:00:00Z`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
-<div class="not-prose my-8 overflow-x-auto">
-  <table class="w-full text-sm">
+<p class="not-prose mt-8 mb-1 text-xs text-ink-faint sm:hidden" aria-hidden="true">Desliza la tabla para ver todas las columnas →</p>
+<div class="not-prose mb-8 overflow-x-auto sm:mt-8" tabindex="0" role="region" aria-label="Tabla de fondos indexados">
+  <table class="w-full min-w-[42rem] text-sm">
     <caption class="mb-2 text-left text-sm font-semibold text-ink">Fondos indexados disponibles en España ({fecha})</caption>
     <thead>
       <tr class="border-b border-border text-left text-xs text-ink-muted">
-        <th scope="col" class="py-2 pr-3 font-medium">Fondo</th>
+        <th scope="col" class="min-w-[12rem] py-2 pr-3 font-medium">Fondo</th>
         <th scope="col" class="py-2 pr-3 font-medium">Índice</th>
         <th scope="col" class="py-2 pr-3 text-right font-medium">TER</th>
         <th scope="col" class="py-2 pr-3 font-medium">ISIN</th>

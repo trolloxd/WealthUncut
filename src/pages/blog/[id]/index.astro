@@ -124,7 +124,7 @@ const breadcrumbJsonLd = {
       {herramientas.map((t) => (
         <li>
           <a href={t.href} class="card group block p-4 hover:border-brand/40">
-            <span class="font-display text-lg text-ink group-hover:text-brand">{t.name} <span class="card-flecha" aria-hidden="true">→</span></span>
+            <span class="font-display text-lg text-ink group-hover:text-brand">{t.name}&nbsp;<span class="card-flecha" aria-hidden="true">→</span></span>
             <span class="mt-1 block text-sm text-ink-muted">{t.description}</span>
           </a>
         </li>
@@ -132,7 +132,7 @@ const breadcrumbJsonLd = {
       {tags.includes('fondos indexados') && (
         <li>
           <a href="/carteras/" class="card group block p-4 hover:border-brand/40">
-            <span class="font-display text-lg text-ink group-hover:text-brand">Simula tu cartera de fondos indexados <span class="card-flecha" aria-hidden="true">→</span></span>
+            <span class="font-display text-lg text-ink group-hover:text-brand">Simula tu cartera de fondos indexados&nbsp;<span class="card-flecha" aria-hidden="true">→</span></span>
             <span class="mt-1 block text-sm text-ink-muted">Busca fondos, reparte el peso entre ellos y mira cuánto podrías tener.</span>
           </a>
         </li>

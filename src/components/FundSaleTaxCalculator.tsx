@@ -88,7 +88,7 @@ export default function FundSaleTaxCalculator() {
                 type="button"
                 onClick={() => setLotes((ls) => ls.filter((x) => x.id !== l.id))}
                 disabled={lotes.length === 1}
-                className="mb-1 rounded-full px-2 py-1 text-sm text-ink-faint hover:text-accent disabled:opacity-30"
+                className="inline-flex size-11 items-center justify-center rounded-full text-sm text-ink-faint hover:text-accent disabled:opacity-30"
                 aria-label={`Quitar la compra ${i + 1}`}
               >
                 ✕

@@ -74,7 +74,7 @@
 
 @layer components {
   .campo-input {
-    @apply w-full min-w-0 rounded-lg border border-border bg-cream-elevated px-3 py-2 text-ink
+    @apply w-full min-w-0 rounded-lg border border-border bg-cream-elevated px-3 py-2 text-base text-ink
       transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/15;
   }
 
@@ -672,6 +672,16 @@
 }
 .indice-movil summary::marker {
   color: var(--color-brand);
+}
+/* El summary es flex y eso oculta el triángulo: un + y un − dicen que el índice se despliega. */
+.indice-movil summary::after {
+  content: '+';
+  margin-left: auto;
+  font-size: 1.125rem;
+  color: var(--color-brand);
+}
+.indice-movil[open] summary::after {
+  content: '2';
 }
 .prose :where(h2[id]) {
   scroll-margin-top: 1.5rem;

@@ -137,7 +137,7 @@ const jsonLd = {
 
   <nav aria-label="Objetivos" class="mb-10 flex flex-wrap gap-2">
     {bloquesVisibles.map((b) => (
-      <a href={`#${b.id}`} class="rounded-full border border-border bg-cream-elevated px-4 py-1.5 text-sm text-ink-muted hover:text-ink">
+      <a href={`#${b.id}`} class="inline-flex min-h-11 items-center rounded-full border border-border bg-cream-elevated px-4 text-sm text-ink-muted hover:text-ink">
         {b.titulo}
       </a>
     ))}
@@ -151,7 +151,7 @@ const jsonLd = {
         {b.pasos.map((p, i) => (
           <li>
             <a href={p.href} class="flex gap-4 rounded-xl border border-border bg-cream-elevated p-4 hover:border-brand/40">
-              <span class="font-display text-xl text-brand" aria-hidden="true">{i + 1}</span>
+              <span class="w-6 shrink-0 text-center font-display text-xl tabular-nums text-brand" aria-hidden="true">{i + 1}</span>
               <span>
                 <span class="block font-medium text-ink">{p.titulo}</span>
                 <span class="block text-sm text-ink-muted">{p.texto}</span>

@@ -134,7 +134,12 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
   const [anios, setAnios] = useEstadoUrl<number>('anios', 20, { max: 100 });
 
   function pesoDe(isin: string): number {
-    return pesos[isin] ?? Math.round(100 / Math.max(1, isinsEnCartera.length));
+    if (pesos[isin] !== undefined) return pesos[isin];
+    // Reparto inicial en enteros que suman 100 (con 3 fondos, 34 + 33 + 33, no 33 x 3 = 99).
+    const n = Math.max(1, isinsEnCartera.length);
+    const base = Math.floor(100 / n);
+    const i = isinsEnCartera.indexOf(isin);
+    return base + (i >= 0 && i < 100 - base * n ? 1 : 0);
   }
   function rentabilidadDe(isin: string): number {
     if (rentabilidades[isin] !== undefined) return rentabilidades[isin];
@@ -415,7 +420,7 @@ export default function FundPortfolioSimulator({ fondos: fondosDestacados }: Pro
                 <button
                   type="button"
                   onClick={() => quitarFondo(f.isin)}
-                  className="col-start-2 row-start-1 text-ink-faint hover:text-accent sm:col-start-auto sm:row-start-auto sm:mt-5"
+                  className="col-start-2 row-start-1 inline-flex size-11 items-center justify-center text-ink-faint hover:text-accent sm:col-start-auto sm:row-start-auto sm:mt-3"
                   aria-label={`Quitar ${f.nombre} de la cartera`}
                   title="Quitar de la cartera"
                 >

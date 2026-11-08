@@ -22,18 +22,18 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
       <MarcaLogo class="h-8 w-8" />
       {SITE.name}
     </a>
-    <nav aria-label="Principal" class="order-3 flex w-full flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-ink-muted sm:order-none sm:w-auto sm:gap-x-7">
+    <nav aria-label="Principal" class="order-3 flex w-full flex-wrap items-center gap-x-5 gap-y-0 text-sm font-medium sm:gap-y-2 text-ink-muted sm:order-none sm:w-auto sm:gap-x-7">
       {navItems.map((item) => (
         <a
           href={item.href}
           aria-current={path === item.href ? 'page' : undefined}
-          class:list={['nav-vivo py-1 hover:text-ink', isCurrent(item.href) && 'text-ink']}
+          class:list={['nav-vivo py-2.5 hover:text-ink sm:py-1', isCurrent(item.href) && 'text-ink']}
         >
           {item.label}
         </a>
       ))}
     </nav>
-    <div class="relative ml-auto w-48 sm:w-56 sm:justify-self-end md:w-64" id="buscador-cabecera">
+    <div class="relative order-2 w-full sm:order-none sm:ml-auto sm:w-56 sm:justify-self-end md:w-64" id="buscador-cabecera">
       <form action="/buscar/" method="get" role="search" class="relative">
         <label for="q-cabecera" class="sr-only">Buscar en el sitio</label>
         <input
@@ -42,7 +42,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
           type="search"
           autocomplete="off"
           placeholder="Buscar (IRPF, hipoteca...)"
-          class="campo-input !py-1.5 !pl-3 !pr-3 text-sm"
+          class="campo-input !py-2.5 !pl-3 !pr-3 text-base sm:!py-1.5 sm:text-sm"
         />
       </form>
       <ul
