@@ -15,7 +15,7 @@ ingresos serio, a tiempo completo, no una web de relleno.
 Google penaliza el contenido masivo sin valor añadido (scaled content abuse, updates de spam
 2026) y los AI Overviews reducen los clics. Estrategia: activo propio con herramientas
 interactivas (calculadoras, comparadores), datos y criterio propios, autoría real, pocas
-piezas pero buenas. Ritmo de artículos: uno al día (decisión de David, 2026-10-08, sabiendo que sube el riesgo de "contenido masivo": cada pieza debe seguir aportando cifras verificadas y cálculo propio). Herramientas antes que volumen.
+piezas pero buenas. Ritmo de artículos: dos por semana, martes y viernes (decisión de David, 2026-11-07; antes uno al día desde el 2026-10-08). Cada pieza debe seguir aportando cifras verificadas y cálculo propio. Herramientas antes que volumen.
 
 ## Stack
 
@@ -190,7 +190,7 @@ etiquetas (`tags` en `src/config/tools.ts` y en el frontmatter de cada artículo
 - `/embed/<slug>/` (calculadoras incrustables, `src/config/embeds.ts`) es la única ruta sin cabeceras
   anti-iframe (`public/_headers`). Nueva herramienta incrustable: registrarla en `embeds.ts` y en
   `src/pages/embed/[slug].astro`.
-- Glosario en `src/content/glosario/` (se amplía en cada lote de la rutina de artículos).
+- Glosario en `src/content/glosario/` (en pausa desde el 2026-11-07: no se añaden términos nuevos).
 - `/hoy/` (`src/pages/hoy.astro`): briefing de cada mañana. Se reconstruye con cada edición de `/mercados/`:
   resumen de 30 segundos y "Qué vigilar" sacados del cuerpo de la última edición (`src/lib/briefing.ts`; dependen
   de los títulos de sección fijados en `MERCADOS-PROCEDIMIENTO.md`), datos vivos, reto de 2 minutos

@@ -5,7 +5,7 @@
 # main, así que este workflow, los días de publicación, comprueba si algún artículo tiene
 # `pubDate` igual a hoy y, si lo hay, hace un commit vacío para disparar el despliegue.
 #
-# Días de publicación: todos los días (un artículo diario desde el 2026-10-08, decisión de David). 05:00 UTC = 07:00 en Madrid en horario de
+# Días de publicación: martes y viernes (dos artículos por semana desde el 2026-11-07, decisión de David; el cron sigue diario y no hace nada los demás días). 05:00 UTC = 07:00 en Madrid en horario de
 # verano (06:00 en invierno). También se puede lanzar a mano desde la pestaña Actions de GitHub.
 
 name: Publicación programada
