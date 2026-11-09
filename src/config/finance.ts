@@ -783,7 +783,7 @@ export const ALQUILER_IRPF_RDL_29_2026 = {
   fechaCorteContratos: '2026-12-01',
   url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20823',
   urlConvalidacion: 'https://www.congreso.es/es/proposiciones-de-ley?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=130%2F000060',
-  fechaRegistro: '2026-11-02',
+  fechaRegistro: '2026-11-09',
   verificado: false,
 } as const;
 
