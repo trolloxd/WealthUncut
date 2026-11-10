@@ -3,6 +3,13 @@
 Lo escribe la rutina diaria de actualización (`ACTUALIZACION-PROCEDIMIENTO.md`, apartado 4), lo más nuevo arriba. Una entrada por día:
 qué se actualizó (con fuente y commit), qué se verificó sin cambios, qué no pudo verificarse y qué queda para David.
 
+## 2026-11-10
+- Actualizado: nada. Comprobador: BCE, euríbor (2026-10), cuentas (revisadas el 2026-11-09) y portada al día.
+- No pudo verificarse: `fondos-indexados` (40 días, VENCIDO desde hoy) y `catalogo-carteras` (43 días, VENCIDO): HelpMyCash y Finect devuelven 404, myinvestor.es está bloqueado por el proxy de la sesión; sin dos fuentes accesibles no se toca el dato.
+- Por vencer: `bce-otras-series` (la instantánea de hoy la hace la rutina de mercados) y `mercados-edicion` (última 2026-11-08).
+- Pendiente de David: `fondos-indexados` y `catalogo-carteras`, con navegador; `keywords-search-console`. Revisar el 12 o 13/11 la votación del RDL 29/2026.
+- Estado del registro al terminar: VENCIDO (fondos-indexados, catalogo-carteras); POR VENCER (bce-otras-series, mercados-edicion).
+
 ## 2026-11-09
 - Actualizado: `alquiler-rdl-29-2026`: sigue pendiente de convalidación (la búsqueda web no encuentra convalidación ni derogación; la Diputación Permanente votaría hacia el 12 o 13/11, según notas anteriores); `fechaRegistro` pasa a 2026-11-09. Fuentes consultadas: Agencia Tributaria (BOLINFORM RDL 29/2026) y prensa económica en resultados de búsqueda; el Congreso no se pudo abrir.
 - No pudo verificarse: `catalogo-carteras` (VENCIDO, 42 días) y `fondos-indexados` (39 días, vence el 2026-11-10): HelpMyCash devuelve 404 y no hay dos fuentes accesibles para el lector; no se toca el dato.
