@@ -3,6 +3,12 @@
 Lo escribe la rutina diaria de actualización (`ACTUALIZACION-PROCEDIMIENTO.md`, apartado 4), lo más nuevo arriba. Una entrada por día:
 qué se actualizó (con fuente y commit), qué se verificó sin cambios, qué no pudo verificarse y qué queda para David.
 
+## 2026-11-11
+- Actualizado: `bce-tipo-deposito`, `bce-eurusd` y `bce-otras-series`: instantánea del BCE del 2026-11-11 (`src/data/mercados/2026-11-11.json`; facilidad de depósito 2,50 %, euro/dólar 1,1214 del 10/11, euro/libra 0,83545, euro/yen 177,38, €STR 2,442 y bonos a 2 y 10 años del 9/11). La edición de /mercados/ no la toca esta rutina.
+- No pudo verificarse: `fondos-indexados` (vencido, 41 días) y `catalogo-carteras` (vencido, 44 días). Finect responde 404 por ISIN, Quefondos no incluye gastos corrientes en el HTML, Morningstar y justETF devuelven 403 y MyInvestor carga los fondos por JavaScript: no hay dos fuentes accesibles para el TER. Se dejan con su fecha.
+- `mercados-edicion` vencida (última verificación 2026-11-08): corresponde a la rutina de mercados, no se toca.
+- Pendiente de David: `fondos-indexados` y `catalogo-carteras` (revisar a mano o con navegador); `keywords-search-console`.
+
 ## 2026-11-10
 - Actualizado: nada. Comprobador: BCE, euríbor (2026-10), cuentas (revisadas el 2026-11-09) y portada al día.
 - No pudo verificarse: `fondos-indexados` (40 días, VENCIDO desde hoy) y `catalogo-carteras` (43 días, VENCIDO): HelpMyCash y Finect devuelven 404, myinvestor.es está bloqueado por el proxy de la sesión; sin dos fuentes accesibles no se toca el dato.
