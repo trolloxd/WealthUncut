@@ -3,6 +3,13 @@
 Lo escribe la rutina diaria de actualización (`ACTUALIZACION-PROCEDIMIENTO.md`, apartado 4), lo más nuevo arriba. Una entrada por día:
 qué se actualizó (con fuente y commit), qué se verificó sin cambios, qué no pudo verificarse y qué queda para David.
 
+## 2026-11-12
+- Actualizado: `bce-otras-series` (y BCE tipo/euro-dólar): instantánea del BCE del 2026-11-12 (`src/data/mercados/2026-11-12.json`; facilidad de depósito 2,50 %, euro/dólar 1,1127 del 11/11, euro/libra 0,83618, euro/yen 177,18, €STR 2,442 y bonos a 2 y 10 años del 10/11).
+- No pudo verificarse: `fondos-indexados` (vencido, 42 días) y `catalogo-carteras` (vencido, 45 días): ninguna fuente accesible da el TER por ISIN (Morningstar redirige, la búsqueda no devuelve gastos corrientes, MyInvestor bloqueado). Se dejan con su fecha.
+- `mercados-edicion` vencida (última 2026-11-08): corresponde a la rutina de mercados, no se toca.
+- Pendiente de David: `fondos-indexados` y `catalogo-carteras` (revisar a mano con navegador); `keywords-search-console`.
+- Estado del registro al terminar: VENCIDO (mercados-edicion, fondos-indexados, catalogo-carteras).
+
 ## 2026-11-11
 - Actualizado: `bce-tipo-deposito`, `bce-eurusd` y `bce-otras-series`: instantánea del BCE del 2026-11-11 (`src/data/mercados/2026-11-11.json`; facilidad de depósito 2,50 %, euro/dólar 1,1214 del 10/11, euro/libra 0,83545, euro/yen 177,38, €STR 2,442 y bonos a 2 y 10 años del 9/11). La edición de /mercados/ no la toca esta rutina.
 - No pudo verificarse: `fondos-indexados` (vencido, 41 días) y `catalogo-carteras` (vencido, 44 días). Finect responde 404 por ISIN, Quefondos no incluye gastos corrientes en el HTML, Morningstar y justETF devuelven 403 y MyInvestor carga los fondos por JavaScript: no hay dos fuentes accesibles para el TER. Se dejan con su fecha.
