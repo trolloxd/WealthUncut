@@ -858,17 +858,17 @@ export const AYUDAS_VIVIENDA_JOVENES = {
 // del IPC general 4,9 %, subyacente 3,1 % e IPCA 5,0 %. Verificado el 2026-10-30.
 export const IPC_ESPANA = {
   /** Mes al que se refiere el dato (AAAA-MM). */
-  mes: '2026-09',
-  mesTexto: 'septiembre de 2026',
+  mes: '2026-10',
+  mesTexto: 'octubre de 2026',
   /** Tasa anual del IPC general, en %. */
   general: 4.9,
   /** Tasa anual de la inflación subyacente, en %. */
   subyacente: 3.1,
   /** Tasa anual del IPC armonizado (IPCA), en %. */
-  armonizado: 5.0,
-  publicado: '2026-10-14',
-  publicadoTexto: '14 de octubre de 2026',
+  armonizado: 4.9,
+  publicado: '2026-11-13',
+  publicadoTexto: '13 de noviembre de 2026',
   fuente: 'INE, Índice de Precios de Consumo',
-  url: 'https://www.ine.es/dyngs/Prensa/IPC0926.htm',
-  verificado: '2026-10-30',
+  url: 'https://www.ine.es/dyngs/Prensa/IPC1026.htm',
+  verificado: '2026-11-26',
 } as const;

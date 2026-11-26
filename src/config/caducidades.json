@@ -45,7 +45,7 @@
   },
   {
    "id": "ipc-espana", "descripcion": "IPC de España (general, subyacente, IPCA), último mes", "donde": "src/config/finance.ts, IPC_ESPANA; lo leen inflacion, deposito-a-plazo (glosario) y cuatro artículos (independencia-financiera-cuanto-dinero-necesitas incluido). Textos fijos a revisar cada mes (frases comparativas como 'seis décimas más que en agosto', 'la tasa más alta desde febrero de 2023', 'casi el 5 %', el 10,5 % del transporte, la frase de Eurostat): frontmatter y sources de esos artículos, tabla mensual y sección 'Qué ha pasado' de subida-sueldo-ipc-poder-adquisitivo e inflacion-que-interes-necesitas-para-no-perder",
-   "fuente": "INE, nota de prensa mensual del IPC (API de datos: servicios.ine.es, serie IPC290750 para el general)", "fuenteUrl": "https://www.ine.es/dyngs/Prensa/IPC0926.htm", "frecuencia": "mensual",
+   "fuente": "INE, nota de prensa mensual del IPC (API de datos: servicios.ine.es, serie IPC290750 para el general)", "fuenteUrl": "https://www.ine.es/dyngs/Prensa/IPC1026.htm", "frecuencia": "mensual",
    "cuando": "el INE publica el definitivo hacia el día 12 a 15 del mes siguiente; desde el día 18 debe estar el del mes anterior",
    "fecha": { "tipo": "regex", "fichero": "src/config/finance.ts", "patron": "IPC_ESPANA = \\{[\\s\\S]*?mes: '(\\d{4}-\\d{2})'" }, "vence": { "tipo": "mes-dato", "dia": 18 }, "critico": true,
    "actualizacion": { "modo": "investigacion", "comando": "node scripts/datos-ipc.mjs", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#ipc" },
