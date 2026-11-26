@@ -739,10 +739,9 @@ export const ALQUILER_IRPF = {
 
 /**
  * Real Decreto-ley 29/2026, de 6 de octubre (BOE núm. 249, de 7-10-2026, BOE-A-2026-20823), en vigor desde el
- * 8-10-2026 y PENDIENTE DE CONVALIDACIÓN: a 26-10-2026 figura en el Congreso como "Diputación Permanente
- * Convalidación" (iniciativa 130/000060). Si no se convalida en el plazo del art. 86.2 de la Constitución,
- * queda derogado y estas cifras dejan de aplicarse. Verificado el 2026-10-26 en el texto del BOE.
- * VERIFICAR: pendiente de la confirmación de David y de la convalidación.
+ * 8-10-2026. CONVALIDADO por la Diputación Permanente del Congreso el 12-11-2026 (Resolución de 12 de noviembre
+ * de 2026, BOE-A-2026-23755, comprobada en el BOE el 2026-11-26). Cifras verificadas el 2026-10-26 en el texto del BOE.
+ * VERIFICAR: pendiente de la confirmación de David.
  *
  * Art. 6.Segundo.Dos: nueva redacción del art. 23.2 de la Ley del IRPF (reducción del alquiler de vivienda
  * habitual). Solo para contratos firmados después del 1-12-2026: la nueva disposición transitoria 38.ª
@@ -783,14 +782,14 @@ export const ALQUILER_IRPF_RDL_29_2026 = {
   fechaCorteContratos: '2026-12-01',
   url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20823',
   urlConvalidacion: 'https://www.congreso.es/es/proposiciones-de-ley?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=130%2F000060',
-  fechaRegistro: '2026-11-09',
+  fechaRegistro: '2026-11-26',
   verificado: false,
 } as const;
 
 /**
  * Deducción estatal por alquiler de la vivienda habitual (nuevo art. 68.6 de la Ley del IRPF, añadido por el
  * art. 6.Segundo.Cuatro del Real Decreto-ley 29/2026, "con efectos desde la entrada en vigor" del decreto,
- * 8-10-2026). Mismas advertencias que ALQUILER_IRPF_RDL_29_2026: PENDIENTE DE CONVALIDACIÓN. 10 % de lo pagado
+ * 8-10-2026). Mismas advertencias que ALQUILER_IRPF_RDL_29_2026 (convalidado el 12-11-2026). 10 % de lo pagado
  * por el alquiler si la base imponible es inferior a 33.007,20 €. Base máxima: 11.630 € con base imponible de
  * hasta 23.007,20 €; entre 23.007,20 y 33.007,20 €, 11.630 menos 1,163 por la diferencia con 23.007,20. No se
  * aplica si el contribuyente o su unidad familiar tienen, durante al menos la mitad del año, otra vivienda a menos

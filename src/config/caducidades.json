@@ -206,10 +206,10 @@
    "responsable": "Rutina diaria de actualización"
   },
   {
-   "id": "alquiler-rdl-29-2026", "descripcion": "Real Decreto-ley 29/2026 (reducción del alquiler y deducción), pendiente de convalidación", "donde": "src/config/finance.ts: ALQUILER_IRPF_RDL_29_2026, DEDUCCION_ALQUILER_RDL_29_2026",
-   "fuente": "BOE (BOE-A-2026-20823) y Congreso de los Diputados (iniciativa 130/000060)", "fuenteUrl": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20823", "frecuencia": "semanal",
-   "cuando": "cada semana hasta que se convalide o derogue (plazo del art. 86.2 de la Constitución); luego pasar la entrada a revisión anual",
-   "fecha": { "tipo": "regex", "fichero": "src/config/finance.ts", "patron": "ALQUILER_IRPF_RDL_29_2026 = \\{[\\s\\S]*?fechaRegistro: '(\\d{4}-\\d{2}-\\d{2})'" }, "vence": { "tipo": "dias", "aviso": 7, "error": 14 }, "critico": false,
+   "id": "alquiler-rdl-29-2026", "descripcion": "Real Decreto-ley 29/2026 (reducción del alquiler y deducción), convalidado el 2026-11-12", "donde": "src/config/finance.ts: ALQUILER_IRPF_RDL_29_2026, DEDUCCION_ALQUILER_RDL_29_2026",
+   "fuente": "BOE (BOE-A-2026-20823) y Congreso de los Diputados (iniciativa 130/000060)", "fuenteUrl": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20823", "frecuencia": "anual",
+   "cuando": "convalidado el 2026-11-12 (BOE-A-2026-23755); revisar cada año con el nuevo Manual de Renta (abril)",
+   "fecha": { "tipo": "regex", "fichero": "src/config/finance.ts", "patron": "ALQUILER_IRPF_RDL_29_2026 = \\{[\\s\\S]*?fechaRegistro: '(\\d{4}-\\d{2}-\\d{2})'" }, "vence": { "tipo": "anual", "mes": 4, "dia": 15, "gracia": 30 }, "critico": false,
    "actualizacion": { "modo": "investigacion", "procedimiento": "ACTUALIZACION-PROCEDIMIENTO.md#rdl" },
    "responsable": "Rutina diaria de actualización; si se deroga, avisar a David antes de quitar las cifras"
   },
