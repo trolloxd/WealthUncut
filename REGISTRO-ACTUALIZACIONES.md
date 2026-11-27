@@ -3,6 +3,13 @@
 Lo escribe la rutina diaria de actualización (`ACTUALIZACION-PROCEDIMIENTO.md`, apartado 4), lo más nuevo arriba. Una entrada por día:
 qué se actualizó (con fuente y commit), qué se verificó sin cambios, qué no pudo verificarse y qué queda para David.
 
+## 2026-11-27
+- Actualizado: `bce-tipo-deposito`, `bce-eurusd`, `bce-otras-series`: instantánea del BCE del 2026-11-27 (`src/data/mercados/2026-11-27.json`; facilidad de depósito 2,50 %, euro/dólar 1,0975 del 26/11, euro/libra 0,83755, euro/yen 174,79, €STR 2,444 y bonos a 2 y 10 años del 25/11). Commit `Datos: BCE del 2026-11-27`.
+- No pudo verificarse: `cuentas-remuneradas` y `cuentas-historico` (18 días, CRÍTICO): HelpMyCash solo abre la página de depósitos (la home da 403 y la de cuentas 404), Finect y Rankia dan 404 en las páginas de producto y Raisin no responde; no hay dos fuentes independientes para cada TAE. `fondos-indexados` (57 días) y `catalogo-carteras` (60 días): sin fuente accesible para el TER, igual que en días anteriores. No se toca ningún dato.
+- Solo informar: `mercados-edicion` y `newsletter-semanal` (última 2026-11-08) siguen vencidas, las rutinas parecen paradas; `cola-articulos` con 2 programados (la reposición actúa con menos de 4).
+- Pendiente de David: cuentas, fondos y catálogo de carteras (revisar con navegador); revisar las rutinas de mercados y newsletter; `keywords-search-console`.
+- Estado del registro al terminar: VENCIDO (cuentas-remuneradas CRÍTICO, cuentas-historico, fondos-indexados, catalogo-carteras, mercados-edicion, newsletter-semanal); POR VENCER (cola-articulos).
+
 ## 2026-11-26
 - Actualizado: `bce-tipo-deposito`, `bce-eurusd`, `bce-otras-series`: instantánea del BCE del 2026-11-26 (`src/data/mercados/2026-11-26.json`; facilidad de depósito 2,50 %, euro/dólar 1,0935 del 25/11, euro/libra 0,8373, euro/yen 174,22, €STR 2,444 y bonos a 2 y 10 años del 24/11). Commit `Datos: BCE del 2026-11-26`.
 - Actualizado: `ipc-espana`: IPC de octubre de 2026 (general 4,9 %, subyacente 3,1 %, IPCA 4,9 %, publicado el 13-11-2026), fuente nota de prensa del INE https://www.ine.es/dyngs/Prensa/IPC1026.htm (la API del INE no respondió; nota leída directamente). Actualizados `finance.ts`, los cinco artículos que lo citan (tabla mensual, fuentes, texto) y `caducidades.json`. Se quitó la frase de Eurostat (zona euro) y su fuente de `inflacion-que-interes-necesitas-para-no-perder` porque no se pudo verificar el dato de octubre. Commit `IPC: 2026-10`.
